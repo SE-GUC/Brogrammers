@@ -31,3 +31,4 @@ class Company{
              this.id = uuid.v4();
         }
 }
+module.exports=Company;
