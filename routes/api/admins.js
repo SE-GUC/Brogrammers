@@ -22,11 +22,6 @@ const arrayOfAdmins=[
 
     
 
-router.get('/',  (req, res) => {
-    res.send(arrayOfAdmins);
-    
-});
-
 
 
 
