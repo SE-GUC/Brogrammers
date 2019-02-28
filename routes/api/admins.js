@@ -6,11 +6,11 @@ const Admin = require('../../models/Admin.js');
 
 
 const arrayOfAdmins=[
-    new Admin("Atef","atef@gmail.com","01005478965","Male","2018-07-23","moatef","1234","1997-07-02"),
-    new Admin("Alaa","alaa@gmail.com","01007778965","Male","2018-06-12","alaas","3456","1997-05-15"),
-    new Admin("Omar","omar@gmail.com","01006678965","Male","2018-07-08","raed","12345","1997-04-14"),
-    new Admin("Waly","waly@gmail.com","01005578965","Male","2018-12-15","walys","5555","1997-08-12"),
-    new Admin("Andrew","andrew@gmail.com","01001178965","Male","2018-09-11","andrew","6666","1997-09-09")
+    new Admin("Atef","atef@gmail.com","01005478965","Male","2018-07-23","moatef","1234aaaaaaa","1997-07-02"),
+    new Admin("Alaa","alaa@gmail.com","01007778965","Male","2018-06-12","alaas","3456bbbbbbb","1997-05-15"),
+    new Admin("Omar","omar@gmail.com","01006678965","Male","2018-07-08","raed","12345cccccc","1997-04-14"),
+    new Admin("Waly","waly@gmail.com","01005578965","Male","2018-12-15","walys","5555dddddd","1997-08-12"),
+    new Admin("Andrew","andrew@gmail.com","01001178965","Male","2018-09-11","andrew","6666xasadasdad","1997-09-09")
     ]
 
 // router.get('/admins', (req, res) => res.json({ data: arrayOfAdmins }));
@@ -122,8 +122,23 @@ module.exports = router;
     else{
         var a=new Admin(name,email,phone,gender,joinDate,username,password,birthDate,id);
         arrayOfAdmins.push(a)
-        res.send(arrayOfAdmins)
-    }
+        const info = [];
+        for(var i = 0;i<arrayOfAdmins.length;i++)
+        {
+            const admin = arrayOfAdmins[i];
+            curr = {
+                name : admin.name,
+                id : admin.id,
+                birthDate : admin.birthDate,
+                gender : admin.gender,
+                joinDate : admin.joinDate,
+                email : admin.email,
+                phone : admin.phone
+            }
+            info.push(curr);
+        }
+        res.send(info);
+        }
 });
 
 
