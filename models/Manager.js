@@ -14,4 +14,6 @@ class Manager{
         this.id = uuid.v4();
     }
 }
-module.exports = Manager;
+
+
+module.exports = Manager

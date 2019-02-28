@@ -17,11 +17,10 @@ class Company{
              this.capital=capital;
              this.investorName=investorName;
              this.investorType=investorType;
-             this.investorType= investorType;
              this.investorSex= investorSex;
              this.investorNationality= investorNationality;
-             this.investorIdentificationNumber= investorIdentificationNumber;
              this.investorIdentificationType= investorIdentificationType;
+             this.investorIdentificationNumber= investorIdentificationNumber;
              this.investorBD= investorBD;
              this.investorAddress= investorAddress;
              this.investorTelephone = investorTelephone;
@@ -31,4 +30,7 @@ class Company{
              this.id = uuid.v4();
         }
 }
-module.exports=Company;
+
+
+
+module.exports = Company
