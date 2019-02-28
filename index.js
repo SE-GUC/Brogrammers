@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 const express = require('express')
 
@@ -83,3 +84,47 @@ app.listen(port, () => console.log(`Server up and running on port ${port}`));
 
 // const port = 3000;
 // app.listen(port, () => console.log("Running on port"));
+=======
+const express=require('express');
+const app = express();
+const uuid=require('uuid');
+const admins = require('./routes/api/admins')
+
+
+
+// Use it with post
+app.use(express.json());
+
+const Admin = require('./Models/Admin.js');
+
+// Direct to Route Handlers
+app.use('/routes/api/admins',admins)
+
+
+
+
+
+
+
+
+app.get('/Admin', (req, res) => {
+    res.send(`<h1>Welcome to Admin Page</h1>
+    <a href="/routes/api/admins">View of Admins</a>
+  
+    
+    `);
+})
+
+const port = 3000
+app.listen(port, () => console.log(`Server up and running on port ${port}`))
+
+app.use((req,res) => res.status(404).send(`<h1>Can not find what you're looking for</h1>`))
+
+
+
+
+
+
+
+
+>>>>>>> 1813d5e4a93c9ad232a7368f9b6daf7e7cd89705
