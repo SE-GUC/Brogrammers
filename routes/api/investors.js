@@ -1,12 +1,13 @@
-const Investor = require('../../models/Investor');
-const express = require('express');
-const uuid = require('uuid');
-const Joi = require('joi');
-//const app = express();
-const router = express.Router();
-//router.use(express.json());
 
-//POST creates, GET reads, DELETE deletes, PUT updates
+const express = require('express');
+
+const router = express.Router();
+const mongoose = require('mongoose')
+
+const Investor = require('../../models/Investor')
+const validator = require('../../validations/investorValidations')
+
+
 
 const investors = [
     {
@@ -60,7 +61,10 @@ const investors = [
 
 //View All Investors
 //router.get('/investors', (req, res) => res.send(investors));
-router.get('/', (req, res) => res.json({ data:investors}));
+router.get('/', async (req, res) => {
+    const investors = await Investor.find()
+    res.json({data: investors})
+})
 
 //View an Investor
 router.get('/:id', (req, res)=>
@@ -71,44 +75,19 @@ router.get('/:id', (req, res)=>
 });
 
 //Create an investor
-router.post('/create', (req, res) =>
+router.post('/create', async (req, res) =>
 {
-    const id = uuid.v4();
-    const name = req.body.name;
-    const type = req.body.type;
-    const gender = req.body.gender; 
-    const nationality = req.body.nationality; 
-    const idType = req.body.idType; 
-    const idNumber = req.body.idNumber; 
-    const dob = req.body.dob;
-    const address = req.body.address; 
-    const telephone = req.body.telephone; 
-    const fax = req.body.fax;
-    const mail = req.body.mail; 
-    const password = req.body.password;
-
-    const schema = {
-		name: Joi.string().min(3).required(),
-        type: Joi.string().length(3).required(),
-        gender: Joi.string().valid('male', 'female').required(),
-        nationality: Joi.string().max(25).required(),
-        idType: Joi.string().valid('Passport', 'National ID').required(),
-        idNumber: Joi.number().required(),
-        dob: Joi.date().required(),
-        address: Joi.string().required(),
-        telephone: Joi.number().required(),
-        fax: Joi.number(),
-        mail: Joi.string().required(),
-        password: Joi.string().required()
-
-	}
-
-    const result = Joi.validate(req.body, schema);
+    try {
+        const isValidated = validator.createValidation(req.body)
+        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
+        const newInvestor = await Investor.create(req.body)
+        res.json({msg:'Investor was created successfully', data: newInvestor})
+       }
+       catch(error) {
+           // We will be handling the error later
+           console.log(error)
+       }  
     
-    if (result.error) return res.status(400).send({ error: result.error.details[0].message });
-    
-    investors.push(new Investor(name, type, gender, nationality, idType, idNumber, dob, address, telephone, fax, mail,password,id));
-    res.send(investors)
 });
 
 

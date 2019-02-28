@@ -1,47 +1,57 @@
-<<<<<<< HEAD
-const uuid = require('uuid');
 
-class Investor{
-    constructor(name, type, gender, nationality, idType, idNumber, dob, address, telephone, fax, mail, password,id)
-    {
-        this.id = uuid.v4();
-        this.name = name;
-        this.type = type;
-        this.gender = gender; 
-        this.nationality = nationality; 
-        this.idType = idType; 
-        this.idNumber = idNumber; 
-        this.dob = dob;
-        this.address = address; 
-        this.telephone = telephone; 
-        this.fax = fax;
-        this.mail = mail; 
-        this.password = password;  
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+
+const InvestorSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    type: {
+        type:String,
+        required:true
+    },
+    gender:{
+        type:String,
+        required:true
+    },
+    nationality:{
+        type:String,
+        required:true
+    },
+    idType:{
+        type:String,
+        required:true
+    },
+    idNumber:{
+        type:String,
+        required:true
+    },
+    dob:{
+        type:Date,
+        required:true
+    },
+    address:{
+        type:String,
+        required:true
+    },
+    telephone:{
+        type:Number,
+        required:true
+    },
+    fax:{
+        type:String,
+        required:true
+    },
+    mail: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
     }
+    
+})
 
-};
-
-module.exports = Investor;
-=======
-const uuid = require('uuid')
-
-class Investor {
-    constructor(name, type, gender, nationality, idType, idNumber, dob, address, telephone, fax, mail, password) {
-    this.name = name;
-    this.type = type;
-    this.gender = gender; 
-    this.nationality = nationality; 
-    this.idType = idType; 
-    this.idNumber = idNumber; 
-    this.dob = dob;
-    this.address = address; 
-    this.telephone = telephone; 
-    this.fax = fax;
-    this.mail = mail; 
-    this.password = password;
-    this.id = uuid.v4();
-    };
-}
-
-module.exports = Investor
->>>>>>> 6fa27741adcaf5a32d6257c3bc5828949583031f
+module.exports = Investor = mongoose.model('investors', InvestorSchema)
