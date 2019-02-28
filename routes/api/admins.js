@@ -63,7 +63,7 @@ router.put('/:id', (req, res) => {
         phone: Joi.number(),
         username: Joi.string(),
         password: Joi.string().min(8),
-        gender : Joi.string()
+        gender : Joi.string().valid("Male", "Female")
     }
 
     const result = Joi.validate(req.body, schema);
@@ -108,7 +108,7 @@ router.post('/', async (req, res) => {
         username: Joi.string(),
         password: Joi.string().min(8),
         birthDate: Joi.date(),
-        gender: Joi.string(),
+        gender: Joi.string().valid("Male", "Female"),
         joinDate: Joi.date(),
     }
 
