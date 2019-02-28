@@ -2,6 +2,7 @@ const express = require('express')
 const lawyers = require('./routes/api/lawyer')
 const app = express()
 app.use(express.json())
+
 app.get('/', (req, res) => {
     res.send(`<h1>Welcome to the Homepage/h1>
     <a href="/api/lawyer">Lawyers</a>
@@ -10,6 +11,7 @@ app.get('/', (req, res) => {
 
 // Direct routes to appropriate files 
 app.use('/api/lawyer', lawyers)
+
 // Handling 404
 app.use((req, res) => {
     res.status(404).send({err: 'We can not find what you are looking for'});

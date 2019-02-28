@@ -15,6 +15,7 @@ const lawyers = [
   
 
 ];
+
 router.put('/:id', (req, res) => {
     const lawyerID = req.params.id 
     
@@ -83,3 +84,60 @@ router.delete('/:id', (req, res) => {
 })
 
 module.exports = router;
+
+
+router.get('/', (req, res) => res.json({ data: lawyers }));
+
+router.get('/:id', (req, res) => {
+    const lawyerID = req.params.id
+    const lawyer = lawyers.find(lawyer => lawyer.uuid === lawyerID)
+    res.send(lawyer)
+})
+
+
+
+router.post('/insertLawyer', (req, res) => {
+	const name = req.body.name
+    const email = req.body.email
+    const password = req.body.password
+    const mobile_number = req.body.mobile_number
+    const Social_Security_Number = req.body.Social_Security_Number
+    const salary = req.body.salary
+    const birth_Date = req.body.birth_Date
+    const yearsOfExperience = req.body.yearsOfExperience
+
+    
+
+	const schema = {
+        name: Joi.string().min(3).required(),
+        email: Joi.string().email().required(),
+        password: Joi.string().required(),
+        mobile_number: Joi.number().min(10).required(),
+        Social_Security_Number: Joi.number().min(5).required(),
+        salary: Joi.number().required(),
+        birth_Date: Joi.date().required(),
+        yearsOfExperience: Joi.number().required()
+    }
+
+	const result = Joi.validate(req.body, schema);
+
+	if (result.error) return res.status(400).send({ error: result.error.details[0].message });
+
+	const newUser = {
+		name,
+        email,
+        password,
+        mobile_number,
+        Social_Security_Number,
+        salary,
+        birth_Date,
+        yearsOfExperience,
+		id: uuid.v4(),
+    };
+    lawyers.push(newUser)
+    
+	return res.json({ data: newUser });
+});
+
+module.exports = router;
+
