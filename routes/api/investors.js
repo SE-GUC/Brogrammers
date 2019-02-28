@@ -190,6 +190,4 @@ router.delete('/:id', (req, res) => {
     res.send(investors)
 })
 
-
-
 module.exports = router
