@@ -1,17 +1,9 @@
-<<<<<<< HEAD
 const express = require('express');
 const Joi = require('joi');
 const uuid = require('uuid');
 const router = express.Router();
 const Admin = require('../../models/Admin.js');
-=======
-const express=require('express');
 
-const uuid=require('uuid');
-const router = express.Router();
-const Admin= require('../../Models/Admin');
-const Joi = require('joi');
->>>>>>> 1813d5e4a93c9ad232a7368f9b6daf7e7cd89705
 
 const arrayOfAdmins=[
     new Admin("Atef","atef@gmail.com","01005478965","Male","2018-07-23","moatef","1234","1997-07-02"),
@@ -19,7 +11,6 @@ const arrayOfAdmins=[
     new Admin("Omar","omar@gmail.com","01006678965","Male","2018-07-08","raed","12345","1997-04-14"),
     new Admin("Waly","waly@gmail.com","01005578965","Male","2018-12-15","walys","5555","1997-08-12"),
     new Admin("Andrew","andrew@gmail.com","01001178965","Male","2018-09-11","andrew","6666","1997-09-09")
-<<<<<<< HEAD
     ]
 
 // router.get('/admins', (req, res) => res.json({ data: arrayOfAdmins }));
@@ -65,30 +56,29 @@ router.put('/:id', (req, res) => {
     const updatedPhone = req.body.phone;
     const updatedUsername = req.body.username;
     const updatedPassword = req.body.password;
+    const updatedGender = req.body.gender;
 
     const schema = {
         email: Joi.string(),
         phone: Joi.number(),
         username: Joi.string(),
-        password: Joi.string().min(8)
+        password: Joi.string().min(8),
+        gender : Joi.string()
     }
 
     const result = Joi.validate(req.body, schema);
-=======
-    
-    
-    
-    ]
-    
+    if(result.error) 
+    {
+        return  res.status(400).send({error: result.error.details[0].message});
+    }
 
-
-
-
-    
-
-
-
-
+    admin.email = updatedEmail;
+    admin.phone = updatedPhone;
+    admin.username = updatedUsername;
+    admin.password = updatedPassword;
+    admin.gender = updatedGender;
+    res.send(admin);
+});
 
 
 router.get('/:id',async (req,res)=> {
@@ -111,9 +101,6 @@ router.post('/', async (req, res) => {
     const username=req.body.username;
     const password=req.body.password;
 
-
-
-
     const schema = {
         name: Joi.string(),
         email: Joi.string(),
@@ -123,34 +110,20 @@ router.post('/', async (req, res) => {
         birthDate: Joi.date(),
         gender: Joi.string(),
         joinDate: Joi.date(),
-
     }
 
  const result = Joi.validate(req.body, schema);
->>>>>>> 1813d5e4a93c9ad232a7368f9b6daf7e7cd89705
+module.exports = router;   
+
     if(result.error) 
     {
         return  res.status(400).send({error: result.error.details[0].message});
     }
-<<<<<<< HEAD
-
-    admin.email = updatedEmail;
-    admin.phone = updatedPhone;
-    admin.username = updatedUsername;
-    admin.password = updatedPassword;
-    res.send(admin);
-});
-// console.log("hai");
-module.exports = router;   
-
-=======
-else{
-   
-
-    var a=new Admin(name,email,phone,gender,joinDate,username,password,birthDate,id);
-    arrayOfAdmins.push(a)
-    res.send(arrayOfAdmins)
-}
+    else{
+        var a=new Admin(name,email,phone,gender,joinDate,username,password,birthDate,id);
+        arrayOfAdmins.push(a)
+        res.send(arrayOfAdmins)
+    }
 });
 
 
@@ -164,4 +137,3 @@ router.delete('/:id', async (req, res) => {
 });
 
 module.exports = router
->>>>>>> 1813d5e4a93c9ad232a7368f9b6daf7e7cd89705
