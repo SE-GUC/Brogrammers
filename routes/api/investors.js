@@ -158,7 +158,7 @@ router.put('/:id', (req, res) => {
     if(gender)
         inves.gender=gender;
     if(nationality)
-        inves.nationalmineity=nationality;
+        inves.nationality=nationality;
     if(idType)
         inves.idType=idType;
     if(idNumber)
