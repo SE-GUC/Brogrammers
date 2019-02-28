@@ -7,7 +7,7 @@ const admins = require('./routes/api/admins')
 // Use it with post
 app.use(express.json());
 
-const Admin = require('./Models/Admin.js');
+const Admin = require('./models/Admin.js');
 
 // Direct to Route Handlers
 app.use('/routes/api/admins',admins)
