@@ -3,7 +3,17 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 // Create the schema
 const LawyerSchema = new Schema({
-    name: {
+    
+
+    firstName: {
+        type: String,
+        required: true
+    },
+    middleName: {
+        type: String,
+        required: true
+    },
+    lastName: {
         type: String,
         required: true
     },
