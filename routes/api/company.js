@@ -45,9 +45,15 @@ router.get('/', async (req,res) => {
 })
 
 router.get('/:id', async (req,res) => {
+	try{
     const id = req.params.id
     const company = await Company.findById (id)
     res.json({data: company})
+	}
+	catch(error){
+	// We will be handling the error later
+           console.log(error)
+	}
 })
 
 router.put('/ssc/:id', async (req,res) => {
