@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
     <a href ="/api/reviewer">Reviewers</a> </br>
     <a href="/api/lawyer">Lawyers</a> </br>
     <a href="/routes/api/admins">Admins</a> </br>
-    <a href="/routes/api/investors">Investors</a>
+    <a href="/api/investors">Investors</a>
     `);
 })
 
