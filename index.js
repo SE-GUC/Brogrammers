@@ -1,10 +1,16 @@
 const express = require('express')
-const uuid = require('uuid');
-const reviewer = require('./routes/api/reviewer.js');
-
+const reviewer = require('../S1 complete  integrated with mangodb/routes/api/reviewer');
+const mongoose = require('mongoose')
 const app = express()
-
+const db = require('../S1 complete  integrated with mangodb/config/keys').mongoURI
 app.use(express.json())
+
+mongoose
+    .connect(db,{ useNewUrlParser: true })
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.log(err))
+
+app.use(express.urlencoded({extended: false}))
 
 app.get('/', (req, res) => {
     res.send(`<h1> Welcome To Reviewers Page</h1>

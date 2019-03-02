@@ -1,26 +1,33 @@
 const express = require('express')
-
-const Joi = require('joi')
-
+const bcrypt = require('bcryptjs')
+const reviewer = require('../../models/reviewer')
+/*
 const uuid = require('uuid')
-
+*/
 const router = express.Router()
 
-//models
-const reviewer = require('../../models/reviewer')
+router.get('/', (req,res) => res.json({data: 'Reviewers working'}))
 
 
+
+/*
 const reviewers = [
     new reviewer(28, "Omar Sherif", "male", "korba", 55, "omarr@whatever.com", "haha", 20, 20, "2 / 2 / 1999", 2),
     new reviewer(21, "Mathew White", "male", "korba", 99, "matheww@whatever.com", "haha", 6, 25, "2 / 2 / 1999", 5),
     new reviewer(15, "Dom Sundle", "male", "korba", 54, "domss.whatever.com", "haha", 1, 26, "2 / 2 / 1999", 6),
     new reviewer(7223, "Gehad Ismail", "male", "korba", 9874, "gehad.ismail@guc.edu.eg", "haha", 6, 29, "2 / 2 / 1999", 1)
 ]
-
-//get all reviewers
-// router.get('/',(req,res)=>res.json({data:reviewers}));
+*/
 
 
+router.get('/', async (req,res) => {
+    const reviewers = await reviewer.find()
+    res.json({data: reviewers})
+})
+
+
+
+/*
 router.get('/', (req, res) => {
     const info = [];
     for (var i = 0; i < reviewers.length; i++) {
@@ -33,7 +40,7 @@ router.get('/', (req, res) => {
             address: reviewer.address,
             phone: reviewer.phone,
             email: reviewer.email,
-            password:reviewer.password,
+            password: reviewer.password,
             yearsOfExperience: reviewer.yearsOfExperience,
             age: reviewer.age,
             birth: reviewer.birth,
@@ -43,7 +50,15 @@ router.get('/', (req, res) => {
     }
     res.json({ "reviewers": info });
 })
+*/
 
+router.get('/:id', async(req,res) => {
+    const id = req.params.id
+    const reviewers = await reviewer.findById(id)
+    res.send(reviewer)
+})
+
+/*
 router.get('/:id', (req, res) => {
     const reviewerid = req.params.id;
     const reviewer = reviewers.find(curr => curr.id == reviewerid);
@@ -56,7 +71,7 @@ router.get('/:id', (req, res) => {
         address: reviewer.address,
         phone: reviewer.phone,
         email: reviewer.email,
-        password:reviewer.password,
+        password: reviewer.password,
         yearsOfExperience: reviewer.yearsOfExperience,
         age: reviewer.age,
         birth: reviewer.birth,
@@ -64,7 +79,25 @@ router.get('/:id', (req, res) => {
     }
     res.send(curr);
 })
+*/
 
+router.put('/:id', async (req,res) => {
+    try {
+     const id = req.params.id
+     const reviewers = await reviewer.findOne({id})
+     if(!reviewers) return res.status(404).send({error: 'reviewer does not exist'})
+     const isValidated = validator.updateValidation(req.body)
+     if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
+     const updatedreviewer = await reviewer.updateOne(req.body)
+     res.json({msg: 'Book updated successfully'})
+    }
+    catch(error) {
+        // We will be handling the error later
+        console.log(error)
+    }  
+ })
+
+/*
 router.put('/:id', (req, res) => {
     const reviewerid = req.params.id
     const reviewer = reviewers.find(curr => curr.id == reviewerid)
@@ -136,20 +169,15 @@ router.put('/:id', (req, res) => {
 
 });
 
+*/
+router.post('/reviewers',async (req, res) => {
+    const {ssn,name,gender,address,phone,email,password,yearsOfExperience,age,birth,task} = req.body
+    const reviewers = await reviewer.findOne({email})
+    if(reviewers) return res.status(400).json({error: 'Email already exists'})
 
-router.post('/reviewer', (req, res) => {
-    const ssn = req.body.ssn;
-    const name = req.body.name;
-    const gender = req.body.gender;
-    const address = req.body.address;
-    const phone = req.body.phone;
-    const email = req.body.email;
-    const password = req.body.password;
-    const yearsOfExperience = req.body.yearsOfExperience;
-    const age = req.body.age;
-    const birth = req.body.birth;
-    const task = req.body.task;
-
+    const salt = bcrypt.genSaltSync(10)
+    const hashedPassword = bcrypt.hashSync(password,salt)
+/*
     if (!ssn) return res.status(400).send({ err: 'ssn field is required' });
     if (typeof ssn !== 'number') return res.status(400).send({ err: 'Invalid value for ssn' });
     if (!name) return res.status(400).send({ err: 'Name field is required' });
@@ -172,25 +200,40 @@ router.post('/reviewer', (req, res) => {
     if (typeof birth !== 'string') return res.status(400).send({ err: 'Invalid value for birth' });
     if (!task) return res.status(400).send({ err: 'task field is required' });
     if (typeof task !== 'number') return res.status(400).send({ err: 'Invalid value for task' });
-
-    const a = new reviewer(
-        ssn,
-        name,
-        gender,
-        address,
-        phone,
-        email,
-        password,
-        yearsOfExperience,
-        age,
-        birth,
-        task
-
-    );
-    reviewers.push(a);
-    return res.json({ data: a });
+*/
+    const newReviewer = new reviewer({
+            ssn,
+            name,
+            gender,
+            address,
+            phone,
+            email,
+            password: hashedPassword ,
+            yearsOfExperience,
+            age,
+            birth,
+            task
+        })
+    newReviewer
+    .save()
+    .then(reviewer => res.json({data: reviewer}))
+    .catch(err => res.json({error: 'Can not create reviewer'}))
 });
 
+router.delete('/:id', async (req,res) => {
+    try {
+     const id = req.params.id
+     const deletedreviewer = await reviewer.findByIdAndRemove(id)
+     res.json({msg:'reviewer was deleted successfully', data: deletedreviewer})
+    }
+    catch(error) {
+        // We will be handling the error later
+        console.log(error)
+    }  
+ })
+
+
+/*
 router.delete('/reviewer/:id', (req, res) => {
     const reviewerid = req.params.id
     const rev = reviewers.find(reviewer => reviewer.id == reviewerid)
@@ -198,7 +241,7 @@ router.delete('/reviewer/:id', (req, res) => {
     reviewers.splice(index, 1)
     res.send(reviewers)
 })
-
+*/
 
 console.log("hai");
 module.exports = router;
