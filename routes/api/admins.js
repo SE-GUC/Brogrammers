@@ -3,8 +3,9 @@ const Joi = require('joi');
 const uuid = require('uuid');
 const router = express.Router();
 const Admin = require('../../models/Admin.js');
-const mongoose = require('mongoose')
-const validator = require('../../validations/adminValidations')
+const mongoose = require('mongoose');
+const validator = require('../../validations/adminValidations');
+const bcrypt = require('bcryptjs');
 
 // const arrayOfAdmins=[
 //     new Admin("Atef","atef@gmail.com","01005478965","Male","2018-07-23","moatef","1234aaaaaaa","1997-07-02"),
@@ -86,7 +87,7 @@ router.put('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try{
         // const name = req.body.name;
-        // const email = req.body.email;
+         const email = req.body.email;
         // const phone = req.body.phone;
         // const birthDate=req.body.birthDate;
         // const gender=req.body.gender;
@@ -95,11 +96,13 @@ router.post('/', async (req, res) => {
         // const password=req.body.password;
     
         const isValidated = validator.createValidation(req.body);
-    
+        const admin = await Admin.findOne({email})
+        if(admin) return res.status(400).json({error: 'Email already exists'})
         if(isValidated.error) 
         {
             return  res.status(400).send({error: isValidated.error.details[0].message});
         }
+        
         const a = await Admin.create(req.body);
         res.json({msg: "Admin created successfully", data: a});
     }catch(error){
