@@ -1,27 +1,35 @@
 const express = require('express')
+const mongoose = require('mongoose')
 
-const investors = require('./routes/api/investors');
+// Require Router Handlers
+const investors = require('./routes/api/investors')
 
 const app = express()
+
+// DB Config
+const db = require('./config/keys').mongoURI
+
+// Connect to mongo
+mongoose
+    .connect(db)
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.log(err))
+
+// Init middleware
 app.use(express.json())
+app.use(express.urlencoded({extended: false}))
 
-app.get('/', (req, res) => {
-    res.send(`<h1>Welcome to Book Store</h1>
-    <a href="/api/investors">Investors</a>`
-    );
-})
 
-// Direct routes to appropriate files 
+// Entry point
+app.get('/', (req,res) => res.send(`<h1>INVESTORS</h1>`))
+app.get('/test', (req,res) => res.send(`<h1>Deployed on Heroku</h1>`))
+
+// Direct to Route Handlers
 app.use('/api/investors', investors)
 
+    
+app.use((req,res) => res.status(404).send(`<h1>Can not find what you're looking for</h1>`))
 
-// Handling 404
-app.use((req, res) => {
-    res.status(404).send({err: 'We can not find what you are looking for'});
- })
-
-const port = 3000
-app.listen(port, () => console.log(`Server up and running on port ${port}`))
-
-
+const port = process.env.PORT || 3000
+app.listen(port, () => console.log(`Server on ${port}`))
 
