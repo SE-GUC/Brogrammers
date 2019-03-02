@@ -1,36 +1,115 @@
-const uuid = require('uuid')
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-class Company{
-    constructor(regulationLaw, legalCompanyForm, nameInArabic, nameInEnglish, governerateHQ, cityHQ, addressHQ, telephoneHQ, faxHQ, capitalCurrency, capital, investorName, 
-        investorType, investorSex, investorNationality, investorIdentificationType, investorIdentificationNumber, investorBD, investorAddress,
-         investorTelephone, investorFax, investorEmail, managers){
-             this.regulationLaw= regulationLaw;
-             this.legalCompanyForm=legalCompanyForm;
-             this.nameInArabic=nameInArabic;
-             this.nameInEnglish=nameInEnglish;
-             this.governerateHQ=governerateHQ;
-             this.cityHQ=cityHQ;
-             this.addressHQ=addressHQ;
-             this.telephoneHQ=telephoneHQ;
-             this.faxHQ=faxHQ;
-             this.capitalCurrency=capitalCurrency;
-             this.capital=capital;
-             this.investorName=investorName;
-             this.investorType=investorType;
-             this.investorSex= investorSex;
-             this.investorNationality= investorNationality;
-             this.investorIdentificationType= investorIdentificationType;
-             this.investorIdentificationNumber= investorIdentificationNumber;
-             this.investorBD= investorBD;
-             this.investorAddress= investorAddress;
-             this.investorTelephone = investorTelephone;
-             this.investorFax = investorFax;
-             this.investorEmail = investorEmail;
-             this.managers = managers;
-             this.id = uuid.v4();
-        }
-}
+const CompanySchema = new Schema({
+    regulationLaw: {
+        type:String,
+        required:true
+    },
+    legalCompanyForm: {
+        type:String,
+        required:true
+    },
+    nameInArabic: { 
+        type:String,
+        required:true
+    },
+    nameInEnglish: {
+        type:String,
+        required:false
+    },
+    governerateHQ: { 
+        type:String,
+        required:true
+    },
+    cityHQ: {
+        type:String,
+        required:true
+    },
+    addressHQ: { 
+        type:String,
+        required:true
+    },
+    telephoneHQ: {
+        type: Number
+    },
+    faxHQ: {
+        type: Number
+    },
+    capitalCurrency: { 
+        type:String,
+        required:true
+    },
+    capital:{ 
+        type:Number,
+        required:true,
+        min:50000
+    },
+    investorName: { 
+        type:String,
+        required:true
+    },
+    investorType:{ 
+        type:String,
+        required:false
+    },
+    investorSex: { 
+        type:String,
+        required:true
+    },
+    investorNationality: { 
+        type:String,
+        required:true
+    },
+    investorIdentificationType: { 
+        type:String,
+        required:true
+    },
+    investorIdentificationNumber:{ 
+        type:String,
+        required:true
+    },
+    investorBD: { 
+        type:Date,
+        required:true
+    },
+    investorAddress: { 
+        type:String,
+        required:true
+    },
+    investorTelephone: { 
+        type:Number
+    },
+    investorFax:{ 
+        type:Number
+    },
+    investorEmail: { 
+        type:String
+    },
+    managers: { 
+        type:[String]
+    },
+    status:{
+        type:String,
+        default:"PendingLawyer",
+        enum: ["PendingLawyer","PendingReviewer","RejectedLawyer","RejectedReviewer","Accepted"]
+    },
+    lawyer:{
+        type:String
+        //should be type lawyer
+    },
+    lawyerComment:{
+        type:String
+    },
+    reviewer:{
+        type:String
+        //should be type reviewer
+    },
+    reviewerComment:{
+        type:String
+    }
 
 
+})
 
-module.exports = Company
+module.exports = Company = mongoose.model('companys', CompanySchema)

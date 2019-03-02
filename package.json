@@ -1,33 +1,18 @@
 {
-<<<<<<< HEAD
-  "name": "javascript",
-=======
   "name": "brogrammers-company",
->>>>>>> origin/company
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-<<<<<<< HEAD
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/SE-GUC/Brogrammers.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/SE-GUC/Brogrammers/issues"
-  },
-  "homepage": "https://github.com/SE-GUC/Brogrammers#readme",
-=======
   "author": "khaled",
   "license": "ISC",
->>>>>>> origin/company
   "dependencies": {
     "express": "^4.16.4",
     "joi": "^14.3.1",
+    "moment": "^2.24.0",
+    "mongoose": "^5.4.16",
     "uuid": "^3.3.2"
   }
 }

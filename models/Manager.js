@@ -1,19 +1,44 @@
-const uuid = require('uuid')
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-class Manager{
-    constructor(name, type, sex, nationality, identificationType, identificationNumber, birthDate, address, managerialPosition ){
-        this.name=name;
-        this.type=type;
-        this.sex=sex;
-        this.nationality=nationality;
-        this.identificationType=identificationType;
-        this.identificationNumber=identificationNumber;
-        this.birthDate=birthDate;
-        this.address=address;
-        this.managerialPosition=managerialPosition;
-        this.id = uuid.v4();
+const ManagerSchema = new Schema({
+    name: { 
+        type:String,
+        required:true
+    },
+    type:{ 
+        type:String,
+        required:true
+    },
+    sex: { 
+        type:String,
+        required:true
+    },
+    nationality: { 
+        type:String,
+        required:true
+    },
+    identificationType: { 
+        type:String,
+        required:true
+    },
+    identificationNumber:{ 
+        type:String,
+        required:true
+    },
+    birthDate: { 
+        type:Date,
+        required:true
+    },
+    address: { 
+        type:String,
+        required:true
+    },
+    managerialPosition: { 
+        type:String
     }
-}
+})
 
 
-module.exports = Manager
+
+module.exports = Manager = mongoose.model('managers', ManagerSchema)
