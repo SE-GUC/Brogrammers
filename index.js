@@ -1,7 +1,8 @@
 
 const express=require('express');
 const app = express();
-const uuid=require('uuid');
+//const uuid=require('uuid');
+const mongoose = require('mongoose')
 const admins = require('./routes/api/admins')
 
 // Use it with post
@@ -17,6 +18,29 @@ app.get('/Admin', (req, res) => {
     <a href="/routes/api/admins">View of Admins</a>
     `);
 })
+
+
+// DB Config
+const db = require('./config/keys').mongoURI
+
+// Connect to mongo
+mongoose
+    .connect(db)
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.log(err))
+
+
+    // Init middleware
+app.use(express.json())
+app.use(express.urlencoded({extended: false}))
+
+
+
+
+
+
+
+
 
 const port = 3000
 app.listen(port, () => console.log(`Server up and running on port ${port}`))
