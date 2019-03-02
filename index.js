@@ -30,9 +30,10 @@ app.get('/', (req, res) => {
 
     res.send(`<h1>Welcome to GAFI</h1>
     <a href="/api/company">Companies</a> </br>
-    <a href ="/api/reviewer">reviewer</a> </br>
+    <a href ="/api/reviewer">Reviewers</a> </br>
     <a href="/api/lawyer">Lawyers</a> </br>
-    <a href="/routes/api/admins">View of Admins</a>
+    <a href="/routes/api/admins">Admins</a> </br>
+    <a href="/routes/api/investors">Investors</a>
     `);
 })
 
