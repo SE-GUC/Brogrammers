@@ -1,12 +1,19 @@
-
+const mongoose = require('mongoose');
 const express=require('express');
 const app = express();
 const uuid=require('uuid');
 const admins = require('./routes/api/admins')
+const db = require('./config/keys').mongoURI
+
+// Connect to mongo
+mongoose
+    .connect(db)
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.log(err))
 
 // Use it with post
 app.use(express.json());
-
+app.use(express.urlencoded({extended: false}))
 const Admin = require('./models/Admin.js');
 
 // Direct to Route Handlers
