@@ -9,7 +9,7 @@ module.exports = {
             email: Joi.string().email().required(),
             password: Joi.string().min(8).required(),
             mobile_number: Joi.string().min(6).required(),
-            Social_Security_Number: Joi.number().min(14).max(14).required(),
+            Social_Security_Number: Joi.string().min(14).max(14).required(),
             salary: Joi.number().required(),
             birth_Date: Joi.date().required(),
             yearsOfExperience: Joi.number().required()
@@ -26,7 +26,7 @@ module.exports = {
             email: Joi.string().email(),
             password: Joi.string().min(8),
             mobile_number: Joi.string().min(6),
-            Social_Security_Number: Joi.number().min(14).max(14),
+            Social_Security_Number: Joi.string().min(14).max(14),
             salary: Joi.number(),
             birth_Date: Joi.date(),
             yearsOfExperience: Joi.number()
