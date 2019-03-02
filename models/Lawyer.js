@@ -1,19 +1,45 @@
 const uuid = require('uuid')
-class Lawyer
-{
-    constructor (name , email ,password ,  mobile_number, Social_Security_Number, salary ,birth_Date,yearsOfExperience )
-
-    {
-        this.name = name;
-        
-        this.email = email;
-        this.password = password;
-        this.mobile_number = mobile_number;
-        this.Social_Security_Number = Social_Security_Number;
-        this.salary = salary;
-        this.birth_Date = birth_Date;
-        this.yearsOfExperience = yearsOfExperience;
-        this.uuid = uuid.v4();
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+// Create the schema
+const LawyerSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    
+    password: {
+        type: String,
+        required: true
+    },
+    mobile_number: {
+        type: Number, 
+        required: true
+    },
+    Social_Security_Number: {
+        type: Number,
+        required: true
+    },
+    salary: {
+        type: Number,
+        required: true
+    },
+    Social_Security_Number: {
+        type: Number,
+        required: true
+    },
+    birth_Date: {
+        type: Date,
+        required: true
+    },
+  yearsOfExperience: {
+        type: Number,
+        required: true
     }
-}
-module.exports = Lawyer
+})
+
+module.exports = Lawyer = mongoose.model('lawyer', LawyerSchema)
