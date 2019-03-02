@@ -22,18 +22,18 @@ module.exports = {
 
     updateValidation: request => {
         const updateSchema = {
-        name: Joi.string().min(3).required(),
-        type: Joi.string().length(3).required(),
-        gender: Joi.string().valid('male', 'female').required(),
-        nationality: Joi.string().max(25).required(),
-        idType: Joi.string().valid('Passport', 'National ID').required(),
-        idNumber: Joi.number().required(),
-        dob: Joi.date().required(),
-        address: Joi.string().required(),
-        telephone: Joi.number().required(),
+        name: Joi.string().min(3),
+        type: Joi.string().length(3),
+        gender: Joi.string().valid('male', 'female'),
+        nationality: Joi.string().max(25),
+        idType: Joi.string().valid('Passport', 'National ID'),
+        idNumber: Joi.number(),
+        dob: Joi.date(),
+        address: Joi.string(),
+        telephone: Joi.number(),
         fax: Joi.number(),
-        mail: Joi.string().required(),
-        password: Joi.string().required()
+        mail: Joi.string(),
+        password: Joi.string()
         }
 
         return Joi.validate(request, updateSchema)
