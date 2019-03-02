@@ -27,7 +27,7 @@ const LawyerSchema = new Schema({
         required: true
     },
     mobile_number: {
-        type: Number, 
+        type: String, 
         required: true
     },
     Social_Security_Number: {
