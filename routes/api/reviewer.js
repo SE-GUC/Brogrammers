@@ -5,6 +5,8 @@ const reviewer = require('../../models/reviewer')
 const uuid = require('uuid')
 */
 const router = express.Router()
+const validator = require('../../validations/reviewerValidations')
+
 
 router.get('/', (req,res) => res.json({data: 'Reviewers working'}))
 
