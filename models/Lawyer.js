@@ -39,7 +39,7 @@ const LawyerSchema = new Schema({
         required: true
     },
     Social_Security_Number: {
-        type: Number,
+        type: String,
         required: true
     },
     birth_Date: {
