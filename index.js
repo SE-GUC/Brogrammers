@@ -10,11 +10,12 @@ const reviewer = require('./routes/api/reviewer');
 const lawyers = require('./routes/api/lawyer')
 const companies = require('./routes/api/Company')
 const admins = require('./routes/api/admins')
+const investors = require('./routes/api/investors')
+
 // DB Config
 const db = require('./config/keys').mongoURI
 
 // Connect to mongo
-mongoose
     .connect(db)
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.log(err))
@@ -40,6 +41,7 @@ app.use('/api/company', companies)
 app.use('/api/reviewer', reviewer)
 app.use('/api/lawyer', lawyers)
 app.use('/routes/api/admins',admins)
+app.use('/api/investors', investors)
 
 
 // Handling 404
