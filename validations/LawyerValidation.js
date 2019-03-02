@@ -3,14 +3,13 @@ const Joi = require('joi')
 module.exports = {
     createValidation: request => {
         const createSchema = {
-            firstName: Joi.string().min(3).required(),
-            middleName: Joi.string().min(3).required(),
-            lastName: Joi.string().min(3).required(),
-
+            firstName: Joi.string().min(1).required(),
+            middleName: Joi.string().min(1).required(),
+            lastName: Joi.string().min(1).required(),
             email: Joi.string().email().required(),
-            password: Joi.string().required(),
-            mobile_number: Joi.number().min(6).required(),
-            Social_Security_Number: Joi.number().min(5).required(),
+            password: Joi.string().min(8).required(),
+            mobile_number: Joi.string().min(6).required(),
+            Social_Security_Number: Joi.number().min(14).max(14).required(),
             salary: Joi.number().required(),
             birth_Date: Joi.date().required(),
             yearsOfExperience: Joi.number().required()
@@ -21,16 +20,16 @@ module.exports = {
 
     updateValidation: request => {
         const updateSchema = {
-            firstName: Joi.string().min(3).required(),
-            middleName: Joi.string().min(3).required(),
-            lastName: Joi.string().min(3).required(),
-            email: Joi.string().email().required(),
-            password: Joi.string().required(),
-            mobile_number: Joi.number().min(10).required(),
-            Social_Security_Number: Joi.number().min(5).required(),
-            salary: Joi.number().required(),
-            birth_Date: Joi.date().required(),
-            yearsOfExperience: Joi.number().required()
+            firstName: Joi.string().min(1),
+            middleName: Joi.string().min(1),
+            lastName: Joi.string().min(1),
+            email: Joi.string().email(),
+            password: Joi.string().min(8),
+            mobile_number: Joi.string().min(6),
+            Social_Security_Number: Joi.number().min(14).max(14),
+            salary: Joi.number(),
+            birth_Date: Joi.date(),
+            yearsOfExperience: Joi.number()
         }
 
         return Joi.validate(request, updateSchema)
