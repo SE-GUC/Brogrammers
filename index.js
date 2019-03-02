@@ -1,32 +1,41 @@
 const express = require('express')
-const mongoose = require('mongoose')
-const lawyers = require('./routes/api/lawyer')
-
 
 const app = express()
 
 
+const mongoose = require('mongoose')
+
+
+const reviewer = require('./routes/api/reviewer');
+const lawyers = require('./routes/api/lawyer')
+const companies = require('./routes/api/Company')
+//const books = require('./routes/api/Manager')
+
+// DB Config
 const db = require('./config/keys').mongoURI
 
-
+// Connect to mongo
 mongoose
-    .connect(db,{ useNewUrlParser: true })
+    .connect(db)
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.log(err))
-
-
-
 
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
 app.get('/', (req, res) => {
-    res.send(`<h1>Welcome to the Homepage/h1>
+
+    res.send(`<h1>Welcome to GAFI</h1>
+    <a href="/api/company">Companies</a> </br>
+    <a href ="/api/reviewer">reviewer</a> </br>
     <a href="/api/lawyer">Lawyers</a>
     `);
 })
 
+
 // Direct routes to appropriate files 
+app.use('/api/company', companies)
+app.use('/api/reviewer', reviewer)
 app.use('/api/lawyer', lawyers)
 
 
