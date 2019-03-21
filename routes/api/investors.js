@@ -9,7 +9,7 @@ const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
 var config = require("../../config/jwt");
 
-//View All Investors
+//View All Investors 
 router.get("/", async (req, res) => {
   const investors = await Investor.find();
   var token = req.headers["x-access-token"];
@@ -33,6 +33,9 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
+    var token = req.headers["x-access-token"];
+    if (token)
+      return res.status(401).send({ auth: false, message: "You are already logged in" });
   const {
     name,
     type,

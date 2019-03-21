@@ -1,11 +1,12 @@
 const express = require('express')
 const Joi = require('joi');
 const bcrypt = require('bcryptjs')
-
+var jwt = require("jsonwebtoken");
 const router = express.Router()
 const mongoose = require('mongoose')
+const Admin =require('../../models/Admin')
 const validator = require('../../validations/LawyerValidation')
-
+var config = require("../../config/jwt");
 const Lawyer = require('../../models/Lawyer')
 
 
@@ -20,7 +21,23 @@ router.get('/:id', async (req, res) => {
     res.send(lawyer)
 })
 
+//creating a lawyer by Admin only
 router.post('/register', async (req,res) => {
+    var stat=0;
+    var token = req.headers["x-access-token"];
+    if (!token)
+      return res.status(401).send({ auth: false, message: "Please login first." });
+    jwt.verify(token, config.secret, async function(err, decoded) {
+      if (err)
+        return res.status(500).send({ auth: false, message: "Failed to authenticate token."})
+       stat=decoded.id
+    });
+    const admin=await Admin.findById(stat);
+    if(!admin){
+    return res.status(400).send({error: 'You are not an admin'})
+    } 
+    
+    
     const { firstName,middleName,lastName,email, password,mobile_number, Social_Security_Number, salary,birth_Date,yearsOfExperience }  = req.body
     const lawyer = await Lawyer.findOne({email})
     if(lawyer) return res.status(400).json({error: 'Email already exists'})
@@ -40,7 +57,18 @@ router.post('/register', async (req,res) => {
             yearsOfExperience
         })
         const newLawyers =  await Lawyer.create(newLawyer)
-        res.json({msg:'Lawyer was created successfully', data: newLawyers})
+        var token = jwt.sign({ id: newLawyers._id }, config.secret, {
+            expiresIn: 86400 // expires in 24 hours
+          });
+          res
+          .status(200)
+          .send({
+            auth: true,
+            token: token,
+            msg: "Lawyer was created successfully",
+            data: newLawyers
+          });
+        res.json({ msg: "Lawyer was created successfully", data: newLawyers });
 })
 
 

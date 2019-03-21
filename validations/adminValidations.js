@@ -5,7 +5,6 @@ module.exports = {
         const updateSchema = {
             email: Joi.string(),
             phone: Joi.number(),
-            username: Joi.string().max(20),
             password: Joi.string().min(8).max(20),
             gender : Joi.string().valid("Male", "Female")
         }
@@ -18,7 +17,6 @@ module.exports = {
             phone: Joi.number().required(),
             birthDate: Joi.string().required(),
             joinDate: Joi.string(),
-            username: Joi.string().max(20).required(),
             password: Joi.string().min(8).max(20).required(),
             gender : Joi.string().valid("Male", "Female").required()
         }
