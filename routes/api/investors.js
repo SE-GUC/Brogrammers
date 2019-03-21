@@ -19,21 +19,21 @@ router.get("/", async (req, res) => {
 });
 
 
-// //View All Investors 
-// router.get("/", async (req, res) => {
-//   const investors = await Investor.find();
-//   var token = req.headers["x-access-token"];
-//   if (!token)
-//     return res.status(401).send({ auth: false, message: "No token provided." });
-//   jwt.verify(token, config.secret, function(err, decoded) {
-//     if (err)
-//       return res
-//         .status(500)
-//         .send({ auth: false, message: "Failed to authenticate token." });
+//View All Investors 
+router.get("/", async (req, res) => {
+  const investors = await Investor.find();
+  var token = req.headers["x-access-token"];
+  if (!token)
+    return res.status(401).send({ auth: false, message: "No token provided." });
+  jwt.verify(token, config.secret, function (err, decoded) {
+    if (err)
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate token." });
 
-//     res.json({ id: decoded, data: investors });
-//   });
-// });
+    res.json({ id: decoded, data: investors });
+  });
+});
 
 //View an Investor
 router.get("/:id", async (req, res) => {
@@ -52,7 +52,7 @@ router.put("/:id/Requests/:companyid/", async (req, res) => {
     const query = {
       $and: [{ investorIdentificationNumber: inid }, { _id: companyid }]
     };
-    const company = await Company.findOne(query,{_id:1});
+    const company = await Company.findOne(query, { _id: 1 });
     console.log(company)
     if (!company)
       return res.status(404).send({ error: "Company does not exist" });
@@ -92,9 +92,9 @@ router.get("/:id/Requests", async (req, res) => {
 
 
 router.post("/register", async (req, res) => {
-    var token = req.headers["x-access-token"];
-    if (token)
-      return res.status(401).send({ auth: false, message: "You are already logged in" });
+  var token = req.headers["x-access-token"];
+  if (token)
+    return res.status(401).send({ auth: false, message: "You are already logged in" });
   const {
     name,
     type,
@@ -139,23 +139,23 @@ router.post("/register", async (req, res) => {
   res.json({ msg: "Investor was created successfully", data: newInvestor });
 });
 router.put("/:id", async (req, res) => {
-    try {
-      const id = req.params.id;
-      const investor = await Investor.findOne( { _id: id },{});
-      console.log(investor);
-      if (!investor)
-        return res.status(404).send({ error: "Investor does not exist" });
-      const isValidated = validator.updateValidation(req.body);
-      if (isValidated.error)
-        return res
-          .status(400)
-          .send({ error: isValidated.error.details[0].message });
-      const updatedInvestor = await Investor.findByIdAndUpdate(id,req.body);
-      res.json({ msg: "Investor updated successfully" });
-    } catch (error) {
-      // We will be handling the error later
-      console.log(error);
-    }
+  try {
+    const id = req.params.id;
+    const investor = await Investor.findOne({ _id: id }, {});
+    console.log(investor);
+    if (!investor)
+      return res.status(404).send({ error: "Investor does not exist" });
+    const isValidated = validator.updateValidation(req.body);
+    if (isValidated.error)
+      return res
+        .status(400)
+        .send({ error: isValidated.error.details[0].message });
+    const updatedInvestor = await Investor.findByIdAndUpdate(id, req.body);
+    res.json({ msg: "Investor updated successfully" });
+  } catch (error) {
+    // We will be handling the error later
+    console.log(error);
+  }
 });
 
 router.get("/:id/ViewCompanies", async (req, res) => {
@@ -183,64 +183,76 @@ router.delete("/:id", async (req, res) => {
 });
 
 
-router.post('/:id/createcompany', async (req, res) => {
-    try {
-        const id = req.params.id
-        const currInvestor = await Investor.findById(id)
-        if (!Investor) return res.status(404).send({ error: "Investor does not exist" })
-        const { regulationLaw, legalCompanyForm, nameInArabic, nameInEnglish, governerateHQ, cityHQ, addressHQ, telephoneHQ, faxHQ, capitalCurrency, capital } = req.body
-        const investorName = currInvestor.name
-        const investorType = currInvestor.type
-        const investorSex = currInvestor.gender
-        const investorNationality = currInvestor.nationality
-        const investorIdentificationType = currInvestor.idType
-        const investorIdentificationNumber = currInvestor.idNumber
-        const investorBD = currInvestor.dob
-        const investorAddress = currInvestor.address
-        const investorTelephone = currInvestor.telephone
-        const investorFax = currInvestor.fax
-        const investorEmail = currInvestor.mail
-        const newCompany = new Companys({
-            regulationLaw,
-            legalCompanyForm,
-            nameInArabic,
-            nameInEnglish,
-            governerateHQ,
-            cityHQ,
-            addressHQ,
-            telephoneHQ,
-            faxHQ,
-            capitalCurrency,
-            capital,
-            investorName,
-            investorType,
-            investorSex,
-            investorNationality,
-            investorIdentificationType,
-            investorIdentificationNumber,
-            investorBD,
-            investorAddress,
-            investorTelephone,
-            investorFax,
-            investorEmail
-        });
-        const company = await Companys.create(newCompany)
-        res.json({ msg: 'Company was created successfully', data: company })
-    }
-    catch (error) {
-        console.log(error)
-    }
+router.post('/createcompany', async (req, res) => {
+  var stat = 0;
+  try {
+    var token = req.headers["x-access-token"];
+    if (!token)
+      return res
+        .status(401)
+        .send({ auth: false, message: "Please login first." });
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err)
+        return res
+          .status(500)
+          .send({ auth: false, message: "Failed to authenticate token." });
+          stat = decoded.id;
+    });
+    const currInvestor = await Investor.findById(stat)
+    if (!Investor) return res.status(404).send({ error: "Investor does not exist" })
+    const { regulationLaw, legalCompanyForm, nameInArabic, nameInEnglish, governerateHQ, cityHQ, addressHQ, telephoneHQ, faxHQ, capitalCurrency, capital } = req.body
+    const investorName = currInvestor.name
+    const investorType = currInvestor.type
+    const investorSex = currInvestor.gender
+    const investorNationality = currInvestor.nationality
+    const investorIdentificationType = currInvestor.idType
+    const investorIdentificationNumber = currInvestor.idNumber
+    const investorBD = currInvestor.dob
+    const investorAddress = currInvestor.address
+    const investorTelephone = currInvestor.telephone
+    const investorFax = currInvestor.fax
+    const investorEmail = currInvestor.mail
+    const newCompany = new Company({
+      regulationLaw,
+      legalCompanyForm,
+      nameInArabic,
+      nameInEnglish,
+      governerateHQ,
+      cityHQ,
+      addressHQ,
+      telephoneHQ,
+      faxHQ,
+      capitalCurrency,
+      capital,
+      investorName,
+      investorType,
+      investorSex,
+      investorNationality,
+      investorIdentificationType,
+      investorIdentificationNumber,
+      investorBD,
+      investorAddress,
+      investorTelephone,
+      investorFax,
+      investorEmail
+    });
+    const company = await Company.create(newCompany)
+    res.json({ msg: 'Company was created successfully', data: company })
+  }
+  catch (error) {
+    console.log(error)
+  }
 })
 
 router.get('/getall/cases', async (req, res) => {
-    try {
-        const company = await Companys.find()
-        console.log(company)
-        res.json({ data: company })
-    }
-    catch (error) {
-        console.log(error)
-    }
+  try {
+    const company = await Company.find()
+    console.log(company)
+    res.json({ data: company })
+  }
+  catch (error) {
+    console.log(error)
+  }
 })
 
 module.exports = router;

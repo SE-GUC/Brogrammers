@@ -1,13 +1,10 @@
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
-<<<<<<< HEAD
-=======
 var session= require('express-session')
 var passport= require('passport')
 
 
->>>>>>> b21390871198cd4e06a3f8b7dbc66ea17d35abf1
 const reviewer = require('./routes/api/reviewer');
 const lawyers = require('./routes/api/lawyer')
 const companies = require('./routes/api/Company')

@@ -139,7 +139,6 @@ const CompanySchema = new Schema({
     },
     lawyerComment:{
         type:String,
-        required:true
     },
     reviewer:{
         type:String

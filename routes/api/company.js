@@ -98,8 +98,4 @@ router.put('/ssc/:id', async (req,res) => {
         console.log(error)
     }  
  })
-<<<<<<< HEAD
-=======
-
->>>>>>> b21390871198cd4e06a3f8b7dbc66ea17d35abf1
 module.exports = router;

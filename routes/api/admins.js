@@ -2,28 +2,16 @@ const express = require("express");
 const Joi = require("joi");
 const uuid = require("uuid");
 const router = express.Router();
-<<<<<<< HEAD
 const Admin = require('../../models/Admin.js');
 const mongoose = require('mongoose');
+var config = require("../../config/jwt");
 const validator = require('../../validations/adminValidations');
 const bcrypt = require('bcryptjs');
 const Companys = require('../../models/Company')
-
-router.get('/', async (req, res) => {
-    try{
-        const info = [];
-=======
-const Admin = require("../../models/Admin.js");
-const mongoose = require("mongoose");
-var config = require("../../config/jwt");
-const validator = require("../../validations/adminValidations");
-const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
-
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const info = [];
->>>>>>> b21390871198cd4e06a3f8b7dbc66ea17d35abf1
     const arrayOfAdmins = await Admin.find();
     for (var i = 0; i < arrayOfAdmins.length; i++) {
       const admin = arrayOfAdmins[i];
@@ -64,40 +52,38 @@ router.get("/:id", async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
-    try{
-        const isValidated = validator.updateValidation(req.body);
-        if(isValidated.error) 
-        {
-            return  res.status(400).send({error: isValidated.error.details[0].message});
-        }
-        const id = req.params.id;
-        const updatedAdmin = await Admin.FindByIdAndUpdate(id,req.body);
-        // res.send(admin);
-        res.json({msg: "Information updated successfully"});
+  try {
+    const isValidated = validator.updateValidation(req.body);
+    if (isValidated.error) {
+      return res.status(400).send({ error: isValidated.error.details[0].message });
     }
-    catch(error)
-    {
-        console.log(error);
-    }
+    const id = req.params.id;
+    const updatedAdmin = await Admin.FindByIdAndUpdate(id, req.body);
+    // res.send(admin);
+    res.json({ msg: "Information updated successfully" });
+  }
+  catch (error) {
+    console.log(error);
+  }
 });
 
 //Register admin by another admin
 router.post("/", async (req, res) => {
-    var stat=0;
+  var stat = 0;
   try {
     var token = req.headers["x-access-token"];
     if (!token)
       return res
         .status(401)
         .send({ auth: false, message: "Please login first." });
-    jwt.verify(token, config.secret, async function(err, decoded) {
+    jwt.verify(token, config.secret, async function (err, decoded) {
       if (err)
-        stat=decoded.id;
-        return res
-          .status(500)
-          .send({ auth: false, message: "Failed to authenticate token." });
+        stat = decoded.id;
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate token." });
     });
-    const admin2 =  await Admin.findById(stat);
+    const admin2 = await Admin.findById(stat);
     if (!admin2) {
       return res.status(400).json({ error: "You are not an admin" });
     }
@@ -139,19 +125,15 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
 router.get('/getall/cases', async (req, res) => {
-    try {
-        const company = await Companys.find()
-        console.log(company)
-        res.json({ data: company })
-    }
-    catch (error) {
-        console.log(error)
-    }
+  try {
+    const company = await Companys.find()
+    console.log(company)
+    res.json({ data: company })
+  }
+  catch (error) {
+    console.log(error)
+  }
 })
 
 module.exports = router
-=======
-module.exports = router;
->>>>>>> b21390871198cd4e06a3f8b7dbc66ea17d35abf1
