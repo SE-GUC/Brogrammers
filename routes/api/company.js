@@ -6,7 +6,6 @@ const router = express.Router();
 
 // Models
 const Company = require('../../models/Company');
-const Manager = require('../../models/Manager');
 
 const validator = require('../../validations/CompanyValidations')
 
