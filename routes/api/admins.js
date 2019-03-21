@@ -6,118 +6,120 @@ const Admin = require('../../models/Admin.js');
 const mongoose = require('mongoose');
 const validator = require('../../validations/adminValidations');
 const bcrypt = require('bcryptjs');
+const path = require('path');
+const bodyParser = require('body-parser');
+var jwt = require("jsonwebtoken");
+var config = require("../../config/jwt");
 
-// const arrayOfAdmins=[
-//     new Admin("Atef","atef@gmail.com","01005478965","Male","2018-07-23","moatef","1234aaaaaaa","1997-07-02"),
-//     new Admin("Alaa","alaa@gmail.com","01007778965","Male","2018-06-12","alaas","3456bbbbbbb","1997-05-15"),
-//     new Admin("Omar","omar@gmail.com","01006678965","Male","2018-07-08","raed","12345cccccc","1997-04-14"),
-//     new Admin("Waly","waly@gmail.com","01005578965","Male","2018-12-15","walys","5555dddddd","1997-08-12"),
-//     new Admin("Andrew","andrew@gmail.com","01001178965","Male","2018-09-11","andrew","6666xasadasdad","1997-09-09")
-//     ]
+mongoose.promise = global.Promise;
 
-// router.get('/admins', (req, res) => res.json({ data: arrayOfAdmins }));
+
 
 router.get('/', async (req, res) => {
-    try{
+    try {
         const info = [];
-    const arrayOfAdmins = await Admin.find();
-    for(var i = 0;i<arrayOfAdmins.length;i++)
-    {
-        const admin = arrayOfAdmins[i];
-        curr = {
-            name : admin.name,
-            id : admin.id,
-            birthDate : admin.birthDate,
-            gender : admin.gender,
-            joinDate : admin.joinDate,
-            email : admin.email,
-            phone : admin.phone
+        const arrayOfAdmins = await Admin.find();
+        for (var i = 0; i < arrayOfAdmins.length; i++) {
+            const admin = arrayOfAdmins[i];
+            curr = {
+                name: admin.name,
+                id: admin.id,
+                birthDate: admin.birthDate,
+                gender: admin.gender,
+                joinDate: admin.joinDate,
+                email: admin.email,
+                phone: admin.phone
+            }
+            info.push(curr);
         }
-        info.push(curr);
+        res.send(info);
     }
-    res.send(info);
-    }
-    catch(error)
-    {
+    catch (error) {
         console.log(error);
     }
 });
 
 router.get('/:id', async (req, res) => {
-    try{
-        const adminId =  req.params.id;
+    try {
+        const adminId = req.params.id;
         const admin = await Admin.findById(adminId);
         curr = {
-            name : admin.name,
-            id : admin.id,
-            birthDate : admin.birthDate,
-            gender : admin.gender,
-            joinDate : admin.joinDate,
-            email : admin.email,
-            phone : admin.phone
+            name: admin.name,
+            id: admin.id,
+            birthDate: admin.birthDate,
+            gender: admin.gender,
+            joinDate: admin.joinDate,
+            email: admin.email,
+            phone: admin.phone
         }
         res.send(curr);
     }
-    catch(error)
-    {
+    catch (error) {
         console.log(error);
     }
 });
 
 router.put('/:id', async (req, res) => {
-    try{
+    try {
         const isValidated = validator.updateValidation(req.body);
-    
-        if(isValidated.error) 
-        {
-            return  res.status(400).send({error: isValidated.error.details[0].message});
+
+        if (isValidated.error) {
+            return res.status(400).send({ error: isValidated.error.details[0].message });
         }
-    
+
         const updatedAdmin = await Admin.updateOne(req.body);
         // res.send(admin);
-        res.json({msg: "Information updated successfully"});
+        res.json({ msg: "Information updated successfully" });
     }
-    catch(error)
-    {
+    catch (error) {
         console.log(error);
     }
 });
-    
+
 
 router.post('/', async (req, res) => {
-    try{
-        // const name = req.body.name;
-         const email = req.body.email;
-        // const phone = req.body.phone;
-        // const birthDate=req.body.birthDate;
-        // const gender=req.body.gender;
-        // const joinDate=req.body.joinDate;
-        // const username=req.body.username;
-        // const password=req.body.password;
-    
+    try {
+        const email = req.body.email;
+
+
         const isValidated = validator.createValidation(req.body);
-        const admin = await Admin.findOne({email})
-        if(admin) return res.status(400).json({error: 'Email already exists'})
-        if(isValidated.error) 
-        {
-            return  res.status(400).send({error: isValidated.error.details[0].message});
+        const admin = await Admin.findOne({ email })
+        if (admin) return res.status(400).json({ error: 'Email already exists' })
+        if (isValidated.error) {
+            return res.status(400).send({ error: isValidated.error.details[0].message });
         }
-        
+
         const a = await Admin.create(req.body);
-        res.json({msg: "Admin created successfully", data: a});
-    }catch(error){
+        res.json({ msg: "Admin created successfully", data: a });
+    } catch (error) {
         console.log(error);
     }
 });
 
 router.delete('/:id', async (req, res) => {
-    try{
+    try {
         const id = req.params.id;
         const admin = await Admin.findByIdAndRemove(id);
-        res.json({msg: "Admin deleted successfully"});
-    }catch(error){
+        res.json({ msg: "Admin deleted successfully" });
+    } catch (error) {
         console.log(error);
     }
 });
+
+//Sprint Two
+router.post('/login', function(req, res) {
+    Admin.findOne({ email: req.body.email}, function (err, user) {
+      if (err) return res.status(500).send('Error on the server.');
+      if (!user) return res.status(404).send('No user found.');
+      const loginPassword = req.body.password;
+      const userPassword = user.password;
+      if (!(loginPassword == userPassword)) return res.status(401).send({ auth: false, token: null });
+      var token = jwt.sign({ id: user._id }, config.secret, {
+        expiresIn: 86400 // expires in 24 hours
+      });
+      res.status(200).send({ auth: true, token: token });
+    });
+  });
+
 
 module.exports = router
