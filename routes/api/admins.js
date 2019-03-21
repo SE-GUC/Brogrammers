@@ -62,7 +62,7 @@ router.put('/:id', async (req, res) => {
             return  res.status(400).send({error: isValidated.error.details[0].message});
         }
         const id = req.params.id;
-        const updatedAdmin = await Admin.FindByIdAndUpdate(id,eq.body);
+        const updatedAdmin = await Admin.FindByIdAndUpdate(id,req.body);
         // res.send(admin);
         res.json({msg: "Information updated successfully"});
     }
