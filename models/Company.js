@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-
 const CompanySchema = new Schema({
     regulationLaw: {
         type:String,
@@ -99,7 +98,8 @@ const CompanySchema = new Schema({
         //should be type lawyer
     },
     lawyerComment:{
-        type:String
+        type:String,
+        required:true
     },
     reviewer:{
         type:String

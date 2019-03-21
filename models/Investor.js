@@ -24,7 +24,7 @@ const InvestorSchema = new Schema({
         required: true
     },
     idNumber: {
-        type: Number,
+        type: String,
         required: true
     },
     dob: {

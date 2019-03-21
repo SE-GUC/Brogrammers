@@ -80,6 +80,7 @@ module.exports = {
             investorTelephone: Joi.string(),
             investorFax: Joi.string(),
             investorEmail: Joi.string(),
+            lawyerComment: Joi.string(),
             managers: Joi.array()
         }
 
@@ -105,6 +106,7 @@ module.exports = {
             investorAddress: Joi.string(),
             investorTelephone: Joi.string(),
             investorFax: Joi.string(),
+            lawyerComment: Joi.string(),
             investorEmail: Joi.string(),
         }
 
