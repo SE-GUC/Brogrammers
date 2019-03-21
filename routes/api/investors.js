@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
         .status(500)
         .send({ auth: false, message: "Failed to authenticate token." });
 
-    res.json({id:decoded, data: investors });
+    res.json({ id: decoded, data: investors });
   });
 });
 
@@ -71,14 +71,12 @@ router.post("/register", async (req, res) => {
   var token = jwt.sign({ id: newInvestor._id }, config.secret, {
     expiresIn: 86400 // expires in 24 hours
   });
-  res
-    .status(200)
-    .send({
-      auth: true,
-      token: token,
-      msg: "Investor was created successfully",
-      data: newInvestor
-    });
+  res.status(200).send({
+    auth: true,
+    token: token,
+    msg: "Investor was created successfully",
+    data: newInvestor
+  });
   res.json({ msg: "Investor was created successfully", data: newInvestor });
 });
 
@@ -99,6 +97,16 @@ router.put("/:id", async (req, res) => {
     // We will be handling the error later
     console.log(error);
   }
+});
+
+router.get("/:id/ViewCompanies", async (req, res) => {
+  const id = req.params.id;
+  const investor = await Investor.findById(id);
+  const investorNatID = investor.idNumber;
+  const arrayOfCompanies = await Company.find({
+    investorIdentificationNumber: investorNatID
+  });
+  res.json({ msg: "Your Companies ", data: arrayOfCompanies });
 });
 
 router.delete("/:id", async (req, res) => {

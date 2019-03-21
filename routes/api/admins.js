@@ -51,22 +51,22 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
-  try {
-    const isValidated = validator.updateValidation(req.body);
-
-    if (isValidated.error) {
-      return res
-        .status(400)
-        .send({ error: isValidated.error.details[0].message });
+router.put('/:id', async (req, res) => {
+    try{
+        const isValidated = validator.updateValidation(req.body);
+        if(isValidated.error) 
+        {
+            return  res.status(400).send({error: isValidated.error.details[0].message});
+        }
+        const id = req.params.id;
+        const updatedAdmin = await Admin.FindByIdAndUpdate(id,req.body);
+        // res.send(admin);
+        res.json({msg: "Information updated successfully"});
     }
-
-    const updatedAdmin = await Admin.updateOne(req.body);
-    // res.send(admin);
-    res.json({ msg: "Information updated successfully" });
-  } catch (error) {
-    console.log(error);
-  }
+    catch(error)
+    {
+        console.log(error);
+    }
 });
 
 //Register admin by another admin
