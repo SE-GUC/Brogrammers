@@ -6,7 +6,6 @@ const router = express.Router();
 
 // Models
 const Company = require('../../models/Company');
-const Manager = require('../../models/Manager');
 
 const validator = require('../../validations/CompanyValidations')
 
@@ -63,7 +62,7 @@ router.put('/ssc/:id', async (req,res) => {
      if(!company) return res.status(404).send({error: 'Company does not exist'})
      const isValidated = validator.updateValidationSSC(req.body)
      if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
-     const updatedCompany= await Company.updateOne(req.body)
+     const updatedCompany= await Company.findByIdAndUpdate(id,req.body)
      res.json({msg: 'Company updated successfully'})
     }
     catch(error) {
@@ -79,7 +78,7 @@ router.put('/ssc/:id', async (req,res) => {
      if(!company) return res.status(404).send({error: 'Company does not exist'})
      const isValidated = validator.updateValidationSPC(req.body)
      if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
-     const updatedCompany= await Company.updateOne(req.body)
+     const updatedCompany= await Company.findByIdAndUpdate(id,req.body)
      res.json({msg: 'Company updated successfully'})
     }
     catch(error) {
@@ -99,4 +98,8 @@ router.put('/ssc/:id', async (req,res) => {
         console.log(error)
     }  
  })
+<<<<<<< HEAD
+=======
+
+>>>>>>> b21390871198cd4e06a3f8b7dbc66ea17d35abf1
 module.exports = router;

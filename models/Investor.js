@@ -1,4 +1,3 @@
-//const uuid = require('uuid');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -24,7 +23,7 @@ const InvestorSchema = new Schema({
         required: true
     },
     idNumber: {
-        type: Number,
+        type: String,
         required: true
     },
     dob: {
