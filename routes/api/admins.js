@@ -6,16 +6,7 @@ const Admin = require('../../models/Admin.js');
 const mongoose = require('mongoose');
 const validator = require('../../validations/adminValidations');
 const bcrypt = require('bcryptjs');
-
-// const arrayOfAdmins=[
-//     new Admin("Atef","atef@gmail.com","01005478965","Male","2018-07-23","moatef","1234aaaaaaa","1997-07-02"),
-//     new Admin("Alaa","alaa@gmail.com","01007778965","Male","2018-06-12","alaas","3456bbbbbbb","1997-05-15"),
-//     new Admin("Omar","omar@gmail.com","01006678965","Male","2018-07-08","raed","12345cccccc","1997-04-14"),
-//     new Admin("Waly","waly@gmail.com","01005578965","Male","2018-12-15","walys","5555dddddd","1997-08-12"),
-//     new Admin("Andrew","andrew@gmail.com","01001178965","Male","2018-09-11","andrew","6666xasadasdad","1997-09-09")
-//     ]
-
-// router.get('/admins', (req, res) => res.json({ data: arrayOfAdmins }));
+const Companys = require('../../models/Company')
 
 router.get('/', async (req, res) => {
     try{
@@ -119,5 +110,16 @@ router.delete('/:id', async (req, res) => {
         console.log(error);
     }
 });
+
+router.get('/getall/cases', async (req, res) => {
+    try {
+        const company = await Companys.find()
+        console.log(company)
+        res.json({ data: company })
+    }
+    catch (error) {
+        console.log(error)
+    }
+})
 
 module.exports = router

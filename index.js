@@ -1,11 +1,6 @@
 const express = require('express')
-
 const app = express()
-
-
 const mongoose = require('mongoose')
-
-
 const reviewer = require('./routes/api/reviewer');
 const lawyers = require('./routes/api/lawyer')
 const companies = require('./routes/api/Company')
@@ -20,8 +15,6 @@ mongoose
     .connect(db)
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.log(err))
-
-    const Admin = require('./models/Admin.js');
 
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
