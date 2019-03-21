@@ -67,13 +67,12 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
     try{
         const isValidated = validator.updateValidation(req.body);
-    
         if(isValidated.error) 
         {
             return  res.status(400).send({error: isValidated.error.details[0].message});
         }
-    
-        const updatedAdmin = await Admin.updateOne(req.body);
+        const id = req.params.id;
+        const updatedAdmin = await Admin.FindByIdAndUpdate(id,eq.body);
         // res.send(admin);
         res.json({msg: "Information updated successfully"});
     }
