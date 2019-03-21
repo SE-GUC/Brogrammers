@@ -6,7 +6,6 @@ const router = express.Router();
 
 // Models
 const Company = require('../../models/Company');
-const Manager = require('../../models/Manager');
 
 const validator = require('../../validations/CompanyValidations')
 
@@ -99,22 +98,5 @@ router.put('/ssc/:id', async (req,res) => {
         console.log(error)
     }  
  })
-// //Delete Company SSC
-// router.delete('/ssc/:id', (req, res) => {
-//     const companyid = req.params.id;
-//     const company = companies.find(company => company.id === companyid)
-//     const index = companies.indexOf(company)
-//     companies.splice(index,1)
-//     res.send(companies)
-// })
-
-// //Delete Company SPC
-// router.delete('/spc/:id', (req, res) => {
-//     const companyid = req.params.id;
-//     const company = companies.find(company => company.id === companyid)
-//     const index = companies.indexOf(company)
-//     companies.splice(index,1)
-//     res.send(companies)
-// })
 
 module.exports = router;
