@@ -25,7 +25,10 @@ module.exports = {
             investorTelephone: Joi.string(),
             investorFax: Joi.string(),
             investorEmail: Joi.string(),
-            managers: Joi.array().required()
+            managers: Joi.array().required(),
+            lawyer: Joi.string(),
+            status: Joi.string()
+
         }
 
         return Joi.validate(request, createSchemaSSC)
@@ -52,12 +55,13 @@ module.exports = {
         investorAddress: Joi.string().required(),
         investorTelephone: Joi.string(),
         investorFax: Joi.string(),
-        investorEmail: Joi.string()
+        investorEmail: Joi.string(),
+        lawyer: Joi.string(),
+        status: Joi.string()
         }
 
         return Joi.validate(request, createSchemaSPC)
     },
-
     updateValidationSSC: request => {
         const updateSchemaSSC= {
             nameInArabic: Joi.string(),
@@ -80,8 +84,10 @@ module.exports = {
             investorTelephone: Joi.string(),
             investorFax: Joi.string(),
             investorEmail: Joi.string(),
+            managers: Joi.array(),
             lawyerComment: Joi.string(),
-            managers: Joi.array()
+            lawyer: Joi.string(),
+            status: Joi.string()
         }
 
         return Joi.validate(request, updateSchemaSSC)
@@ -106,8 +112,10 @@ module.exports = {
             investorAddress: Joi.string(),
             investorTelephone: Joi.string(),
             investorFax: Joi.string(),
-            lawyerComment: Joi.string(),
             investorEmail: Joi.string(),
+            lawyerComment: Joi.string(),
+            lawyer: Joi.string(),
+            status: Joi.string()
         }
 
         return Joi.validate(request, updateSchemaSPC)
