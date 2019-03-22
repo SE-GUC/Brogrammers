@@ -6,7 +6,6 @@ const router = express.Router();
 
 // Models
 const Company = require('../../models/Company');
-const Manager = require('../../models/Manager');
 
 const validator = require('../../validations/CompanyValidations')
 
@@ -58,13 +57,13 @@ router.get('/:id', async (req, res) => {
 
 router.put('/ssc/:id', async (req, res) => {
     try {
-        const id = req.params.id
-        const company = await Company.findOne({}, { _id: id })
-        if (!company) return res.status(404).send({ error: 'Company does not exist' })
-        const isValidated = validator.updateValidationSSC(req.body)
-        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
-        const updatedCompany = await Company.updateOne(req.body)
-        res.json({ msg: 'Company updated successfully' })
+     const id = req.params.id
+     const company = await Company.findOne({},{_id:id})
+     if(!company) return res.status(404).send({error: 'Company does not exist'})
+     const isValidated = validator.updateValidationSSC(req.body)
+     if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
+     const updatedCompany= await Company.findByIdAndUpdate(id,req.body)
+     res.json({msg: 'Company updated successfully'})
     }
     catch (error) {
         // We will be handling the error later
@@ -74,13 +73,13 @@ router.put('/ssc/:id', async (req, res) => {
 
 router.put('/spc/:id', async (req, res) => {
     try {
-        const id = req.params.id
-        const company = await Company.findOne({}, { _id: id })
-        if (!company) return res.status(404).send({ error: 'Company does not exist' })
-        const isValidated = validator.updateValidationSPC(req.body)
-        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
-        const updatedCompany = await Company.updateOne(req.body)
-        res.json({ msg: 'Company updated successfully' })
+     const id = req.params.id
+     const company = await Company.findOne({},{_id:id})
+     if(!company) return res.status(404).send({error: 'Company does not exist'})
+     const isValidated = validator.updateValidationSPC(req.body)
+     if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
+     const updatedCompany= await Company.findByIdAndUpdate(id,req.body)
+     res.json({msg: 'Company updated successfully'})
     }
     catch (error) {
         // We will be handling the error later
@@ -97,7 +96,6 @@ router.delete('/:id', async (req, res) => {
     catch (error) {
         // We will be handling the error later
         console.log(error)
-    }
-})
-
+    }  
+ })
 module.exports = router;

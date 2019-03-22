@@ -8,7 +8,7 @@ module.exports = {
         gender: Joi.string().valid('male', 'female').required(),
         nationality: Joi.string().max(25).required(),
         idType: Joi.string().valid('Passport', 'National ID').required(),
-        idNumber: Joi.number().required(),
+        idNumber: Joi.String().required(),
         dob: Joi.date().required(),
         address: Joi.string().required(),
         telephone: Joi.number().required(),
