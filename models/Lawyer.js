@@ -30,10 +30,6 @@ const LawyerSchema = new Schema({
         type: String, 
         required: true
     },
-    Social_Security_Number: {
-        type: Number,
-        required: true
-    },
     salary: {
         type: Number,
         required: true
