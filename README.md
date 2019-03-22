@@ -152,5 +152,14 @@
 	- PUT `//=> Reviewer Approves the task and updates the company status `
  - /api/Reviewer/:id/getTasks/disapprove/:id2
 	- PUT `//=> Reviewer Disapproves the task and updates company status`	
-	
+
+ - /api/Reviewer/addcomment/:id/:companyId
+	- PUT `//=> Reviewer adds a comment to the application so that the assigned lawyer can update them`
+      - reviewerComment: string()
+    
+ - /api/Lawyer/addcomment/:id/:companyId
+	- PUT `//=> Lawyer adds a comment to the application so that he would notify the investor by them`
+      - lawyerComment: string()
+        	
+    
 	
