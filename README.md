@@ -55,19 +55,19 @@
 
 - /routes/api/admins/login
     - POST `//=> admin login `
-        - !email: string()
-        - !password: string()
+        - email: string()
+        - password: string()
 
 - /api/lawyer/login
     - POST `//=> lawyer login `
-        - !email: string()
-        - !password: string()
+        - email: string()
+        - password: string()
 
 
 - /api/reviewer/login
     - POST `//=> reviewer login `
-        - !email: string()
-        - !password: string()
+        - email: string()
+        - password: string()
 
  - /api/lawyer/editForm/:id
     - GET `//=> views rejected fourms submitted by this lawyer `
