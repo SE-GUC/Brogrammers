@@ -41,7 +41,7 @@ router.put('/:id', async (req, res) => {
     }  
  })
 
-
+//registering reviewer by admin 
 router.post('/register',async (req, res) => {
     var stat=0;
     var token = req.headers["x-access-token"];

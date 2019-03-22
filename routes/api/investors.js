@@ -1,5 +1,4 @@
-
-const express = require('express');
+const express = require("express");
 var jwt = require("jsonwebtoken");
 var config = require("../../config/jwt");
 const router = express.Router();
@@ -20,23 +19,6 @@ router.get("/", async (req, res) => {
   res.json({ data: investors });
 });
 
-
-//View All Investors 
-router.get("/", async (req, res) => {
-  const investors = await Investor.find();
-  var token = req.headers["x-access-token"];
-  if (!token)
-    return res.status(401).send({ auth: false, message: "No token provided." });
-  jwt.verify(token, config.secret, function (err, decoded) {
-    if (err)
-      return res
-        .status(500)
-        .send({ auth: false, message: "Failed to authenticate token." });
-
-    res.json({ id: decoded, data: investors });
-  });
-});
-
 //View an Investor
 router.get("/:id", async (req, res) => {
   const id = req.params.id;
@@ -55,7 +37,7 @@ router.put("/:id/Requests/:companyid/", async (req, res) => {
       $and: [{ investorIdentificationNumber: inid }, { _id: companyid }]
     };
     const company = await Company.findOne(query, { _id: 1 });
-    console.log(company)
+    console.log(company);
     if (!company)
       return res.status(404).send({ error: "Company does not exist" });
     else {
@@ -92,11 +74,13 @@ router.get("/:id/Requests", async (req, res) => {
   res.json({ data: company });
 });
 
-
+//registring an Investor while not logged in
 router.post("/register", async (req, res) => {
   var token = req.headers["x-access-token"];
   if (token)
-    return res.status(401).send({ auth: false, message: "You are already logged in" });
+    return res
+      .status(401)
+      .send({ auth: false, message: "You are already logged in" });
   const {
     name,
     type,
@@ -140,6 +124,8 @@ router.post("/register", async (req, res) => {
   });
   res.json({ msg: "Investor was created successfully", data: newInvestor });
 });
+
+//updating investor
 router.put("/:id", async (req, res) => {
   try {
     const id = req.params.id;
@@ -184,8 +170,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-
-router.post('/createcompany', async (req, res) => {
+router.post("/createcompany", async (req, res) => {
   var stat = 0;
   try {
     var token = req.headers["x-access-token"];
@@ -193,27 +178,40 @@ router.post('/createcompany', async (req, res) => {
       return res
         .status(401)
         .send({ auth: false, message: "Please login first." });
-    jwt.verify(token, config.secret, async function (err, decoded) {
+    jwt.verify(token, config.secret, async function(err, decoded) {
       if (err)
         return res
           .status(500)
           .send({ auth: false, message: "Failed to authenticate token." });
-          stat = decoded.id;
+      stat = decoded.id;
     });
-    const currInvestor = await Investor.findById(stat)
-    if (!Investor) return res.status(404).send({ error: "Investor does not exist" })
-    const { regulationLaw, legalCompanyForm, nameInArabic, nameInEnglish, governerateHQ, cityHQ, addressHQ, telephoneHQ, faxHQ, capitalCurrency, capital } = req.body
-    const investorName = currInvestor.name
-    const investorType = currInvestor.type
-    const investorSex = currInvestor.gender
-    const investorNationality = currInvestor.nationality
-    const investorIdentificationType = currInvestor.idType
-    const investorIdentificationNumber = currInvestor.idNumber
-    const investorBD = currInvestor.dob
-    const investorAddress = currInvestor.address
-    const investorTelephone = currInvestor.telephone
-    const investorFax = currInvestor.fax
-    const investorEmail = currInvestor.mail
+    const currInvestor = await Investor.findById(stat);
+    if (!Investor)
+      return res.status(404).send({ error: "Investor does not exist" });
+    const {
+      regulationLaw,
+      legalCompanyForm,
+      nameInArabic,
+      nameInEnglish,
+      governerateHQ,
+      cityHQ,
+      addressHQ,
+      telephoneHQ,
+      faxHQ,
+      capitalCurrency,
+      capital
+    } = req.body;
+    const investorName = currInvestor.name;
+    const investorType = currInvestor.type;
+    const investorSex = currInvestor.gender;
+    const investorNationality = currInvestor.nationality;
+    const investorIdentificationType = currInvestor.idType;
+    const investorIdentificationNumber = currInvestor.idNumber;
+    const investorBD = currInvestor.dob;
+    const investorAddress = currInvestor.address;
+    const investorTelephone = currInvestor.telephone;
+    const investorFax = currInvestor.fax;
+    const investorEmail = currInvestor.mail;
     const newCompany = new Company({
       regulationLaw,
       legalCompanyForm,
@@ -238,52 +236,51 @@ router.post('/createcompany', async (req, res) => {
       investorFax,
       investorEmail
     });
-    const company = await Company.create(newCompany)
-    res.json({ msg: 'Company was created successfully', data: company })
+    const company = await Company.create(newCompany);
+    res.json({ msg: "Company was created successfully", data: company });
+  } catch (error) {
+    console.log(error);
   }
-  catch (error) {
-    console.log(error)
-  }
-})
+});
 
-router.delete('/:id',  async (req, res) => {
-    
-    try
-    {
-        const id = req.params.id 
-        const deletedInvestor = await Investor.findByIdAndRemove(id);
-        res.json({msg: 'Investor was successfully deleted', data: deletedInvestor});
-    }
-    catch(error) {
-        // We will be handling the error later
-        console.log(error)
-    } 
+router.delete("/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const deletedInvestor = await Investor.findByIdAndRemove(id);
+    res.json({
+      msg: "Investor was successfully deleted",
+      data: deletedInvestor
+    });
+  } catch (error) {
+    // We will be handling the error later
+    console.log(error);
+  }
 });
 //s2
-router.post('/login', function(req, res) {
-    Investor.findOne({ email: req.body.email}, function (err, user) {
-      if (err) return res.status(500).send('Error on the server.');
-      if (!user) return res.status(404).send('No user found.');
-      //const admin = Admin.findOne({ email: req.body.email});
-      const loginPassword = req.body.password;
-      const userPassword = user.password;
-      //var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
-      if (!(loginPassword == userPassword)) return res.status(401).send({ auth: false, token: null });
-      var token = jwt.sign({ id: user._id }, config.secret, {
-        expiresIn: 86400 // expires in 24 hours
-      });
-      res.status(200).send({ auth: true, token: token });
+router.post("/login", function(req, res) {
+  Investor.findOne({ email: req.body.email }, function(err, user) {
+    if (err) return res.status(500).send("Error on the server.");
+    if (!user) return res.status(404).send("No user found.");
+    //const admin = Admin.findOne({ email: req.body.email});
+    const loginPassword = req.body.password;
+    const userPassword = user.password;
+    //var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+    if (!(loginPassword == userPassword))
+      return res.status(401).send({ auth: false, token: null });
+    var token = jwt.sign({ id: user._id }, config.secret, {
+      expiresIn: 86400 // expires in 24 hours
     });
+    res.status(200).send({ auth: true, token: token });
   });
-router.get('/getall/cases', async (req, res) => {
+});
+router.get("/getall/cases", async (req, res) => {
   try {
-    const company = await Company.find()
-    console.log(company)
-    res.json({ data: company })
+    const company = await Company.find();
+    console.log(company);
+    res.json({ data: company });
+  } catch (error) {
+    console.log(error);
   }
-  catch (error) {
-    console.log(error)
-  }
-})
+});
 
 module.exports = router;
