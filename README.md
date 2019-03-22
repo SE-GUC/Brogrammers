@@ -34,9 +34,9 @@
         - !email: string().email()
         - !password: string().min(8)
         - !mobile_number: string().min(6)
-        - !Social_Security_Number: string().min(14).max(14),
-        - !salary: number(),
-        - !birth_Date: date(),
+        - !Social_Security_Number: string().min(14).max(14)
+        - !salary: number()
+        - !birth_Date: date()
         - !yearsOfExperience: number()
 
 - /api/reviewer/register
