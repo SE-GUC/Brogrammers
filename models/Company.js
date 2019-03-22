@@ -42,7 +42,8 @@ const ManagerSchema = new Schema({
 const CompanySchema = new Schema({
   regulationLaw: {
     type: String,
-    required: true
+    required: true,
+    enum: ["Law 159","Law 72"]
   },
   legalCompanyForm: {
     type: String,

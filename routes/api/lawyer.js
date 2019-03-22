@@ -206,4 +206,40 @@ router.get('/getall/cases', async (req, res) => {
   }
 })
 
+router.get('/:companyID/viewFees', async (req, res)=>
+{
+    const companyId = req.params.companyID;
+    const c = await Company.findById(companyId);
+    var x = "Unchanged";
+    
+    if(c.regulationLaw==="Law 159"){
+        x = (c.capital * (1/1000)) + (c.capital * (0.25/100)) + 56;
+    }else{
+        if(c.regulationLaw==="Law 72"){
+          x=610;
+        }
+    }
+    
+    res.json({EstimatedFees : x});
+
+});
+
+router.put('/resubmit/:id/:companyId', async function(req,res){
+  var lawyerId = req.params.id
+  var companyId = req.params.companyId;
+  const query = {
+      $and: [ {lawyer: lawyerId}, {_id: companyId} ]
+  };
+  const pendingCompanies = await Company.find(query);
+
+  
+  if(!pendingCompanies){
+      return res.status(404).send({error: "There are no Fourms to be resubmitted"})
+  }
+  else{
+     const updatedCompany = await Company.findByIdAndUpdate(companyId,{"status":"PendingReviewer"});
+      res.json({msg: "fourm resubmitted successfully"});
+  }
+});
+
 module.exports = router

@@ -330,4 +330,22 @@ router.get('/getall/cases', async (req, res) => {
   }
 })
 
+router.get('/:companyID/viewFees', async (req, res)=>
+{
+    const companyId = req.params.companyID;
+    const c = await Company.findById(companyId);
+    var x = "Unchanged";
+    
+    if(c.regulationLaw==="Law 159"){
+        x = (c.capital * (1/1000)) + (c.capital * (0.25/100)) + 56;
+    }else{
+        if(c.regulationLaw==="Law 72"){
+          x=610;
+        }
+    }
+    
+    res.json({EstimatedFees : x});
+
+});
+
 module.exports = router
