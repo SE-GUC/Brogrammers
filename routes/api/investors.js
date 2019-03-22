@@ -2,15 +2,11 @@ const express = require('express')
 var jwt = require('jsonwebtoken')
 var config = require('../../config/jwt')
 const router = express.Router()
-const mongoose = require('mongoose')
 const Company = require('../../models/Company')
 const Investor = require('../../models/Investor')
-const index = require('../../index')
 const validator = require('../../validations/investorValidations')
 const companyvalidator = require('../../validations/companyValidations')
 const bcrypt = require('bcryptjs')
-var jwt = require('jsonwebtoken')
-var config = require('../../config/jwt')
 
 // View All Investors
 // router.get('/investors', (req, res) => res.send(investors));
@@ -117,7 +113,7 @@ router.put('/:id/MyRequests/:companyid/', async (req, res) => {
           .status(400)
           .send({ error: isValidated.error.details[0].message })
       }
-      const updatedCompany = await Company.findByIdAndUpdate(
+      await Company.findByIdAndUpdate(
         companyid,
         req.body
       )
@@ -168,6 +164,7 @@ router.get('/:id/MyRequests', async (req, res) => {
   res.json({ data: company })
 })
 
+// registring an Investor while not logged in
 router.post('/register', async (req, res) => {
   var token = req.headers['x-access-token']
   if (token) {
@@ -207,7 +204,7 @@ router.post('/register', async (req, res) => {
     password: hashedPassword
   })
   const newInvestor = await Investor.create(newInv)
-  var token = jwt.sign({ id: newInvestor._id }, config.secret, {
+  token = jwt.sign({ id: newInvestor._id }, config.secret, {
     expiresIn: 86400 // expires in 24 hours
   })
   res.status(200).send({
@@ -218,6 +215,8 @@ router.post('/register', async (req, res) => {
   })
   res.json({ msg: 'Investor was created successfully', data: newInvestor })
 })
+
+// updating investor
 router.put('/:id', async (req, res) => {
   try {
     const id = req.params.id
@@ -230,7 +229,7 @@ router.put('/:id', async (req, res) => {
         .status(400)
         .send({ error: isValidated.error.details[0].message })
     }
-    const updatedInvestor = await Investor.findByIdAndUpdate(id, req.body)
+    await Investor.findByIdAndUpdate(id, req.body)
     res.json({ msg: 'Investor updated successfully' })
   } catch (error) {
     // We will be handling the error later
@@ -357,14 +356,17 @@ router.post('/login', function (req, res) {
     // const admin = Admin.findOne({ email: req.body.email});
     const loginPassword = req.body.password
     const userPassword = user.password
+    const match = bcrypt.compareSync(loginPassword, userPassword)
     // var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
-    if (!(loginPassword == userPassword)) { return res.status(401).send({ auth: false, token: null }) }
+    if (!(match)) return res.status(401).send({ auth: false, token: null })
     var token = jwt.sign({ id: user._id }, config.secret, {
       expiresIn: 86400 // expires in 24 hours
     })
     res.status(200).send({ auth: true, token: token })
   })
+  res.status(200).send({ auth: true, token: token })
 })
+
 router.get('/getall/cases', async (req, res) => {
   try {
     const company = await Company.find()
@@ -374,5 +376,23 @@ router.get('/getall/cases', async (req, res) => {
     console.log(error)
   }
 })
+
+router.get('/:companyID/viewFees', async (req, res)=>
+{
+    const companyId = req.params.companyID;
+    const c = await Company.findById(companyId);
+    var x = "Unchanged";
+    
+    if(c.regulationLaw==="Law 159"){
+        x = (c.capital * (1/1000)) + (c.capital * (0.25/100)) + 56;
+    }else{
+        if(c.regulationLaw==="Law 72"){
+          x=610;
+        }
+    }
+    
+    res.json({EstimatedFees : x});
+
+});
 
 module.exports = router

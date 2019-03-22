@@ -1,9 +1,6 @@
-const uuid = require('uuid')
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-// Create the schema
 const LawyerSchema = new Schema({
-
   firstName: {
     type: String,
     required: true
@@ -29,12 +26,12 @@ const LawyerSchema = new Schema({
     type: String,
     required: true
   },
-  salary: {
-    type: Number,
-    required: true
-  },
   Social_Security_Number: {
     type: String,
+    required: true
+  },
+  salary: {
+    type: Number,
     required: true
   },
   birth_Date: {
@@ -47,4 +44,4 @@ const LawyerSchema = new Schema({
   }
 })
 
-module.exports = Lawyer = mongoose.model('lawyer', LawyerSchema)
+module.exports = mongoose.model('lawyer', LawyerSchema)

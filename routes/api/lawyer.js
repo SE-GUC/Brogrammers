@@ -1,15 +1,13 @@
 const express = require('express')
-const Joi = require('joi')
 const bcrypt = require('bcryptjs')
 var config = require('../../config/jwt')
 const Companys = require('../../models/Company')
 var jwt = require('jsonwebtoken')
 const router = express.Router()
-const mongoose = require('mongoose')
 const Admin = require('../../models/Admin')
 const validator = require('../../validations/LawyerValidation')
 const Company = require('../../models/Company')
-const Lawyer = require('../../models/Lawyer')
+const Lawyer = require('../../models/Lawyer.js')
 const companyvalidator = require('../../validations/companyValidations')
 
 router.get('/', async (req, res) => {
@@ -36,7 +34,7 @@ router.post('/register', async (req, res) => {
   if (!admin) {
     return res.status(400).send({ error: 'You are not an admin' })
   }
-  const { firstName, middleName, lastName, email, password, mobile_number, Social_Security_Number, salary, birth_Date, yearsOfExperience } = req.body
+  const { firstName, middleName, lastName, email, password, mobileNumber, socialSecurityNumber, salary, birthDate, yearsOfExperience } = req.body
   const lawyer = await Lawyer.findOne({ email })
   if (lawyer) return res.status(400).json({ error: 'Email already exists' })
 
@@ -48,14 +46,14 @@ router.post('/register', async (req, res) => {
     lastName,
     password: hashedPassword,
     email,
-    mobile_number,
-    Social_Security_Number,
+    mobileNumber,
+    socialSecurityNumber,
     salary,
-    birth_Date,
+    birthDate,
     yearsOfExperience
   })
   const newLawyers = await Lawyer.create(newLawyer)
-  var token = jwt.sign({ id: newLawyers._id }, config.secret, {
+  token = jwt.sign({ id: newLawyers._id }, config.secret, {
     expiresIn: 86400 // expires in 24 hours
   })
   res
@@ -76,7 +74,7 @@ router.put('/:id', async (req, res) => {
     if (!lawyer) return res.status(404).send({ error: 'lawyer does not exist' })
     const isValidated = validator.updateValidation(req.body)
     if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
-    const updatedLawyer = await Lawyer.updateOne(req.body)
+    await Lawyer.updateOne(req.body)
     res.json({ msg: 'Lawyer updated successfully' })
   } catch (error) {
     // We will be handling the error later
@@ -101,8 +99,9 @@ router.post('/login', function (req, res) {
     // const admin = Admin.findOne({ email: req.body.email});
     const loginPassword = req.body.password
     const userPassword = user.password
+    const match = bcrypt.compareSync(loginPassword, userPassword)
     // var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
-    if (!(loginPassword == userPassword)) return res.status(401).send({ auth: false, token: null })
+    if (!(match)) return res.status(401).send({ auth: false, token: null })
     var token = jwt.sign({ id: user._id }, config.secret, {
       expiresIn: 86400 // expires in 24 hours
     })
@@ -156,7 +155,7 @@ router.put('/editForm/:id/:companyId', async function (req, res) {
     if (isValidated.error) {
       return res.status(400).send({ error: isValidated.error.details[0].message })
     }
-    const updatedCompany = await Company.findByIdAndUpdate(companyId, req.body)
+    await Company.findByIdAndUpdate(companyId, req.body)
     res.json({ msg: 'fourm updated successfully' })
   }
 })
@@ -206,5 +205,41 @@ router.get('/getall/cases', async (req, res) => {
     console.log(error)
   }
 })
+
+router.get('/:companyID/viewFees', async (req, res)=>
+{
+    const companyId = req.params.companyID;
+    const c = await Company.findById(companyId);
+    var x = "Unchanged";
+    
+    if(c.regulationLaw==="Law 159"){
+        x = (c.capital * (1/1000)) + (c.capital * (0.25/100)) + 56;
+    }else{
+        if(c.regulationLaw==="Law 72"){
+          x=610;
+        }
+    }
+    
+    res.json({EstimatedFees : x});
+
+});
+
+router.put('/resubmit/:id/:companyId', async function(req,res){
+  var lawyerId = req.params.id
+  var companyId = req.params.companyId;
+  const query = {
+      $and: [ {lawyer: lawyerId}, {_id: companyId} ]
+  };
+  const pendingCompanies = await Company.find(query);
+
+  
+  if(!pendingCompanies){
+      return res.status(404).send({error: "There are no Fourms to be resubmitted"})
+  }
+  else{
+     const updatedCompany = await Company.findByIdAndUpdate(companyId,{"status":"PendingReviewer"});
+      res.json({msg: "fourm resubmitted successfully"});
+  }
+});
 
 module.exports = router

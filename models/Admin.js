@@ -32,6 +32,4 @@ const adminSchema = new Schema({
   }
 
 })
-module.exports = Admin = mongoose.model('admins', adminSchema)
-
-module.exports = Admin
+module.exports = mongoose.model('admins', adminSchema)

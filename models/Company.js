@@ -42,7 +42,8 @@ const ManagerSchema = new Schema({
 const CompanySchema = new Schema({
   regulationLaw: {
     type: String,
-    required: true
+    required: true,
+    enum: ["Law 159","Law 72"]
   },
   legalCompanyForm: {
     type: String,
@@ -134,7 +135,7 @@ const CompanySchema = new Schema({
   },
   lawyer: {
     type: String
-    // should be type lawyer
+    // Lawyer SSN
   },
   lawyerComment: {
     type: String
@@ -147,7 +148,6 @@ const CompanySchema = new Schema({
   reviewerComment: {
     type: String
   }
-
 })
 
-module.exports = Company = mongoose.model('companys', CompanySchema)
+module.exports = mongoose.model('companys', CompanySchema)

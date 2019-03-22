@@ -52,4 +52,4 @@ const InvestorSchema = new Schema({
 
 })
 
-module.exports = Investor = mongoose.model('investors', InvestorSchema)
+module.exports = mongoose.model('investors', InvestorSchema)

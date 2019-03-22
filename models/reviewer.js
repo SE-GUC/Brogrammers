@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
@@ -52,4 +51,4 @@ const reviewerSchema = new Schema({
 
 })
 
-module.exports = reviewer = mongoose.model('reviewer', reviewerSchema)
+module.exports = mongoose.model('reviewer', reviewerSchema)
