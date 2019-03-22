@@ -102,7 +102,7 @@
 	
 - /api/CompanyType
     - POST `//=> Redirect to the type of Company you want to apply for`
-    	-!Type: string()`
+    	- !Type: string()
 	
 - /api/Lawyer/mycases/:id
      - GET `//=> get all the cases that was assigned to the lawyer`
