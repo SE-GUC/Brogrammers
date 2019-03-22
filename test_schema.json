@@ -1,6 +1,5 @@
 {
-    "routes": [
-        {
+    "routes": [{
             "url": "/api/investors/register",
             "params": {},
             "methods": {
@@ -20,7 +19,7 @@
                         "!mail": "string()",
                         "!password": "string()"
                     },
-                    "expected":{
+                    "expected": {
                         "auth": true,
                         "token": "string()",
                         "msg": "Investor was created successfully",
@@ -59,7 +58,7 @@
                         "!password": "string().min(8).max(20)",
                         "joinDate": "string()"
                     },
-                    "expected":{
+                    "expected": {
                         "auth": true,
                         "token": "string()",
                         "msg": "Investor was created successfully",
@@ -96,7 +95,7 @@
                         "!birth_Date": "date()",
                         "!yearsOfExperience": "number()"
                     },
-                    "expected":{
+                    "expected": {
                         "auth": true,
                         "token": "string()",
                         "msg": "Lawyer was created successfully",
@@ -137,7 +136,7 @@
                         "!birth": "string()",
                         "!task": "number()"
                     },
-                    "expected":{
+                    "expected": {
                         "auth": true,
                         "token": "string()",
                         "msg": "Reviewer was created successfully",
@@ -156,6 +155,143 @@
                             "!task": "number()",
                             "__v": 0
                         }
+                    }
+                }
+            }
+        },
+        {
+            "url": "/routes/api/admins/login",
+            "params": {},
+            "methods": {
+                "POST": {
+                    "summary": "login for admin",
+                    "body": {
+                        "email": "string()",
+                        "password": "string()"
+                    },
+                    "expected": {
+                        "auth": true,
+                        "token": "string()",
+                        "data": null
+                    }
+                }
+            }
+        },
+        {
+            "url": "/api/lawyer/login",
+            "params": {},
+            "methods": {
+                "POST": {
+                    "summary": "login for lawyer",
+                    "body": {
+                        "email": "string()",
+                        "password": "string()"
+                    },
+                    "expected": {
+                        "auth": true,
+                        "token": "string()",
+                        "data": null
+                    }
+                }
+            }
+        },
+        {
+            "url": "/api/reviewer/login",
+            "params": {},
+            "methods": {
+                "POST": {
+                    "summary": "login for reviewer",
+                    "body": {
+                        "email": "string()",
+                        "password": "string()"
+                    },
+                    "expected": {
+                        "auth": true,
+                        "token": "string()",
+                        "data": null
+                    }
+                }
+            }
+        },
+        {
+            "url": "/api/lawyer/editForm/:id",
+            "params": {
+                "!id": "string()"
+            },
+            "methods": {
+                "GET": {
+                    "summary": "views rejected fourms submitted by this lawyer and rejected by reviewer, id in params is the lawyer's ssn",
+                    "body": {},
+                    "expected": {
+                        "data": {
+                            "managers": "array()",
+                            "status": "string()",
+                            "regulationLaw": "string()",
+                            "legalCompantForm": "string()",
+                            "nameInArabic": "string()",
+                            "nameInEnglish": "string()",
+                            "governerateHQ": "string()",
+                            "cityHQ": "string()",
+                            "addressHQ": "string()",
+                            "telephoneHQ": "number()",
+                            "faxHQ": "number()",
+                            "investorType": "string()",
+                            "capitalCurrency": "string()",
+                            "capital": "number().min(50000)",
+                            "investorName": "string()",
+                            "investorSex": "string()",
+                            "investorNationality": "string()",
+                            "investorIdentificationType": "string()",
+                            "investorIdentificationNumber": "string()",
+                            "investorBD": "date()",
+                            "investorAddress": "string()",
+                            "investorTelephone": "string()",
+                            "investorFax": "string()",
+                            "investorEmail": "string()",
+                            "lawyer": "string()",
+                            "_v": "number()"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "url": "/api/lawyer/editForm/:id/:companyId",
+            "params": {
+                "!id": "string()",
+                "!companyId": "string()"
+            },
+            "methods": {
+                "PUT": {
+                    "summary": "update rejected fourms submitted by this lawyer and rejected by reviewer, id in params is the lawyer's ssn",
+                    "body": {
+                        "managers": "array()",
+                        "status": "string()",
+                        "nameInArabic": "string()",
+                        "nameInEnglish": "string()",
+                        "governerateHQ": "string()",
+                        "cityHQ": "string()",
+                        "addressHQ": "string()",
+                        "telephoneHQ": "number()",
+                        "faxHQ": "number()",
+                        "investorType": "string()",
+                        "capitalCurrency": "string()",
+                        "capital": "number().min(50000)",
+                        "investorName": "string()",
+                        "investorSex": "string()",
+                        "investorNationality": "string()",
+                        "investorIdentificationType": "string()",
+                        "investorIdentificationNumber": "string()",
+                        "investorBD": "date()",
+                        "investorAddress": "string()",
+                        "investorTelephone": "string()",
+                        "investorFax": "string()",
+                        "investorEmail": "string()",
+                        "lawyer": "string()"
+                    },
+                    "expected": {
+                        "msg": "fourm updated successfully",
+                        "data": null
                     }
                 }
             }
