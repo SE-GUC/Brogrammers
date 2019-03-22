@@ -8,7 +8,7 @@ const mongoose = require('mongoose')
 
 const reviewer = require('./routes/api/reviewer');
 const lawyers = require('./routes/api/lawyer')
-const companies = require('./routes/api/Company')
+const companies = require('./routes/api/company')
 const admins = require('./routes/api/admins')
 const investors = require('./routes/api/investors')
 
