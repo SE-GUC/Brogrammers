@@ -14,7 +14,7 @@
         - !telephone: number()
         - fax: number()
         - !mail: string()
-        - !password: Joi.string()
+        - !password: string()
 
 - /routes/api/admins/register
     - POST `//=> admin register (must be done by another admin)`
