@@ -105,12 +105,12 @@
     	-!Type: string()`
 	
 - /api/Lawyer/mycases/:id
-     -GET `//=> get all the cases that was assigned to the lawyer`
+     - GET `//=> get all the cases that was assigned to the lawyer`
      
 - /api/Reviewer/mycases/:id
-     -GET `//=> get all the cases that was assigned to the Reviewer`
+     - GET `//=> get all the cases that was assigned to the Reviewer`
 - /api/Investor/register
-	POST`//=> Create an Investor`
+	- POST`//=> Create an Investor`
 	    - !name : string()
 	    - !type : string()
 	    - !gender : string()
