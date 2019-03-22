@@ -124,31 +124,35 @@
 	    - !mail : string()
 	    - !password : string()
 	
--/api/Lawyer/:id/getTasks
-	-GET `//=> gets specific tasks of a certain lawyer by his id`
+- /api/Lawyer/:id/getTasks
+	- GET `//=> gets specific tasks of a certain lawyer by his id`
 	
--/api/Lawyer/getAllTasks/view
-	-GET `//=> //Gets all the tasks that are free for any lawyer to choose from`
+- /api/Lawyer/getAllTasks/view
+	- GET `//=> //Gets all the tasks that are free for any lawyer to choose from`
 	
--/api/Lawyer/:id/assignFreeTask/:id2
-	-PUT `//=> Lawyer Chooses one task at a time and assigns it to himself/herself`
--/api/Lawyer/:id/getTasks/approve/:id2
-	-PUT `//=> Lawyer Approves the task and updates the company status `
--/api/Lawyer/:id/getTasks/disapprove/:id2
-	-PUT `//=> LawyerDisapproves the task and updates company status`
+- /api/Lawyer/:id/assignFreeTask/:id2
+	- PUT `//=> Lawyer Chooses one task at a time and assigns it to himself/herself
+	
+- /api/Lawyer/:id/getTasks/approve/:id2
+	- PUT `//=> Lawyer Approves the task and updates the company status `
+	
+- /api/Lawyer/:id/getTasks/disapprove/:id2
+	- PUT `//=> LawyerDisapproves the task and updates company status`
 	
 	
--/api/Reviewer/:id/getTasks
-	-GET `//=> gets specific tasks of a certain Reviewer by his id`
+- /api/Reviewer/:id/getTasks
+	- GET `//=> gets specific tasks of a certain Reviewer by his id`
 	
--/api/Reviewer/getAllTasks/view
-	-GET `//=> //Gets all the tasks that are free for any Reviewer to choose from`
+- /api/Reviewer/getAllTasks/view
+	- GET `//=> //Gets all the tasks that are free for any Reviewer to choose from`
 	
--/api/Reviewer/:id/assignFreeTask/:id2
-	-PUT `//=> Reviewer Chooses one task at a time and assigns it to himself/herself`
--/api/Reviewer/:id/getTasks/approve/:id2
-	-PUT `//=> Reviewer Approves the task and updates the company status `
--/api/Reviewer/:id/getTasks/disapprove/:id2
-	-PUT `//=> Reviewer Disapproves the task and updates company status`	
+- /api/Reviewer/:id/assignFreeTask/:id2
+	- PUT `//=> Reviewer Chooses one task at a time and assigns it to himself/herself`
+	
+- /api/Reviewer/:id/getTasks/approve/:id2
+	- PUT `//=> Reviewer Approves the task and updates the company status `
+	
+- /api/Reviewer/:id/getTasks/disapprove/:id2
+	- PUT `//=> Reviewer Disapproves the task and updates company status`	
 	
 	
