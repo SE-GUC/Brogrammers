@@ -134,7 +134,7 @@ const CompanySchema = new Schema({
   },
   lawyer: {
     type: String
-    // should be type lawyer
+    // Lawyer SSN
   },
   lawyerComment: {
     type: String
@@ -147,7 +147,6 @@ const CompanySchema = new Schema({
   reviewerComment: {
     type: String
   }
-
 })
 
 module.exports = mongoose.model('companys', CompanySchema)

@@ -2,26 +2,26 @@ const express = require('express')
 const bcrypt = require('bcryptjs')
 var jwt = require('jsonwebtoken')
 var config = require('../../config/jwt')
-const reviewer = require('../../models/reviewer')
+const Reviewer = require('../../models/Reviewer')
 const router = express.Router()
 const validator = require('../../validations/reviewerValidations')
 const Admin = require('../../models/Admin')
 
 router.get('/', async (req, res) => {
-  const reviewers = await reviewer.find()
+  const reviewers = await Reviewer.find()
   res.json({ data: reviewers })
 })
 
 router.get('/:id', async (req, res) => {
   const id = req.params.id
-  const reviewers = await reviewer.findById(id)
+  const reviewers = await Reviewer.findById(id)
   res.send(reviewers)
 })
 
 router.put('/:id', async (req, res) => {
   try {
     const id = req.params.id
-    const reviewers = await reviewer.findOne({ id })
+    const reviewers = await Reviewer.findOne({ id })
     if (!reviewers) { return res.status(404).send({ error: 'reviewer does not exist' }) }
     const isValidated = validator.updateValidation(req.body)
     if (isValidated.error) {
@@ -29,7 +29,7 @@ router.put('/:id', async (req, res) => {
         .status(400)
         .send({ error: isValidated.error.details[0].message })
     }
-    await reviewer.updateOne(req.body)
+    await Reviewer.updateOne(req.body)
     res.json({ msg: 'reviewer updated successfully' })
   } catch (error) {
     // We will be handling the error later
@@ -72,12 +72,12 @@ router.post('/register', async (req, res) => {
     birth,
     task
   } = req.body
-  const reviewers = await reviewer.findOne({ email })
+  const reviewers = await Reviewer.findOne({ email })
   if (reviewers) return res.status(400).json({ error: 'Email already exists' })
 
   const salt = bcrypt.genSaltSync(10)
   const hashedPassword = bcrypt.hashSync(password, salt)
-  const newReviewer = new reviewer({
+  const newReviewer = new Reviewer({
     ssn,
     name,
     gender,
@@ -105,7 +105,7 @@ router.post('/register', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const id = req.params.id
-    const deletedreviewer = await reviewer.findByIdAndRemove(id)
+    const deletedreviewer = await Reviewer.findByIdAndRemove(id)
     res.json({
       msg: 'reviewer was deleted successfully',
       data: deletedreviewer
@@ -118,7 +118,7 @@ router.delete('/:id', async (req, res) => {
 
 // s2
 router.post('/login', function (req, res) {
-  reviewer.findOne({ email: req.body.email }, function (err, user) {
+  Reviewer.findOne({ email: req.body.email }, function (err, user) {
     if (err) return res.status(500).send('Error on the server.')
     if (!user) return res.status(404).send('No user found.')
     // const admin = Admin.findOne({ email: req.body.email});

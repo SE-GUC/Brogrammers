@@ -1,7 +1,6 @@
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
-var session = require('express-session')
 const reviewer = require('./routes/api/reviewer')
 const lawyers = require('./routes/api/lawyer')
 const companies = require('./routes/api/Company')
@@ -18,11 +17,6 @@ mongoose
   .catch(err => console.log(err))
 
 app.use(express.json())
-app.use(session({
-  secret: 'thescret',
-  saveUninitialized: false,
-  resave: false
-}))
 app.use(express.urlencoded({ extended: false }))
 
 app.get('/', (req, res) => {

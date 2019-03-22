@@ -71,6 +71,7 @@
 
  - /api/lawyer/editForm/:id
     - GET `//=> views rejected fourms submitted by this lawyer `
+    
 
  - /api/lawyer/editForm/:id/:companyId
     - PUT `//=> lawyer can update a certain companies fourm after it was rejected by a reviewer `
@@ -98,3 +99,28 @@
         - lawyerComment: string()
         - lawyer: string()
         - status: string()
+	
+- /api/CompanyType
+    - POST `//=> Redirect to the type of Company you want to apply for`
+    	- !Type: string()
+	
+- /api/Lawyer/mycases/:id
+     - GET `//=> get all the cases that was assigned to the lawyer`
+     
+- /api/Reviewer/mycases/:id
+     - GET `//=> get all the cases that was assigned to the Reviewer`
+- /api/Investor/register
+	- POST`//=> Create an Investor`
+	    - !name : string()
+	    - !type : string()
+	    - !gender : string()
+	    - !nationality : string()
+	    - !idType : string()
+	    - !idNumber : string()
+	    - !dob : date()
+	    - !address : string()
+	    - !telephone : string()
+	    - !fax : string()
+	    - !mail : string()
+	    - !password : string()
+	

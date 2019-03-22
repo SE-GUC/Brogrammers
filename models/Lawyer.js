@@ -1,8 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-// Create the schema
 const LawyerSchema = new Schema({
-
   firstName: {
     type: String,
     required: true
@@ -28,14 +26,15 @@ const LawyerSchema = new Schema({
     type: String,
     required: true
   },
-  salary: {
-    type: Number,
-    required: true
-  },
   Social_Security_Number: {
     type: String,
     required: true
   },
+  salary: {
+    type: Number,
+    required: true
+  },
+
   birth_Date: {
     type: Date,
     required: true
@@ -44,6 +43,7 @@ const LawyerSchema = new Schema({
     type: Number,
     required: true
   }
+
 })
 
 module.exports = mongoose.model('lawyer', LawyerSchema)

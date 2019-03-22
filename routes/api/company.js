@@ -5,7 +5,7 @@ const router = express.Router()
 // Models
 const Company = require('../../models/Company')
 
-const validator = require('../../validations/CompanyValidations')
+const validator = require('../../validations/companyValidations')
 
 // Create SSC Company
 router.post('/ssc', async (req, res) => {
