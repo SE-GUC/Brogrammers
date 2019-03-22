@@ -52,3 +52,49 @@
         - !age: number()
         - !birth: string()
         - !task: number()
+
+- /routes/api/admins/login
+    - POST `//=> admin login `
+        - !email: string()
+        - !password: string()
+
+- /api/lawyer/login
+    - POST `//=> lawyer login `
+        - !email: string()
+        - !password: string()
+
+
+- /api/reviewer/login
+    - POST `//=> reviewer login `
+        - !email: string()
+        - !password: string()
+
+ - /api/lawyer/editForm/:id
+    - GET `//=> views rejected fourms submitted by this lawyer `
+
+ - /api/lawyer/editForm/:id/:companyId
+    - PUT `//=> lawyer can update a certain companies fourm after it was rejected by a reviewer `
+	    - nameInArabic: string()
+        - nameInEnglish: string()
+        - governerateHQ: string()
+        - cityHQ: string()
+        - addressHQ: string()
+        - telephoneHQ: number()
+        - faxHQ: number()
+        - capitalCurrency: string()
+        - capital: number().min(50000)
+        - investorName: string()
+        - investorType: string()
+        - investorSex: string()
+        - investorNationality: string()
+        - investorIdentificationType: string()
+        - investorIdentificationNumber: string()
+        - investorBD: date()
+        - investorAddress: string()
+        - investorTelephone: string()
+        - investorFax: string()
+        - investorEmail: string()
+        - managers: array()
+        - lawyerComment: string()
+        - lawyer: string()
+        - status: string()
