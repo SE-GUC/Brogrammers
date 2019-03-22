@@ -102,25 +102,25 @@
 	
 - /api/CompanyType
     - POST `//=> Redirect to the type of Company you want to apply for`
-    	-!Type: string()`
+    	- !Type: string()
 	
--/api/Lawyer/mycases/:id
-     -GET `//=> get all the cases that was assigned to the lawyer`
+- /api/Lawyer/mycases/:id
+     - GET `//=> get all the cases that was assigned to the lawyer`
      
--/api/Reviewer/mycases/:id
-     -GET `//=> get all the cases that was assigned to the Reviewer`
--/api/Investor/register
-	POST`//=>Create an Investor`
-	    -!name:string()
-	    -!type:string()
-	    -!gender:string()
-	    -!nationality:string()
-	    -!idType:string()
-	    -!idNumber:string()
-	    -!dob:date()
-	    -!address:string()
-	    -!telephone:string()
-	    -!fax:string()
-	    -!mail:string()
-	    -!password:string()
+- /api/Reviewer/mycases/:id
+     - GET `//=> get all the cases that was assigned to the Reviewer`
+- /api/Investor/register
+	- POST`//=> Create an Investor`
+	    - !name : string()
+	    - !type : string()
+	    - !gender : string()
+	    - !nationality : string()
+	    - !idType : string()
+	    - !idNumber : string()
+	    - !dob : date()
+	    - !address : string()
+	    - !telephone : string()
+	    - !fax : string()
+	    - !mail : string()
+	    - !password : string()
 	
