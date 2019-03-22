@@ -117,20 +117,22 @@ router.post("/register", async (req, res) => {
 });
 
 //Sprint Two
-router.post("/login", function(req, res) {
-  Admin.findOne({ email: req.body.email }, function(err, user) {
-    if (err) return res.status(500).send("Error on the server.");
-    if (!user) return res.status(404).send("No user found.");
-    const loginPassword = req.body.password;
-    const userPassword = user.password;
-    if (!(loginPassword == userPassword))
-      return res.status(401).send({ auth: false, token: null });
-    var token = jwt.sign({ id: user._id }, config.secret, {
-      expiresIn: 86400 // expires in 24 hours
+router.post('/login', function(req, res) {
+    Admin.findOne({ email: req.body.email}, function (err, user) {
+      if (err) return res.status(500).send('Error on the server.');
+      if (!user) return res.status(404).send('No user found.');
+      const loginPassword = req.body.password;
+      const userPassword = user.password;
+      const match = bcrypt.compareSync(loginPassword,userPassword);
+      if (!(match)) return res.status(401).send({ auth: false, token: null });
+      var token = jwt.sign({ id: user._id }, config.secret, {
+        expiresIn: 86400 // expires in 24 hours
+      });
+      res.status(200).send({ auth: true, token: token });
     });
     res.status(200).send({ auth: true, token: token });
   });
-});
+
 
 router.delete("/:id", async (req, res) => {
   try {

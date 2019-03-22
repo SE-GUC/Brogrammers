@@ -25,8 +25,18 @@ router.get("/:id", async (req, res) => {
   const investor = await Investor.findById(id);
   res.json({ data: investor });
 });
-
-router.put("/:id/Requests/:companyid/", async (req, res) => {
+//View Company Details
+router.get("/:id/MyCompanies/:companyid/", async (req, res) => {
+    var stat=0;
+    var token = req.headers["x-access-token"];
+    if (!token)
+      return res.status(401).send({ auth: false, message: "Please login first." });
+    jwt.verify(token, config.secret, async function(err, decoded) {
+      if (err)
+        return res.status(500).send({ auth: false, message: "Failed to authenticate token."})
+       stat=decoded.id
+    });
+    const admin=await Admin.findById(stat);
   try {
     const id = req.params.id;
     const companyid = req.params.companyid;
@@ -36,8 +46,43 @@ router.put("/:id/Requests/:companyid/", async (req, res) => {
     const query = {
       $and: [{ investorIdentificationNumber: inid }, { _id: companyid }]
     };
-    const company = await Company.findOne(query, { _id: 1 });
-    console.log(company);
+    const company = await Company.findOne(query);
+    if (!company)
+      return res.status(404).send({ error: "Company does not exist" });
+    else {
+      res.json({ data: company });
+    }
+  } catch (error) {
+    // We will be handling the error later
+    console.log(error);
+  }
+});
+//Update Company after being rejected by lawyer
+router.put("/:id/MyRequests/:companyid/", async (req, res) => {
+    var stat=0;
+    var token = req.headers["x-access-token"];
+    if (!token)
+      return res.status(401).send({ auth: false, message: "Please login first." });
+    jwt.verify(token, config.secret, async function(err, decoded) {
+      if (err)
+        return res.status(500).send({ auth: false, message: "Failed to authenticate token."})
+       stat=decoded.id
+    });
+    const admin=await Admin.findById(stat);
+  try {
+    const id = req.params.id;
+    const companyid = req.params.companyid;
+    console.log(companyid);
+    const investor = await Investor.findById(id);
+    const inid = investor.idNumber;
+    const query = {
+      $and: [
+        { investorIdentificationNumber: inid },
+        { _id: companyid },
+        { status: "RejectedLawyer" }
+      ]
+    };
+    const company = await Company.findOne(query);
     if (!company)
       return res.status(404).send({ error: "Company does not exist" });
     else {
@@ -50,27 +95,38 @@ router.put("/:id/Requests/:companyid/", async (req, res) => {
         companyid,
         req.body
       );
-      res.json({ msg: "Form Updated Successfully" });
+      const updatedcompstatus = await Company.findByIdAndUpdate(companyid, {
+        status: "PendingLawyer"
+      });
+      res.json({ msg: "Form Updated Successfully", data: updatedcompstatus });
     }
   } catch (error) {
     // We will be handling the error later
     console.log(error);
   }
 });
-
-router.get("/:id/Requests", async (req, res) => {
+//track all cases status
+router.get("/:id/MyRequests", async (req, res) => {
+    var stat=0;
+    var token = req.headers["x-access-token"];
+    if (!token)
+      return res.status(401).send({ auth: false, message: "Please login first." });
+    jwt.verify(token, config.secret, async function(err, decoded) {
+      if (err)
+        return res.status(500).send({ auth: false, message: "Failed to authenticate token."})
+       stat=decoded.id
+    });
+    const admin=await Admin.findById(stat);
   const id = req.params.id;
   const investor = await Investor.findById(id);
   const inid = investor.idNumber;
-  const query = { $and: [{ investorIdentificationNumber: inid }, {}] };
+  const query = { investorIdentificationNumber: inid,status:{$ne:"Accepted"} };
   const company = await Company.find(query, {
-    status: 1,
-    lawyer: 1,
+    _id: 0,
+    nameInArabic: 1,
     lawyerComment: 1,
-    _id: 0
+    status: 1
   });
-  console.log(inid);
-  console.log(company);
   res.json({ data: company });
 });
 
@@ -257,22 +313,24 @@ router.delete("/:id", async (req, res) => {
   }
 });
 //s2
-router.post("/login", function(req, res) {
-  Investor.findOne({ email: req.body.email }, function(err, user) {
-    if (err) return res.status(500).send("Error on the server.");
-    if (!user) return res.status(404).send("No user found.");
-    //const admin = Admin.findOne({ email: req.body.email});
-    const loginPassword = req.body.password;
-    const userPassword = user.password;
-    //var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
-    if (!(loginPassword == userPassword))
-      return res.status(401).send({ auth: false, token: null });
-    var token = jwt.sign({ id: user._id }, config.secret, {
-      expiresIn: 86400 // expires in 24 hours
+router.post('/login', function(req, res) {
+    Investor.findOne({ email: req.body.email}, function (err, user) {
+      if (err) return res.status(500).send('Error on the server.');
+      if (!user) return res.status(404).send('No user found.');
+      //const admin = Admin.findOne({ email: req.body.email});
+      const loginPassword = req.body.password;
+      const userPassword = user.password;
+      const match = bcrypt.compareSync(loginPassword,userPassword);
+      //var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+      if (!(match)) return res.status(401).send({ auth: false, token: null });
+      var token = jwt.sign({ id: user._id }, config.secret, {
+        expiresIn: 86400 // expires in 24 hours
+      });
+      res.status(200).send({ auth: true, token: token });
     });
     res.status(200).send({ auth: true, token: token });
   });
-});
+
 router.get("/getall/cases", async (req, res) => {
   try {
     const company = await Company.find();

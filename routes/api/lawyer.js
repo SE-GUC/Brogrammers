@@ -9,7 +9,7 @@ const mongoose = require('mongoose')
 const Admin =require('../../models/Admin')
 const validator = require('../../validations/LawyerValidation')
 const Company = require('../../models/Company')
-const Lawyer = require('../../models/Lawyer')
+const Lawyer = require('../../models/Lawyer.js')
 const companyvalidator = require("../../validations/companyValidations");
 
 
@@ -108,8 +108,9 @@ router.post('/login', function(req, res) {
       //const admin = Admin.findOne({ email: req.body.email});
       const loginPassword = req.body.password;
       const userPassword = user.password;
+      const match = bcrypt.compareSync(loginPassword,userPassword);
       //var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
-      if (!(loginPassword == userPassword)) return res.status(401).send({ auth: false, token: null });
+      if (!(match)) return res.status(401).send({ auth: false, token: null });
       var token = jwt.sign({ id: user._id }, config.secret, {
         expiresIn: 86400 // expires in 24 hours
       });
