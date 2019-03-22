@@ -34,9 +34,9 @@
         - !email: string().email()
         - !password: string().min(8)
         - !mobile_number: string().min(6)
-        - !Social_Security_Number: string().min(14).max(14)
-        - !salary: number()
-        - !birth_Date: date()
+        - !Social_Security_Number: string().min(14).max(14),
+        - !salary: number(),
+        - !birth_Date: date(),
         - !yearsOfExperience: number()
 
 - /api/reviewer/register
@@ -111,16 +111,16 @@
      -GET `//=> get all the cases that was assigned to the Reviewer`
 -/api/Investor/register
 	POST`//=>Create an Investor`
-	    -!name.String(),
-	    -!type.String(),
-	    -!gender.String(),
-	    -!nationality.String(),
-	    -!idType.String(),
-	    -!idNumber.number(),
-	    -!dob.date(),
-	    -!address.String(),
-	    -!telephone.String(),
-	    -!fax.String(),
-	    -!mail.String(),
-	    -!password.String()
+	    -!name:string()
+	    -!type:string()
+	    -!gender:string()
+	    -!nationality:string()
+	    -!idType:string()
+	    -!idNumber:string()
+	    -!dob:date()
+	    -!address:string()
+	    -!telephone:string()
+	    -!fax:string()
+	    -!mail:string()
+	    -!password:string()
 	
