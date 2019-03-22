@@ -8,6 +8,7 @@ const validator = require("../../validations/investorValidations");
 const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
 var config = require("../../config/jwt");
+const Admin = require("../../models/Admin");
 
 //View All Investors
 router.get("/", async (req, res) => {
@@ -164,6 +165,38 @@ router.delete("/", async (req, res) => {
         msg: "Investor was successfully deleted",
         data: deletedInvestor
       });
+  } catch (error) {
+    // We will be handling the error later
+    console.log(error);
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  try {
+    var stat = 0;
+    var token = req.headers["x-access-token"];
+    if (!token)
+      return res
+        .status(401)
+        .send({ auth: false, message: "Please login first." });
+    jwt.verify(token, config.secret, async function(err, decoded) {
+      if (err)
+        return res
+          .status(500)
+          .send({ auth: false, message: "Failed to authenticate token." });
+      stat = decoded.id;
+    });
+    const admin = await Admin.find({_id : stat});
+    console.log(admin);
+    if (admin) {
+      const id = req.params.id;
+      const deletedreviewer = await Investor.findByIdAndRemove(id);
+      res.json({
+        msg: "Lawyer deleted successfully",
+      });
+    }
+    else
+      return res.json({message: "You do not have the authorization."});
   } catch (error) {
     // We will be handling the error later
     console.log(error);

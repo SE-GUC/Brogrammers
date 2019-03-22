@@ -116,21 +116,21 @@ router.put("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   var stat = 0;
   try {
-    var token = req.headers["x-access-token"];
-    if (!token)
-      return res
-        .status(401)
-        .send({ auth: false, message: "Please login first." });
-    jwt.verify(token, config.secret, async function(err, decoded) {
-      if (err) stat = decoded.id;
-      return res
-        .status(500)
-        .send({ auth: false, message: "Failed to authenticate token." });
-    });
-    const admin2 = await Admin.findById(stat);
-    if (!admin2) {
-      return res.status(400).json({ error: "You are not an admin" });
-    }
+    // var token = req.headers["x-access-token"];
+    // if (!token)
+    //   return res
+    //     .status(401)
+    //     .send({ auth: false, message: "Please login first." });
+    // jwt.verify(token, config.secret, async function(err, decoded) {
+    //   if (err) stat = decoded.id;
+    //   return res
+    //     .status(500)
+    //     .send({ auth: false, message: "Failed to authenticate token." });
+    // });
+    // const admin2 = await Admin.findById(stat);
+    // if (!admin2) {
+    //   return res.status(400).json({ error: "You are not an admin" });
+    // }
     const email = req.body.email;
     const isValidated = validator.createValidation(req.body);
     const admin = await Admin.findOne({ email });
@@ -153,9 +153,30 @@ router.post("/", async (req, res) => {
       data: newAdmin
     });
     res.json({ msg: "Admin was created successfully", data: newAdmin });
-    res.json({ msg: "Admin created successfully", data: newAdmin });
   } catch (error) {
     console.log(error);
+  }
+});
+
+router.delete("/", async (req, res) => {
+  try {
+    var stat = 0;
+    var token = req.headers["x-access-token"];
+    if (!token)
+      return res
+        .status(401)
+        .send({ auth: false, message: "Please login first" });
+    jwt.verify(token, config.secret, async function(err, decoded) {
+      if (err)
+        return res
+          .status(500)
+          .send({ auth: false, message: "Failed to authenticate token." });
+      stat = decoded.id;
+    });
+    const admin = await Admin.findByIdAndRemove(stat);
+    res.json({ msg: "Admin deleted successfully" });
+  } catch (error) {
+    res.status(404).send({ msg: "Admin doesn't exist" });
   }
 });
 
@@ -175,14 +196,8 @@ router.delete("/:id", async (req, res) => {
       stat = decoded.id;
     });
     const id = req.params.id;
-    if (stat === id) {
-      const admin = await Admin.findByIdAndRemove(id);
-      res.json({ msg: "Admin deleted successfully" });
-    } else {
-      res
-        .status(401)
-        .send({ auth: false, message: "You don't have the authorization" });
-    }
+    const admin = await Admin.findByIdAndRemove(id);
+    res.json({ msg: "Admin deleted successfully" });
   } catch (error) {
     res.status(404).send({ msg: "Admin doesn't exist" });
   }
