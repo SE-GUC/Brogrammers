@@ -12,6 +12,12 @@ const companies = require('./routes/api/Company')
 const admins = require('./routes/api/admins')
 const investors = require('./routes/api/investors')
 
+//Passport variables
+var passport = require('passport')
+LocalStrategy = require('passport-local').Strategy;
+var session= require ('express-session')
+require('./passport')(passport)
+
 // DB Config
 const db = require('./config/keys').mongoURI
 
@@ -46,6 +52,24 @@ app.use('/routes/api/admins',admins)
 app.use('/api/investors', investors)
 
 
+
+//Session and encrypting cookies
+app.use(session({
+    secret:'thesecret',
+    saveUninitialized:false,
+    resave:false
+}))
+
+//view engine setup
+app.set('view engine', 'ejs');
+
+//initialize passport and session
+app.use(passport.initialize())
+app.use(passport.session())
+
+//login redirect
+
+
 // Handling 404
 app.use((req, res) => {
     res.status(404).send({err: 'We can not find what you are looking for'});
@@ -53,3 +77,4 @@ app.use((req, res) => {
 
 const port = 3000
 app.listen(port, () => console.log(`Server up and running on port ${port}`))
+

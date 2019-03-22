@@ -1,10 +1,13 @@
 const uuid = require('uuid')
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+//const companies = require('../models/Company')
+//const objectID=mongoose.Schema.Types.ObjectId.companies;
+//const companies2= require('../routes/api/company')
 // Create the schema
 const LawyerSchema = new Schema({
     
-
+ 
     firstName: {
         type: String,
         required: true
@@ -31,17 +34,14 @@ const LawyerSchema = new Schema({
         required: true
     },
     Social_Security_Number: {
-        type: Number,
+        type: String,
         required: true
     },
     salary: {
         type: Number,
         required: true
     },
-    Social_Security_Number: {
-        type: String,
-        required: true
-    },
+    
     birth_Date: {
         type: Date,
         required: true
@@ -50,6 +50,7 @@ const LawyerSchema = new Schema({
         type: Number,
         required: true
     }
+
 })
 
 module.exports = Lawyer = mongoose.model('lawyer', LawyerSchema)

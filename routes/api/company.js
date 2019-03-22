@@ -8,7 +8,7 @@ const router = express.Router();
 const Company = require('../../models/Company');
 const Manager = require('../../models/Manager');
 
-const validator = require('../../validations/CompanyValidations')
+const validator = require('../../validations/companyValidations')
 
 
 //Create SSC Company
@@ -63,7 +63,7 @@ router.put('/ssc/:id', async (req,res) => {
      if(!company) return res.status(404).send({error: 'Company does not exist'})
      const isValidated = validator.updateValidationSSC(req.body)
      if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
-     const updatedCompany= await Company.updateOne(req.body)
+     const updatedCompany= await Company.findByIdAndUpdate(id,req.body)
      res.json({msg: 'Company updated successfully'})
     }
     catch(error) {

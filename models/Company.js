@@ -96,7 +96,7 @@ const CompanySchema = new Schema({
     },
     lawyer:{
         type:String
-        //should be type lawyer
+        //Lawyer SSN
     },
     lawyerComment:{
         type:String

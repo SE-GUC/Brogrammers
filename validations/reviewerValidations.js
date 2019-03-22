@@ -3,7 +3,7 @@ const Joi = require('joi')
 module.exports = {
     createValidation: request => {
         const createSchema = {
-            ssn: Joi.number().required(),
+            ssn: Joi.string().required(),
             name: Joi.string().required(),
             gender: Joi.string().required(),
             address: Joi.string().required(),
@@ -13,7 +13,7 @@ module.exports = {
             yearsOfExperience: Joi.number().required(),
             age: Joi.number().required(),
             birth: Joi.string().required(),
-            task: Joi.number().required()
+         
         }
 
         return Joi.validate(request, createSchema)
@@ -21,7 +21,7 @@ module.exports = {
 
     updateValidation: request => {
         const updateSchema = {
-            ssn: Joi.number(),
+            ssn: Joi.string(),
             name: Joi.string(),
             gender: Joi.string(),
             address: Joi.string(),
@@ -31,7 +31,7 @@ module.exports = {
             yearsOfExperience: Joi.number(),
             age: Joi.number(),
             birth: Joi.string(),
-            task: Joi.number()
+            
         }
 
         return Joi.validate(request, updateSchema)

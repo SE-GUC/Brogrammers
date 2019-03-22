@@ -1,14 +1,11 @@
 const express = require('express')
 const bcrypt = require('bcryptjs')
 const reviewer = require('../../models/reviewer')
-/*
-const uuid = require('uuid')
-*/
 const router = express.Router()
 const validator = require('../../validations/reviewerValidations')
+const companyvalidator = require('../../validations/companyValidations');
 
 
-router.get('/', (req,res) => res.json({data: 'Reviewers working'}))
 
 
 
@@ -20,6 +17,117 @@ const reviewers = [
     new reviewer(7223, "Gehad Ismail", "male", "korba", 9874, "gehad.ismail@guc.edu.eg", "haha", 6, 29, "2 / 2 / 1999", 1)
 ]
 */
+
+//Gets all the tasks that are free for any reviewer to choose from
+router.get("/getAllTasks/view", async(req,res)=>{
+    var query= {reviewer:null,status:"PendingReviewer"}
+    const availableCompanies= await Company.find(query);
+    if(!availableCompanies){
+      return res.status(404).send({ error: "There are no free tasks" });
+    
+    }else{
+    res.json({data:availableCompanies});
+    }
+    
+    })
+
+//returns specific tasks of a certain reviewer by his id
+    router.get("/:id/getTasks", async (req, res) => {
+        const id = req.params.id;
+        let rev  = await reviewer.findById(id);
+        let reviewerSSN=await rev.ssn;
+      
+        var query = { "reviewer": reviewerSSN}
+      const comps= await Company.find(query);
+      
+        res.json({data:comps});
+      });
+
+//Reviewer Chooses one task at a time and assigns it to himself/herself
+router.put("/:id/assignFreeTask/:id2",async (req,res)=>{
+    let id=req.params.id;
+    let reviewerID= await reviewer.findById(id);
+    let reviewerSSN= await reviewerID.ssn;
+    let companyID=req.params.id2;
+    var query={_id:companyID,"reviewer":null,status:"PendingReviewer"}
+    let currentCompany = await Company.findOne(query);
+    if(!currentCompany){
+      return res.status(404).send({ error: "There are no free tasks to be assigned" });
+    }else{
+      const comps= await Company.findOneAndUpdate(query,{"reviewer":reviewerSSN})
+    //const isValidated=await companyvalidator.updateValidationSSC
+    res.json({msg: "Task assigned Successfully"});
+    
+    }
+    
+    })
+
+
+//Approves the task and updates the company status 
+router.put("/:id/getTasks/approve/:id2", async (req, res) => {
+    try{
+  let id = req.params.id;
+  let compid = req.params.id2;
+  let rev = await reviewer.findById(id);
+  let reviewerSSN=await rev.ssn;
+  var query = {"reviewer":reviewerSSN, _id:compid, $or:[{status:"PendingReviewer"},{status:"RejectedReviewer"}]}
+  const company = await Company.find(query);
+  if(!company)
+  {
+    return res.status(404).send({ error: "You have no due tasks" });
+  }
+  else{
+     const comps= await Company.findByIdAndUpdate(compid,{status:"Accepted"});
+      const isValidated =  await companyvalidator.updateValidationSSC({status:"Accepted"});
+      if (isValidated.error)
+        return res
+          .status(400)
+          .send({ error: isValidated.error.details[0].message });
+      res.json({ msg: "Task approved successfully"});
+  }
+}
+catch(error){
+    console.log(error);
+}
+
+});
+
+//Disapproves the task and updates company status
+router.put("/:id/getTasks/disapprove/:id2", async (req,res)=>{
+    try{
+      let id= req.params.id;
+    let currentReviewer = await reviewer.findById(id);
+    let reviwerSSN= await currentReviewer.ssn;
+    let companyID= req.params.id2;
+    
+    var query={"reviewer":reviwerSSN,status:"PendingReviewer",_id:companyID}
+    const currentCompany= await Company.find(query);
+    if(!currentCompany)
+    {
+      return res.status(404).send({ error: "You have no due tasks" });
+    }
+    else{
+       const comps= await Company.findByIdAndUpdate(companyID,{status:"RejectedReviewer"});
+        const isValidated = await companyvalidator.updateValidationSSC({status:"RejectedReviewer"});
+        if (isValidated.error)
+          return res
+            .status(400)
+            .send({ error: isValidated.error.details[0].message });
+        res.json({ msg: "Task disapproved successfully"});
+    }
+    }
+    catch(error){
+      console.log(error);
+    }
+    
+    
+    
+    
+    })
+
+
+
+
 
 
 router.get('/', async (req,res) => {
@@ -176,6 +284,10 @@ router.post('/reviewers',async (req, res) => {
     const {ssn,name,gender,address,phone,email,password,yearsOfExperience,age,birth,task} = req.body
     const reviewers = await reviewer.findOne({email})
     if(reviewers) return res.status(400).json({error: 'Email already exists'})
+    const uniqueSSN = await reviewer.findOne({ ssn });
+    if (uniqueSSN) return res.status(400).json({ error: "SSN already exists" });
+
+
 
     const salt = bcrypt.genSaltSync(10)
     const hashedPassword = bcrypt.hashSync(password,salt)
@@ -214,7 +326,7 @@ router.post('/reviewers',async (req, res) => {
             yearsOfExperience,
             age,
             birth,
-            task
+            
         })
     newReviewer
     .save()
