@@ -20,8 +20,7 @@ router.get("/", async (req, res) => {
   res.json({ data: investors });
 });
 
-
-//View All Investors 
+//View All Investors
 router.get("/", async (req, res) => {
   const investors = await Investor.find();
   var token = req.headers["x-access-token"];
@@ -43,8 +42,18 @@ router.get("/:id", async (req, res) => {
   const investor = await Investor.findById(id);
   res.json({ data: investor });
 });
-
-router.put("/:id/Requests/:companyid/", async (req, res) => {
+//View Company Details
+router.get("/:id/MyCompanies/:companyid/", async (req, res) => {
+    var stat=0;
+    var token = req.headers["x-access-token"];
+    if (!token)
+      return res.status(401).send({ auth: false, message: "Please login first." });
+    jwt.verify(token, config.secret, async function(err, decoded) {
+      if (err)
+        return res.status(500).send({ auth: false, message: "Failed to authenticate token."})
+       stat=decoded.id
+    });
+    const admin=await Admin.findById(stat);
   try {
     const id = req.params.id;
     const companyid = req.params.companyid;
@@ -54,8 +63,43 @@ router.put("/:id/Requests/:companyid/", async (req, res) => {
     const query = {
       $and: [{ investorIdentificationNumber: inid }, { _id: companyid }]
     };
-    const company = await Company.findOne(query, { _id: 1 });
-    console.log(company)
+    const company = await Company.findOne(query);
+    if (!company)
+      return res.status(404).send({ error: "Company does not exist" });
+    else {
+      res.json({ data: company });
+    }
+  } catch (error) {
+    // We will be handling the error later
+    console.log(error);
+  }
+});
+//Update Company after being rejected by lawyer
+router.put("/:id/MyRequests/:companyid/", async (req, res) => {
+    var stat=0;
+    var token = req.headers["x-access-token"];
+    if (!token)
+      return res.status(401).send({ auth: false, message: "Please login first." });
+    jwt.verify(token, config.secret, async function(err, decoded) {
+      if (err)
+        return res.status(500).send({ auth: false, message: "Failed to authenticate token."})
+       stat=decoded.id
+    });
+    const admin=await Admin.findById(stat);
+  try {
+    const id = req.params.id;
+    const companyid = req.params.companyid;
+    console.log(companyid);
+    const investor = await Investor.findById(id);
+    const inid = investor.idNumber;
+    const query = {
+      $and: [
+        { investorIdentificationNumber: inid },
+        { _id: companyid },
+        { status: "RejectedLawyer" }
+      ]
+    };
+    const company = await Company.findOne(query);
     if (!company)
       return res.status(404).send({ error: "Company does not exist" });
     else {
@@ -68,35 +112,47 @@ router.put("/:id/Requests/:companyid/", async (req, res) => {
         companyid,
         req.body
       );
-      res.json({ msg: "Form Updated Successfully" });
+      const updatedcompstatus = await Company.findByIdAndUpdate(companyid, {
+        status: "PendingLawyer"
+      });
+      res.json({ msg: "Form Updated Successfully", data: updatedcompstatus });
     }
   } catch (error) {
     // We will be handling the error later
     console.log(error);
   }
 });
-
-router.get("/:id/Requests", async (req, res) => {
+//track all cases status
+router.get("/:id/MyRequests", async (req, res) => {
+    var stat=0;
+    var token = req.headers["x-access-token"];
+    if (!token)
+      return res.status(401).send({ auth: false, message: "Please login first." });
+    jwt.verify(token, config.secret, async function(err, decoded) {
+      if (err)
+        return res.status(500).send({ auth: false, message: "Failed to authenticate token."})
+       stat=decoded.id
+    });
+    const admin=await Admin.findById(stat);
   const id = req.params.id;
   const investor = await Investor.findById(id);
   const inid = investor.idNumber;
-  const query = { $and: [{ investorIdentificationNumber: inid }, {}] };
+  const query = { investorIdentificationNumber: inid,status:{$ne:"Accepted"} };
   const company = await Company.find(query, {
-    status: 1,
-    lawyer: 1,
+    _id: 0,
+    nameInArabic: 1,
     lawyerComment: 1,
-    _id: 0
+    status: 1
   });
-  console.log(inid);
-  console.log(company);
   res.json({ data: company });
 });
-
 
 router.post("/register", async (req, res) => {
   var token = req.headers["x-access-token"];
   if (token)
-    return res.status(401).send({ auth: false, message: "You are already logged in" });
+    return res
+      .status(401)
+      .send({ auth: false, message: "You are already logged in" });
   const {
     name,
     type,
