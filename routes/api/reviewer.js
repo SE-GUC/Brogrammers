@@ -116,6 +116,38 @@ router.delete('/:id', async (req, res) => {
   }
 })
 
+
+
+router.put('/addcomment/:id/:companyId',async function(req,res){
+  var reviewerId= req.params.id
+  var companyId= req.params.companyId
+  const query={
+    $and:[{status:'RejectedReviewer'},{reviewer:reviewerId},{_id:companyId}]
+  };
+  const editableCompanies = await Company.find(query);
+  var token=req.headers["x-access-token"];
+  if (!token)
+    return res.status(401).send({ auth: false, message: "No token provided." });
+  jwt.verify(token,config.secret,function(err,decoded){
+    if (err)
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate token." });
+
+  });
+  if (!editableCompanies){
+    return res.status(404).send({error: "There are no Fourms to be edited"})
+  }
+  else{
+    const isValidated=companyvalidator.updateValidationSSC(req.body);
+    if (isValidated.error){
+      return res.status(400).send({error: isValidated.error.details[0].message});
+    }
+    const updatedCompany= await Company.findByIdAndUpdate(companyId, {reviewerComment : req.body});
+    res.json({ msg: 'Comment added Successfully'})
+  }
+});
+
 // s2
 router.post('/login', function (req, res) {
   Reviewer.findOne({ email: req.body.email }, function (err, user) {
