@@ -52,6 +52,8 @@ app.use('/api/investors', investors)
 app.use((req, res) => {
     res.status(404).send({err: 'We can not find what you are looking for'});
  })
+//S2
 
+//S2
 const port = 3000
 app.listen(port, () => console.log(`Server up and running on port ${port}`))
