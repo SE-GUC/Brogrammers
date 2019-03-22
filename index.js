@@ -1,9 +1,8 @@
 const express = require('express')
-
 const app = express()
-
-
 const mongoose = require('mongoose')
+var session= require('express-session')
+var passport= require('passport')
 
 
 const reviewer = require('./routes/api/reviewer');
@@ -27,9 +26,12 @@ mongoose
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.log(err))
 
-    const Admin = require('./models/Admin.js');
-
 app.use(express.json())
+app.use(session({
+    secret:'thescret',
+    saveUninitialized:false,
+    resave:false
+}))
 app.use(express.urlencoded({extended: false}))
 
 app.get('/', (req, res) => {
@@ -74,7 +76,9 @@ app.use(passport.session())
 app.use((req, res) => {
     res.status(404).send({err: 'We can not find what you are looking for'});
  })
+//S2
 
+//S2
 const port = 3000
 app.listen(port, () => console.log(`Server up and running on port ${port}`))
 

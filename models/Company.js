@@ -1,6 +1,45 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+
+const ManagerSchema = new Schema({
+    name: { 
+        type:String,
+        required:true
+    },
+    type:{ 
+        type:String,
+        required:true
+    },
+    sex: { 
+        type:String,
+        required:true
+    },
+    nationality: { 
+        type:String,
+        required:true
+    },
+    identificationType: { 
+        type:String,
+        required:true
+    },
+    identificationNumber:{ 
+        type:String,
+        required:true
+    },
+    birthDate: { 
+        type:Date,
+        required:true
+    },
+    address: { 
+        type:String,
+        required:true
+    },
+    managerialPosition: { 
+        type:String
+    }
+})
+
 const CompanySchema = new Schema({
     regulationLaw: {
         type:String,
@@ -87,7 +126,7 @@ const CompanySchema = new Schema({
         type:String
     },
     managers: { 
-        type:[String]
+        type:[ManagerSchema]
     },
     status:{
         type:String,
@@ -99,7 +138,8 @@ const CompanySchema = new Schema({
         //Lawyer SSN
     },
     lawyerComment:{
-        type:String
+        type:String,
+    
     },
     reviewer:{
         type:String
