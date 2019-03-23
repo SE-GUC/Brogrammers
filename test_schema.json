@@ -470,3 +470,56 @@
 
     ]
 }
+    {
+            "url": "/api/investors/login",
+            "params": {},
+            "methods": {
+                "POST": {
+                    "summary": "login for Investor",
+                    "body": {
+                        "email": "string()",
+                        "password": "string()"
+                    },
+                    "expected": {
+                        "auth": true,
+                        "token": "string()",
+                        "data": null
+                    }
+                }
+            }
+        },
+         {
+            "url": "/api/lawyer/mycases/:id",
+            "params": {
+            "!id": "string()"
+            },
+            "methods": {
+                "GET": {
+                    "summary": "get all the lawyer cases",
+                    "body": {},
+                    "expected": {
+                        "auth": true,
+                        "token": "string()",
+                        "data": null
+                    }
+                }
+            }
+        },
+                {
+            "url": "/api/reviewer/mycases/:id",
+            "params": {
+            "!id": "string()"
+            },
+            "methods": {
+                "GET": {
+                    "summary": "get all the reviewer cases",
+                    "body": {},
+                    "expected": {
+                        "auth": true,
+                        "token": "string()",
+                        "data": null
+                    }
+                }
+            }
+        },
+        
