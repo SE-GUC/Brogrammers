@@ -713,12 +713,15 @@ router.put('/addcomment/:id/:companyId', async function (req, res) {
       return res
         .status(400)
         .send({ error: isValidated.error.details[0].message })
-    }
-    await Company.findByIdAndUpdate(companyId, {
+    }else{
+    await Company.findByIdAndUpdate(editableCompanies.id, {
       lawyerComment: req.body.lawyerComment
     })
     res.json({ msg: 'Comment added Successfully' })
   }
+
+
+}
 })
 
 router.get('/:companyID/viewFees', async (req, res) => {

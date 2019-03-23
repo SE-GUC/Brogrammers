@@ -482,12 +482,13 @@ router.put('/addcomment/:id/:companyId', async function (req, res) {
       return res
         .status(400)
         .send({ error: isValidated.error.details[0].message })
-    }
-    await Company.findByIdAndUpdate(companyId, {
+    }else{
+    await Company.findByIdAndUpdate(editableCompanies.id, {
       reviewerComment: req.body.reviewerComment
     })
     res.json({ msg: 'Comment added Successfully' })
   }
+}
 })
 
 // s2
