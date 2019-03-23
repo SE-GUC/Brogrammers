@@ -214,18 +214,18 @@
 - /api/investors/
     - GET `=> View all investors (accessible for logged in users)`
     - PUT `=> Edit currently logged in investor's information`
-    	    - name: string().min(3).required()
-	- type: string().length(3)
-	- gender: string().valid('male', 'female')
-	- nationality: string().max(25)
-	- idType: string().valid('Passport', 'National ID')
-	- idNumber: number()
-	- dob: date()
-	- address: string()
-	- telephone: number()
-	- fax: number()
-	- mail: string()
-	- password: string()
+    	 - name: string().min(3).required()
+		- type: string().length(3)
+		- gender: string().valid('male', 'female')
+		- nationality: string().max(25)
+		- idType: string().valid('Passport', 'National ID')
+		- idNumber: number()
+		- dob: date()
+		- address: string()
+		- telephone: number()
+		- fax: number()
+		- mail: string()
+		- password: string()
     - DELETE `=> Delete currently logged in investor`
  
 - /api/investors/:id
@@ -257,7 +257,7 @@
     
 - /api/reviewer/
     - GET `=> View all reviewers (accessible for logged in users)`
-    - PUT `=> Edit information of currently logged in lawyer`
+    - PUT `=> Edit information of currently logged in reviewer`
     	- ssn: string()
 		- name: string()
 		- gender: string()
