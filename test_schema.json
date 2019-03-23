@@ -255,6 +255,139 @@
                 }
             }
         },
+            {
+            "url": "/api/investors/:id/MyRequests",
+            "params": {
+                "!id": "string()"
+            },
+            "methods": {
+                "GET": {
+                    "summary": "view unaccepted requests and their current status",
+                    "body": {},
+                    "expected": {
+                        "data": {
+                           "managers": "array()",
+                            "status": "string()",
+                            "regulationLaw": "string()",
+                            "legalCompantForm": "string()",
+                            "nameInArabic": "string()",
+                            "nameInEnglish": "string()",
+                            "governerateHQ": "string()",
+                            "cityHQ": "string()",
+                            "addressHQ": "string()",
+                            "telephoneHQ": "number()",
+                            "faxHQ": "number()",
+                            "investorType": "string()",
+                            "capitalCurrency": "string()",
+                            "capital": "number().min(50000)",
+                            "investorName": "string()",
+                            "investorSex": "string()",
+                            "investorNationality": "string()",
+                            "investorIdentificationType": "string()",
+                            "investorIdentificationNumber": "string()",
+                            "investorBD": "date()",
+                            "investorAddress": "string()",
+                            "investorTelephone": "string()",
+                            "investorFax": "string()",
+                            "investorEmail": "string()",
+                            "lawyer": "string()",
+                            "lawyerComment":"string()",
+                            "_v": "number()"
+                        }
+                    }
+                }
+            }
+        },
+                 {
+            "url": "/api/investors/:id/MyRequests/:companyid",
+            "params": {
+                "!id": "string()",
+                "!companyid": "string()"
+            },
+            "methods": {
+                "GET": {
+                    "summary": "view a case status",
+                    "body": {},
+                    "expected": {
+                        "data": {
+                           
+                            "nameInArabic": "string()",
+                            "status":"string()",
+                            "lawyerComment":"string()
+                        }
+                    }
+                }
+            }
+        },
+                  {
+            "url": "/api/investors/:id/MyRequests/:companyid",
+            "params": {
+                "!id": "string()",
+                "!companyid": "string()"
+            },
+            "methods": {
+                "PUT": {
+                    "summary": "update a case form after being rejected by lawyer",
+                    "body": {
+                     "managers": "array()",
+                            "status": "string()",
+                            "regulationLaw": "string()",
+                            "legalCompantForm": "string()",
+                            "nameInArabic": "string()",
+                            "nameInEnglish": "string()",
+                            "governerateHQ": "string()",
+                            "cityHQ": "string()",
+                            "addressHQ": "string()",
+                            "telephoneHQ": "number()",
+                            "faxHQ": "number()",
+                            "investorType": "string()",
+                            "capitalCurrency": "string()",
+                            "capital": "number().min(50000)",
+                            "investorName": "string()",
+                            "investorSex": "string()",
+                            "investorNationality": "string()",
+                            "investorIdentificationType": "string()",
+                            "investorIdentificationNumber": "string()",
+                            "investorBD": "date()",
+                            "investorAddress": "string()",
+                            "investorTelephone": "string()",
+                            "investorFax": "string()",
+                            "investorEmail": "string()"
+                    },
+                    "expected": {
+                        "data": {
+                           "managers": "array()",
+                            "status": "string()",
+                            "regulationLaw": "string()",
+                            "legalCompantForm": "string()",
+                            "nameInArabic": "string()",
+                            "nameInEnglish": "string()",
+                            "governerateHQ": "string()",
+                            "cityHQ": "string()",
+                            "addressHQ": "string()",
+                            "telephoneHQ": "number()",
+                            "faxHQ": "number()",
+                            "investorType": "string()",
+                            "capitalCurrency": "string()",
+                            "capital": "number().min(50000)",
+                            "investorName": "string()",
+                            "investorSex": "string()",
+                            "investorNationality": "string()",
+                            "investorIdentificationType": "string()",
+                            "investorIdentificationNumber": "string()",
+                            "investorBD": "date()",
+                            "investorAddress": "string()",
+                            "investorTelephone": "string()",
+                            "investorFax": "string()",
+                            "investorEmail": "string()",
+                            "lawyer": "string()",
+                            "lawyerComment":"string()",
+                            "_v": "number()"
+                        }
+                    }
+                }
+            }
+        },
         {
             "url": "/api/lawyer/editForm/:id/:companyId",
             "params": {
