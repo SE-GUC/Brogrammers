@@ -216,6 +216,11 @@ router.post('/login', function (req, res) {
   })
 })
 
+//Logout Sprint2
+router.get('/logout', function(req, res) {
+  res.status(200).send( { auth: false, token: null });
+})
+
 router.put('/editForm/:id/:companyId', async function (req, res) {
   var lawyerId = req.params.id
   var companyId = req.params.companyId

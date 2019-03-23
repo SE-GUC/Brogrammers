@@ -4,7 +4,7 @@ const Admin = require('../../models/Admin.js')
 var config = require('../../config/jwt')
 const validator = require('../../validations/adminValidations')
 const bcrypt = require('bcryptjs')
-const Companys = require('../../models/Company')
+const Company = require('../../models/Company')
 var jwt = require('jsonwebtoken')
 
 router.get('/', async (req, res) => {
@@ -188,6 +188,11 @@ router.post('/login', function (req, res) {
   })
 })
 
+//Logout Sprin2
+router.get('/logout', function(req, res) {
+  res.status(200).send( { auth: false, token: null });
+})
+
 router.delete('/', async (req, res) => {
   try {
     var stat = 0
@@ -245,7 +250,7 @@ router.delete('/:id', async (req, res) => {
 
 router.get('/getall/cases', async (req, res) => {
   try {
-    const company = await Companys.find()
+    const company = await Company.find()
     console.log(company)
     res.json({ data: company })
   } catch (error) {

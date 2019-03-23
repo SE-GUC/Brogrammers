@@ -426,6 +426,11 @@ router.post('/login', function (req, res) {
   })
 })
 
+//Logout Sprint2
+router.get('/logout', function(req, res) {
+  res.status(200).send( { auth: false, token: null });
+})
+
 router.get('/getall/cases', async (req, res) => {
   try {
     const company = await Company.find()
