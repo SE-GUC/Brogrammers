@@ -289,7 +289,7 @@ router.delete('/:id', async (req, res) => {
     })
     const admin = await Admin.find({ _id: stat })
     const id = req.params.id
-    const reviewer = await Reviewer.find({_id : id});
+    const reviewer = await Reviewer.findById(id);
     console.log("reviewer is " + reviewer)
     console.log(admin)
     if (admin) {
