@@ -160,6 +160,38 @@
  - /api/Lawyer/addcomment/:id/:companyId
 	- PUT `//=> Lawyer adds a comment to the application so that he would notify the investor by them`
       - lawyerComment: string()
-        	
-    
+      
+ - /api/investors/:id/MyRequests/
+	- GET `//=> View my Requests details`    
+	
+	
+- /api/investors/:id/MyRequests/:companyid/
+	- GET `//=> View a case Details`
+	
+ - /api/investors/:id/MyRequests/:companyid/
+    - PUT `//=> Update Company form after being rejected by lawyer`
+		- nameInArabic: string()
+        - nameInEnglish: string()
+        - governerateHQ: string()
+        - cityHQ: string()
+        - addressHQ: string()
+        - telephoneHQ: number()
+        - faxHQ: number()
+        - capitalCurrency: string()
+        - capital: number().min(50000)
+        - investorName: string()
+        - investorType: string()
+        - investorSex: string()
+        - investorNationality: string()
+        - investorIdentificationType: string()
+        - investorIdentificationNumber: string()
+        - investorBD: date()
+        - investorAddress: string()
+        - investorTelephone: string()
+        - investorFax: string()
+        - investorEmail: string()
+        - managers: array()
+        - lawyerComment: string()
+        - lawyer: string()
+        - status: string()
 	
