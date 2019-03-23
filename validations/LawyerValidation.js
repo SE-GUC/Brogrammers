@@ -28,7 +28,7 @@ module.exports = {
       email: Joi.string().email(),
       password: Joi.string().min(8),
       mobileNumber: Joi.string().min(6),
-      socialSecurity_Number: Joi.string().min(14).max(14),
+      socialSecurityNumber: Joi.string().min(14).max(14),
       salary: Joi.number(),
       birthDate: Joi.date(),
       yearsOfExperience: Joi.number()

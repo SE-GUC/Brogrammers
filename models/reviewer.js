@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 const reviewerSchema = new Schema({
 
   ssn: {
-    type: Number,
+    type: String,
     required: true
   },
   name: {

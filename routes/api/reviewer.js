@@ -51,6 +51,24 @@ router.get('/:id', async (req, res) => {
 
 // Gets all the tasks that are free for any reviewer to choose from
 router.get('/getAllTasks/view', async (req, res) => {
+  try{
+  
+    var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first.' })
+    }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+
   var query = { reviewer: null, status: 'PendingReviewer' }
   const availableCompanies = await Company.find(query)
   if (!availableCompanies) {
@@ -58,10 +76,31 @@ router.get('/getAllTasks/view', async (req, res) => {
   } else {
     res.json({ data: availableCompanies })
   }
+}catch(error){
+  console.log(error)
+}
 })
 
 // returns specific tasks of a certain reviewer by his id
 router.get('/:id/getTasks', async (req, res) => {
+  try{
+  
+    var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first.' })
+    }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+
   const id = req.params.id
   let rev = await Reviewer.findById(id)
   let reviewerSSN = await rev.ssn
@@ -70,10 +109,31 @@ router.get('/:id/getTasks', async (req, res) => {
   const comps = await Company.find(query)
 
   res.json({ data: comps })
+  }catch(error){
+    console.log(error)
+  }
 })
 
 // Reviewer Chooses one task at a time and assigns it to himself/herself
 router.put('/:id/assignFreeTask/:id2', async (req, res) => {
+  try{
+    var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first.' })
+    }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+  
+
   let id = req.params.id
   let reviewerID = await Reviewer.findById(id)
   let reviewerSSN = await reviewerID.ssn
@@ -87,11 +147,30 @@ router.put('/:id/assignFreeTask/:id2', async (req, res) => {
     // const isValidated=await companyvalidator.updateValidationSSC
     res.json({ msg: 'Task assigned Successfully' })
   }
+}catch(error){
+  console.log(error)
+}
 })
 
 // Approves the task and updates the company status
 router.put('/:id/getTasks/approve/:id2', async (req, res) => {
   try {
+    var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first.' })
+    }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+
     let id = req.params.id
     let compid = req.params.id2
     let rev = await Reviewer.findById(id)
@@ -118,6 +197,24 @@ router.put('/:id/getTasks/approve/:id2', async (req, res) => {
 // Disapproves the task and updates company status
 router.put('/:id/getTasks/disapprove/:id2', async (req, res) => {
   try {
+
+    var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first.' })
+    }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+
+
     let id = req.params.id
     let currentReviewer = await Reviewer.findById(id)
     let reviwerSSN = await currentReviewer.ssn
