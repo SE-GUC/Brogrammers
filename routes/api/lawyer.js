@@ -344,6 +344,14 @@ router.post('/login', function (req, res) {
   })
 })
 
+<<<<<<< HEAD
+=======
+//Logout Sprint2
+router.get('/logout', function(req, res) {
+  res.status(200).send( { auth: false, token: null });
+})
+
+>>>>>>> 4814b2fea0c3c98e45b13b96ca055b906f5d6afb
 router.put('/editForm/:id/:companyId', async function (req, res) {
   var lawyerId = req.params.id
   var companyId = req.params.companyId
@@ -382,7 +390,11 @@ router.put('/editForm/:id/:companyId', async function (req, res) {
     res.json({ msg: 'fourm updated successfully' })
   }
 })
+<<<<<<< HEAD
 //alaa
+=======
+
+>>>>>>> 4814b2fea0c3c98e45b13b96ca055b906f5d6afb
 router.post('/lawyerinvestor/createspccompany', async (req, res) => {
   var stat = 0
   try {
@@ -462,7 +474,11 @@ router.post('/lawyerinvestor/createspccompany', async (req, res) => {
     console.log(error)
   }
 })
+<<<<<<< HEAD
 //alaa
+=======
+
+>>>>>>> 4814b2fea0c3c98e45b13b96ca055b906f5d6afb
 router.post('/lawyerinvestor/createssccompany', async (req, res) => {
   var stat = 0
   try {
@@ -546,7 +562,11 @@ router.post('/lawyerinvestor/createssccompany', async (req, res) => {
     console.log(error)
   }
 })
+<<<<<<< HEAD
 //alaa
+=======
+
+>>>>>>> 4814b2fea0c3c98e45b13b96ca055b906f5d6afb
 router.get('/getall/cases', async (req, res) => {
   var stat = 0
   try {
@@ -798,6 +818,30 @@ router.put('/resubmit/:id/:companyId', async function (req, res) {
   } else {
     await Company.findByIdAndUpdate(companyId, { status: 'PendingReviewer' })
     res.json({ msg: 'fourm resubmitted successfully' })
+<<<<<<< HEAD
+=======
+  }
+})
+router.get('/mycases/:id', async (req, res) => {
+  try {
+    var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) { return res.status(401).send({ auth: false, message: 'Please login first.' }) }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) { return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' }) }
+      stat = decoded.id
+    })
+    const lawyers = await Lawyer.findById(stat)
+    if (!lawyers) {
+      return res.status(400).send({ error: 'You are not a Lawyer' })
+    } if (stat === req.params.id) {
+      const lawyer = await Lawyer.findById(req.params.id)
+      const company = await Company.find()
+      if (company.lawyer === lawyer.socialSecurityNumber) { res.json({ data: company }) }
+    } else return res.status(400).send({ error: 'Wrong ID' })
+  } catch (error) {
+    console.log(error)
+>>>>>>> 4814b2fea0c3c98e45b13b96ca055b906f5d6afb
   }
 })
 module.exports = router

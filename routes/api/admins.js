@@ -189,6 +189,11 @@ router.post('/login', function (req, res) {
   })
 })
 
+//Logout Sprin2
+router.get('/logout', function(req, res) {
+  res.status(200).send( { auth: false, token: null });
+})
+
 router.delete('/', async (req, res) => {
   try {
     var stat = 0
