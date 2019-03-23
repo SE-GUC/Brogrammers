@@ -4,7 +4,7 @@
   "description": "Sumerge's Software engineering Project",
   "main": "index.js",
   "scripts": {
-    "start":"node index"
+    "start":"node index.js"
   },
   "author": "Mohamed Atef, Ahmad Hesham",
   "license": "MIT",
