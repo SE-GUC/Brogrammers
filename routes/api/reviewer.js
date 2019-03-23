@@ -366,8 +366,8 @@ router.post("/register", async (req, res) => {
     task
   });
 
-  newReviewer = await Reviewer.create(req.body);
-  token = jwt.sign({ id: newReviewer._id }, config.secret, {
+  var newRev = await Reviewer.create(newReviewer);
+  token = jwt.sign({ id: newRev._id }, config.secret, {
     expiresIn: 86400 // expires in 24 hours
   });
   res.status(200).send({
