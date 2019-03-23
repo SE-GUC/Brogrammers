@@ -230,7 +230,7 @@
  
 - /api/investors/:id
     - GET `=> View a specific admin (accessible for logged in users)`
-    - DELETE `=> Delete a specific investor (only possible through another admin)`
+    - DELETE `=> Delete a specific investor (only possible through admin)`
 
 - /api/investors/View/ViewCompanies
     - GET `=> View established and unestablished companies of currently logged in investor`
@@ -252,7 +252,26 @@
     
 - /api/lawyer/:id
     - GET `=> Get a specific lawyer (accessible for logged in users)`
-    -
+    - DELETE `=> Delete a specific lawyer (only accessible through admins)
+    
+- /api/reviewer/
+    - GET `=> View all reviewers (accessible for logged in users)`
+    - PUT `=> Edit information of currently logged in lawyer`
+    	- ssn: string()
+	- name: string()
+	- gender: string()
+	- address: string()
+	- phone: number()
+	- email: string()
+	- password: string()
+	- yearsOfExperience: number()
+	- age: number()
+	- birth: string()
+    - DELETE `=> Delete currently logged in reviewer`
+   
+- /api/reviewer/:id
+    - GET `=> Get a specific reviewer (accessible for logged in users)
+    - DELETE `=> Delete a specific reviewer (only accessible through admins)
 	
     
     	
