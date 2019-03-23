@@ -310,4 +310,62 @@
         - lawyerComment: string()
         - lawyer: string()
         - status: string()
+
+- /routes/api/admins/
+    - GET `=> View all admins (accessible for logged in users)`
+    - PUT `=> Edit currently logged in admin's information
+        - email: string()
+        - phone: number()
+        - password: string().min(8).max(20)
+        - gender: string().valid('Male', 'Female')
+    - DELETE `=> Delete currently logged in admin`
+
+- /routes/api/admins/:id
+    - GET `=> View a specific admin (accessible for logged in users)`
+    - DELETE `=> Delete a specific admin (only possible through another admin)`
+    
+- /api/investors/
+    - GET `=> View all investors (accessible for logged in users)`
+    - PUT `=> Edit currently logged in investor's information`
+        - name: string().min(3).required()
+	- type: string().length(3)
+	- gender: string().valid('male', 'female')
+	- nationality: string().max(25)
+	- idType: string().valid('Passport', 'National ID')
+	- idNumber: number()
+	- dob: date()
+	- address: string()
+	- telephone: number()
+	- fax: number()
+	- mail: string()
+	- password: string()
+    - DELETE `=> Delete currently logged in investor`
+ 
+- /api/investors/:id
+    - GET `=> View a specific admin (accessible for logged in users)`
+    - DELETE `=> Delete a specific investor (only possible through another admin)`
+
+- /api/investors/View/ViewCompanies
+    - GET `=> View established and unestablished companies of currently logged in investor`
+    
+- /api/lawyer/
+    - GET `=> View all lawyers (accessible for logged in users)`
+    - PUT `=> Edit information of currently logged in lawyer`
+    	- firstName: string().min(1)
+	- middleName: string().min(1)
+	- lastName: string().min(1)
+	- email: string().email()
+	- password: string().min(8)
+	- mobile_number: string().min(6)
+	- Social_Security_Number: string().min(14).max(14)
+	- salary: number()
+	- birth_Date: date()
+	- yearsOfExperience = number()
+    - DELETE `=> Delete currently logged in lawyer`
+    
+- /api/lawyer/:id
+    - GET `=> Get a specific lawyer (accessible for logged in users)`
+    -
 	
+    
+    	
