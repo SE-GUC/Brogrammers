@@ -704,7 +704,7 @@ router.put("/addcomment/:id/:companyId", async function(req, res) {
   }
 });
 
-router.get("/:companyID/viewFees", async (req, res) => {
+router.get("/:id/:companyID/viewFees", async (req, res) => {
   var stat = 0;
   var token = req.headers["x-access-token"];
   if (!token) {
@@ -720,12 +720,22 @@ router.get("/:companyID/viewFees", async (req, res) => {
     }
     stat = decoded.id;
   });
-  const lawyer = await Admin.findById(stat);
+  const id = req.params.id;
+  if (id !== stat) {
+    return res
+      .status(500)
+      .send({ auth: false, message: "Failed to authenticate" });
+  }
+  const lawyer = await Lawyer.findById(id);
   if (!lawyer) {
     return res.status(400).send({ error: "You are not an lawyer" });
   }
+  const ssn = lawyer.socialSecurityNumber;
   const companyId = req.params.companyID;
-  const c = await Company.findById(companyId);
+  const query = {
+    $and: [{ lawyer: ssn }, { _id: companyId }]
+  };
+  const c = await Company.findOne(query);
   var fees = "Unchanged";
 
   if (c.regulationLaw === "Law 159") {
@@ -771,15 +781,20 @@ router.put("/resubmit/:id/:companyId", async function(req, res) {
     }
     stat = decoded.id;
   });
-  const lawyer = await Admin.findById(stat);
+  const id = req.params.id;
+  if (id !== stat) {
+    return res
+      .status(500)
+      .send({ auth: false, message: "Failed to authenticate" });
+  }
+  const lawyer = await Lawyer.findById(id);
   if (!lawyer) {
     return res.status(400).send({ error: "You are not an lawyer" });
   }
-
-  var lawyerId = req.params.id;
-  var companyId = req.params.companyId;
+  const ssn = lawyer.socialSecurityNumber;
+  const companyId = req.params.companyID;
   const query = {
-    $and: [{ lawyer: lawyerId }, { _id: companyId }]
+    $and: [{ lawyer: ssn }, { _id: companyId },{status:{$ne:"Accepted"}}]
   };
   const pendingCompanies = await Company.find(query);
 

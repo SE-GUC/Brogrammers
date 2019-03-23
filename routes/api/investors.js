@@ -579,7 +579,7 @@ router.post("/login", function(req, res) {
   });
 });
 
-router.get("/:companyID/viewFees", async (req, res) => {
+router.get("/:id/:companyID/viewFees", async (req, res) => {
   var stat = 0;
   var token = req.headers["x-access-token"];
   if (!token) {
@@ -595,12 +595,24 @@ router.get("/:companyID/viewFees", async (req, res) => {
     }
     stat = decoded.id;
   });
+  const id = req.params.id;
+  if (id !== stat) {
+    return res
+      .status(500)
+      .send({ auth: false, message: "Failed to authenticate" });
+  }
+
   const investor = await Investor.findById(stat);
   if (!investor) {
     return res.status(400).send({ error: "You are not an investor" });
   }
   const companyId = req.params.companyID;
-  const c = await Company.findById(companyId);
+  const query = {
+    $and: [{ investorIdentificationNumber: id }, { _id: companyId }]
+  };
+  
+
+  const c = await Company.findOne(query);
   var fees = "Unchanged";
 
   if (c.regulationLaw === "Law 159") {
