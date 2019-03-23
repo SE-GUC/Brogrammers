@@ -45,8 +45,13 @@ router.get("/:id/getTasks", async (req, res) => {
       }
       stat = decoded.id;
     });
-
     const id = req.params.id;
+    if (id !== stat) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate" });
+    }
+
     const lawyerss = await Lawyer.findById(id);
     const lawyerssn = await lawyerss.socialSecurityNumber;
 
@@ -108,8 +113,13 @@ router.put("/:id/assignFreeTask/:id2", async (req, res) => {
       }
       stat = decoded.id;
     });
+    const id = req.params.id;
+    if (id !== stat) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate" });
+    }
 
-    let id = req.params.id;
     let lawyerID = await Lawyer.findById(id);
     let lawyerSSN = await lawyerID.socialSecurityNumber;
     let companyID = req.params.id2;
@@ -147,8 +157,13 @@ router.put("/:id/getTasks/approve/:id2", async (req, res) => {
       }
       stat = decoded.id;
     });
-
     const id = req.params.id;
+    if (id !== stat) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate" });
+    }
+
     const compid = req.params.id2;
     const lawyerss = await Lawyer.findById(id);
     const lawyerssn = await lawyerss.socialSecurityNumber;
@@ -195,7 +210,12 @@ router.put("/:id/getTasks/disapprove/:id2", async (req, res) => {
       }
       stat = decoded.id;
     });
-
+    const id = req.params.id;
+    if (id !== stat) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate" });
+    }
     const lawyerID = req.params.id;
     const currentLawyer = await Lawyer.findById(lawyerID);
     const lawyerSSN = await currentLawyer.socialSecurityNumber;
@@ -221,7 +241,7 @@ router.put("/:id/getTasks/disapprove/:id2", async (req, res) => {
     console.log(error);
   }
 });
-
+//ends here atef
 // creating a lawyer by Admin only
 router.post("/register", async (req, res) => {
   var stat = 0;

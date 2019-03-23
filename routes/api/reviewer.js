@@ -127,6 +127,11 @@ router.get("/:id/getTasks", async (req, res) => {
     });
 
     const id = req.params.id;
+    if (id !== stat) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate" });
+    }
     let rev = await Reviewer.findById(id);
     let reviewerSSN = await rev.ssn;
 
@@ -158,7 +163,12 @@ router.put("/:id/assignFreeTask/:id2", async (req, res) => {
       stat = decoded.id;
     });
 
-    let id = req.params.id;
+    const id = req.params.id;
+    if (id !== stat) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate" });
+    }
     let reviewerID = await Reviewer.findById(id);
     let reviewerSSN = await reviewerID.ssn;
     let companyID = req.params.id2;
@@ -196,8 +206,12 @@ router.put("/:id/getTasks/approve/:id2", async (req, res) => {
       }
       stat = decoded.id;
     });
-
-    let id = req.params.id;
+    const id = req.params.id;
+    if (id !== stat) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate" });
+    }
     let compid = req.params.id2;
     let rev = await Reviewer.findById(id);
     let reviewerSSN = await rev.ssn;
@@ -244,18 +258,23 @@ router.put("/:id/getTasks/disapprove/:id2", async (req, res) => {
       }
       stat = decoded.id;
     });
-
-    let id = req.params.id;
+    const id = req.params.id;
+    if (id !== stat) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate" });
+    }
     let currentReviewer = await Reviewer.findById(id);
     let reviwerSSN = await currentReviewer.ssn;
     let companyID = req.params.id2;
 
     var query = {
       reviewer: reviwerSSN,
+      status: { $ne: "Accepted" },
       status: "PendingReviewer",
       _id: companyID
     };
-    const currentCompany = await Company.find(query);
+    const currentCompany = await Company.findOne(query);
     if (!currentCompany) {
       return res.status(404).send({ error: "You have no due tasks" });
     } else {
