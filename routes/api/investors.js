@@ -16,7 +16,6 @@ router.get('/', async (req, res) => {
 
 // View an Investor
 router.get('/:id', async (req, res) => {
-  var stat = 0
   var token = req.headers['x-access-token']
   if (!token) { return res.status(401).send({ auth: false, message: 'No Token provided.' }) }
   jwt.verify(token, config.secret, function (err, decoded) {
@@ -49,7 +48,7 @@ router.get('/:id/MyRequests/:companyid/', async (req, res) => {
   })
   try {
     const id = req.params.id
-    if (id != stat) { return res.status(500).send({ auth: false, message: 'Failed to authenticate' }) }
+    if (id !== stat) { return res.status(500).send({ auth: false, message: 'Failed to authenticate' }) }
     const companyid = req.params.companyid
     console.log(companyid)
     const investor = await Investor.findById(id)
@@ -86,7 +85,7 @@ router.put('/:id/MyRequests/:companyid/', async (req, res) => {
 
   try {
     const id = req.params.id
-    if (id != stat) { return res.status(500).send({ auth: false, message: 'Failed to authenticate' }) }
+    if (id !== stat) { return res.status(500).send({ auth: false, message: 'Failed to authenticate' }) }
     const companyid = req.params.companyid
     console.log(companyid)
     const investor = await Investor.findById(id)
@@ -139,7 +138,7 @@ router.get('/:id/MyRequests', async (req, res) => {
   })
 
   const id = req.params.id
-  if (id != stat) {
+  if (id !== stat) {
     return res.status(500).send({ auth: false, message: 'Failed to authenticate' })
   }
   const investor = await Investor.findById(id)
@@ -313,7 +312,7 @@ router.delete('/:id', async (req, res) => {
       const id = req.params.id
       await Investor.findByIdAndRemove(id)
       res.json({
-        msg: 'Lawyer deleted successfully'
+        msg: 'Investor deleted successfully'
       })
     } else { return res.json({ message: 'You do not have the authorization.' }) }
   } catch (error) {
@@ -425,7 +424,6 @@ router.post('/login', function (req, res) {
     })
     res.status(200).send({ auth: true, token: token })
   })
-  res.status(200).send({ auth: true, token: token })
 })
 
 router.get('/getall/cases', async (req, res) => {

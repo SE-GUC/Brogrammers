@@ -10,7 +10,6 @@ const Lawyer = require('../../models/Lawyer')
 const Company = require('../../models/Company')
 
 router.get('/', async (req, res) => {
-  var stat = 0
   var token = req.headers['x-access-token']
   if (!token) { return res.status(401).send({ auth: false, message: 'No token provided.' }) }
   jwt.verify(token, config.secret, function (err, decoded) {
@@ -117,189 +116,184 @@ router.put('/:id/getTasks/disapprove/:id2', async (req, res) => {
   } catch (error) {
     console.log(error)
   }
+})
 
-  // creating a lawyer by Admin only
-  router.post('/register', async (req, res) => {
+// creating a lawyer by Admin only
+router.post('/register', async (req, res) => {
+  var stat = 0
+  var token = req.headers['x-access-token']
+  if (!token) { return res.status(401).send({ auth: false, message: 'Please login first.' }) }
+  jwt.verify(token, config.secret, async function (err, decoded) {
+    if (err) { return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' }) }
+    stat = decoded.id
+  })
+  const admin = await Admin.findById(stat)
+  if (!admin) {
+    return res.status(400).send({ error: 'You are not an admin' })
+  }
+  const { firstName, middleName, lastName, email, password, mobileNumber, socialSecurityNumber, salary, birthDate, yearsOfExperience } = req.body
+  const lawyer = await Lawyer.findOne({ email })
+  if (lawyer) return res.status(400).json({ error: 'Email already exists' })
+  const ssn = await Lawyer.findOne({ socialSecurityNumber })
+  if (ssn) return res.status(400).json({ error: 'SSN already exists' })
+
+  const salt = bcrypt.genSaltSync(10)
+  const hashedPassword = bcrypt.hashSync(password, salt)
+  const newLawyer = new Lawyer({
+    firstName,
+    middleName,
+    lastName,
+    password: hashedPassword,
+    email,
+    mobileNumber,
+    socialSecurityNumber,
+    salary,
+    birthDate,
+    yearsOfExperience
+  })
+  const newLawyers = await Lawyer.create(newLawyer)
+  token = jwt.sign({ id: newLawyers._id }, config.secret, {
+    expiresIn: 86400 // expires in 24 hours
+  })
+  res
+    .status(200)
+    .send({
+      auth: true,
+      token: token,
+      msg: 'Lawyer was created successfully',
+      data: newLawyers
+    })
+  res.json({ msg: 'Lawyer was created successfully', data: newLawyers })
+})
+
+router.delete('/:id', async (req, res) => {
+  try {
     var stat = 0
     var token = req.headers['x-access-token']
-    if (!token) { return res.status(401).send({ auth: false, message: 'Please login first.' }) }
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first.' })
+    }
     jwt.verify(token, config.secret, async function (err, decoded) {
-      if (err) { return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' }) }
-      stat = decoded.id
-    })
-    const admin = await Admin.findById(stat)
-    if (!admin) {
-      return res.status(400).send({ error: 'You are not an admin' })
-    }
-    const { firstName, middleName, lastName, email, password, mobileNumber, socialSecurityNumber, salary, birthDate, yearsOfExperience } = req.body
-    const lawyer = await Lawyer.findOne({ email })
-    if (lawyer) return res.status(400).json({ error: 'Email already exists' })
-    const ssn = await Lawyer.findOne({ socialSecurityNumber })
-    if (ssn) return res.status(400).json({ error: 'SSN already exists' })
-
-    const salt = bcrypt.genSaltSync(10)
-    const hashedPassword = bcrypt.hashSync(password, salt)
-    const newLawyer = new Lawyer({
-      firstName,
-      middleName,
-      lastName,
-      password: hashedPassword,
-      email,
-      mobileNumber,
-      socialSecurityNumber,
-      salary,
-      birthDate,
-      yearsOfExperience
-    })
-    const newLawyers = await Lawyer.create(newLawyer)
-    var token = jwt.sign({ id: newLawyers._id }, config.secret, {
-      expiresIn: 86400 // expires in 24 hours
-    })
-    res
-      .status(200)
-      .send({
-        auth: true,
-        token: token,
-        msg: 'Lawyer was created successfully',
-        data: newLawyers
-      })
-    res.json({ msg: 'Lawyer was created successfully', data: newLawyers })
-  })
-
-  router.delete('/:id', async (req, res) => {
-    try {
-      var stat = 0
-      var token = req.headers['x-access-token']
-      if (!token) {
-        return res
-          .status(401)
-          .send({ auth: false, message: 'Please login first.' })
-      }
-      jwt.verify(token, config.secret, async function (err, decoded) {
-        if (err) {
-          return res
-            .status(500)
-            .send({ auth: false, message: 'Failed to authenticate token.' })
-        }
-        stat = decoded.id
-      })
-      const admin = await Admin.find({ _id: stat })
-      console.log(admin)
-      if (admin) {
-        const id = req.params.id
-        await Lawyer.findByIdAndRemove(id)
-        res.json({
-          msg: 'Lawyer deleted successfully'
-        })
-      } else { return res.json({ message: 'You do not have the authorization.' }) }
-    } catch (error) {
-      // We will be handling the error later
-      console.log(error)
-    }
-  })
-
-  // s2
-  router.post('/login', function (req, res) {
-    Lawyer.findOne({ email: req.body.email }, function (err, user) {
-      if (err) return res.status(500).send('Error on the server.')
-      if (!user) return res.status(404).send('No user found.')
-      // const admin = Admin.findOne({ email: req.body.email});
-      const loginPassword = req.body.password
-      const userPassword = user.password
-      const match = bcrypt.compareSync(loginPassword, userPassword)
-      // var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
-      if (!(match)) return res.status(401).send({ auth: false, token: null })
-      var token = jwt.sign({ id: user._id }, config.secret, {
-        expiresIn: 86400 // expires in 24 hours
-      })
-      res.status(200).send({ auth: true, token: token })
-    })
-  })
-
-  router.put('/editForm/:id/:companyId', async function (req, res) {
-    var lawyerId = req.params.id
-    var companyId = req.params.companyId
-    const query = {
-      $and: [{ status: 'RejectedReviewer' }, { lawyer: lawyerId }, { _id: companyId }]
-    }
-    const editableCompanies = await Company.find(query)
-
-    var token = req.headers['x-access-token']
-    if (!token) { return res.status(401).send({ auth: false, message: 'No token provided.' }) }
-
-    jwt.verify(token, config.secret, function (err, decoded) {
       if (err) {
         return res
           .status(500)
           .send({ auth: false, message: 'Failed to authenticate token.' })
       }
+      stat = decoded.id
     })
-
-    if (!editableCompanies) {
-      return res.status(404).send({ error: 'There are no Fourms to be edited' })
-    } else {
-      const isValidated = companyvalidator.updateValidationSSC(req.body)
-      if (isValidated.error) {
-        return res.status(400).send({ error: isValidated.error.details[0].message })
-      }
-      await Company.findByIdAndUpdate(companyId, req.body)
-      res.json({ msg: 'fourm updated successfully' })
-    }
-  })
-
-  router.post('/lawyerinvestor/createcompany', async (req, res) => {
-    try {
-      const { regulationLaw, legalCompanyForm, nameInArabic, nameInEnglish, governerateHQ, cityHQ, addressHQ, telephoneHQ, faxHQ, capitalCurrency, capital, investorName,
-        investorType, investorSex, investorNationality, investorIdentificationType, investorIdentificationNumber, investorBD, investorAddress, investorTelephone, investorFax,
-        investorEmail } = req.body
-      const newCompany = new Company({
-        regulationLaw,
-        legalCompanyForm,
-        nameInArabic,
-        nameInEnglish,
-        governerateHQ,
-        cityHQ,
-        addressHQ,
-        telephoneHQ,
-        faxHQ,
-        capitalCurrency,
-        capital,
-        investorName,
-        investorType,
-        investorSex,
-        investorNationality,
-        investorIdentificationType,
-        investorIdentificationNumber,
-        investorBD,
-        investorAddress,
-        investorTelephone,
-        investorFax,
-        investorEmail
+    const admin = await Admin.find({ _id: stat })
+    console.log(admin)
+    if (admin) {
+      const id = req.params.id
+      await Lawyer.findByIdAndRemove(id)
+      res.json({
+        msg: 'Lawyer deleted successfully'
       })
-      const company = await Company.create(newCompany)
-      res.json({ msg: 'Company was created successfully', data: company })
-    } catch (error) {
-      console.log(error)
-    }
-  })
-
-  router.get('/getall/cases', async (req, res) => {
-    try {
-      const company = await Company.find()
-      console.log(company)
-      res.json({ data: company })
-    } catch (error) {
-      console.log(error)
-    }
-  })
-
-  module.exports = router
+    } else { return res.json({ message: 'You do not have the authorization.' }) }
+  } catch (error) {
+    // We will be handling the error later
+    console.log(error)
+  }
 })
 
-// ends here
+// s2
+router.post('/login', function (req, res) {
+  Lawyer.findOne({ email: req.body.email }, function (err, user) {
+    if (err) return res.status(500).send('Error on the server.')
+    if (!user) return res.status(404).send('No user found.')
+    // const admin = Admin.findOne({ email: req.body.email});
+    const loginPassword = req.body.password
+    const userPassword = user.password
+    const match = bcrypt.compareSync(loginPassword, userPassword)
+    // var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+    if (!(match)) return res.status(401).send({ auth: false, token: null })
+    var token = jwt.sign({ id: user._id }, config.secret, {
+      expiresIn: 86400 // expires in 24 hours
+    })
+    res.status(200).send({ auth: true, token: token })
+  })
+})
+
+router.put('/editForm/:id/:companyId', async function (req, res) {
+  var lawyerId = req.params.id
+  var companyId = req.params.companyId
+  const query = {
+    $and: [{ status: 'RejectedReviewer' }, { lawyer: lawyerId }, { _id: companyId }]
+  }
+  const editableCompanies = await Company.find(query)
+
+  var token = req.headers['x-access-token']
+  if (!token) { return res.status(401).send({ auth: false, message: 'No token provided.' }) }
+
+  jwt.verify(token, config.secret, function (err, decoded) {
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: 'Failed to authenticate token.' })
+    }
+  })
+
+  if (!editableCompanies) {
+    return res.status(404).send({ error: 'There are no Fourms to be edited' })
+  } else {
+    const isValidated = companyvalidator.updateValidationSSC(req.body)
+    if (isValidated.error) {
+      return res.status(400).send({ error: isValidated.error.details[0].message })
+    }
+    await Company.findByIdAndUpdate(companyId, req.body)
+    res.json({ msg: 'fourm updated successfully' })
+  }
+})
+
+router.post('/lawyerinvestor/createcompany', async (req, res) => {
+  try {
+    const { regulationLaw, legalCompanyForm, nameInArabic, nameInEnglish, governerateHQ, cityHQ, addressHQ, telephoneHQ, faxHQ, capitalCurrency, capital, investorName,
+      investorType, investorSex, investorNationality, investorIdentificationType, investorIdentificationNumber, investorBD, investorAddress, investorTelephone, investorFax,
+      investorEmail } = req.body
+    const newCompany = new Company({
+      regulationLaw,
+      legalCompanyForm,
+      nameInArabic,
+      nameInEnglish,
+      governerateHQ,
+      cityHQ,
+      addressHQ,
+      telephoneHQ,
+      faxHQ,
+      capitalCurrency,
+      capital,
+      investorName,
+      investorType,
+      investorSex,
+      investorNationality,
+      investorIdentificationType,
+      investorIdentificationNumber,
+      investorBD,
+      investorAddress,
+      investorTelephone,
+      investorFax,
+      investorEmail
+    })
+    const company = await Company.create(newCompany)
+    res.json({ msg: 'Company was created successfully', data: company })
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+router.get('/getall/cases', async (req, res) => {
+  try {
+    const company = await Company.find()
+    console.log(company)
+    res.json({ data: company })
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 router.get('/:id', async (req, res) => {
-  var stat = 0
   var token = req.headers['x-access-token']
   if (!token) { return res.status(401).send({ auth: false, message: 'No token provided.' }) }
   jwt.verify(token, config.secret, function (err, decoded) {
@@ -414,7 +408,7 @@ router.put('/addcomment/:id/:companyId', async function (req, res) {
     if (isValidated.error) {
       return res.status(400).send({ error: isValidated.error.details[0].message })
     }
-    await Company.findByIdAndUpdate(companyId, { lawyerComment: req.body })
+    await Company.findByIdAndUpdate(companyId, { lawyerComment: req.body.lawyerComment })
     res.json({ msg: 'Comment added Successfully' })
   }
 })
