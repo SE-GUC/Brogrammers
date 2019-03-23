@@ -371,3 +371,5 @@
         - investorEmail: string()
         - managers: array()
 	
+ - /api/company/approved
+	- GET `//=> Registered on Unregistered Users view all the 'Accepted' companies`
