@@ -156,7 +156,8 @@ router.post('/register', async (req, res) => {
       birthDate,
       joinDate
     })
-    token = jwt.sign({ id: newAdmin._id }, config.secret, {
+    var newAd = await Admin.create(newAdmin)
+    token = jwt.sign({ id: newAd._id }, config.secret, {
       expiresIn: 86400 // expires in 24 hours
     })
     res.status(200).send({

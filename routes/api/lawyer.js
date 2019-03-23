@@ -385,22 +385,6 @@ router.get('/editForm/:id', async function (req, res) {
   })
 })
 
-router.get('/:companyID/viewFees', async (req, res) => {
-  const companyId = req.params.companyID
-  const c = await Company.findById(companyId)
-  var x = 'Unchanged'
-
-  if (c.regulationLaw === 'Law 159') {
-    x = (c.capital * (1 / 1000)) + (c.capital * (0.25 / 100)) + 56
-  } else {
-    if (c.regulationLaw === 'Law 72') {
-      x = 610
-    }
-  }
-
-  res.json({ EstimatedFees: x })
-})
-
 router.put('/addcomment/:id/:companyId', async function (req, res) {
   var lawyerId = req.params.id
   var companyId = req.params.companyId
@@ -429,7 +413,54 @@ router.put('/addcomment/:id/:companyId', async function (req, res) {
   }
 })
 
+router.get('/:companyID/viewFees', async (req, res) => {
+  var stat = 0
+  var token = req.headers['x-access-token']
+  if (!token) { return res.status(401).send({ auth: false, message: 'Please login first.' }) }
+  jwt.verify(token, config.secret, async function (err, decoded) {
+    if (err) { return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' }) }
+    stat = decoded.id
+  })
+  const lawyer = await Admin.findById(stat)
+  if (!lawyer) {
+    return res.status(400).send({ error: 'You are not an lawyer' })
+  }
+  const companyId = req.params.companyID
+  const c = await Company.findById(companyId)
+  var fees = 'Unchanged'
+
+  if (c.regulationLaw === 'Law 159') {
+    var GAFI = c.capital * (1 / 1000)
+    if (GAFI < 100) { GAFI = 100 }
+    if (GAFI > 1000) { GAFI = 1000 }
+
+    var Notary = c.capital * (0.25 / 100)
+    if (Notary < 10) { Notary = 10 }
+    if (Notary > 1000) { Notary = 1000 }
+
+    fees = GAFI + Notary + 56
+  } else {
+    if (c.regulationLaw === 'Law 72') {
+      fees = 610
+    }
+  }
+
+  res.json({ EstimatedFees: fees })
+})
+
 router.put('/resubmit/:id/:companyId', async function (req, res) {
+  var stat = 0
+  var token = req.headers['x-access-token']
+  if (!token) { return res.status(401).send({ auth: false, message: 'Please login first.' }) }
+  jwt.verify(token, config.secret, async function (err, decoded) {
+    if (err) { return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' }) }
+    stat = decoded.id
+  })
+  const lawyer = await Admin.findById(stat)
+  if (!lawyer) {
+    return res.status(400).send({ error: 'You are not an lawyer' })
+  }
+
   var lawyerId = req.params.id
   var companyId = req.params.companyId
   const query = {
@@ -443,5 +474,4 @@ router.put('/resubmit/:id/:companyId', async function (req, res) {
     await Company.findByIdAndUpdate(companyId, { 'status': 'PendingReviewer' })
     res.json({ msg: 'fourm resubmitted successfully' })
   }
-})
-module.exports = router
+}); module.exports = router

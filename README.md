@@ -272,6 +272,14 @@
 - /api/reviewer/:id
     - GET `=> Get a specific reviewer (accessible for logged in users)
     - DELETE `=> Delete a specific reviewer (only accessible through admins)
-	
+
+- /api/investors/:id/viewFees
+    - GET `//=> an investor can view the estimated fees of creating a company after he submits a form`
+
+- /api/lawyer/:id/viewFees
+    - GET `//=> a lawyer can view the estimated fees of creating a company after he submits a form for an investor`
+
+- /api/lawyer/resubmit/:id/:companyId
+    - GET `//=> a lawyer can resubmit disaproved forms after updating them according to the reviewer's guidelines`
     
     	
