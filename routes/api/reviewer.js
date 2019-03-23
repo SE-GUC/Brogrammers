@@ -2,7 +2,7 @@ const express = require('express')
 const bcrypt = require('bcryptjs')
 var jwt = require('jsonwebtoken')
 var config = require('../../config/jwt')
-const reviewer = require('../../models/reviewer')
+const Reviewer = require('../../models/Reviewer')
 const Company = require('../../models/Company')
 const Admin = require('../../models/Admin')
 const router = express.Router()
@@ -10,7 +10,6 @@ const validator = require('../../validations/reviewerValidations')
 const companyvalidator = require('../../validations/companyValidations')
 
 router.get('/', async (req, res) => {
-  var stat = 0
   var token = req.headers['x-access-token']
   if (!token) {
     return res
@@ -24,12 +23,11 @@ router.get('/', async (req, res) => {
         .send({ auth: false, message: 'Failed to authenticate token.' })
     }
   })
-  const reviewers = await reviewer.find()
+  const reviewers = await Reviewer.find()
   res.json({ data: reviewers })
 })
 
 router.get('/:id', async (req, res) => {
-  var stat = 0
   var token = req.headers['x-access-token']
   if (!token) {
     return res
@@ -44,8 +42,8 @@ router.get('/:id', async (req, res) => {
     }
   })
   const id = req.params.id
-  const reviewers = await reviewer.findById(id)
-  res.send(reviewer)
+  const reviewers = await Reviewer.findById(id)
+  res.send(reviewers)
 })
 
 // Atef Methods
@@ -64,7 +62,7 @@ router.get('/getAllTasks/view', async (req, res) => {
 // returns specific tasks of a certain reviewer by his id
 router.get('/:id/getTasks', async (req, res) => {
   const id = req.params.id
-  let rev = await reviewer.findById(id)
+  let rev = await Reviewer.findById(id)
   let reviewerSSN = await rev.ssn
 
   var query = { 'reviewer': reviewerSSN }
@@ -76,7 +74,7 @@ router.get('/:id/getTasks', async (req, res) => {
 // Reviewer Chooses one task at a time and assigns it to himself/herself
 router.put('/:id/assignFreeTask/:id2', async (req, res) => {
   let id = req.params.id
-  let reviewerID = await reviewer.findById(id)
+  let reviewerID = await Reviewer.findById(id)
   let reviewerSSN = await reviewerID.ssn
   let companyID = req.params.id2
   var query = { _id: companyID, 'reviewer': null, status: 'PendingReviewer' }
@@ -84,7 +82,7 @@ router.put('/:id/assignFreeTask/:id2', async (req, res) => {
   if (!currentCompany) {
     return res.status(404).send({ error: 'There are no free tasks to be assigned' })
   } else {
-    const comps = await Company.findOneAndUpdate(query, { 'reviewer': reviewerSSN })
+    await Company.findOneAndUpdate(query, { 'reviewer': reviewerSSN })
     // const isValidated=await companyvalidator.updateValidationSSC
     res.json({ msg: 'Task assigned Successfully' })
   }
@@ -95,14 +93,14 @@ router.put('/:id/getTasks/approve/:id2', async (req, res) => {
   try {
     let id = req.params.id
     let compid = req.params.id2
-    let rev = await reviewer.findById(id)
+    let rev = await Reviewer.findById(id)
     let reviewerSSN = await rev.ssn
     var query = { 'reviewer': reviewerSSN, _id: compid, $or: [{ status: 'PendingReviewer' }, { status: 'RejectedReviewer' }] }
     const company = await Company.find(query)
     if (!company) {
       return res.status(404).send({ error: 'You have no due tasks' })
     } else {
-      const comps = await Company.findByIdAndUpdate(compid, { status: 'Accepted' })
+      await Company.findByIdAndUpdate(compid, { status: 'Accepted' })
       const isValidated = await companyvalidator.updateValidationSSC({ status: 'Accepted' })
       if (isValidated.error) {
         return res
@@ -120,7 +118,7 @@ router.put('/:id/getTasks/approve/:id2', async (req, res) => {
 router.put('/:id/getTasks/disapprove/:id2', async (req, res) => {
   try {
     let id = req.params.id
-    let currentReviewer = await reviewer.findById(id)
+    let currentReviewer = await Reviewer.findById(id)
     let reviwerSSN = await currentReviewer.ssn
     let companyID = req.params.id2
 
@@ -162,7 +160,7 @@ router.put('/', async (req, res) => {
       }
       stat = decoded.id
     })
-    const reviewers = await reviewer.findById(stat)
+    const reviewers = await Reviewer.findById(stat)
     if (!reviewers) { return res.status(404).send({ error: 'reviewer does not exist' }) }
     const isValidated = validator.updateValidation(req.body)
     if (isValidated.error) {
@@ -170,7 +168,7 @@ router.put('/', async (req, res) => {
         .status(400)
         .send({ error: isValidated.error.details[0].message })
     }
-    await reviewer.findByIdAndUpdate(stat, req.body)
+    await Reviewer.findByIdAndUpdate(stat, req.body)
     res.json({ msg: 'Reviewer updated successfully' })
   } catch (error) {
     // We will be handling the error later
@@ -212,26 +210,26 @@ router.post('/register', async (req, res) => {
     birth,
     task
   } = req.body
-  const reviewers = await reviewer.findOne({ email })
+  const reviewers = await Reviewer.findOne({ email })
   if (reviewers) return res.status(400).json({ error: 'Email already exists' })
-const newReviewer = new Reviewer({
+  const salt = bcrypt.genSaltSync(10)
+  const hashedPassword = bcrypt.hashSync(password, salt)
+  var newReviewer = new Reviewer({
     ssn,
     name,
     gender,
     address,
     phone,
     email,
-    password:hashedPassword,
+    password: hashedPassword,
     yearsOfExperience,
     age,
     birth,
     task
-})
-  const salt = bcrypt.genSaltSync(10)
-  const hashedPassword = bcrypt.hashSync(password, salt)
+  })
 
-  const newReviewer = await reviewer.create(req.body)
-  var token = jwt.sign({ id: newReviewer._id }, config.secret, {
+  newReviewer = await Reviewer.create(req.body)
+  token = jwt.sign({ id: newReviewer._id }, config.secret, {
     expiresIn: 86400 // expires in 24 hours
   })
   res.status(200).send({
@@ -260,7 +258,7 @@ router.delete('/', async (req, res) => {
       }
       stat = decoded.id
     })
-    const deletedreviewer = await reviewer.findByIdAndRemove(stat)
+    const deletedreviewer = await Reviewer.findByIdAndRemove(stat)
     res.json({
       msg: 'reviewer was deleted successfully',
       data: deletedreviewer
@@ -292,9 +290,9 @@ router.delete('/:id', async (req, res) => {
     console.log(admin)
     if (admin) {
       const id = req.params.id
-      const deletedreviewer = await reviewer.findByIdAndRemove(id)
+      await Reviewer.findByIdAndRemove(id)
       res.json({
-        msg: 'Lawyer deleted successfully'
+        msg: 'Reviewer deleted successfully'
       })
     } else { return res.json({ message: 'You do not have the authorization.' }) }
   } catch (error) {
@@ -326,7 +324,7 @@ router.put('/addcomment/:id/:companyId', async function (req, res) {
     if (isValidated.error) {
       return res.status(400).send({ error: isValidated.error.details[0].message })
     }
-    const updatedCompany = await Company.findByIdAndUpdate(companyId, { reviewerComment: req.body })
+    await Company.findByIdAndUpdate(companyId, { reviewerComment: req.body.reviewerComment })
     res.json({ msg: 'Comment added Successfully' })
   }
 })

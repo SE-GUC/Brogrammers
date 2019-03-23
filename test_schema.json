@@ -313,7 +313,7 @@
                            
                             "nameInArabic": "string()",
                             "status":"string()",
-                            "lawyerComment":"string()
+                            "lawyerComment":"string()"
                         }
                     }
                 }
@@ -467,10 +467,7 @@
                 }
             }
         }
-
-    ]
-}
-    {
+       ,{
             "url": "/api/investors/login",
             "params": {},
             "methods": {
@@ -521,5 +518,7 @@
                     }
                 }
             }
-        },
+        }
+    ] 
+}
         

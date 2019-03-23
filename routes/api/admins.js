@@ -9,7 +9,6 @@ var jwt = require('jsonwebtoken')
 
 router.get('/', async (req, res) => {
   try {
-    var stat = 0
     var token = req.headers['x-access-token']
     if (!token) {
       return res
@@ -47,7 +46,6 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const adminId = req.params.id
-    var stat = 0
     var token = req.headers['x-access-token']
     if (!token) {
       return res
@@ -100,7 +98,7 @@ router.put('/', async (req, res) => {
         .status(400)
         .send({ error: isValidated.error.details[0].message })
     }
-    const updatedAdmin = await Admin.findByIdAndUpdate(stat, req.body)
+    await Admin.findByIdAndUpdate(stat, req.body)
     // res.send(admin);
     res.json({ msg: 'Information updated successfully' })
   } catch (error) {
@@ -188,7 +186,6 @@ router.post('/login', function (req, res) {
     })
     res.status(200).send({ auth: true, token: token })
   })
-  res.status(200).send({ auth: true, token: token })
 })
 
 router.delete('/', async (req, res) => {
