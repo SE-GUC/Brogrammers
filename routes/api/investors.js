@@ -8,8 +8,35 @@ var jwt = require("jsonwebtoken");
 var config = require("../../config/jwt");
 const Admin = require("../../models/Admin");
 const Company = require("../../models/Company");
+
+//Logout Sprint2
+router.get("/logout", function(req, res) {
+  res.status(200).send({ auth: false, token: null });
+});
+
+router.get("/getall/cases", async (req, res) => {
+  try {
+    const company = await Company.find();
+    console.log(company);
+    res.json({ data: company });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 // View All Investors
 router.get("/", async (req, res) => {
+  var token = req.headers["x-access-token"];
+  if (!token) {
+    return res.status(401).send({ auth: false, message: "No Token provided." });
+  }
+  jwt.verify(token, config.secret, function(err, decoded) {
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate token." });
+    }
+  });
   const investors = await Investor.find();
   res.json({ data: investors });
 });
@@ -238,7 +265,7 @@ router.put("/", async (req, res) => {
       }
       stat = decoded.id;
     });
-    const investor = await Investor.findOne({}, { _id: stat });
+    const investor = await Investor.findById(stat);
     if (!investor) {
       return res.status(404).send({ error: "Investor does not exist" });
     }
@@ -258,26 +285,32 @@ router.put("/", async (req, res) => {
 
 router.get("/View/ViewCompanies", async (req, res) => {
   var stat = 0;
-  var token = req.headers["x-access-token"];
-  if (!token) {
-    return res.status(401).send({ auth: false, message: "No token provided." });
-  }
-  jwt.verify(token, config.secret, function(err, decoded) {
-    if (err) {
+  try {
+    var token = req.headers["x-access-token"];
+    if (!token) {
       return res
-        .status(500)
-        .send({ auth: false, message: "Failed to authenticate token." });
+        .status(401)
+        .send({ auth: false, message: "No token provided." });
     }
-    stat = decoded.id;
-  });
-  const investor = await Investor.findById(stat);
-  const investorNatID = investor.idNumber;
-  const arrayOfCompanies = await Company.find({
-    investorIdentificationNumber: investorNatID
-  });
-  res.json({ msg: "Your Companies ", data: arrayOfCompanies });
+    jwt.verify(token, config.secret, function(err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: "Failed to authenticate token." });
+      }
+      stat = decoded.id;
+    });
+    const investor = await Investor.findById(stat);
+    const investorNatID = investor.idNumber;
+    const arrayOfCompanies = await Company.find({
+      investorIdentificationNumber: investorNatID
+    });
+    res.json({ msg: "Your Companies ", data: arrayOfCompanies });
+  } catch (error) {
+    res.status(404).send({ msg: "Investor doesn't exist" });
+  }
 });
-
+//manga
 router.delete("/", async (req, res) => {
   try {
     var stat = 0;
@@ -295,6 +328,10 @@ router.delete("/", async (req, res) => {
       }
       stat = decoded.id;
     });
+    const currInv = await Investor.findById(stat);
+    if (!currInv) {
+      return res.json({ msg: "Investor not found" });
+    }
     const deletedInvestor = await Investor.findByIdAndRemove(stat);
     res.json({
       msg: "Investor was successfully deleted",
@@ -305,7 +342,7 @@ router.delete("/", async (req, res) => {
     console.log(error);
   }
 });
-
+//manga
 router.delete("/:id", async (req, res) => {
   try {
     var stat = 0;
@@ -323,9 +360,9 @@ router.delete("/:id", async (req, res) => {
       }
       stat = decoded.id;
     });
-    const admin = await Admin.find({ _id: stat });
+    const admin = await Admin.findById(stat);
     const id = req.params.id;
-    const currInv = await Investor.find({ _id: id });
+    const currInv = await Investor.findByIdAndDelete(id);
     console.log(admin);
     if (admin) {
       if (currInv) {
@@ -345,38 +382,27 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    const deletedInvestor = await Investor.findByIdAndRemove(id);
-    res.json({
-      msg: "Investor was successfully deleted",
-      data: deletedInvestor
-    });
-  } catch (error) {
-    // We will be handling the error later
-    console.log(error);
-  }
-});
-
 router.post("/createspccompany", async (req, res) => {
   var stat = 0;
   try {
     var token = req.headers["x-access-token"];
-    if (!token)
+    if (!token) {
       return res
         .status(401)
         .send({ auth: false, message: "Please login first." });
+    }
     jwt.verify(token, config.secret, async function(err, decoded) {
-      if (err)
+      if (err) {
         return res
           .status(500)
           .send({ auth: false, message: "Failed to authenticate token." });
+      }
       stat = decoded.id;
     });
     const currInvestor = await Investor.findById(stat);
-    if (!Investor)
+    if (!currInvestor) {
       return res.status(404).send({ error: "Investor does not exist" });
+    }
     const {
       regulationLaw,
       legalCompanyForm,
@@ -423,10 +449,11 @@ router.post("/createspccompany", async (req, res) => {
       investorFax,
       investorEmail
     });
-    if (isValidated.error)
+    if (isValidated.error) {
       return res
         .status(400)
         .send({ error: isValidated.error.details[0].message });
+    }
     const newCompany = new Company({
       regulationLaw,
       legalCompanyForm,
@@ -456,25 +483,28 @@ router.post("/createspccompany", async (req, res) => {
     console.log(error);
   }
 });
-
+//alaa
 router.post("/createssccompany", async (req, res) => {
   var stat = 0;
   try {
     var token = req.headers["x-access-token"];
-    if (!token)
+    if (!token) {
       return res
         .status(401)
         .send({ auth: false, message: "Please login first." });
+    }
     jwt.verify(token, config.secret, async function(err, decoded) {
-      if (err)
+      if (err) {
         return res
           .status(500)
           .send({ auth: false, message: "Failed to authenticate token." });
+      }
       stat = decoded.id;
     });
     const currInvestor = await Investor.findById(stat);
-    if (!Investor)
+    if (!currInvestor) {
       return res.status(404).send({ error: "Investor does not exist" });
+    }
     const {
       regulationLaw,
       legalCompanyForm,
@@ -525,10 +555,11 @@ router.post("/createssccompany", async (req, res) => {
       investorFax,
       investorEmail
     });
-    if (isValidated.error)
+    if (isValidated.error) {
       return res
         .status(400)
         .send({ error: isValidated.error.details[0].message });
+    }
     const newCompany = new Company({
       regulationLaw,
       legalCompanyForm,

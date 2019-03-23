@@ -45,8 +45,13 @@ router.get("/:id/getTasks", async (req, res) => {
       }
       stat = decoded.id;
     });
-
     const id = req.params.id;
+    if (id !== stat) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate" });
+    }
+
     const lawyerss = await Lawyer.findById(id);
     const lawyerssn = await lawyerss.socialSecurityNumber;
 
@@ -108,8 +113,13 @@ router.put("/:id/assignFreeTask/:id2", async (req, res) => {
       }
       stat = decoded.id;
     });
+    const id = req.params.id;
+    if (id !== stat) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate" });
+    }
 
-    let id = req.params.id;
     let lawyerID = await Lawyer.findById(id);
     let lawyerSSN = await lawyerID.socialSecurityNumber;
     let companyID = req.params.id2;
@@ -147,8 +157,13 @@ router.put("/:id/getTasks/approve/:id2", async (req, res) => {
       }
       stat = decoded.id;
     });
-
     const id = req.params.id;
+    if (id !== stat) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate" });
+    }
+
     const compid = req.params.id2;
     const lawyerss = await Lawyer.findById(id);
     const lawyerssn = await lawyerss.socialSecurityNumber;
@@ -195,7 +210,12 @@ router.put("/:id/getTasks/disapprove/:id2", async (req, res) => {
       }
       stat = decoded.id;
     });
-
+    const id = req.params.id;
+    if (id !== stat) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate" });
+    }
     const lawyerID = req.params.id;
     const currentLawyer = await Lawyer.findById(lawyerID);
     const lawyerSSN = await currentLawyer.socialSecurityNumber;
@@ -221,7 +241,7 @@ router.put("/:id/getTasks/disapprove/:id2", async (req, res) => {
     console.log(error);
   }
 });
-
+//ends here atef
 // creating a lawyer by Admin only
 router.post("/register", async (req, res) => {
   var stat = 0;
@@ -304,11 +324,11 @@ router.delete("/:id", async (req, res) => {
       }
       stat = decoded.id;
     });
-    const admin = await Admin.find({ _id: stat });
+    const admin = await Admin.findById(stat);
     console.log(admin);
     if (admin) {
       const id = req.params.id;
-      const lawyer = await Lawyer.find({ _id: id });
+      const lawyer = await Lawyer.findById(id);
       if (lawyer) {
         await Lawyer.findByIdAndRemove(id);
         res.json({
@@ -342,6 +362,11 @@ router.post("/login", function(req, res) {
     });
     res.status(200).send({ auth: true, token: token });
   });
+});
+
+//Logout Sprint2
+router.get("/logout", function(req, res) {
+  res.status(200).send({ auth: false, token: null });
 });
 
 router.put("/editForm/:id/:companyId", async function(req, res) {
@@ -382,20 +407,22 @@ router.put("/editForm/:id/:companyId", async function(req, res) {
     res.json({ msg: "fourm updated successfully" });
   }
 });
-
+//alaa
 router.post("/lawyerinvestor/createspccompany", async (req, res) => {
   var stat = 0;
   try {
     var token = req.headers["x-access-token"];
-    if (!token)
+    if (!token) {
       return res
         .status(401)
         .send({ auth: false, message: "Please login first." });
+    }
     jwt.verify(token, config.secret, async function(err, decoded) {
-      if (err)
+      if (err) {
         return res
           .status(500)
           .send({ auth: false, message: "Failed to authenticate token." });
+      }
       stat = decoded.id;
     });
     const currLawyer = await Lawyer.findById(stat);
@@ -426,10 +453,11 @@ router.post("/lawyerinvestor/createspccompany", async (req, res) => {
       investorEmail
     } = req.body;
     const isValidated = companyvalidator.createValidationSPC(req.body);
-    if (isValidated.error)
+    if (isValidated.error) {
       return res
         .status(400)
         .send({ error: isValidated.error.details[0].message });
+    }
     const newCompany = new Company({
       regulationLaw,
       legalCompanyForm,
@@ -459,20 +487,22 @@ router.post("/lawyerinvestor/createspccompany", async (req, res) => {
     console.log(error);
   }
 });
-
+//alaa
 router.post("/lawyerinvestor/createssccompany", async (req, res) => {
   var stat = 0;
   try {
     var token = req.headers["x-access-token"];
-    if (!token)
+    if (!token) {
       return res
         .status(401)
         .send({ auth: false, message: "Please login first." });
+    }
     jwt.verify(token, config.secret, async function(err, decoded) {
-      if (err)
+      if (err) {
         return res
           .status(500)
           .send({ auth: false, message: "Failed to authenticate token." });
+      }
       stat = decoded.id;
     });
     const currLawyer = await Lawyer.findById(stat);
@@ -505,10 +535,11 @@ router.post("/lawyerinvestor/createssccompany", async (req, res) => {
       managers
     } = req.body;
     const isValidated = companyvalidator.createValidationSSC(req.body);
-    if (isValidated.error)
+    if (isValidated.error) {
       return res
         .status(400)
         .send({ error: isValidated.error.details[0].message });
+    }
     const newCompany = new Company({
       regulationLaw,
       legalCompanyForm,
@@ -540,20 +571,22 @@ router.post("/lawyerinvestor/createssccompany", async (req, res) => {
     console.log(error);
   }
 });
-
+//alaa
 router.get("/getall/cases", async (req, res) => {
   var stat = 0;
   try {
     var token = req.headers["x-access-token"];
-    if (!token)
+    if (!token) {
       return res
         .status(401)
         .send({ auth: false, message: "Please login first." });
+    }
     jwt.verify(token, config.secret, async function(err, decoded) {
-      if (err)
+      if (err) {
         return res
           .status(500)
           .send({ auth: false, message: "Failed to authenticate token." });
+      }
       stat = decoded.id;
     });
     const currLawyer = await Lawyer.findById(stat);
@@ -602,7 +635,7 @@ router.put("/", async (req, res) => {
       }
       stat = decoded.id;
     });
-    const lawyer = await Lawyer.findOne({}, { _id: stat });
+    const lawyer = await Lawyer.findById(stat);
     if (!lawyer) {
       return res.status(404).send({ error: "lawyer does not exist" });
     }
@@ -636,8 +669,13 @@ router.delete("/", async (req, res) => {
       }
       stat = decoded.id;
     });
-    const deletedLawyer = await Lawyer.findByIdAndRemove(stat);
-    res.json({ msg: "Lawyer was deleted successfully", data: deletedLawyer });
+    const dellawyer = await Lawyer.findById(stat);
+    if (dellawyer) {
+      const deletedLawyer = await Lawyer.findByIdAndRemove(stat);
+      res.json({ msg: "Lawyer was deleted successfully", data: deletedLawyer });
+    } else {
+      return res.json({ msg: "You have no authorization" });
+    }
   } catch (error) {
     // We will be handling the error later
     console.log(error);
@@ -677,17 +715,21 @@ router.put("/addcomment/:id/:companyId", async function(req, res) {
     ]
   };
   const editableCompanies = await Company.find(query);
+  var stat = 0;
   var token = req.headers["x-access-token"];
   if (!token) {
     return res.status(401).send({ auth: false, message: "No token provided." });
   }
   jwt.verify(token, config.secret, function(err, decoded) {
+    stat = decoded.id;
     if (err) {
       return res
         .status(500)
         .send({ auth: false, message: "Failed to authenticate token." });
     }
   });
+  if (lawyerId !== stat)
+    return res.status(401).send({ message: "Token does not match lawyer" });
   if (!editableCompanies) {
     return res.status(404).send({ error: "There are no Fourms to be edited" });
   } else {
@@ -805,6 +847,76 @@ router.put("/resubmit/:id/:companyId", async function(req, res) {
   } else {
     await Company.findByIdAndUpdate(companyId, { status: "PendingReviewer" });
     res.json({ msg: "fourm resubmitted successfully" });
+  }
+});
+router.get("/mycases/:id", async (req, res) => {
+  try {
+    var stat = 0;
+    var token = req.headers["x-access-token"];
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: "Please login first." });
+    }
+    jwt.verify(token, config.secret, async function(err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: "Failed to authenticate token." });
+      }
+      stat = decoded.id;
+    });
+    const lawyers = await Lawyer.findById(stat);
+    if (!lawyers) {
+      return res.status(400).send({ error: "You are not a Lawyer" });
+    }
+    if (stat === req.params.id) {
+      const id = req.params.id;
+
+      const lawyer = await Lawyer.findById(id);
+      const ssn = lawyer.socialSecurityNumber;
+      var query = {
+        $and: [{ status: "PendingLawyer" }, { lawyer: ssn }]
+      };
+      const company = await Company.find(query); // Because no Accepted companys... used 'PendingLawyer' as a test case
+
+      res.json({ data: company });
+    } else return res.status(400).send({ error: "Wrong ID" });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.get("/mycases/:id", async (req, res) => {
+  try {
+    var stat = 0;
+    var token = req.headers["x-access-token"];
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: "Please login first." });
+    }
+    jwt.verify(token, config.secret, async function(err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: "Failed to authenticate token." });
+      }
+      stat = decoded.id;
+    });
+    const lawyers = await Lawyer.findById(stat);
+    if (!lawyers) {
+      return res.status(400).send({ error: "You are not a Lawyer" });
+    }
+    if (stat === req.params.id) {
+      const lawyer = await Lawyer.findById(req.params.id);
+      const company = await Company.find();
+      if (company.lawyer === lawyer.socialSecurityNumber) {
+        return res.json({ data: company });
+      }
+    } else return res.status(400).send({ error: "Wrong ID" });
+  } catch (error) {
+    console.log(error);
   }
 });
 module.exports = router;

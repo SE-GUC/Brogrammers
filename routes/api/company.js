@@ -94,4 +94,27 @@ router.delete('/:id', async (req, res) => {
     console.log(error)
   }
 })
+/* router.post('/CompanyType', async (req,res)=>{
+  var token = req.headers["x-access-token"];
+
+  if (!token)
+    return res.status(401).send({ auth: false, message: "Please login first." });
+  jwt.verify(token, config.secret, async function(err, decoded) {
+    if (err)
+      return res.status(500).send({ auth: false, message: "Failed to authenticate token."})
+     stat=decoded.id
+  });
+
+  const lawyer=await Lawyer.findById(stat);
+  const investor=await Investor.findById(stat);
+  if( lawyer || investor ){
+  return res.redirect('localhost:3000/api/company/create/'+req.body.type)
+
+  }
+  else
+  {
+      return res.status(400).send({error: 'You are not authorized'})
+  }
+}) */
+
 module.exports = router

@@ -26,23 +26,25 @@ router.get("/", async (req, res) => {
   const reviewers = await Reviewer.find();
   res.json({ data: reviewers });
 });
-
+//alaa
 router.get("/getall/cases", async (req, res) => {
   var stat = 0;
   try {
     var token = req.headers["x-access-token"];
-    if (!token)
+    if (!token) {
       return res
         .status(401)
         .send({ auth: false, message: "Please login first." });
+    }
     jwt.verify(token, config.secret, async function(err, decoded) {
-      if (err)
+      if (err) {
         return res
           .status(500)
           .send({ auth: false, message: "Failed to authenticate token." });
+      }
       stat = decoded.id;
     });
-    const reviewer = await reviewer.findById(stat);
+    const reviewer = await Reviewer.findById(stat);
     if (!reviewer) {
       return res.status(400).send({ error: "Reviewer does not exist." });
     }
@@ -127,6 +129,11 @@ router.get("/:id/getTasks", async (req, res) => {
     });
 
     const id = req.params.id;
+    if (id !== stat) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate" });
+    }
     let rev = await Reviewer.findById(id);
     let reviewerSSN = await rev.ssn;
 
@@ -158,7 +165,12 @@ router.put("/:id/assignFreeTask/:id2", async (req, res) => {
       stat = decoded.id;
     });
 
-    let id = req.params.id;
+    const id = req.params.id;
+    if (id !== stat) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate" });
+    }
     let reviewerID = await Reviewer.findById(id);
     let reviewerSSN = await reviewerID.ssn;
     let companyID = req.params.id2;
@@ -196,8 +208,12 @@ router.put("/:id/getTasks/approve/:id2", async (req, res) => {
       }
       stat = decoded.id;
     });
-
-    let id = req.params.id;
+    const id = req.params.id;
+    if (id !== stat) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate" });
+    }
     let compid = req.params.id2;
     let rev = await Reviewer.findById(id);
     let reviewerSSN = await rev.ssn;
@@ -244,18 +260,23 @@ router.put("/:id/getTasks/disapprove/:id2", async (req, res) => {
       }
       stat = decoded.id;
     });
-
-    let id = req.params.id;
+    const id = req.params.id;
+    if (id !== stat) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate" });
+    }
     let currentReviewer = await Reviewer.findById(id);
     let reviwerSSN = await currentReviewer.ssn;
     let companyID = req.params.id2;
 
     var query = {
       reviewer: reviwerSSN,
+      status: { $ne: "Accepted" },
       status: "PendingReviewer",
       _id: companyID
     };
-    const currentCompany = await Company.find(query);
+    const currentCompany = await Company.findOne(query);
     if (!currentCompany) {
       return res.status(404).send({ error: "You have no due tasks" });
     } else {
@@ -306,8 +327,13 @@ router.put("/", async (req, res) => {
         .status(400)
         .send({ error: isValidated.error.details[0].message });
     }
-    await Reviewer.findByIdAndUpdate(stat, req.body);
-    res.json({ msg: "Reviewer updated successfully" });
+    const reviewer = Reviewer.findById(stat);
+    if (reviewer) {
+      await Reviewer.findByIdAndUpdate(stat, req.body);
+      res.json({ msg: "Reviewer updated successfully" });
+    } else {
+      return res.json({ msg: "You do not have the authorization" });
+    }
   } catch (error) {
     // We will be handling the error later
     console.log(error);
@@ -366,8 +392,8 @@ router.post("/register", async (req, res) => {
     task
   });
 
-  newReviewer = await Reviewer.create(req.body);
-  token = jwt.sign({ id: newReviewer._id }, config.secret, {
+  var newRev = await Reviewer.create(newReviewer);
+  token = jwt.sign({ id: newRev._id }, config.secret, {
     expiresIn: 86400 // expires in 24 hours
   });
   res.status(200).send({
@@ -396,11 +422,16 @@ router.delete("/", async (req, res) => {
       }
       stat = decoded.id;
     });
-    const deletedreviewer = await Reviewer.findByIdAndRemove(stat);
-    res.json({
-      msg: "reviewer was deleted successfully",
-      data: deletedreviewer
-    });
+    const reviewer = await Reviewer.findById(stat);
+    if (reviewer) {
+      const deletedreviewer = await Reviewer.findByIdAndRemove(stat);
+      res.json({
+        msg: "reviewer was deleted successfully",
+        data: deletedreviewer
+      });
+    } else {
+      return res.json({ msg: "You do not have the authroization" });
+    }
   } catch (error) {
     // We will be handling the error later
     console.log(error);
@@ -424,7 +455,7 @@ router.delete("/:id", async (req, res) => {
       }
       stat = decoded.id;
     });
-    const admin = await Admin.find({ _id: stat });
+    const admin = await Admin.findById(stat);
     const id = req.params.id;
     const reviewer = await Reviewer.findById(id);
     console.log("reviewer is " + reviewer);
@@ -458,6 +489,7 @@ router.put("/addcomment/:id/:companyId", async function(req, res) {
     ]
   };
   const editableCompanies = await Company.find(query);
+  var stat = 0;
   var token = req.headers["x-access-token"];
   if (!token) {
     return res.status(401).send({ auth: false, message: "No token provided." });
@@ -469,6 +501,8 @@ router.put("/addcomment/:id/:companyId", async function(req, res) {
         .send({ auth: false, message: "Failed to authenticate token." });
     }
   });
+  if (reviewerId !== stat)
+    return res.status(401).send({ message: "Token does not match reviewer" });
   if (!editableCompanies) {
     return res.status(404).send({ error: "There are no Fourms to be edited" });
   } else {
@@ -502,4 +536,49 @@ router.post("/login", function(req, res) {
     res.status(200).send({ auth: true, token: token });
   });
 });
+
+//Logout Sprint2
+router.get("/logout", function(req, res) {
+  res.status(200).send({ auth: false, token: null });
+});
+
+router.get("/mycases/:id", async (req, res) => {
+  try {
+    var stat = 0;
+    var token = req.headers["x-access-token"];
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: "Please login first." });
+    }
+    jwt.verify(token, config.secret, async function(err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: "Failed to authenticate token." });
+      }
+      stat = decoded.id;
+    });
+    const reviewers = await Reviewer.findById(stat);
+    if (!reviewers) {
+      return res.status(400).send({ error: "You are not a reviewer" });
+    }
+    if (stat === req.params.id) {
+      const id = req.params.id;
+
+      const reviewer = await Reviewer.findById(id);
+      const ssn = reviewer.ssn;
+      var query = {
+        $and: [{ status: "PendingReviewer" }, { Reviewer: ssn }]
+      };
+      const company = await Company.find(query);
+      res.json({ data: company });
+    } else {
+      return res.status(400).send({ error: "wrong ID" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = router;
