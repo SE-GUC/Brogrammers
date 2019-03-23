@@ -565,6 +565,304 @@
           }
         }
       }
-    }
+    },
+      {
+        "url": "/api/lawyer/:id/getTasks",
+        "params": {
+          "!id": "string()"
+          
+        },
+        "methods": {
+          "GET": {
+            "summary": "gets specific tasks of a certain lawyer by his id",
+            "body": {},
+            "expected": {
+              "data":{
+                "managers": "array()",
+                "status": "string()",
+                "regulationLaw": "string()",
+                "legalCompantForm": "string()",
+                "nameInArabic": "string()",
+                "nameInEnglish": "string()",
+                "governerateHQ": "string()",
+                "cityHQ": "string()",
+                "addressHQ": "string()",
+                "telephoneHQ": "number()",
+                "faxHQ": "number()",
+                "investorType": "string()",
+                "capitalCurrency": "string()",
+                "capital": "number().min(50000)",
+                "investorName": "string()",
+                "investorSex": "string()",
+                "investorNationality": "string()",
+                "investorIdentificationType": "string()",
+                "investorIdentificationNumber": "string()",
+                "investorBD": "date()",
+                "investorAddress": "string()",
+                "investorTelephone": "string()",
+                "investorFax": "string()",
+                "investorEmail": "string()",
+                "lawyer": "string()",
+                "lawyerComment": "string()",
+                "_v": "number()"
+              }
+            }
+          }
+        }
+      },
+      {
+        "url": "/api/lawyer/getAllTasks/view",
+        "params": {},
+        "methods": {
+          "GET": {
+            "summary": "Gets all the tasks that are free for any lawyer to choose from",
+            
+            "body": {},
+            "expected": {
+              "data":{
+                "managers": "array()",
+                "status": "string()",
+                "regulationLaw": "string()",
+                "legalCompantForm": "string()",
+                "nameInArabic": "string()",
+                "nameInEnglish": "string()",
+                "governerateHQ": "string()",
+                "cityHQ": "string()",
+                "addressHQ": "string()",
+                "telephoneHQ": "number()",
+                "faxHQ": "number()",
+                "investorType": "string()",
+                "capitalCurrency": "string()",
+                "capital": "number().min(50000)",
+                "investorName": "string()",
+                "investorSex": "string()",
+                "investorNationality": "string()",
+                "investorIdentificationType": "string()",
+                "investorIdentificationNumber": "string()",
+                "investorBD": "date()",
+                "investorAddress": "string()",
+                "investorTelephone": "string()",
+                "investorFax": "string()",
+                "investorEmail": "string()",
+                "lawyer": "string()",
+                "lawyerComment": "string()",
+                "_v": "number()"
+              }
+            }
+          }
+        }
+      },
+      {
+        "url": "/api/lawyer/:id/assignFreeTask/:id2",
+        "params": {
+            "!id":"string()",
+            "!id2":"string()"
+        
+        },
+        "methods": {
+          "GET": {
+            "summary": "Lawyer Chooses one task at a time and assigns it to himself/herself",
+            
+            "body": {},
+            "expected": {
+                "msg":"Task assigned Successfully",
+              "data":null
+                
+              }
+            }
+          }
+        },
+        {
+            "url": "/api/lawyer/:id/getTasks/approve/:id2",
+            "params": {
+                "!id":"string()",
+                "!id2":"string()"
+
+            },
+            "methods": {
+              "GET": {
+                "summary": "Lawyer Approves the task and updates the company status",
+                
+                "body": {},
+                "expected": {
+                    "msg":"Task approved Successfully",
+                  "data":null
+                    
+                  }
+                }
+              }
+            },
+            {
+                "url": "/api/lawyer/:id/getTasks/disapprove/:id2",
+                "params": {
+                    "!id":"string()",
+                    "!id2":"string()"
+    
+                },
+                "methods": {
+                  "GET": {
+                    "summary": "Lawyer disapproves the task and updates the company status",
+                    
+                    "body": {},
+                    "expected": {
+                        "msg":"Task disapproved Successfully",
+                      "data":null
+                        
+                      }
+                    }
+                  }
+                },{
+                    "url": "/api/reviewer/:id/getTasks",
+                    "params": {
+                      "!id": "string()"
+                      
+                    },
+                    "methods": {
+                      "GET": {
+                        "summary": "gets specific tasks of a certain reviewer by his id",
+                        "body": {},
+                        "expected": {
+                          "data":{
+                            "managers": "array()",
+                            "status": "string()",
+                            "regulationLaw": "string()",
+                            "legalCompantForm": "string()",
+                            "nameInArabic": "string()",
+                            "nameInEnglish": "string()",
+                            "governerateHQ": "string()",
+                            "cityHQ": "string()",
+                            "addressHQ": "string()",
+                            "telephoneHQ": "number()",
+                            "faxHQ": "number()",
+                            "investorType": "string()",
+                            "capitalCurrency": "string()",
+                            "capital": "number().min(50000)",
+                            "investorName": "string()",
+                            "investorSex": "string()",
+                            "investorNationality": "string()",
+                            "investorIdentificationType": "string()",
+                            "investorIdentificationNumber": "string()",
+                            "investorBD": "date()",
+                            "investorAddress": "string()",
+                            "investorTelephone": "string()",
+                            "investorFax": "string()",
+                            "investorEmail": "string()",
+                            "lawyer": "string()",
+                            "lawyerComment": "string()",
+                            "_v": "number()"
+                          }
+                        }
+                      }
+                    }
+                  },{
+                    "url": "/api/reviewer/getAllTasks/view",
+                    "params": {},
+                    "methods": {
+                      "GET": {
+                        "summary": "Gets all the tasks that are free for any reviewer to choose from",
+                        
+                        "body": {},
+                        "expected": {
+                          "data":{
+                            "managers": "array()",
+                            "status": "string()",
+                            "regulationLaw": "string()",
+                            "legalCompantForm": "string()",
+                            "nameInArabic": "string()",
+                            "nameInEnglish": "string()",
+                            "governerateHQ": "string()",
+                            "cityHQ": "string()",
+                            "addressHQ": "string()",
+                            "telephoneHQ": "number()",
+                            "faxHQ": "number()",
+                            "investorType": "string()",
+                            "capitalCurrency": "string()",
+                            "capital": "number().min(50000)",
+                            "investorName": "string()",
+                            "investorSex": "string()",
+                            "investorNationality": "string()",
+                            "investorIdentificationType": "string()",
+                            "investorIdentificationNumber": "string()",
+                            "investorBD": "date()",
+                            "investorAddress": "string()",
+                            "investorTelephone": "string()",
+                            "investorFax": "string()",
+                            "investorEmail": "string()",
+                            "lawyer": "string()",
+                            "lawyerComment": "string()",
+                            "_v": "number()"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "url": "/api/reviewer/:id/assignFreeTask/:id2",
+                    "params": {
+                        "!id":"string()",
+                        "!id2":"string()"
+                    
+                    },
+                    "methods": {
+                      "GET": {
+                        "summary": "Reviewer Chooses one task at a time and assigns it to himself/herself",
+                        
+                        "body": {},
+                        "expected": {
+                            "msg":"Task assigned Successfully",
+                          "data":null
+                            
+                          }
+                        }
+                      }
+                    },
+                    {
+                        "url": "/api/reviewer/:id/getTasks/approve/:id2",
+                        "params": {
+                            "!id":"string()",
+                            "!id2":"string()"
+            
+                        },
+                        "methods": {
+                          "GET": {
+                            "summary": "reviewer Approves the task and updates the company status",
+                            
+                            "body": {},
+                            "expected": {
+                                "msg":"Task approved Successfully",
+                              "data":null
+                                
+                              }
+                            }
+                          }
+                        },
+                        {
+                            "url": "/api/reviewer/:id/getTasks/disapprove/:id2",
+                            "params": {
+                                "!id":"string()",
+                                "!id2":"string()"
+                
+                            },
+                            "methods": {
+                              "GET": {
+                                "summary": "reviewer disapproves the task and updates the company status",
+                                
+                                "body": {},
+                                "expected": {
+                                    "msg":"Task disapproved Successfully",
+                                  "data":null
+                                    
+                                  }
+                                }
+                              }
+                            }
+      
+    
+
+
+
+  
+
+    
   ]
 }
