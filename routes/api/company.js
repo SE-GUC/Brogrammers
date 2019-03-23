@@ -3,9 +3,7 @@ const express = require('express')
 const router = express.Router()
 
 // Models
-const Company = require('../../models/Company');
-
-const validator = require('../../validations/companyValidations')
+const Company = require('../../models/Company')
 
 const validator = require('../../validations/companyValidations')
 
@@ -37,6 +35,13 @@ router.post('/spc', async (req, res) => {
 router.get('/', async (req, res) => {
   const companys = await Company.find()
   res.json({ data: companys })
+})
+
+
+//Sprint 2: viewing approved Companies
+router.get('/approved', async(req, res) => {
+  const acceptedCompanys = await Company.find({status: 'Accepted'})//Because no Accepted companys... used 'PendingLawyer' as a test case
+  res.json({data: acceptedCompanys})
 })
 
 router.get('/:id', async (req, res) => {
