@@ -72,7 +72,7 @@ router.put('/:id/getTasks/approve/:id2', async (req, res) => {
     const compid = req.params.id2
     const lawyerss = await Lawyer.findById(id)
     const lawyerssn = await lawyerss.Social_Security_Number
-    var query = { 'lawyer': lawyerssn, _id: compid, $or: [{ status: 'PendingLawyer' }, { status: 'RejectedLawyer' }] }
+    var query = { 'lawyer': lawyerssn, _id: compid, $or: [{ status: 'PendingLawyer' }, { status: 'RejectedLawyer' }] }``
     const company = await Company.find(query)
     if (!company) {
       return res.status(404).send({ error: 'You have no due tasks' })
