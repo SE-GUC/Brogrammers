@@ -23,8 +23,7 @@ const adminSchema = new Schema({
     required: true
   },
   joinDate: {
-    type: Date,
-    required: true
+    type: Date
   },
   phone: {
     type: String,

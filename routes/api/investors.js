@@ -436,8 +436,7 @@ router.get('/getall/cases', async (req, res) => {
   }
 })
 
-router.get('/:companyID/viewFees', async (req, res)=>
-{
+router.get('/:companyID/viewFees', async (req, res) => {
   var stat = 0
   var token = req.headers['x-access-token']
   if (!token) { return res.status(401).send({ auth: false, message: 'Please login first.' }) }
@@ -449,34 +448,28 @@ router.get('/:companyID/viewFees', async (req, res)=>
   if (!investor) {
     return res.status(400).send({ error: 'You are not an investor' })
   }
-    const companyId = req.params.companyID;
-    const c = await Company.findById(companyId);
-    var fees = "Unchanged";
-    
-    if(c.regulationLaw==="Law 159"){
-        //x = (c.capital * (1/1000)) + (c.capital * (0.25/100)) + 56;
-        var GAFI = c.capital * (1/1000);
-        if(GAFI<100)
-          GAFI=100;
-        if(GAFI>1000)
-          GAFI=1000;
+  const companyId = req.params.companyID
+  const c = await Company.findById(companyId)
+  var fees = 'Unchanged'
 
-        var Notary = c.capital * (0.25/100);
-        if(Notary<10)
-          Notary=10;
-        if(Notary>1000)
-          Notary=1000;
+  if (c.regulationLaw === 'Law 159') {
+    // x = (c.capital * (1/1000)) + (c.capital * (0.25/100)) + 56;
+    var GAFI = c.capital * (1 / 1000)
+    if (GAFI < 100) { GAFI = 100 }
+    if (GAFI > 1000) { GAFI = 1000 }
 
-        fees = GAFI + Notary + 56;
+    var Notary = c.capital * (0.25 / 100)
+    if (Notary < 10) { Notary = 10 }
+    if (Notary > 1000) { Notary = 1000 }
 
-    }else{
-        if(c.regulationLaw==="Law 72"){
-          fees=610;
-        }
+    fees = GAFI + Notary + 56
+  } else {
+    if (c.regulationLaw === 'Law 72') {
+      fees = 610
     }
-    
-    res.json({EstimatedFees : fees});
+  }
 
-});
+  res.json({ EstimatedFees: fees })
+})
 
 module.exports = router
