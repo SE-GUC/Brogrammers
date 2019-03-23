@@ -302,7 +302,6 @@ router.delete('/:id', async (req, res) => {
           .status(500)
           .send({ auth: false, message: 'Failed to authenticate token.' })
       }
-<<<<<<< HEAD
       stat = decoded.id;
     });
     const admin = await Admin.findById(stat);
@@ -310,15 +309,6 @@ router.delete('/:id', async (req, res) => {
     if (admin) {
       const id = req.params.id;
       const lawyer = await Lawyer.findById(id);
-=======
-      stat = decoded.id
-    })
-    const admin = await Admin.find({ _id: stat })
-    console.log(admin)
-    if (admin) {
-      const id = req.params.id
-      const lawyer = await Lawyer.find({ _id: id })
->>>>>>> eb772309a8fd70ee54d2eff0176e83da9a167390
       if (lawyer) {
         await Lawyer.findByIdAndRemove(id)
         res.json({
@@ -623,15 +613,9 @@ router.put('/', async (req, res) => {
           .status(500)
           .send({ auth: false, message: 'Failed to authenticate token.' })
       }
-<<<<<<< HEAD
       stat = decoded.id;
     });
     const lawyer = await Lawyer.findById(stat);
-=======
-      stat = decoded.id
-    })
-    const lawyer = await Lawyer.findOne({}, { _id: stat })
->>>>>>> eb772309a8fd70ee54d2eff0176e83da9a167390
     if (!lawyer) {
       return res.status(404).send({ error: 'lawyer does not exist' })
     }
@@ -663,7 +647,6 @@ router.delete('/', async (req, res) => {
           .status(500)
           .send({ auth: false, message: 'Failed to authenticate token.' })
       }
-<<<<<<< HEAD
       stat = decoded.id;
     });
     const dellawyer = await Lawyer.findById(stat);
@@ -676,12 +659,6 @@ router.delete('/', async (req, res) => {
     {
       return res.json({msg: "You have no authorization"});
     }
-=======
-      stat = decoded.id
-    })
-    const deletedLawyer = await Lawyer.findByIdAndRemove(stat)
-    res.json({ msg: 'Lawyer was deleted successfully', data: deletedLawyer })
->>>>>>> eb772309a8fd70ee54d2eff0176e83da9a167390
   } catch (error) {
     // We will be handling the error later
     console.log(error)
@@ -875,7 +852,6 @@ router.get('/mycases/:id', async (req, res) => {
   } catch (error) {
     console.log(error)
   }
-<<<<<<< HEAD
 });
 
 router.get('/mycases/:id', async (req, res) => {
@@ -900,7 +876,3 @@ router.get('/mycases/:id', async (req, res) => {
   }
 })
 module.exports = router;
-=======
-})
-module.exports = router
->>>>>>> eb772309a8fd70ee54d2eff0176e83da9a167390

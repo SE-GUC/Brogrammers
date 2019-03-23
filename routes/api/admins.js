@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const express = require("express");
 const router = express.Router();
 const Admin = require("../../models/Admin.js");
@@ -7,16 +6,6 @@ const validator = require("../../validations/adminValidations");
 const bcrypt = require("bcryptjs");
 const Company = require("../../models/Company");
 var jwt = require("jsonwebtoken");
-=======
-const express = require('express')
-const router = express.Router()
-const Admin = require('../../models/Admin.js')
-var config = require('../../config/jwt')
-const validator = require('../../validations/adminValidations')
-const bcrypt = require('bcryptjs')
-const Company = require('../../models/Company')
-var jwt = require('jsonwebtoken')
->>>>>>> eb772309a8fd70ee54d2eff0176e83da9a167390
 
 
 //Logout Sprin2
@@ -116,7 +105,6 @@ router.put('/', async (req, res) => {
         .status(400)
         .send({ error: isValidated.error.details[0].message })
     }
-<<<<<<< HEAD
     const admin = await Admin.findById(stat);
     if(admin)
     {
@@ -128,11 +116,6 @@ router.put('/', async (req, res) => {
     {
       return res.json({msg: "You don't have the authorization"});
     }
-=======
-    await Admin.findByIdAndUpdate(stat, req.body)
-    // res.send(admin);
-    res.json({ msg: 'Information updated successfully' })
->>>>>>> eb772309a8fd70ee54d2eff0176e83da9a167390
   } catch (error) {
     res.status(404).send({ msg: "Admin doesn't exist" })
   }
@@ -238,15 +221,9 @@ router.delete('/', async (req, res) => {
           .status(500)
           .send({ auth: false, message: 'Failed to authenticate token.' })
       }
-<<<<<<< HEAD
       stat = decoded.id;
     });
     const currUser = await Admin.findById(stat);
-=======
-      stat = decoded.id
-    })
-    const currUser = await Admin.find({ _id: stat })
->>>>>>> eb772309a8fd70ee54d2eff0176e83da9a167390
     if (currUser) {
       await Admin.findByIdAndRemove(stat)
       res.json({ msg: 'Admin deleted successfully' })
@@ -273,19 +250,11 @@ router.delete('/:id', async (req, res) => {
           .status(500)
           .send({ auth: false, message: 'Failed to authenticate token.' })
       }
-<<<<<<< HEAD
       stat = decoded.id;
     });
     const id = req.params.id;
     const currUser = await Admin.findById(stat);
     const delUser = await Admin.findById(id);
-=======
-      stat = decoded.id
-    })
-    const id = req.params.id
-    const currUser = await Admin.find({ _id: stat })
-    const delUser = await Admin.find({ _id: id })
->>>>>>> eb772309a8fd70ee54d2eff0176e83da9a167390
     if (currUser) {
       if (delUser) {
         const del = await Admin.findByIdAndRemove(id)

@@ -1,34 +1,3 @@
-<<<<<<< HEAD
-const express = require("express");
-const router = express.Router();
-const Investor = require("../../models/Investor");
-const validator = require("../../validations/investorValidations");
-const companyvalidator = require("../../validations/companyValidations");
-const bcrypt = require("bcryptjs");
-var jwt = require("jsonwebtoken");
-var config = require("../../config/jwt");
-const Admin = require("../../models/Admin");
-const Company = require("../../models/Company");
-
-router.get("/", async (req, res) => {
-  var token = req.headers["x-access-token"];
-  if (!token) {
-    return res.status(401).send({ auth: false, message: "No Token provided." });
-  }
-  jwt.verify(token, config.secret, function(err, decoded) {
-    if (err) {
-      return res
-        .status(500)
-        .send({ auth: false, message: "Failed to authenticate token." });
-    }
-  });
-  const investors = await Investor.find();
-  res.json({ data: investors });
-});
-
-router.get("/:id", async (req, res) => {
-  var token = req.headers["x-access-token"];
-=======
 const express = require('express')
 const router = express.Router()
 const Investor = require('../../models/Investor')
@@ -76,7 +45,6 @@ router.get('/', async (req, res) => {
 // View an Investor
 router.get('/:id', async (req, res) => {
   var token = req.headers['x-access-token']
->>>>>>> eb772309a8fd70ee54d2eff0176e83da9a167390
   if (!token) {
     return res.status(401).send({ auth: false, message: 'No Token provided.' })
   }
@@ -296,15 +264,9 @@ router.put('/', async (req, res) => {
           .status(500)
           .send({ auth: false, message: 'Failed to authenticate token.' })
       }
-<<<<<<< HEAD
       stat = decoded.id;
     });
     const investor = await Investor.findById(stat);
-=======
-      stat = decoded.id
-    })
-    const investor = await Investor.findOne({}, { _id: stat })
->>>>>>> eb772309a8fd70ee54d2eff0176e83da9a167390
     if (!investor) {
       return res.status(404).send({ error: 'Investor does not exist' })
     }
@@ -322,7 +284,6 @@ router.put('/', async (req, res) => {
   }
 })
 
-<<<<<<< HEAD
 router.get("/View/ViewCompanies", async (req, res) => {
   var stat = 0;
   try {
@@ -352,31 +313,6 @@ router.get("/View/ViewCompanies", async (req, res) => {
 });
 //manga
 router.delete("/", async (req, res) => {
-=======
-router.get('/View/ViewCompanies', async (req, res) => {
-  var stat = 0
-  var token = req.headers['x-access-token']
-  if (!token) {
-    return res.status(401).send({ auth: false, message: 'No token provided.' })
-  }
-  jwt.verify(token, config.secret, function (err, decoded) {
-    if (err) {
-      return res
-        .status(500)
-        .send({ auth: false, message: 'Failed to authenticate token.' })
-    }
-    stat = decoded.id
-  })
-  const investor = await Investor.findById(stat)
-  const investorNatID = investor.idNumber
-  const arrayOfCompanies = await Company.find({
-    investorIdentificationNumber: investorNatID
-  })
-  res.json({ msg: 'Your Companies ', data: arrayOfCompanies })
-})
-
-router.delete('/', async (req, res) => {
->>>>>>> eb772309a8fd70ee54d2eff0176e83da9a167390
   try {
     var stat = 0
     var token = req.headers['x-access-token']
@@ -391,7 +327,6 @@ router.delete('/', async (req, res) => {
           .status(500)
           .send({ auth: false, message: 'Failed to authenticate token.' })
       }
-<<<<<<< HEAD
       stat = decoded.id;
     });
     const currInv = await Investor.findById(stat);
@@ -399,11 +334,6 @@ router.delete('/', async (req, res) => {
       return res.json({msg:"Investor not found"})
     }
     const deletedInvestor = await Investor.findByIdAndRemove(stat);
-=======
-      stat = decoded.id
-    })
-    const deletedInvestor = await Investor.findByIdAndRemove(stat)
->>>>>>> eb772309a8fd70ee54d2eff0176e83da9a167390
     res.json({
       msg: 'Investor was successfully deleted',
       data: deletedInvestor
@@ -412,15 +342,9 @@ router.delete('/', async (req, res) => {
     // We will be handling the error later
     console.log(error)
   }
-<<<<<<< HEAD
 });
 //manga
 router.delete("/:id", async (req, res) => {
-=======
-})
-
-router.delete('/:id', async (req, res) => {
->>>>>>> eb772309a8fd70ee54d2eff0176e83da9a167390
   try {
     var stat = 0
     var token = req.headers['x-access-token']
@@ -435,21 +359,12 @@ router.delete('/:id', async (req, res) => {
           .status(500)
           .send({ auth: false, message: 'Failed to authenticate token.' })
       }
-<<<<<<< HEAD
       stat = decoded.id;
     });
     const admin = await Admin.findById(stat);
     const id = req.params.id;
     const currInv = await Investor.findByIdAndDelete(id);
     console.log(admin);
-=======
-      stat = decoded.id
-    })
-    const admin = await Admin.find({ _id: stat })
-    const id = req.params.id
-    const currInv = await Investor.find({ _id: id })
-    console.log(admin)
->>>>>>> eb772309a8fd70ee54d2eff0176e83da9a167390
     if (admin) {
       if (currInv) {
         await Investor.findByIdAndRemove(id)
@@ -468,27 +383,8 @@ router.delete('/:id', async (req, res) => {
   }
 })
 
-<<<<<<< HEAD
 router.post("/createspccompany", async (req, res) => {
   var stat = 0;
-=======
-router.delete('/:id', async (req, res) => {
-  try {
-    const id = req.params.id
-    const deletedInvestor = await Investor.findByIdAndRemove(id)
-    res.json({
-      msg: 'Investor was successfully deleted',
-      data: deletedInvestor
-    })
-  } catch (error) {
-    // We will be handling the error later
-    console.log(error)
-  }
-})
-//alaa
-router.post('/createspccompany', async (req, res) => {
-  var stat = 0
->>>>>>> eb772309a8fd70ee54d2eff0176e83da9a167390
   try {
     var token = req.headers['x-access-token']
     if (!token) {
