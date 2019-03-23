@@ -74,7 +74,6 @@ router.get('/:id', async (req, res) => {
 
 router.put("/", async (req, res) => {
   try {
-    const id = req.params.id;
     var stat = 0;
     var token = req.headers["x-access-token"];
     if (!token)
@@ -94,7 +93,7 @@ router.put("/", async (req, res) => {
           .status(400)
           .send({ error: isValidated.error.details[0].message });
       }
-      const updatedAdmin = await Admin.findByIdAndUpdate(id, req.body);
+      const updatedAdmin = await Admin.findByIdAndUpdate(stat, req.body);
       // res.send(admin);
       res.json({ msg: "Information updated successfully" });
   } catch (error) {
@@ -173,16 +172,6 @@ router.post('/login', function (req, res) {
   res.status(200).send({ auth: true, token: token })
 })
 
-router.delete('/:id', async (req, res) => {
-  try {
-    const id = req.params.id
-    await Admin.findByIdAndRemove(id)
-    res.json({ msg: 'Admin deleted successfully' })
-  } catch (error) {
-    console.log(error)
-  }
-})
-
 router.delete("/", async (req, res) => {
   try {
     var stat = 0;
@@ -198,8 +187,14 @@ router.delete("/", async (req, res) => {
           .send({ auth: false, message: "Failed to authenticate token." });
       stat = decoded.id;
     });
-    const admin = await Admin.findByIdAndRemove(stat);
-    res.json({ msg: "Admin deleted successfully" });
+    const currUser = await Admin.find({_id: stat});
+    if(currUser)
+    {
+      const admin = await Admin.findByIdAndRemove(stat);
+      res.json({ msg: "Admin deleted successfully" });
+    }
+    else
+      return res.json({msg : "You don't have the authorization"});
   } catch (error) {
     res.status(404).send({ msg: "Admin doesn't exist" });
   }
@@ -221,8 +216,14 @@ router.delete("/:id", async (req, res) => {
       stat = decoded.id;
     });
     const id = req.params.id;
-    const admin = await Admin.findByIdAndRemove(id);
-    res.json({ msg: "Admin deleted successfully" });
+    const currUser = await Admin.find({_id: stat});
+    if(currUser)
+    {
+      const admin = await Admin.findByIdAndRemove(id);
+      res.json({ msg: "Admin deleted successfully" });
+    }
+    else
+      return res.json({msg : "You don't have the authorization"});
   } catch (error) {
     res.status(404).send({ msg: "Admin doesn't exist" });
   }
