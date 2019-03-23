@@ -518,9 +518,20 @@ router.get('/mycases/:id', async (req, res) => {
       return res.status(400).send({ error: 'You are not a reviewer' })
     }
     if (stat === req.params.id) {
-      const reviewers = await Reviewer.findById(req.params.id)
-      const company = await Company.find()
-      if (company.lawyer === reviewers.ssn) { res.json({ data: company }) }
+      const id = req.params.id
+     
+      const reviewer = await Reviewer.findById(id)
+      const ssn = reviewer.ssn
+      var query = {
+        $and: [
+          { status: 'PendingReviewer' },
+          { lawyer: ssn }
+         
+        ]
+        
+      }
+      const company = await Company.find(query)
+      res.json({ data : company }) 
     } else { return res.status(400).send({ error: 'wrong ID' }) }
   } catch (error) {
     console.log(error)

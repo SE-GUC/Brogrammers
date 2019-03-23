@@ -705,7 +705,7 @@ router.put('/addcomment/:id/:companyId', async function (req, res) {
         .status(400)
         .send({ error: isValidated.error.details[0].message })
     }
-    await Company.findByIdAndUpdate(companyId, {
+    await Company.findByIdAndUpdate(editableCompanies.id, {
       lawyerComment: req.body.lawyerComment
     })
     res.json({ msg: 'Comment added Successfully' })
@@ -813,9 +813,21 @@ router.get('/mycases/:id', async (req, res) => {
     if (!lawyers) {
       return res.status(400).send({ error: 'You are not a Lawyer' })
     } if (stat === req.params.id) {
-      const lawyer = await Lawyer.findById(req.params.id)
-      const company = await Company.find()
-      if (company.lawyer === lawyer.email) { res.json({ data: company }) }
+      const id = req.params.id
+     
+      const lawyer = await Lawyer.findById(id)
+      const ssn = lawyer.socialSecurityNumber
+      var query = {
+        $and: [
+          { status: 'PendingLawyer' },
+          { lawyer: ssn }
+         
+        ]
+        
+      }
+      const company = await Company.find(query)// Because no Accepted companys... used 'PendingLawyer' as a test case
+     
+     res.json({ data : company }) 
     } else return res.status(400).send({ error: 'Wrong ID' })
   } catch (error) {
     console.log(error)
