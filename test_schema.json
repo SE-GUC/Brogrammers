@@ -1,0 +1,868 @@
+{
+  "routes": [
+    {
+      "url": "/api/investors/register",
+      "params": {},
+      "methods": {
+        "POST": {
+          "summary": "create a new investor",
+          "body": {
+            "!name": "string().min(3)",
+            "!type": "string().length(3)",
+            "!gender": "string().valid('male', 'female')",
+            "!nationality": "string().max(25)",
+            "!idType": "string().valid('Passport', 'National ID')",
+            "!idNumber": "String()",
+            "!dob": "date()",
+            "!address": "string()",
+            "!telephone": "number()",
+            "fax": "number()",
+            "!mail": "string()",
+            "!password": "string()"
+          },
+          "expected": {
+            "auth": true,
+            "token": "string()",
+            "msg": "Investor was created successfully",
+            "data": {
+              "!_id": "string().length(24)",
+              "!name": "string().min(3)",
+              "!type": "string().length(3)",
+              "!gender": "string().valid('male', 'female')",
+              "!nationality": "string().max(25)",
+              "!idType": "string().valid('Passport', 'National ID')",
+              "!idNumber": "String()",
+              "!dob": "date()",
+              "!address": "string()",
+              "!telephone": "number()",
+              "fax": "number()",
+              "!mail": "string()",
+              "!password": "string()",
+              "__v": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "url": "/routes/api/admins/register",
+      "params": {},
+      "methods": {
+        "POST": {
+          "summary": "admin register by another admin (must have an admin token)",
+          "body": {
+            "!name": "string()",
+            "!gender": "string().valid('male', 'female')",
+            "!birthDate": "string()",
+            "!phone": "number()",
+            "!email": "string()",
+            "!password": "string().min(8).max(20)",
+            "joinDate": "string()"
+          },
+          "expected": {
+            "auth": true,
+            "token": "string()",
+            "msg": "Investor was created successfully",
+            "data": {
+              "!_id": "string().length(24)",
+              "!name": "string()",
+              "!password": "string().min(8).max(20)",
+              "!birthDate": "string()",
+              "!gender": "string().valid('male', 'female')",
+              "joinDate": "string()",
+              "!email": "string()",
+              "!phone": "number()",
+              "__v": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/lawyer/register",
+      "params": {},
+      "methods": {
+        "POST": {
+          "summary": "lawyer by an admin (must have an admin token)",
+          "body": {
+            "!firstName": "string().min(1)",
+            "!middleName": "string().min(1)",
+            "!lastName": "string().min(1)",
+            "!email": "string().email()",
+            "!password": "string().min(8)",
+            "!mobile_number": "string().min(6)",
+            "!Social_Security_Number": "string().min(14).max(14)",
+            "!salary": "number()",
+            "!birth_Date": "date()",
+            "!yearsOfExperience": "number()"
+          },
+          "expected": {
+            "auth": true,
+            "token": "string()",
+            "msg": "Lawyer was created successfully",
+            "data": {
+              "!_id": "string().length(24)",
+              "!firstName": "string().min(1)",
+              "!middleName": "string().min(1)",
+              "!lastName": "string().min(1)",
+              "!password": "string().min(8)",
+              "!email": "string().email()",
+              "!mobile_number": "string().min(6)",
+              "!Social_Security_Number": "string().min(14).max(14)",
+              "!salary": "number()",
+              "!birth_Date": "date()",
+              "!yearsOfExperience": "number()",
+              "__v": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/reviewer/register",
+      "params": {},
+      "methods": {
+        "POST": {
+          "summary": "reviewer by an admin (must have an admin token)",
+          "body": {
+            "!ssn": "number()",
+            "!name": "string()",
+            "!gender": "string()",
+            "!address": "string()",
+            "!phone": "number()",
+            "!email": "string()",
+            "!password": "string()",
+            "!yearsOfExperience": "number()",
+            "!age": "number()",
+            "!birth": "string()",
+            "!task": "number()"
+          },
+          "expected": {
+            "auth": true,
+            "token": "string()",
+            "msg": "Reviewer was created successfully",
+            "data": {
+              "!_id": "string().length(24)",
+              "!ssn": "number()",
+              "!name": "string()",
+              "!gender": "string()",
+              "!address": "string()",
+              "!phone": "number()",
+              "!email": "string()",
+              "!password": "string()",
+              "!yearsOfExperience": "number()",
+              "!age": "number()",
+              "!birth": "string()",
+              "!task": "number()",
+              "__v": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "url": "/routes/api/admins/login",
+      "params": {},
+      "methods": {
+        "POST": {
+          "summary": "login for admin",
+          "body": {
+            "email": "string()",
+            "password": "string()"
+          },
+          "expected": {
+            "auth": true,
+            "token": "string()",
+            "data": null
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/lawyer/login",
+      "params": {},
+      "methods": {
+        "POST": {
+          "summary": "login for lawyer",
+          "body": {
+            "email": "string()",
+            "password": "string()"
+          },
+          "expected": {
+            "auth": true,
+            "token": "string()",
+            "data": null
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/reviewer/login",
+      "params": {},
+      "methods": {
+        "POST": {
+          "summary": "login for reviewer",
+          "body": {
+            "email": "string()",
+            "password": "string()"
+          },
+          "expected": {
+            "auth": true,
+            "token": "string()",
+            "data": null
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/lawyer/editForm/:id",
+      "params": {
+        "!id": "string()"
+      },
+      "methods": {
+        "GET": {
+          "summary": "views rejected fourms submitted by this lawyer and rejected by reviewer, id in params is the lawyer's ssn",
+          "body": {},
+          "expected": {
+            "data": {
+              "managers": "array()",
+              "status": "string()",
+              "regulationLaw": "string()",
+              "legalCompantForm": "string()",
+              "nameInArabic": "string()",
+              "nameInEnglish": "string()",
+              "governerateHQ": "string()",
+              "cityHQ": "string()",
+              "addressHQ": "string()",
+              "telephoneHQ": "number()",
+              "faxHQ": "number()",
+              "investorType": "string()",
+              "capitalCurrency": "string()",
+              "capital": "number().min(50000)",
+              "investorName": "string()",
+              "investorSex": "string()",
+              "investorNationality": "string()",
+              "investorIdentificationType": "string()",
+              "investorIdentificationNumber": "string()",
+              "investorBD": "date()",
+              "investorAddress": "string()",
+              "investorTelephone": "string()",
+              "investorFax": "string()",
+              "investorEmail": "string()",
+              "lawyer": "string()",
+              "_v": "number()"
+            }
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/investors/:id/MyRequests",
+      "params": {
+        "!id": "string()"
+      },
+      "methods": {
+        "GET": {
+          "summary": "view unaccepted requests and their current status",
+          "body": {},
+          "expected": {
+            "data": {
+              "managers": "array()",
+              "status": "string()",
+              "regulationLaw": "string()",
+              "legalCompantForm": "string()",
+              "nameInArabic": "string()",
+              "nameInEnglish": "string()",
+              "governerateHQ": "string()",
+              "cityHQ": "string()",
+              "addressHQ": "string()",
+              "telephoneHQ": "number()",
+              "faxHQ": "number()",
+              "investorType": "string()",
+              "capitalCurrency": "string()",
+              "capital": "number().min(50000)",
+              "investorName": "string()",
+              "investorSex": "string()",
+              "investorNationality": "string()",
+              "investorIdentificationType": "string()",
+              "investorIdentificationNumber": "string()",
+              "investorBD": "date()",
+              "investorAddress": "string()",
+              "investorTelephone": "string()",
+              "investorFax": "string()",
+              "investorEmail": "string()",
+              "lawyer": "string()",
+              "lawyerComment": "string()",
+              "_v": "number()"
+            }
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/investors/:id/MyRequests/:companyid",
+      "params": {
+        "!id": "string()",
+        "!companyid": "string()"
+      },
+      "methods": {
+        "GET": {
+          "summary": "view a case status",
+          "body": {},
+          "expected": {
+            "data": {
+              "nameInArabic": "string()",
+              "status": "string()",
+              "lawyerComment": "string()"
+            }
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/investors/:id/MyRequests/:companyid",
+      "params": {
+        "!id": "string()",
+        "!companyid": "string()"
+      },
+      "methods": {
+        "PUT": {
+          "summary": "update a case form after being rejected by lawyer",
+          "body": {
+            "managers": "array()",
+            "status": "string()",
+            "regulationLaw": "string()",
+            "legalCompantForm": "string()",
+            "nameInArabic": "string()",
+            "nameInEnglish": "string()",
+            "governerateHQ": "string()",
+            "cityHQ": "string()",
+            "addressHQ": "string()",
+            "telephoneHQ": "number()",
+            "faxHQ": "number()",
+            "investorType": "string()",
+            "capitalCurrency": "string()",
+            "capital": "number().min(50000)",
+            "investorName": "string()",
+            "investorSex": "string()",
+            "investorNationality": "string()",
+            "investorIdentificationType": "string()",
+            "investorIdentificationNumber": "string()",
+            "investorBD": "date()",
+            "investorAddress": "string()",
+            "investorTelephone": "string()",
+            "investorFax": "string()",
+            "investorEmail": "string()"
+          },
+          "expected": {
+            "data": {
+              "managers": "array()",
+              "status": "string()",
+              "regulationLaw": "string()",
+              "legalCompantForm": "string()",
+              "nameInArabic": "string()",
+              "nameInEnglish": "string()",
+              "governerateHQ": "string()",
+              "cityHQ": "string()",
+              "addressHQ": "string()",
+              "telephoneHQ": "number()",
+              "faxHQ": "number()",
+              "investorType": "string()",
+              "capitalCurrency": "string()",
+              "capital": "number().min(50000)",
+              "investorName": "string()",
+              "investorSex": "string()",
+              "investorNationality": "string()",
+              "investorIdentificationType": "string()",
+              "investorIdentificationNumber": "string()",
+              "investorBD": "date()",
+              "investorAddress": "string()",
+              "investorTelephone": "string()",
+              "investorFax": "string()",
+              "investorEmail": "string()",
+              "lawyer": "string()",
+              "lawyerComment": "string()",
+              "_v": "number()"
+            }
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/lawyer/editForm/:id/:companyId",
+      "params": {
+        "!id": "string()",
+        "!companyId": "string()"
+      },
+      "methods": {
+        "PUT": {
+          "summary": "update rejected fourms submitted by this lawyer and rejected by reviewer, id in params is the lawyer's ssn",
+          "body": {
+            "managers": "array()",
+            "status": "string()",
+            "nameInArabic": "string()",
+            "nameInEnglish": "string()",
+            "governerateHQ": "string()",
+            "cityHQ": "string()",
+            "addressHQ": "string()",
+            "telephoneHQ": "number()",
+            "faxHQ": "number()",
+            "investorType": "string()",
+            "capitalCurrency": "string()",
+            "capital": "number().min(50000)",
+            "investorName": "string()",
+            "investorSex": "string()",
+            "investorNationality": "string()",
+            "investorIdentificationType": "string()",
+            "investorIdentificationNumber": "string()",
+            "investorBD": "date()",
+            "investorAddress": "string()",
+            "investorTelephone": "string()",
+            "investorFax": "string()",
+            "investorEmail": "string()",
+            "lawyer": "string()"
+          },
+          "expected": {
+            "msg": "fourm updated successfully",
+            "data": null
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/lawyer/addcomment/:id/:companyId",
+      "params": {
+        "!id": "string()",
+        "!companyId": "string()"
+      },
+      "methods": {
+        "PUT": {
+          "summary": "Allows the lawyer to add a comment to the rejected applications by him so that he can notify the investor with the problem, id in params is the lawyer's ssn",
+          "body": {
+            "lawyerComment": "string()"
+          },
+          "expected": {
+            "msg": "Comment added Successfully",
+            "data": null
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/reviewer/addcomment/:id/:companyId",
+      "params": {
+        "!id": "string()",
+        "!companyId": "string()"
+      },
+      "methods": {
+        "PUT": {
+          "summary": "Allows the reviewer to add a comment to the rejected applications by him so that the assigned establishment lawyer can update them, id in params is the reviewer's ssn",
+          "body": {
+            "reviewerComment": "string()"
+          },
+          "expected": {
+            "msg": "Comment added Successfully",
+            "data": null
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/investors/login",
+      "params": {},
+      "methods": {
+        "POST": {
+          "summary": "login for Investor",
+          "body": {
+            "email": "string()",
+            "password": "string()"
+          },
+          "expected": {
+            "auth": true,
+            "token": "string()",
+            "data": null
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/lawyer/mycases/:id",
+      "params": {
+        "!id": "string()"
+      },
+      "methods": {
+        "GET": {
+          "summary": "get all the lawyer cases",
+          "body": {},
+          "expected": {
+            "auth": true,
+            "token": "string()",
+            "data": null
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/reviewer/mycases/:id",
+      "params": {
+        "!id": "string()"
+      },
+      "methods": {
+        "GET": {
+          "summary": "get all the reviewer cases",
+          "body": {},
+          "expected": {
+            "auth": true,
+            "token": "string()",
+            "data": null
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/investors/:id/viewFees",
+      "params": {
+        "!id": "string()"
+      },
+      "methods": {
+        "GET": {
+          "summary": "investor views estimated fees for creating a company, id in params is the company's id after it's created in the database",
+          "body": {},
+          "expected": {
+            "EstimatedFees": "fees"
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/lawyer/:id/viewFees",
+      "params": {
+        "!id": "string()"
+      },
+      "methods": {
+        "GET": {
+          "summary": "lawyyer views estimated fees for creating a company for an investor, id in params is the company's id after it's created in the database",
+          "body": {},
+          "expected": {
+            "EstimatedFees": "fees"
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/lawyer/resubmit/:id/:companyId",
+      "params": {
+        "!id": "string()",
+        "!companyId": "string()"
+      },
+      "methods": {
+        "PUT": {
+          "summary": "lawyyer resubmit disaproved forms after updating them according to the reviewer's comments, id in params is the lawyer's id and companyId is the company's id",
+          "body": {},
+          "expected": {
+            "msg": "fourm resubmitted successfully",
+            "data": null
+          }
+        }
+      }
+    },
+      {
+        "url": "/api/lawyer/:id/getTasks",
+        "params": {
+          "!id": "string()"
+          
+        },
+        "methods": {
+          "GET": {
+            "summary": "gets specific tasks of a certain lawyer by his id",
+            "body": {},
+            "expected": {
+              "data":{
+                "managers": "array()",
+                "status": "string()",
+                "regulationLaw": "string()",
+                "legalCompantForm": "string()",
+                "nameInArabic": "string()",
+                "nameInEnglish": "string()",
+                "governerateHQ": "string()",
+                "cityHQ": "string()",
+                "addressHQ": "string()",
+                "telephoneHQ": "number()",
+                "faxHQ": "number()",
+                "investorType": "string()",
+                "capitalCurrency": "string()",
+                "capital": "number().min(50000)",
+                "investorName": "string()",
+                "investorSex": "string()",
+                "investorNationality": "string()",
+                "investorIdentificationType": "string()",
+                "investorIdentificationNumber": "string()",
+                "investorBD": "date()",
+                "investorAddress": "string()",
+                "investorTelephone": "string()",
+                "investorFax": "string()",
+                "investorEmail": "string()",
+                "lawyer": "string()",
+                "lawyerComment": "string()",
+                "_v": "number()"
+              }
+            }
+          }
+        }
+      },
+      {
+        "url": "/api/lawyer/getAllTasks/view",
+        "params": {},
+        "methods": {
+          "GET": {
+            "summary": "Gets all the tasks that are free for any lawyer to choose from",
+            
+            "body": {},
+            "expected": {
+              "data":{
+                "managers": "array()",
+                "status": "string()",
+                "regulationLaw": "string()",
+                "legalCompantForm": "string()",
+                "nameInArabic": "string()",
+                "nameInEnglish": "string()",
+                "governerateHQ": "string()",
+                "cityHQ": "string()",
+                "addressHQ": "string()",
+                "telephoneHQ": "number()",
+                "faxHQ": "number()",
+                "investorType": "string()",
+                "capitalCurrency": "string()",
+                "capital": "number().min(50000)",
+                "investorName": "string()",
+                "investorSex": "string()",
+                "investorNationality": "string()",
+                "investorIdentificationType": "string()",
+                "investorIdentificationNumber": "string()",
+                "investorBD": "date()",
+                "investorAddress": "string()",
+                "investorTelephone": "string()",
+                "investorFax": "string()",
+                "investorEmail": "string()",
+                "lawyer": "string()",
+                "lawyerComment": "string()",
+                "_v": "number()"
+              }
+            }
+          }
+        }
+      },
+      {
+        "url": "/api/lawyer/:id/assignFreeTask/:id2",
+        "params": {
+            "!id":"string()",
+            "!id2":"string()"
+        
+        },
+        "methods": {
+          "GET": {
+            "summary": "Lawyer Chooses one task at a time and assigns it to himself/herself",
+            
+            "body": {},
+            "expected": {
+                "msg":"Task assigned Successfully",
+              "data":null
+                
+              }
+            }
+          }
+        },
+        {
+            "url": "/api/lawyer/:id/getTasks/approve/:id2",
+            "params": {
+                "!id":"string()",
+                "!id2":"string()"
+
+            },
+            "methods": {
+              "GET": {
+                "summary": "Lawyer Approves the task and updates the company status",
+                
+                "body": {},
+                "expected": {
+                    "msg":"Task approved Successfully",
+                  "data":null
+                    
+                  }
+                }
+              }
+            },
+            {
+                "url": "/api/lawyer/:id/getTasks/disapprove/:id2",
+                "params": {
+                    "!id":"string()",
+                    "!id2":"string()"
+    
+                },
+                "methods": {
+                  "GET": {
+                    "summary": "Lawyer disapproves the task and updates the company status",
+                    
+                    "body": {},
+                    "expected": {
+                        "msg":"Task disapproved Successfully",
+                      "data":null
+                        
+                      }
+                    }
+                  }
+                },{
+                    "url": "/api/reviewer/:id/getTasks",
+                    "params": {
+                      "!id": "string()"
+                      
+                    },
+                    "methods": {
+                      "GET": {
+                        "summary": "gets specific tasks of a certain reviewer by his id",
+                        "body": {},
+                        "expected": {
+                          "data":{
+                            "managers": "array()",
+                            "status": "string()",
+                            "regulationLaw": "string()",
+                            "legalCompantForm": "string()",
+                            "nameInArabic": "string()",
+                            "nameInEnglish": "string()",
+                            "governerateHQ": "string()",
+                            "cityHQ": "string()",
+                            "addressHQ": "string()",
+                            "telephoneHQ": "number()",
+                            "faxHQ": "number()",
+                            "investorType": "string()",
+                            "capitalCurrency": "string()",
+                            "capital": "number().min(50000)",
+                            "investorName": "string()",
+                            "investorSex": "string()",
+                            "investorNationality": "string()",
+                            "investorIdentificationType": "string()",
+                            "investorIdentificationNumber": "string()",
+                            "investorBD": "date()",
+                            "investorAddress": "string()",
+                            "investorTelephone": "string()",
+                            "investorFax": "string()",
+                            "investorEmail": "string()",
+                            "lawyer": "string()",
+                            "lawyerComment": "string()",
+                            "_v": "number()"
+                          }
+                        }
+                      }
+                    }
+                  },{
+                    "url": "/api/reviewer/getAllTasks/view",
+                    "params": {},
+                    "methods": {
+                      "GET": {
+                        "summary": "Gets all the tasks that are free for any reviewer to choose from",
+                        
+                        "body": {},
+                        "expected": {
+                          "data":{
+                            "managers": "array()",
+                            "status": "string()",
+                            "regulationLaw": "string()",
+                            "legalCompantForm": "string()",
+                            "nameInArabic": "string()",
+                            "nameInEnglish": "string()",
+                            "governerateHQ": "string()",
+                            "cityHQ": "string()",
+                            "addressHQ": "string()",
+                            "telephoneHQ": "number()",
+                            "faxHQ": "number()",
+                            "investorType": "string()",
+                            "capitalCurrency": "string()",
+                            "capital": "number().min(50000)",
+                            "investorName": "string()",
+                            "investorSex": "string()",
+                            "investorNationality": "string()",
+                            "investorIdentificationType": "string()",
+                            "investorIdentificationNumber": "string()",
+                            "investorBD": "date()",
+                            "investorAddress": "string()",
+                            "investorTelephone": "string()",
+                            "investorFax": "string()",
+                            "investorEmail": "string()",
+                            "lawyer": "string()",
+                            "lawyerComment": "string()",
+                            "_v": "number()"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "url": "/api/reviewer/:id/assignFreeTask/:id2",
+                    "params": {
+                        "!id":"string()",
+                        "!id2":"string()"
+                    
+                    },
+                    "methods": {
+                      "GET": {
+                        "summary": "Reviewer Chooses one task at a time and assigns it to himself/herself",
+                        
+                        "body": {},
+                        "expected": {
+                            "msg":"Task assigned Successfully",
+                          "data":null
+                            
+                          }
+                        }
+                      }
+                    },
+                    {
+                        "url": "/api/reviewer/:id/getTasks/approve/:id2",
+                        "params": {
+                            "!id":"string()",
+                            "!id2":"string()"
+            
+                        },
+                        "methods": {
+                          "GET": {
+                            "summary": "reviewer Approves the task and updates the company status",
+                            
+                            "body": {},
+                            "expected": {
+                                "msg":"Task approved Successfully",
+                              "data":null
+                                
+                              }
+                            }
+                          }
+                        },
+                        {
+                            "url": "/api/reviewer/:id/getTasks/disapprove/:id2",
+                            "params": {
+                                "!id":"string()",
+                                "!id2":"string()"
+                
+                            },
+                            "methods": {
+                              "GET": {
+                                "summary": "reviewer disapproves the task and updates the company status",
+                                
+                                "body": {},
+                                "expected": {
+                                    "msg":"Task disapproved Successfully",
+                                  "data":null
+                                    
+                                  }
+                                }
+                              }
+                            }
+      
+    
+
+
+
+  
+
+    
+  ]
+}
