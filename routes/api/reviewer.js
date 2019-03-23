@@ -3,12 +3,11 @@ const bcrypt = require('bcryptjs')
 var jwt = require('jsonwebtoken')
 var config = require('../../config/jwt')
 const reviewer = require('../../models/reviewer')
-/*
-const uuid = require('uuid')
-*/
+const Company = require('../../models/Company')
 const Admin = require('../../models/Admin')
 const router = express.Router()
 const validator = require('../../validations/reviewerValidations')
+const companyvalidator = require('../../validations/companyValidations')
 
 router.get('/', async (req, res) => {
   var stat = 0
@@ -130,7 +129,7 @@ router.put('/:id/getTasks/disapprove/:id2', async (req, res) => {
     if (!currentCompany) {
       return res.status(404).send({ error: 'You have no due tasks' })
     } else {
-      const comps = await Company.findByIdAndUpdate(companyID, { status: 'RejectedReviewer' })
+      await Company.findByIdAndUpdate(companyID, { status: 'RejectedReviewer' })
       const isValidated = await companyvalidator.updateValidationSSC({ status: 'RejectedReviewer' })
       if (isValidated.error) {
         return res
@@ -171,7 +170,7 @@ router.put('/', async (req, res) => {
         .status(400)
         .send({ error: isValidated.error.details[0].message })
     }
-    const updatedreviewer = await reviewer.findByIdAndUpdate(stat, req.body)
+    await reviewer.findByIdAndUpdate(stat, req.body)
     res.json({ msg: 'Reviewer updated successfully' })
   } catch (error) {
     // We will be handling the error later
@@ -215,7 +214,19 @@ router.post('/register', async (req, res) => {
   } = req.body
   const reviewers = await reviewer.findOne({ email })
   if (reviewers) return res.status(400).json({ error: 'Email already exists' })
-
+const newReviewer = new Reviewer({
+    ssn,
+    name,
+    gender,
+    address,
+    phone,
+    email,
+    password:hashedPassword,
+    yearsOfExperience,
+    age,
+    birth,
+    task
+})
   const salt = bcrypt.genSaltSync(10)
   const hashedPassword = bcrypt.hashSync(password, salt)
 

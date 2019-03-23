@@ -62,7 +62,7 @@ router.get('/:id', async (req, res) => {
       }
     })
     const admin = await Admin.findById(adminId)
-    curr = {
+    var curr = {
       name: admin.name,
       id: admin.id,
       birthDate: admin.birthDate,
@@ -107,7 +107,6 @@ router.put('/', async (req, res) => {
     res.status(404).send({ msg: "Admin doesn't exist" })
   }
 })
-
 
 // Register admin by another admin
 router.post('/register', async (req, res) => {
@@ -211,7 +210,7 @@ router.delete('/', async (req, res) => {
     })
     const currUser = await Admin.find({ _id: stat })
     if (currUser) {
-      const admin = await Admin.findByIdAndRemove(stat)
+      await Admin.findByIdAndRemove(stat)
       res.json({ msg: 'Admin deleted successfully' })
     } else { return res.json({ msg: "You don't have the authorization" }) }
   } catch (error) {
@@ -239,7 +238,7 @@ router.delete('/:id', async (req, res) => {
     const id = req.params.id
     const currUser = await Admin.find({ _id: stat })
     if (currUser) {
-      const admin = await Admin.findByIdAndRemove(id)
+      await Admin.findByIdAndRemove(id)
       res.json({ msg: 'Admin deleted successfully' })
     } else { return res.json({ msg: "You don't have the authorization" }) }
   } catch (error) {

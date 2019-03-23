@@ -1,28 +1,17 @@
 const express = require('express')
-
 const router = express.Router()
-const mongoose = require('mongoose')
-const flash = require('connect-flash')
 const Investor = require('../../models/Investor')
 const validator = require('../../validations/investorValidations')
+const companyvalidator = require('../../validations/companyValidations')
 const bcrypt = require('bcryptjs')
 var jwt = require('jsonwebtoken')
 var config = require('../../config/jwt')
 const Admin = require('../../models/Admin')
-
+const Company = require('../../models/Company')
 // View All Investors
 router.get('/', async (req, res) => {
   const investors = await Investor.find()
-  var token = req.headers['x-access-token']
-  if (!token) { return res.status(401).send({ auth: false, message: 'No token provided.' }) }
-  jwt.verify(token, config.secret, function (err, decoded) {
-    if (err) {
-      return res
-        .status(500)
-        .send({ auth: false, message: 'Failed to authenticate token.' })
-    }
-  })
-  res.json({ id: decoded, data: investors })
+  res.json({ data: investors })
 })
 
 // View an Investor
@@ -245,7 +234,7 @@ router.put('/', async (req, res) => {
         .status(400)
         .send({ error: isValidated.error.details[0].message })
     }
-    await Investor.findByIdAndUpdate(id, req.body)
+    await Investor.findByIdAndUpdate(stat, req.body)
     res.json({ msg: 'Investor updated successfully' })
   } catch (error) {
     // We will be handling the error later
@@ -322,7 +311,7 @@ router.delete('/:id', async (req, res) => {
     console.log(admin)
     if (admin) {
       const id = req.params.id
-      const deletedreviewer = await Investor.findByIdAndRemove(id)
+      await Investor.findByIdAndRemove(id)
       res.json({
         msg: 'Lawyer deleted successfully'
       })
