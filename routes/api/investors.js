@@ -17,7 +17,9 @@ router.get('/', async (req, res) => {
 // View an Investor
 router.get('/:id', async (req, res) => {
   var token = req.headers['x-access-token']
-  if (!token) { return res.status(401).send({ auth: false, message: 'No Token provided.' }) }
+  if (!token) {
+    return res.status(401).send({ auth: false, message: 'No Token provided.' })
+  }
   jwt.verify(token, config.secret, function (err, decoded) {
     if (err) {
       return res
@@ -48,7 +50,11 @@ router.get('/:id/MyRequests/:companyid/', async (req, res) => {
   })
   try {
     const id = req.params.id
-    if (id !== stat) { return res.status(500).send({ auth: false, message: 'Failed to authenticate' }) }
+    if (id !== stat) {
+      return res
+        .status(500)
+        .send({ auth: false, message: 'Failed to authenticate' })
+    }
     const companyid = req.params.companyid
     console.log(companyid)
     const investor = await Investor.findById(id)
@@ -57,7 +63,9 @@ router.get('/:id/MyRequests/:companyid/', async (req, res) => {
       $and: [{ investorIdentificationNumber: inid }, { _id: companyid }]
     }
     const company = await Company.findOne(query)
-    if (!company) { return res.status(404).send({ error: 'Company does not exist' }) } else {
+    if (!company) {
+      return res.status(404).send({ error: 'Company does not exist' })
+    } else {
       res.json({ data: company })
     }
   } catch (error) {
@@ -85,7 +93,11 @@ router.put('/:id/MyRequests/:companyid/', async (req, res) => {
 
   try {
     const id = req.params.id
-    if (id !== stat) { return res.status(500).send({ auth: false, message: 'Failed to authenticate' }) }
+    if (id !== stat) {
+      return res
+        .status(500)
+        .send({ auth: false, message: 'Failed to authenticate' })
+    }
     const companyid = req.params.companyid
     console.log(companyid)
     const investor = await Investor.findById(id)
@@ -98,17 +110,16 @@ router.put('/:id/MyRequests/:companyid/', async (req, res) => {
       ]
     }
     const company = await Company.findOne(query)
-    if (!company) { return res.status(404).send({ error: 'Company does not exist' }) } else {
+    if (!company) {
+      return res.status(404).send({ error: 'Company does not exist' })
+    } else {
       const isValidated = companyvalidator.updateValidationSSC(req.body)
       if (isValidated.error) {
         return res
           .status(400)
           .send({ error: isValidated.error.details[0].message })
       }
-      await Company.findByIdAndUpdate(
-        companyid,
-        req.body
-      )
+      await Company.findByIdAndUpdate(companyid, req.body)
       const updatedcompstatus = await Company.findByIdAndUpdate(companyid, {
         status: 'PendingLawyer'
       })
@@ -139,7 +150,9 @@ router.get('/:id/MyRequests', async (req, res) => {
 
   const id = req.params.id
   if (id !== stat) {
-    return res.status(500).send({ auth: false, message: 'Failed to authenticate' })
+    return res
+      .status(500)
+      .send({ auth: false, message: 'Failed to authenticate' })
   }
   const investor = await Investor.findById(id)
   const inid = investor.idNumber
@@ -226,7 +239,9 @@ router.put('/', async (req, res) => {
       stat = decoded.id
     })
     const investor = await Investor.findOne({}, { _id: stat })
-    if (!investor) { return res.status(404).send({ error: 'Investor does not exist' }) }
+    if (!investor) {
+      return res.status(404).send({ error: 'Investor does not exist' })
+    }
     const isValidated = validator.updateValidation(req.body)
     if (isValidated.error) {
       return res
@@ -244,7 +259,9 @@ router.put('/', async (req, res) => {
 router.get('/View/ViewCompanies', async (req, res) => {
   var stat = 0
   var token = req.headers['x-access-token']
-  if (!token) { return res.status(401).send({ auth: false, message: 'No token provided.' }) }
+  if (!token) {
+    return res.status(401).send({ auth: false, message: 'No token provided.' })
+  }
   jwt.verify(token, config.secret, function (err, decoded) {
     if (err) {
       return res
@@ -307,21 +324,42 @@ router.delete('/:id', async (req, res) => {
       stat = decoded.id
     })
     const admin = await Admin.find({ _id: stat })
+    const id = req.params.id
+    const currInv = await Investor.find({ _id: id })
     console.log(admin)
     if (admin) {
-      const id = req.params.id
-      await Investor.findByIdAndRemove(id)
-      res.json({
-        msg: 'Investor deleted successfully'
-      })
-    } else { return res.json({ message: 'You do not have the authorization.' }) }
+      if (currInv) {
+        await Investor.findByIdAndRemove(id)
+        res.json({
+          msg: 'Investor deleted successfully'
+        })
+      } else {
+        res.json({ msg: "Investor doesn't exist" })
+      }
+    } else {
+      return res.json({ message: 'You do not have the authorization.' })
+    }
   } catch (error) {
     // We will be handling the error later
     console.log(error)
   }
 })
 
-router.post('/createcompany', async (req, res) => {
+router.delete('/:id', async (req, res) => {
+  try {
+    const id = req.params.id
+    const deletedInvestor = await Investor.findByIdAndRemove(id)
+    res.json({
+      msg: 'Investor was successfully deleted',
+      data: deletedInvestor
+    })
+  } catch (error) {
+    // We will be handling the error later
+    console.log(error)
+  }
+})
+
+router.post('/createspccompany', async (req, res) => {
   var stat = 0
   try {
     var token = req.headers['x-access-token']
@@ -354,7 +392,6 @@ router.post('/createcompany', async (req, res) => {
       capital
     } = req.body
     const investorName = currInvestor.name
-    const investorType = currInvestor.type
     const investorSex = currInvestor.gender
     const investorNationality = currInvestor.nationality
     const investorIdentificationType = currInvestor.idType
@@ -364,6 +401,34 @@ router.post('/createcompany', async (req, res) => {
     const investorTelephone = currInvestor.telephone
     const investorFax = currInvestor.fax
     const investorEmail = currInvestor.mail
+    const isValidated = companyvalidator.createValidationSPC({
+      regulationLaw,
+      legalCompanyForm,
+      nameInArabic,
+      nameInEnglish,
+      governerateHQ,
+      cityHQ,
+      addressHQ,
+      telephoneHQ,
+      faxHQ,
+      capitalCurrency,
+      capital,
+      investorName,
+      investorSex,
+      investorNationality,
+      investorIdentificationType,
+      investorIdentificationNumber,
+      investorBD,
+      investorAddress,
+      investorTelephone,
+      investorFax,
+      investorEmail
+    })
+    if (isValidated.error) {
+      return res
+        .status(400)
+        .send({ error: isValidated.error.details[0].message })
+    }
     const newCompany = new Company({
       regulationLaw,
       legalCompanyForm,
@@ -377,6 +442,111 @@ router.post('/createcompany', async (req, res) => {
       capitalCurrency,
       capital,
       investorName,
+      investorSex,
+      investorNationality,
+      investorIdentificationType,
+      investorIdentificationNumber,
+      investorBD,
+      investorAddress,
+      investorTelephone,
+      investorFax,
+      investorEmail
+    })
+    const company = await Company.create(newCompany)
+    res.json({ msg: 'SPC Company was created successfully', data: company })
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+router.post('/createssccompany', async (req, res) => {
+  var stat = 0
+  try {
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first.' })
+    }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+    const currInvestor = await Investor.findById(stat)
+    if (!Investor) { return res.status(404).send({ error: 'Investor does not exist' }) }
+    const {
+      regulationLaw,
+      legalCompanyForm,
+      nameInArabic,
+      nameInEnglish,
+      governerateHQ,
+      cityHQ,
+      addressHQ,
+      telephoneHQ,
+      faxHQ,
+      capitalCurrency,
+      capital,
+      managers
+    } = req.body
+    const investorName = currInvestor.name
+    const investorType = currInvestor.type
+    const investorSex = currInvestor.gender
+    const investorNationality = currInvestor.nationality
+    const investorIdentificationType = currInvestor.idType
+    const investorIdentificationNumber = currInvestor.idNumber
+    const investorBD = currInvestor.dob
+    const investorAddress = currInvestor.address
+    const investorTelephone = currInvestor.telephone
+    const investorFax = currInvestor.fax
+    const investorEmail = currInvestor.mail
+    const isValidated = companyvalidator.createValidationSSC({
+      regulationLaw,
+      legalCompanyForm,
+      nameInArabic,
+      nameInEnglish,
+      governerateHQ,
+      cityHQ,
+      addressHQ,
+      telephoneHQ,
+      faxHQ,
+      capitalCurrency,
+      capital,
+      managers,
+      investorName,
+      investorType,
+      investorSex,
+      investorNationality,
+      investorIdentificationType,
+      investorIdentificationNumber,
+      investorBD,
+      investorAddress,
+      investorTelephone,
+      investorFax,
+      investorEmail
+    })
+    if (isValidated.error) {
+      return res
+        .status(400)
+        .send({ error: isValidated.error.details[0].message })
+    }
+    const newCompany = new Company({
+      regulationLaw,
+      legalCompanyForm,
+      nameInArabic,
+      nameInEnglish,
+      governerateHQ,
+      cityHQ,
+      addressHQ,
+      telephoneHQ,
+      faxHQ,
+      capitalCurrency,
+      capital,
+      managers,
+      investorName,
       investorType,
       investorSex,
       investorNationality,
@@ -389,25 +559,12 @@ router.post('/createcompany', async (req, res) => {
       investorEmail
     })
     const company = await Company.create(newCompany)
-    res.json({ msg: 'Company was created successfully', data: company })
+    res.json({ msg: 'SSC Company was created successfully', data: company })
   } catch (error) {
     console.log(error)
   }
 })
 
-router.delete('/:id', async (req, res) => {
-  try {
-    const id = req.params.id
-    const deletedInvestor = await Investor.findByIdAndRemove(id)
-    res.json({
-      msg: 'Investor was successfully deleted',
-      data: deletedInvestor
-    })
-  } catch (error) {
-    // We will be handling the error later
-    console.log(error)
-  }
-})
 // s2
 router.post('/login', function (req, res) {
   Investor.findOne({ email: req.body.email }, function (err, user) {
@@ -418,7 +575,7 @@ router.post('/login', function (req, res) {
     const userPassword = user.password
     const match = bcrypt.compareSync(loginPassword, userPassword)
     // var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
-    if (!(match)) return res.status(401).send({ auth: false, token: null })
+    if (!match) return res.status(401).send({ auth: false, token: null })
     var token = jwt.sign({ id: user._id }, config.secret, {
       expiresIn: 86400 // expires in 24 hours
     })
@@ -442,19 +599,55 @@ router.get('/getall/cases', async (req, res) => {
 })
 
 router.get('/:companyID/viewFees', async (req, res) => {
+  var stat = 0
+  var token = req.headers['x-access-token']
+  if (!token) {
+    return res
+      .status(401)
+      .send({ auth: false, message: 'Please login first.' })
+  }
+  jwt.verify(token, config.secret, async function (err, decoded) {
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: 'Failed to authenticate token.' })
+    }
+    stat = decoded.id
+  })
+  const investor = await Investor.findById(stat)
+  if (!investor) {
+    return res.status(400).send({ error: 'You are not an investor' })
+  }
   const companyId = req.params.companyID
   const c = await Company.findById(companyId)
-  var x = 'Unchanged'
+  var fees = 'Unchanged'
 
   if (c.regulationLaw === 'Law 159') {
-    x = (c.capital * (1 / 1000)) + (c.capital * (0.25 / 100)) + 56
+    // x = (c.capital * (1/1000)) + (c.capital * (0.25/100)) + 56;
+    var GAFI = c.capital * (1 / 1000)
+    if (GAFI < 100) {
+      GAFI = 100
+    }
+    if (GAFI > 1000) {
+      GAFI = 1000
+    }
+
+    var Notary = c.capital * (0.25 / 100)
+    if (Notary < 10) {
+      Notary = 10
+    }
+    if (Notary > 1000) {
+      Notary = 1000
+    }
+
+    fees = GAFI + Notary + 56
   } else {
     if (c.regulationLaw === 'Law 72') {
-      x = 610
+      fees = 610
     }
   }
 
-  res.json({ EstimatedFees: x })
+  res.json({ EstimatedFees: fees })
 })
 
 module.exports = router

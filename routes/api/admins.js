@@ -110,24 +110,24 @@ router.put('/', async (req, res) => {
 router.post('/register', async (req, res) => {
   var stat = 0
   try {
-    var token = req.headers['x-access-token']
-    if (!token) {
-      return res
-        .status(401)
-        .send({ auth: false, message: 'Please login first.' })
-    }
-    jwt.verify(token, config.secret, async function (err, decoded) {
-      if (err) {
-        return res
-          .status(500)
-          .send({ auth: false, message: 'Failed to authenticate token.' })
-      }
-      stat = decoded.id
-    })
-    const admin2 = await Admin.findById(stat)
-    if (!admin2) {
-      return res.status(400).json({ error: 'You are not an admin' })
-    }
+    // var token = req.headers['x-access-token']
+    // if (!token) {
+    //   return res
+    //     .status(401)
+    //     .send({ auth: false, message: 'Please login first.' })
+    // }
+    // jwt.verify(token, config.secret, async function (err, decoded) {
+    //   if (err) {
+    //     return res
+    //       .status(500)
+    //       .send({ auth: false, message: 'Failed to authenticate token.' })
+    //   }
+    //   stat = decoded.id
+    // })
+    // const admin2 = await Admin.findById(stat)
+    // if (!admin2) {
+    //   return res.status(400).json({ error: 'You are not an admin' })
+    // }
     const {
       name,
       email,
@@ -156,7 +156,8 @@ router.post('/register', async (req, res) => {
       birthDate,
       joinDate
     })
-    token = jwt.sign({ id: newAdmin._id }, config.secret, {
+    var newAd = await Admin.create(newAdmin)
+    token = jwt.sign({ id: newAd._id }, config.secret, {
       expiresIn: 86400 // expires in 24 hours
     })
     res.status(200).send({
@@ -214,7 +215,9 @@ router.delete('/', async (req, res) => {
     if (currUser) {
       await Admin.findByIdAndRemove(stat)
       res.json({ msg: 'Admin deleted successfully' })
-    } else { return res.json({ msg: "You don't have the authorization" }) }
+    } else {
+      return res.json({ msg: "You don't have the authorization" })
+    }
   } catch (error) {
     res.status(404).send({ msg: "Admin doesn't exist" })
   }
@@ -239,17 +242,43 @@ router.delete('/:id', async (req, res) => {
     })
     const id = req.params.id
     const currUser = await Admin.find({ _id: stat })
+    const delUser = await Admin.find({ _id: id })
     if (currUser) {
-      await Admin.findByIdAndRemove(id)
-      res.json({ msg: 'Admin deleted successfully' })
-    } else { return res.json({ msg: "You don't have the authorization" }) }
+      if (delUser) {
+        const del = await Admin.findByIdAndRemove(id)
+        res.json({ msg: 'Admin deleted successfully' })
+      } else {
+        return res.json({ msg: 'Admin does not exist' })
+      }
+    } else {
+      return res.json({ msg: "You don't have the authorization" })
+    }
   } catch (error) {
     res.status(404).send({ msg: "Admin doesn't exist" })
   }
 })
 
 router.get('/getall/cases', async (req, res) => {
+  var stat = 0
   try {
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first.' })
+    }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+    const admin = await Admin.findById(stat)
+    if (!admin) {
+      return res.status(400).send({ error: 'You are not an admin' })
+    }
     const company = await Company.find()
     console.log(company)
     res.json({ data: company })

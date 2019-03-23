@@ -22,11 +22,11 @@ const LawyerSchema = new Schema({
     type: String,
     required: true
   },
-  mobile_number: {
+  mobileNumber: {
     type: String,
     required: true
   },
-  Social_Security_Number: {
+  socialSecurityNumber: {
     type: String,
     required: true
   },
@@ -34,7 +34,7 @@ const LawyerSchema = new Schema({
     type: Number,
     required: true
   },
-  birth_Date: {
+  birthDate: {
     type: Date,
     required: true
   },
