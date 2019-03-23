@@ -8,11 +8,11 @@ const admins = require('./routes/api/admins')
 const investors = require('./routes/api/investors')
 
 // DB Config
-const db = require('./config/keys').mongoURI
+//const db = require('./config/keys').mongoURI
 
 // Connect to mongo
 mongoose
-  .connect(db)
+  .connect(process.env.MONGO_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.log(err))
 
