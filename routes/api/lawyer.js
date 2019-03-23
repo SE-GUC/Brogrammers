@@ -738,12 +738,11 @@ router.put("/addcomment/:id/:companyId", async function(req, res) {
       return res
         .status(400)
         .send({ error: isValidated.error.details[0].message });
-    } else {
-      await Company.findByIdAndUpdate(editableCompanies.id, {
-        lawyerComment: req.body.lawyerComment
-      });
-      res.json({ msg: "Comment added Successfully" });
     }
+    await Company.findByIdAndUpdate(companyId, {
+      lawyerComment: req.body.lawyerComment
+    });
+    res.json({ msg: "Comment added Successfully" });
   }
 });
 
