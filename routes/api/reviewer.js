@@ -306,8 +306,16 @@ router.put("/", async (req, res) => {
         .status(400)
         .send({ error: isValidated.error.details[0].message });
     }
-    await Reviewer.findByIdAndUpdate(stat, req.body);
-    res.json({ msg: "Reviewer updated successfully" });
+    const reviewer = Reviewer.findById(stat);
+    if(reviewer)
+    {
+      await Reviewer.findByIdAndUpdate(stat, req.body);
+      res.json({ msg: "Reviewer updated successfully" });
+    }
+    else
+    {
+      return res.json({msg: "You do not have the authorization"});
+    }
   } catch (error) {
     // We will be handling the error later
     console.log(error);
@@ -396,11 +404,19 @@ router.delete("/", async (req, res) => {
       }
       stat = decoded.id;
     });
-    const deletedreviewer = await Reviewer.findByIdAndRemove(stat);
-    res.json({
-      msg: "reviewer was deleted successfully",
-      data: deletedreviewer
-    });
+    const reviewer = await Reviewer.findById(stat)
+    if(reviewer)
+    {
+      const deletedreviewer = await Reviewer.findByIdAndRemove(stat);
+      res.json({
+        msg: "reviewer was deleted successfully",
+        data: deletedreviewer
+      });
+    }
+    else
+    {
+      return res.json({msg: "You do not have the authroization"});
+    }
   } catch (error) {
     // We will be handling the error later
     console.log(error);
@@ -424,7 +440,7 @@ router.delete("/:id", async (req, res) => {
       }
       stat = decoded.id;
     });
-    const admin = await Admin.find({ _id: stat });
+    const admin = await Admin.findById(stat);
     const id = req.params.id;
     const reviewer = await Reviewer.findById(id);
     console.log("reviewer is " + reviewer);

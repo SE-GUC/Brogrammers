@@ -304,11 +304,11 @@ router.delete("/:id", async (req, res) => {
       }
       stat = decoded.id;
     });
-    const admin = await Admin.find({ _id: stat });
+    const admin = await Admin.findById(stat);
     console.log(admin);
     if (admin) {
       const id = req.params.id;
-      const lawyer = await Lawyer.find({ _id: id });
+      const lawyer = await Lawyer.findById(id);
       if (lawyer) {
         await Lawyer.findByIdAndRemove(id);
         res.json({
@@ -602,7 +602,7 @@ router.put("/", async (req, res) => {
       }
       stat = decoded.id;
     });
-    const lawyer = await Lawyer.findOne({}, { _id: stat });
+    const lawyer = await Lawyer.findById(stat);
     if (!lawyer) {
       return res.status(404).send({ error: "lawyer does not exist" });
     }
@@ -636,8 +636,16 @@ router.delete("/", async (req, res) => {
       }
       stat = decoded.id;
     });
-    const deletedLawyer = await Lawyer.findByIdAndRemove(stat);
-    res.json({ msg: "Lawyer was deleted successfully", data: deletedLawyer });
+    const dellawyer = await Lawyer.findById(stat);
+    if(dellawyer)
+    {
+      const deletedLawyer = await Lawyer.findByIdAndRemove(stat);
+      res.json({ msg: "Lawyer was deleted successfully", data: deletedLawyer });
+    }
+    else
+    {
+      return res.json({msg: "You have no authorization"});
+    }
   } catch (error) {
     // We will be handling the error later
     console.log(error);
@@ -792,4 +800,26 @@ router.put("/resubmit/:id/:companyId", async function(req, res) {
     res.json({ msg: "fourm resubmitted successfully" });
   }
 });
+
+router.get('/mycases/:id', async (req, res) => {
+  try {
+    var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) { return res.status(401).send({ auth: false, message: 'Please login first.' }) }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) { return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' }) }
+      stat = decoded.id
+    })
+    const lawyers = await Lawyer.findById(stat)
+    if (!lawyers) {
+      return res.status(400).send({ error: 'You are not a Lawyer' })
+    } if (stat === req.params.id) {
+      const lawyer = await Lawyer.findById(req.params.id)
+      const company = await Company.find()
+      if (company.lawyer === lawyer.socialSecurityNumber) { return res.json({ data: company }) }
+    } else return res.status(400).send({ error: 'Wrong ID' })
+  } catch (error) {
+    console.log(error)
+  }
+})
 module.exports = router;

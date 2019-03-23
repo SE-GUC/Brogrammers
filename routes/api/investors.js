@@ -8,13 +8,23 @@ var jwt = require("jsonwebtoken");
 var config = require("../../config/jwt");
 const Admin = require("../../models/Admin");
 const Company = require("../../models/Company");
-// View All Investors
+
 router.get("/", async (req, res) => {
+  var token = req.headers["x-access-token"];
+  if (!token) {
+    return res.status(401).send({ auth: false, message: "No Token provided." });
+  }
+  jwt.verify(token, config.secret, function(err, decoded) {
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate token." });
+    }
+  });
   const investors = await Investor.find();
   res.json({ data: investors });
 });
 
-// View an Investor
 router.get("/:id", async (req, res) => {
   var token = req.headers["x-access-token"];
   if (!token) {
@@ -238,7 +248,7 @@ router.put("/", async (req, res) => {
       }
       stat = decoded.id;
     });
-    const investor = await Investor.findOne({}, { _id: stat });
+    const investor = await Investor.findById(stat);
     if (!investor) {
       return res.status(404).send({ error: "Investor does not exist" });
     }
@@ -258,26 +268,32 @@ router.put("/", async (req, res) => {
 
 router.get("/View/ViewCompanies", async (req, res) => {
   var stat = 0;
-  var token = req.headers["x-access-token"];
-  if (!token) {
-    return res.status(401).send({ auth: false, message: "No token provided." });
-  }
-  jwt.verify(token, config.secret, function(err, decoded) {
-    if (err) {
+  try {
+    var token = req.headers["x-access-token"];
+    if (!token) {
       return res
-        .status(500)
-        .send({ auth: false, message: "Failed to authenticate token." });
+        .status(401)
+        .send({ auth: false, message: "No token provided." });
     }
-    stat = decoded.id;
-  });
-  const investor = await Investor.findById(stat);
-  const investorNatID = investor.idNumber;
-  const arrayOfCompanies = await Company.find({
-    investorIdentificationNumber: investorNatID
-  });
-  res.json({ msg: "Your Companies ", data: arrayOfCompanies });
+    jwt.verify(token, config.secret, function(err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: "Failed to authenticate token." });
+      }
+      stat = decoded.id;
+    });
+    const investor = await Investor.findById(stat);
+    const investorNatID = investor.idNumber;
+    const arrayOfCompanies = await Company.find({
+      investorIdentificationNumber: investorNatID
+    });
+    res.json({ msg: "Your Companies ", data: arrayOfCompanies });
+  } catch (error) {
+    res.status(404).send({ msg: "Investor doesn't exist" });
+  }
 });
-
+//manga
 router.delete("/", async (req, res) => {
   try {
     var stat = 0;
@@ -295,6 +311,10 @@ router.delete("/", async (req, res) => {
       }
       stat = decoded.id;
     });
+    const currInv = await Investor.findById(stat);
+    if(!currInv){
+      return res.json({msg:"Investor not found"})
+    }
     const deletedInvestor = await Investor.findByIdAndRemove(stat);
     res.json({
       msg: "Investor was successfully deleted",
@@ -305,7 +325,7 @@ router.delete("/", async (req, res) => {
     console.log(error);
   }
 });
-
+//manga
 router.delete("/:id", async (req, res) => {
   try {
     var stat = 0;
@@ -323,9 +343,9 @@ router.delete("/:id", async (req, res) => {
       }
       stat = decoded.id;
     });
-    const admin = await Admin.find({ _id: stat });
+    const admin = await Admin.findById(stat);
     const id = req.params.id;
-    const currInv = await Investor.find({ _id: id });
+    const currInv = await Investor.findByIdAndDelete(id);
     console.log(admin);
     if (admin) {
       if (currInv) {
@@ -339,20 +359,6 @@ router.delete("/:id", async (req, res) => {
     } else {
       return res.json({ message: "You do not have the authorization." });
     }
-  } catch (error) {
-    // We will be handling the error later
-    console.log(error);
-  }
-});
-
-router.delete("/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    const deletedInvestor = await Investor.findByIdAndRemove(id);
-    res.json({
-      msg: "Investor was successfully deleted",
-      data: deletedInvestor
-    });
   } catch (error) {
     // We will be handling the error later
     console.log(error);

@@ -98,9 +98,17 @@ router.put("/", async (req, res) => {
         .status(400)
         .send({ error: isValidated.error.details[0].message });
     }
+    const admin = await Admin.findById(stat);
+    if(admin)
+    {
     await Admin.findByIdAndUpdate(stat, req.body);
     // res.send(admin);
     res.json({ msg: "Information updated successfully" });
+    }
+    else
+    {
+      return res.json({msg: "You don't have the authorization"});
+    }
   } catch (error) {
     res.status(404).send({ msg: "Admin doesn't exist" });
   }
@@ -110,24 +118,24 @@ router.put("/", async (req, res) => {
 router.post("/register", async (req, res) => {
   var stat = 0;
   try {
-    // var token = req.headers['x-access-token']
-    // if (!token) {
-    //   return res
-    //     .status(401)
-    //     .send({ auth: false, message: 'Please login first.' })
-    // }
-    // jwt.verify(token, config.secret, async function (err, decoded) {
-    //   if (err) {
-    //     return res
-    //       .status(500)
-    //       .send({ auth: false, message: 'Failed to authenticate token.' })
-    //   }
-    //   stat = decoded.id
-    // })
-    // const admin2 = await Admin.findById(stat)
-    // if (!admin2) {
-    //   return res.status(400).json({ error: 'You are not an admin' })
-    // }
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first.' })
+    }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+    const admin2 = await Admin.findById(stat)
+    if (!admin2) {
+      return res.status(400).json({ error: 'You are not an admin' })
+    }
     const {
       name,
       email,
@@ -206,7 +214,7 @@ router.delete("/", async (req, res) => {
       }
       stat = decoded.id;
     });
-    const currUser = await Admin.find({ _id: stat });
+    const currUser = await Admin.findById(stat);
     if (currUser) {
       await Admin.findByIdAndRemove(stat);
       res.json({ msg: "Admin deleted successfully" });
@@ -236,8 +244,8 @@ router.delete("/:id", async (req, res) => {
       stat = decoded.id;
     });
     const id = req.params.id;
-    const currUser = await Admin.find({ _id: stat });
-    const delUser = await Admin.find({ _id: id });
+    const currUser = await Admin.findById(stat);
+    const delUser = await Admin.findById(id);
     if (currUser) {
       if (delUser) {
         const del = await Admin.findByIdAndRemove(id);
