@@ -234,10 +234,18 @@ router.delete('/:id', async (req, res) => {
       stat = decoded.id
     })
     const id = req.params.id
-    const currUser = await Admin.find({ _id: stat })
+    const currUser = await Admin.find({ _id: stat });
+    const delUser = await Admin.find({_id: id});
     if (currUser) {
-      await Admin.findByIdAndRemove(id)
-      res.json({ msg: 'Admin deleted successfully' })
+      if(delUser)
+      {
+        const del = await Admin.findByIdAndRemove(id)
+        res.json({ msg: 'Admin deleted successfully' })
+      }
+      else
+      {
+        return res.json({msg: "Admin does not exist"});
+      }
     } else { return res.json({ msg: "You don't have the authorization" }) }
   } catch (error) {
     res.status(404).send({ msg: "Admin doesn't exist" })

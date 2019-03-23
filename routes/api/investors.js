@@ -307,13 +307,21 @@ router.delete('/:id', async (req, res) => {
       stat = decoded.id
     })
     const admin = await Admin.find({ _id: stat })
+    const id = req.params.id;
+    const currInv = await Investor.find({_id: id});
     console.log(admin)
     if (admin) {
-      const id = req.params.id
-      await Investor.findByIdAndRemove(id)
-      res.json({
-        msg: 'Investor deleted successfully'
-      })
+      if(currInv)
+      {
+        await Investor.findByIdAndRemove(id)
+        res.json({
+          msg: 'Investor deleted successfully'
+        })
+      }
+      else
+      {
+        res.json({msg: "Investor doesn't exist"});
+      }
     } else { return res.json({ message: 'You do not have the authorization.' }) }
   } catch (error) {
     // We will be handling the error later

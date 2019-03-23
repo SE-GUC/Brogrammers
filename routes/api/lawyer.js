@@ -187,10 +187,18 @@ router.delete('/:id', async (req, res) => {
     console.log(admin)
     if (admin) {
       const id = req.params.id
-      await Lawyer.findByIdAndRemove(id)
-      res.json({
-        msg: 'Lawyer deleted successfully'
-      })
+      const lawyer = await Lawyer.find({_id: id});
+      if(lawyer)
+      {
+        await Lawyer.findByIdAndRemove(id);
+        res.json({
+          msg: 'Lawyer deleted successfully'
+        })
+      }
+      else
+      {
+        res.json({msg : "Lawyer does not exist"});
+      }
     } else { return res.json({ message: 'You do not have the authorization.' }) }
   } catch (error) {
     // We will be handling the error later

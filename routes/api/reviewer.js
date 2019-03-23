@@ -43,6 +43,7 @@ router.get('/:id', async (req, res) => {
   })
   const id = req.params.id
   const reviewers = await Reviewer.findById(id)
+  console.log('reviwer in get is ' + reviewers);
   res.send(reviewers)
 })
 
@@ -287,13 +288,21 @@ router.delete('/:id', async (req, res) => {
       stat = decoded.id
     })
     const admin = await Admin.find({ _id: stat })
+    const id = req.params.id
+    const reviewer = await Reviewer.find({_id : id});
+    console.log("reviewer is " + reviewer)
     console.log(admin)
     if (admin) {
-      const id = req.params.id
-      await Reviewer.findByIdAndRemove(id)
-      res.json({
-        msg: 'Reviewer deleted successfully'
-      })
+      if(reviewer)
+      {
+        await Reviewer.findByIdAndRemove(id);
+        res.json({
+          msg: 'Reviewer deleted successfully'
+        })
+      }
+      else{
+        return res.json({msg : "Reviewer does not exist"});
+      }
     } else { return res.json({ message: 'You do not have the authorization.' }) }
   } catch (error) {
     // We will be handling the error later
