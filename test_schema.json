@@ -295,6 +295,45 @@
                     }
                 }
             }
+        },
+        {
+            "url": "/api/lawyer/addcomment/:id/:companyId",
+            "params": {
+                "!id": "string()",
+                "!companyId": "string()"
+            },
+            "methods": {
+                "PUT": {
+                    "summary": "Allows the lawyer to add a comment to the rejected applications by him so that he can notify the investor with the problem, id in params is the lawyer's ssn",
+                    "body": {
+                        "lawyerComment": "string()"
+                      },
+                    "expected": {
+                        "msg": "Comment added Successfully",
+                        "data": null
+                    }
+                }
+            }
+        },
+        {
+            "url": "/api/reviewer/addcomment/:id/:companyId",
+            "params": {
+                "!id": "string()",
+                "!companyId": "string()"
+            },
+            "methods": {
+                "PUT": {
+                    "summary": "Allows the reviewer to add a comment to the rejected applications by him so that the assigned establishment lawyer can update them, id in params is the reviewer's ssn",
+                    "body": {
+                        "reviewerComment": "string()"
+                      },
+                    "expected": {
+                        "msg": "Comment added Successfully",
+                        "data": null
+                    }
+                }
+            }
         }
+
     ]
 }
