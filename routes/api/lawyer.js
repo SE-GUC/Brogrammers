@@ -186,4 +186,189 @@ router.delete("/:id", async (req, res) => {
     console.log(error);
   }
 });
+
+router.post('/login', function (req, res) {
+  Lawyer.findOne({ email: req.body.email }, function (err, user) {
+    if (err) return res.status(500).send('Error on the server.')
+    if (!user) return res.status(404).send('No user found.')
+    // const admin = Admin.findOne({ email: req.body.email});
+    const loginPassword = req.body.password
+    const userPassword = user.password
+    const match = bcrypt.compareSync(loginPassword, userPassword)
+    // var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+    if (!(match)) return res.status(401).send({ auth: false, token: null })
+    var token = jwt.sign({ id: user._id }, config.secret, {
+      expiresIn: 86400 // expires in 24 hours
+    })
+    res.status(200).send({ auth: true, token: token })
+  })
+})
+
+router.get('/editForm/:id', async function (req, res) {
+  var lawyerId = req.params.id
+  const query = {
+    $and: [{ status: 'RejectedReviewer' }, { lawyer: lawyerId }]
+  }
+  const editableCompanies = await Company.find(query, { _id: 0 })
+  var token = req.headers['x-access-token']
+  if (!token) { return res.status(401).send({ auth: false, message: 'No token provided.' }) }
+
+  jwt.verify(token, config.secret, function (err, decoded) {
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: 'Failed to authenticate token.' })
+    }
+
+    res.json({ data: editableCompanies })
+  })
+})
+
+router.put('/editForm/:id/:companyId', async function (req, res) {
+  var lawyerId = req.params.id
+  var companyId = req.params.companyId
+  const query = {
+    $and: [{ status: 'RejectedReviewer' }, { lawyer: lawyerId }, { _id: companyId }]
+  }
+  const editableCompanies = await Company.find(query)
+
+  var token = req.headers['x-access-token']
+  if (!token) { return res.status(401).send({ auth: false, message: 'No token provided.' }) }
+
+  jwt.verify(token, config.secret, function (err, decoded) {
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: 'Failed to authenticate token.' })
+    }
+  })
+
+  if (!editableCompanies) {
+    return res.status(404).send({ error: 'There are no Fourms to be edited' })
+  } else {
+    const isValidated = companyvalidator.updateValidationSSC(req.body)
+    if (isValidated.error) {
+      return res.status(400).send({ error: isValidated.error.details[0].message })
+    }
+    await Company.findByIdAndUpdate(companyId, req.body)
+    res.json({ msg: 'fourm updated successfully' })
+  }
+})
+
+router.post('/lawyerinvestor/createcompany', async (req, res) => {
+  try {
+    const { regulationLaw, legalCompanyForm, nameInArabic, nameInEnglish, governerateHQ, cityHQ, addressHQ, telephoneHQ, faxHQ, capitalCurrency, capital, investorName,
+      investorType, investorSex, investorNationality, investorIdentificationType, investorIdentificationNumber, investorBD, investorAddress, investorTelephone, investorFax,
+      investorEmail } = req.body
+    const newCompany = new Companys({
+      regulationLaw,
+      legalCompanyForm,
+      nameInArabic,
+      nameInEnglish,
+      governerateHQ,
+      cityHQ,
+      addressHQ,
+      telephoneHQ,
+      faxHQ,
+      capitalCurrency,
+      capital,
+      investorName,
+      investorType,
+      investorSex,
+      investorNationality,
+      investorIdentificationType,
+      investorIdentificationNumber,
+      investorBD,
+      investorAddress,
+      investorTelephone,
+      investorFax,
+      investorEmail
+    })
+    const company = await Companys.create(newCompany)
+    res.json({ msg: 'Company was created successfully', data: company })
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+router.get('/getall/cases', async (req, res) => {
+  try {
+    const company = await Companys.find()
+    console.log(company)
+    res.json({ data: company })
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+router.get('/:companyID/viewFees', async (req, res)=>
+{
+    const companyId = req.params.companyID;
+    const c = await Company.findById(companyId);
+    var x = "Unchanged";
+    
+    if(c.regulationLaw==="Law 159"){
+        x = (c.capital * (1/1000)) + (c.capital * (0.25/100)) + 56;
+    }else{
+        if(c.regulationLaw==="Law 72"){
+          x=610;
+        }
+    }
+    
+    res.json({EstimatedFees : x});
+
+});
+
+
+router.put('/addcomment/:id/:companyId',async function(req,res){
+  var lawyerId= req.params.id
+  var companyId= req.params.companyId
+  const query={
+    $and:[{status:'RejectedLawyer'},{lawyer:lawyerId},{_id:companyId}]
+  };
+  const editableCompanies = await Company.find(query);
+  var token=req.headers["x-access-token"];
+  if (!token)
+    return res.status(401).send({ auth: false, message: "No token provided." });
+  jwt.verify(token,config.secret,function(err,decoded){
+    if (err)
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate token." });
+
+  });
+  if (!editableCompanies){
+    return res.status(404).send({error: "There are no Fourms to be edited"})
+  }
+  else{
+    const isValidated=companyvalidator.updateValidationSSC(req.body);
+    if (isValidated.error){
+      return res.status(400).send({error: isValidated.error.details[0].message});
+    }
+    const updatedCompany= await Company.findByIdAndUpdate(companyId, {lawyerComment : req.body});
+    res.json({ msg: 'Comment added Successfully' })
+    }
+  
+
+});
+
+
+
+router.put('/resubmit/:id/:companyId', async function(req,res){
+  var lawyerId = req.params.id
+  var companyId = req.params.companyId;
+  const query = {
+      $and: [ {lawyer: lawyerId}, {_id: companyId} ]
+  };
+  const pendingCompanies = await Company.find(query);
+
+  
+  if(!pendingCompanies){
+      return res.status(404).send({error: "There are no Fourms to be resubmitted"})
+  }
+  else{
+     const updatedCompany = await Company.findByIdAndUpdate(companyId,{"status":"PendingReviewer"});
+      res.json({msg: "fourm resubmitted successfully"});
+  }
+});
 module.exports = router;
