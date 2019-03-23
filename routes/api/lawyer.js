@@ -27,18 +27,57 @@ router.get('/', async (req, res) => {
 
 // returns specific tasks of a certain lawyer by his id
 router.get('/:id/getTasks', async (req, res) => {
+  try{
+    var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first.' })
+    }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+  
   const id = req.params.id
   const lawyerss = await Lawyer.findById(id)
-  const lawyerssn = await lawyerss.Social_Security_Number
+  const lawyerssn = await lawyerss.socialSecurityNumber
 
   var query = { lawyer: lawyerssn }
   const comps = await Company.find(query)
 
   res.json({ data: comps })
+
+  }catch(error){
+    console.log(error)
+  }
 })
 
 // Gets all the tasks that are free for any lawyer to choose from
 router.get('/getAllTasks/view', async (req, res) => {
+ try{
+ 
+  var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first.' })
+    }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+ 
   var query = { lawyer: null, status: 'PendingLawyer' }
   const availableCompanies = await Company.find(query)
   if (!availableCompanies) {
@@ -46,13 +85,35 @@ router.get('/getAllTasks/view', async (req, res) => {
   } else {
     res.json({ data: availableCompanies })
   }
+ }catch(error){
+console.log(error)
+ }
 })
 
 // Lawyer Chooses one task at a time and assigns it to himself/herself
 router.put('/:id/assignFreeTask/:id2', async (req, res) => {
+ try{
+ 
+  var stat = 0
+  var token = req.headers['x-access-token']
+  if (!token) {
+    return res
+      .status(401)
+      .send({ auth: false, message: 'Please login first.' })
+  }
+  jwt.verify(token, config.secret, async function (err, decoded) {
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: 'Failed to authenticate token.' })
+    }
+    stat = decoded.id
+  })
+
+
   let id = req.params.id
   let lawyerID = await Lawyer.findById(id)
-  let lawyerSSN = await lawyerID.Social_Security_Number
+  let lawyerSSN = await lawyerID.socialSecurityNumber
   let companyID = req.params.id2
   var query = { _id: companyID, 'lawyer': null, status: 'PendingLawyer' }
   let currentCompany = await Company.findOne(query)
@@ -63,16 +124,38 @@ router.put('/:id/assignFreeTask/:id2', async (req, res) => {
     // const isValidated=await companyvalidator.updateValidationSSC
     res.json({ msg: 'Task assigned Successfully' })
   }
+
+}catch(error){
+  console.log(error)
+}
 })
 
 // Approves the task and updates the company status
 router.put('/:id/getTasks/approve/:id2', async (req, res) => {
   try {
+
+    var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first.' })
+    }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+
+
     const id = req.params.id
     const compid = req.params.id2
     const lawyerss = await Lawyer.findById(id)
-    const lawyerssn = await lawyerss.Social_Security_Number
-    var query = { 'lawyer': lawyerssn, _id: compid, $or: [{ status: 'PendingLawyer' }, { status: 'RejectedLawyer' }] }``
+    const lawyerssn = await lawyerss.socialSecurityNumber
+    var query = { 'lawyer': lawyerssn, _id: compid, $or: [{ status: 'PendingLawyer' }, { status: 'RejectedLawyer' }] }
     const company = await Company.find(query)
     if (!company) {
       return res.status(404).send({ error: 'You have no due tasks' })
@@ -94,9 +177,27 @@ router.put('/:id/getTasks/approve/:id2', async (req, res) => {
 // Disapproves the task and updates company status
 router.put('/:id/getTasks/disapprove/:id2', async (req, res) => {
   try {
+    var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first.' })
+    }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+
+
+
     const lawyerID = req.params.id
     const currentLawyer = await Lawyer.findById(lawyerID)
-    const lawyerSSN = await currentLawyer.Social_Security_Number
+    const lawyerSSN = await currentLawyer.socialSecurityNumber
     const companyID = req.params.id2
 
     var query = { lawyer: lawyerSSN, status: 'PendingLawyer', _id: companyID }
