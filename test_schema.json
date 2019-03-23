@@ -520,13 +520,13 @@
       }
     },
     {
-      "url": "/api/investors/:id/viewFees",
+      "url": "/api/investors/:id/:companyID/viewFees",
       "params": {
         "!id": "string()"
       },
       "methods": {
         "GET": {
-          "summary": "investor views estimated fees for creating a company, id in params is the company's id after it's created in the database",
+          "summary": "investor views estimated fees for creating a company, id is investor id, companyID in params is the company's id after it's created in the database",
           "body": {},
           "expected": {
             "EstimatedFees": "fees"
@@ -535,13 +535,13 @@
       }
     },
     {
-      "url": "/api/lawyer/:id/viewFees",
+      "url": "/api/lawyer/:id/:companyID/viewFees",
       "params": {
         "!id": "string()"
       },
       "methods": {
         "GET": {
-          "summary": "lawyyer views estimated fees for creating a company for an investor, id in params is the company's id after it's created in the database",
+          "summary": "lawyyer views estimated fees for creating a company for an investor, id in params is the lawyer's id , companyID is company after it's created in the database",
           "body": {},
           "expected": {
             "EstimatedFees": "fees"
