@@ -214,7 +214,7 @@
 - /api/investors/
     - GET `=> View all investors (accessible for logged in users)`
     - PUT `=> Edit currently logged in investor's information`
-    	 - name: string().min(3).required()
+    	 - !name: string().min(3)
 		- type: string().length(3)
 		- gender: string().valid('male', 'female')
 		- nationality: string().max(25)
@@ -274,10 +274,10 @@
     - GET `=> Get a specific reviewer (accessible for logged in users)`
     - DELETE `=> Delete a specific reviewer (only accessible through admins)`
 
-- /api/investors/:id/viewFees
+- /api/investors/:id/:companyID/viewFees
     - GET `//=> an investor can view the estimated fees of creating a company after he submits a form`
 
-- /api/lawyer/:id/viewFees
+- /api/lawyer//:id/:companyID/viewFees
     - GET `//=> a lawyer can view the estimated fees of creating a company after he submits a form for an investor`
 
 - /api/lawyer/resubmit/:id/:companyId
