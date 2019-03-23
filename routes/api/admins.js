@@ -4,8 +4,15 @@ const Admin = require('../../models/Admin.js')
 var config = require('../../config/jwt')
 const validator = require('../../validations/adminValidations')
 const bcrypt = require('bcryptjs')
-const Companys = require('../../models/Company')
+const Company = require('../../models/Company')
 var jwt = require('jsonwebtoken')
+
+
+//Logout Sprin2
+router.get('/logout', function(req, res) {
+  res.status(200).send( { auth: false, token: null });
+})
+
 
 router.get('/', async (req, res) => {
   try {
@@ -189,6 +196,8 @@ router.post('/login', function (req, res) {
   })
 })
 
+
+
 router.delete('/', async (req, res) => {
   try {
     var stat = 0
@@ -252,7 +261,7 @@ router.delete('/:id', async (req, res) => {
     res.status(404).send({ msg: "Admin doesn't exist" })
   }
 })
-
+//alaa
 router.get('/getall/cases', async (req, res) => {
   var stat = 0
   try {

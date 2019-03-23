@@ -8,8 +8,36 @@ var jwt = require('jsonwebtoken')
 var config = require('../../config/jwt')
 const Admin = require('../../models/Admin')
 const Company = require('../../models/Company')
+
+//Logout Sprint2
+router.get('/logout', function(req, res) {
+  res.status(200).send( { auth: false, token: null });
+})
+
+router.get('/getall/cases', async (req, res) => {
+  try {
+    const company = await Company.find()
+    console.log(company)
+    res.json({ data: company })
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+
 // View All Investors
 router.get('/', async (req, res) => {
+   var token = req.headers['x-access-token']
+  if (!token) {
+    return res.status(401).send({ auth: false, message: 'No Token provided.' })
+  }
+  jwt.verify(token, config.secret, function (err, decoded) {
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: 'Failed to authenticate token.' })
+    }
+  })
   const investors = await Investor.find()
   res.json({ data: investors })
 })
@@ -358,7 +386,7 @@ router.delete('/:id', async (req, res) => {
     console.log(error)
   }
 })
-
+//alaa
 router.post('/createspccompany', async (req, res) => {
   var stat = 0
   try {
@@ -377,7 +405,7 @@ router.post('/createspccompany', async (req, res) => {
       stat = decoded.id
     })
     const currInvestor = await Investor.findById(stat)
-    if (!Investor) { return res.status(404).send({ error: 'Investor does not exist' }) }
+    if (!currInvestor) { return res.status(404).send({ error: 'Investor does not exist' }) }
     const {
       regulationLaw,
       legalCompanyForm,
@@ -458,7 +486,7 @@ router.post('/createspccompany', async (req, res) => {
     console.log(error)
   }
 })
-
+//alaa
 router.post('/createssccompany', async (req, res) => {
   var stat = 0
   try {
@@ -477,7 +505,7 @@ router.post('/createssccompany', async (req, res) => {
       stat = decoded.id
     })
     const currInvestor = await Investor.findById(stat)
-    if (!Investor) { return res.status(404).send({ error: 'Investor does not exist' }) }
+    if (!currInvestor) { return res.status(404).send({ error: 'Investor does not exist' }) }
     const {
       regulationLaw,
       legalCompanyForm,
@@ -582,6 +610,7 @@ router.post('/login', function (req, res) {
     res.status(200).send({ auth: true, token: token })
   })
 })
+
 
 router.get('/:companyID/viewFees', async (req, res) => {
   var stat = 0

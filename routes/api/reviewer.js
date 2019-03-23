@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
   const reviewers = await Reviewer.find()
   res.json({ data: reviewers })
 })
-
+//alaa
 router.get('/getall/cases', async (req, res) => {
   var stat = 0
   try {
@@ -44,7 +44,7 @@ router.get('/getall/cases', async (req, res) => {
       }
       stat = decoded.id
     })
-    const reviewer = await reviewer.findById(stat)
+    const reviewer = await Reviewer.findById(stat)
     if (!reviewer) {
       return res.status(400).send({ error: 'Reviewer does not exist.' })
     }
@@ -460,6 +460,7 @@ router.put('/addcomment/:id/:companyId', async function (req, res) {
     ]
   }
   const editableCompanies = await Company.find(query)
+  var stat=0
   var token = req.headers['x-access-token']
   if (!token) {
     return res.status(401).send({ auth: false, message: 'No token provided.' })
@@ -471,6 +472,8 @@ router.put('/addcomment/:id/:companyId', async function (req, res) {
         .send({ auth: false, message: 'Failed to authenticate token.' })
     }
   })
+  if(reviewerId!==stat)
+    return res.status(401).send({message: 'Token does not match reviewer' })
   if (!editableCompanies) {
     return res.status(404).send({ error: 'There are no Fourms to be edited' })
   } else {
@@ -479,12 +482,13 @@ router.put('/addcomment/:id/:companyId', async function (req, res) {
       return res
         .status(400)
         .send({ error: isValidated.error.details[0].message })
-    }
-    await Company.findByIdAndUpdate(companyId, {
+    }else{
+    await Company.findByIdAndUpdate(editableCompanies.id, {
       reviewerComment: req.body.reviewerComment
     })
     res.json({ msg: 'Comment added Successfully' })
   }
+}
 })
 
 // s2
@@ -504,6 +508,12 @@ router.post('/login', function (req, res) {
     res.status(200).send({ auth: true, token: token })
   })
 })
+
+//Logout Sprint2
+router.get('/logout', function(req, res) {
+  res.status(200).send( { auth: false, token: null });
+})
+
 router.get('/mycases/:id', async (req, res) => {
   try {
     var stat = 0
