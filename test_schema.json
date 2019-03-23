@@ -855,14 +855,368 @@
                                   }
                                 }
                               }
-                            }
-      
-    
-
-
-
-  
-
-    
+                            },
+     {
+      "url": "/api/lawyer/lawyerinvestor/createssccompany",
+      "params": {},
+      "methods": {
+        "POST": {
+          "summary": "lawyer can create a ssc company form for an investor by there id retrieved from the token",
+          "body": {
+            "!regulationLaw": "string()",
+            "!legalCompanyForm": "string()",
+            "!nameInArabic": "string()",
+            "nameInEnglish": "string()",
+            "!governerateHQ": "string()",
+            "!cityHQ": "string()",
+            "!addressHQ": "string()",
+            "telephoneHQ": "number()",
+            "faxHQ": "number()",
+            "!capitalCurrency": "string()",
+            "!capital": "number().min(50000)",
+            "!investorName": "string()",
+            "!investorType": "string()",
+            "!investorSex": "string()",
+            "!investorNationality": "string()",
+            "!investorIdentificationType": "string()",
+            "!investorIdentificationNumber": "string()",
+            "!investorBD": "date()",
+            "!investorAddress": "string()",
+            "investorTelephone": "string()",
+            "investorFax": "string()",
+            "investorEmail": "string()",
+            "!managers": "array()"
+          },
+          "expected": {
+            "data": {
+              "managers": "array()",
+              "status": "string()",
+              "regulationLaw": "string()",
+              "legalCompantForm": "string()",
+              "nameInArabic": "string()",
+              "nameInEnglish": "string()",
+              "governerateHQ": "string()",
+              "cityHQ": "string()",
+              "addressHQ": "string()",
+              "telephoneHQ": "number()",
+              "faxHQ": "number()",
+              "investorType": "string()",
+              "capitalCurrency": "string()",
+              "capital": "number().min(50000)",
+              "investorName": "string()",
+              "investorSex": "string()",
+              "investorNationality": "string()",
+              "investorIdentificationType": "string()",
+              "investorIdentificationNumber": "string()",
+              "investorBD": "date()",
+              "investorAddress": "string()",
+              "investorTelephone": "string()",
+              "investorFax": "string()",
+              "investorEmail": "string()",
+              "lawyer": "string()",
+              "lawyerComment": "string()",
+              "_v": "number()"
+            },
+            "msg": "Company was created successfully"
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/lawyer/lawyerinvestor/createspccompany",
+      "params": {},
+      "methods": {
+        "POST": {
+          "summary": "lawyer can create a spc company form for an investor by there id retrieved from the token",
+          "body": {
+            "!regulationLaw": "string()",
+            "!legalCompanyForm": "string()",
+            "!nameInArabic": "string()",
+            "nameInEnglish": "string()",
+            "!governerateHQ": "string()",
+            "!cityHQ": "string()",
+            "!addressHQ": "string()",
+            "telephoneHQ": "number()",
+            "faxHQ": "number()",
+            "!capitalCurrency": "string()",
+            "!capital": "number().min(50000)",
+            "!investorName": "string()",
+            "!investorType": "string()",
+            "!investorSex": "string()",
+            "!investorNationality": "string()",
+            "!investorIdentificationType": "string()",
+            "!investorIdentificationNumber": "string()",
+            "!investorBD": "date()",
+            "!investorAddress": "string()",
+            "investorTelephone": "string()",
+            "investorFax": "string()",
+            "investorEmail": "string()"
+          },
+          "expected": {
+            "data": {
+              "managers": "array()",
+              "status": "string()",
+              "regulationLaw": "string()",
+              "legalCompantForm": "string()",
+              "nameInArabic": "string()",
+              "nameInEnglish": "string()",
+              "governerateHQ": "string()",
+              "cityHQ": "string()",
+              "addressHQ": "string()",
+              "telephoneHQ": "number()",
+              "faxHQ": "number()",
+              "investorType": "string()",
+              "capitalCurrency": "string()",
+              "capital": "number().min(50000)",
+              "investorName": "string()",
+              "investorSex": "string()",
+              "investorNationality": "string()",
+              "investorIdentificationType": "string()",
+              "investorIdentificationNumber": "string()",
+              "investorBD": "date()",
+              "investorAddress": "string()",
+              "investorTelephone": "string()",
+              "investorFax": "string()",
+              "investorEmail": "string()",
+              "lawyer": "string()",
+              "lawyerComment": "string()",
+              "_v": "number()"
+            },
+            "msg": "Company was created successfully"
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/investor/createssccompany",
+      "params": {},
+      "methods": {
+        "POST": {
+          "summary": "investor can create a ssc company form by there id retrieved from the token",
+          "body": {
+            "!regulationLaw": "string()",
+            "!legalCompanyForm": "string()",
+            "!nameInArabic": "string()",
+            "nameInEnglish": "string()",
+            "!governerateHQ": "string()",
+            "!cityHQ": "string()",
+            "!addressHQ": "string()",
+            "telephoneHQ": "number()",
+            "faxHQ": "number()",
+            "!capitalCurrency": "string()",
+            "!capital": "number().min(50000)"
+          },
+          "expected": {
+            "data": {
+              "managers": "array()",
+              "status": "string()",
+              "regulationLaw": "string()",
+              "legalCompantForm": "string()",
+              "nameInArabic": "string()",
+              "nameInEnglish": "string()",
+              "governerateHQ": "string()",
+              "cityHQ": "string()",
+              "addressHQ": "string()",
+              "telephoneHQ": "number()",
+              "faxHQ": "number()",
+              "investorType": "string()",
+              "capitalCurrency": "string()",
+              "capital": "number().min(50000)",
+              "investorName": "string()",
+              "investorSex": "string()",
+              "investorNationality": "string()",
+              "investorIdentificationType": "string()",
+              "investorIdentificationNumber": "string()",
+              "investorBD": "date()",
+              "investorAddress": "string()",
+              "investorTelephone": "string()",
+              "investorFax": "string()",
+              "investorEmail": "string()",
+              "lawyer": "string()",
+              "lawyerComment": "string()",
+              "_v": "number()"
+            },
+            "msg": "SSC Company was created successfully"
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/investor/createspccompany",
+      "params": {},
+      "methods": {
+        "POST": {
+          "summary": "investor can create a spc company form by there id retrieved from the token",
+          "body": {
+            "!regulationLaw": "string()",
+            "!legalCompanyForm": "string()",
+            "!nameInArabic": "string()",
+            "nameInEnglish": "string()",
+            "!governerateHQ": "string()",
+            "!cityHQ": "string()",
+            "!addressHQ": "string()",
+            "telephoneHQ": "number()",
+            "faxHQ": "number()",
+            "!capitalCurrency": "string()",
+            "!capital": "number().min(50000)"
+          },
+          "expected": {
+            "data": {
+              "managers": "array()",
+              "status": "string()",
+              "regulationLaw": "string()",
+              "legalCompantForm": "string()",
+              "nameInArabic": "string()",
+              "nameInEnglish": "string()",
+              "governerateHQ": "string()",
+              "cityHQ": "string()",
+              "addressHQ": "string()",
+              "telephoneHQ": "number()",
+              "faxHQ": "number()",
+              "investorType": "string()",
+              "capitalCurrency": "string()",
+              "capital": "number().min(50000)",
+              "investorName": "string()",
+              "investorSex": "string()",
+              "investorNationality": "string()",
+              "investorIdentificationType": "string()",
+              "investorIdentificationNumber": "string()",
+              "investorBD": "date()",
+              "investorAddress": "string()",
+              "investorTelephone": "string()",
+              "investorFax": "string()",
+              "investorEmail": "string()",
+              "lawyer": "string()",
+              "lawyerComment": "string()",
+              "_v": "number()"
+            },
+            "msg": "SPC Company was created successfully"
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/reviewer/getall/cases",
+      "params": {},
+      "methods": {
+        "GET": {
+          "summary": "reviewer can view all the company cases by there id retrieved from the token",
+          "body": {},
+          "expected": {
+            "data": {
+              "managers": "array()",
+              "status": "string()",
+              "regulationLaw": "string()",
+              "legalCompantForm": "string()",
+              "nameInArabic": "string()",
+              "nameInEnglish": "string()",
+              "governerateHQ": "string()",
+              "cityHQ": "string()",
+              "addressHQ": "string()",
+              "telephoneHQ": "number()",
+              "faxHQ": "number()",
+              "investorType": "string()",
+              "capitalCurrency": "string()",
+              "capital": "number().min(50000)",
+              "investorName": "string()",
+              "investorSex": "string()",
+              "investorNationality": "string()",
+              "investorIdentificationType": "string()",
+              "investorIdentificationNumber": "string()",
+              "investorBD": "date()",
+              "investorAddress": "string()",
+              "investorTelephone": "string()",
+              "investorFax": "string()",
+              "investorEmail": "string()",
+              "lawyer": "string()",
+              "lawyerComment": "string()",
+              "_v": "number()"
+            }
+          }
+        }
+      }
+    },
+    {
+      "url": "/api/lawyer/getall/cases",
+      "params": {},
+      "methods": {
+        "GET": {
+          "summary": "lawyer can view all the company cases by there id retrieved from the token",
+          "body": {},
+          "expected": {
+            "data": {
+              "managers": "array()",
+              "status": "string()",
+              "regulationLaw": "string()",
+              "legalCompantForm": "string()",
+              "nameInArabic": "string()",
+              "nameInEnglish": "string()",
+              "governerateHQ": "string()",
+              "cityHQ": "string()",
+              "addressHQ": "string()",
+              "telephoneHQ": "number()",
+              "faxHQ": "number()",
+              "investorType": "string()",
+              "capitalCurrency": "string()",
+              "capital": "number().min(50000)",
+              "investorName": "string()",
+              "investorSex": "string()",
+              "investorNationality": "string()",
+              "investorIdentificationType": "string()",
+              "investorIdentificationNumber": "string()",
+              "investorBD": "date()",
+              "investorAddress": "string()",
+              "investorTelephone": "string()",
+              "investorFax": "string()",
+              "investorEmail": "string()",
+              "lawyer": "string()",
+              "lawyerComment": "string()",
+              "_v": "number()"
+            }
+          }
+        }
+      }
+    },
+    {
+      "url": "/routes/api/admins/getall/cases",
+      "params": {},
+      "methods": {
+        "GET": {
+          "summary": "admins can view all the company cases by there id retrieved from the token",
+          "body": {},
+          "expected": {
+            "data": {
+              "managers": "array()",
+              "status": "string()",
+              "regulationLaw": "string()",
+              "legalCompantForm": "string()",
+              "nameInArabic": "string()",
+              "nameInEnglish": "string()",
+              "governerateHQ": "string()",
+              "cityHQ": "string()",
+              "addressHQ": "string()",
+              "telephoneHQ": "number()",
+              "faxHQ": "number()",
+              "investorType": "string()",
+              "capitalCurrency": "string()",
+              "capital": "number().min(50000)",
+              "investorName": "string()",
+              "investorSex": "string()",
+              "investorNationality": "string()",
+              "investorIdentificationType": "string()",
+              "investorIdentificationNumber": "string()",
+              "investorBD": "date()",
+              "investorAddress": "string()",
+              "investorTelephone": "string()",
+              "investorFax": "string()",
+              "investorEmail": "string()",
+              "lawyer": "string()",
+              "lawyerComment": "string()",
+              "_v": "number()"
+            }
+          }
+        }
+      }
+    }    
   ]
 }
