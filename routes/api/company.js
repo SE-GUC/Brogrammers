@@ -37,6 +37,12 @@ router.get('/', async (req, res) => {
   res.json({ data: companys })
 })
 
+// Sprint 2: viewing approved Companies
+router.get('/approved', async (req, res) => {
+  const acceptedCompanys = await Company.find({ status: 'Accepted' })// Because no Accepted companys... used 'PendingLawyer' as a test case
+  res.json({ data: acceptedCompanys })
+})
+
 router.get('/:id', async (req, res) => {
   try {
     const id = req.params.id

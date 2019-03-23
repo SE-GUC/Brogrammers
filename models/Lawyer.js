@@ -34,7 +34,6 @@ const LawyerSchema = new Schema({
     type: Number,
     required: true
   },
-
   birth_Date: {
     type: Date,
     required: true
@@ -43,7 +42,6 @@ const LawyerSchema = new Schema({
     type: Number,
     required: true
   }
-
 })
 
 module.exports = mongoose.model('lawyer', LawyerSchema)

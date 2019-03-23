@@ -1,38 +1,66 @@
 const express = require('express')
-var jwt = require('jsonwebtoken')
-var config = require('../../config/jwt')
+
 const router = express.Router()
-const Company = require('../../models/Company')
+const mongoose = require('mongoose')
+const flash = require('connect-flash')
 const Investor = require('../../models/Investor')
 const validator = require('../../validations/investorValidations')
-const companyvalidator = require('../../validations/companyValidations')
 const bcrypt = require('bcryptjs')
+var jwt = require('jsonwebtoken')
+var config = require('../../config/jwt')
+const Admin = require('../../models/Admin')
 
 // View All Investors
-// router.get('/investors', (req, res) => res.send(investors));
 router.get('/', async (req, res) => {
   const investors = await Investor.find()
-  res.json({ data: investors })
+  var token = req.headers['x-access-token']
+  if (!token) { return res.status(401).send({ auth: false, message: 'No token provided.' }) }
+  jwt.verify(token, config.secret, function (err, decoded) {
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: 'Failed to authenticate token.' })
+    }
+  })
+  res.json({ id: decoded, data: investors })
 })
 
 // View an Investor
 router.get('/:id', async (req, res) => {
+  var stat = 0
+  var token = req.headers['x-access-token']
+  if (!token) { return res.status(401).send({ auth: false, message: 'No Token provided.' }) }
+  jwt.verify(token, config.secret, function (err, decoded) {
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: 'Failed to authenticate token.' })
+    }
+  })
   const id = req.params.id
   const investor = await Investor.findById(id)
   res.json({ data: investor })
 })
 // View Company Details
-router.get('/:id/MyCompanies/:companyid/', async (req, res) => {
+router.get('/:id/MyRequests/:companyid/', async (req, res) => {
   var stat = 0
   var token = req.headers['x-access-token']
-  if (!token) { return res.status(401).send({ auth: false, message: 'Please login first.' }) }
+  if (!token) {
+    return res
+      .status(401)
+      .send({ auth: false, message: 'Please login first.' })
+  }
   jwt.verify(token, config.secret, async function (err, decoded) {
-    if (err) { return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' }) }
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: 'Failed to authenticate token.' })
+    }
     stat = decoded.id
   })
-  const admin = await Admin.findById(stat)
   try {
     const id = req.params.id
+    if (id != stat) { return res.status(500).send({ auth: false, message: 'Failed to authenticate' }) }
     const companyid = req.params.companyid
     console.log(companyid)
     const investor = await Investor.findById(id)
@@ -53,14 +81,23 @@ router.get('/:id/MyCompanies/:companyid/', async (req, res) => {
 router.put('/:id/MyRequests/:companyid/', async (req, res) => {
   var stat = 0
   var token = req.headers['x-access-token']
-  if (!token) { return res.status(401).send({ auth: false, message: 'Please login first.' }) }
+  if (!token) {
+    return res
+      .status(401)
+      .send({ auth: false, message: 'Please login first.' })
+  }
   jwt.verify(token, config.secret, async function (err, decoded) {
-    if (err) { return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' }) }
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: 'Failed to authenticate token.' })
+    }
     stat = decoded.id
   })
-  const admin = await Admin.findById(stat)
+
   try {
     const id = req.params.id
+    if (id != stat) { return res.status(500).send({ auth: false, message: 'Failed to authenticate' }) }
     const companyid = req.params.companyid
     console.log(companyid)
     const investor = await Investor.findById(id)
@@ -98,16 +135,30 @@ router.put('/:id/MyRequests/:companyid/', async (req, res) => {
 router.get('/:id/MyRequests', async (req, res) => {
   var stat = 0
   var token = req.headers['x-access-token']
-  if (!token) { return res.status(401).send({ auth: false, message: 'Please login first.' }) }
+  if (!token) {
+    return res
+      .status(401)
+      .send({ auth: false, message: 'Please login first.' })
+  }
   jwt.verify(token, config.secret, async function (err, decoded) {
-    if (err) { return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' }) }
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: 'Failed to authenticate token.' })
+    }
     stat = decoded.id
   })
-  const admin = await Admin.findById(stat)
+
   const id = req.params.id
+  if (id != stat) {
+    return res.status(500).send({ auth: false, message: 'Failed to authenticate' })
+  }
   const investor = await Investor.findById(id)
   const inid = investor.idNumber
-  const query = { investorIdentificationNumber: inid, status: { $ne: 'Accepted' } }
+  const query = {
+    investorIdentificationNumber: inid,
+    status: { $ne: 'Accepted' }
+  }
   const company = await Company.find(query, {
     _id: 0,
     nameInArabic: 1,
@@ -169,12 +220,24 @@ router.post('/register', async (req, res) => {
   res.json({ msg: 'Investor was created successfully', data: newInvestor })
 })
 
-// updating investor
-router.put('/:id', async (req, res) => {
+router.put('/', async (req, res) => {
   try {
-    const id = req.params.id
-    const investor = await Investor.findOne({ _id: id }, {})
-    console.log(investor)
+    var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'No token provided.' })
+    }
+    jwt.verify(token, config.secret, function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+    const investor = await Investor.findOne({}, { _id: stat })
     if (!investor) { return res.status(404).send({ error: 'Investor does not exist' }) }
     const isValidated = validator.updateValidation(req.body)
     if (isValidated.error) {
@@ -190,9 +253,19 @@ router.put('/:id', async (req, res) => {
   }
 })
 
-router.get('/:id/ViewCompanies', async (req, res) => {
-  const id = req.params.id
-  const investor = await Investor.findById(id)
+router.get('/View/ViewCompanies', async (req, res) => {
+  var stat = 0
+  var token = req.headers['x-access-token']
+  if (!token) { return res.status(401).send({ auth: false, message: 'No token provided.' }) }
+  jwt.verify(token, config.secret, function (err, decoded) {
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: 'Failed to authenticate token.' })
+    }
+    stat = decoded.id
+  })
+  const investor = await Investor.findById(stat)
   const investorNatID = investor.idNumber
   const arrayOfCompanies = await Company.find({
     investorIdentificationNumber: investorNatID
@@ -200,14 +273,60 @@ router.get('/:id/ViewCompanies', async (req, res) => {
   res.json({ msg: 'Your Companies ', data: arrayOfCompanies })
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/', async (req, res) => {
   try {
-    const id = req.params.id
-    const deletedInvestor = await Investor.findByIdAndRemove(id)
+    var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'No token provided.' })
+    }
+    jwt.verify(token, config.secret, function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+    const deletedInvestor = await Investor.findByIdAndRemove(stat)
     res.json({
       msg: 'Investor was successfully deleted',
       data: deletedInvestor
     })
+  } catch (error) {
+    // We will be handling the error later
+    console.log(error)
+  }
+})
+
+router.delete('/:id', async (req, res) => {
+  try {
+    var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first.' })
+    }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+    const admin = await Admin.find({ _id: stat })
+    console.log(admin)
+    if (admin) {
+      const id = req.params.id
+      const deletedreviewer = await Investor.findByIdAndRemove(id)
+      res.json({
+        msg: 'Lawyer deleted successfully'
+      })
+    } else { return res.json({ message: 'You do not have the authorization.' }) }
   } catch (error) {
     // We will be handling the error later
     console.log(error)
@@ -328,6 +447,22 @@ router.get('/getall/cases', async (req, res) => {
   } catch (error) {
     console.log(error)
   }
+})
+
+router.get('/:companyID/viewFees', async (req, res) => {
+  const companyId = req.params.companyID
+  const c = await Company.findById(companyId)
+  var x = 'Unchanged'
+
+  if (c.regulationLaw === 'Law 159') {
+    x = (c.capital * (1 / 1000)) + (c.capital * (0.25 / 100)) + 56
+  } else {
+    if (c.regulationLaw === 'Law 72') {
+      x = 610
+    }
+  }
+
+  res.json({ EstimatedFees: x })
 })
 
 module.exports = router
