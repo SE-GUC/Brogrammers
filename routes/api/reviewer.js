@@ -460,6 +460,7 @@ router.put('/addcomment/:id/:companyId', async function (req, res) {
     ]
   }
   const editableCompanies = await Company.find(query)
+  var stat=0
   var token = req.headers['x-access-token']
   if (!token) {
     return res.status(401).send({ auth: false, message: 'No token provided.' })
@@ -471,6 +472,8 @@ router.put('/addcomment/:id/:companyId', async function (req, res) {
         .send({ auth: false, message: 'Failed to authenticate token.' })
     }
   })
+  if(reviewerId!==stat)
+    return res.status(401).send({message: 'Token does not match reviewer' })
   if (!editableCompanies) {
     return res.status(404).send({ error: 'There are no Fourms to be edited' })
   } else {

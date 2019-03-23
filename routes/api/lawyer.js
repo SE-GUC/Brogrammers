@@ -344,14 +344,11 @@ router.post('/login', function (req, res) {
   })
 })
 
-<<<<<<< HEAD
-=======
 //Logout Sprint2
 router.get('/logout', function(req, res) {
   res.status(200).send( { auth: false, token: null });
 })
 
->>>>>>> 4814b2fea0c3c98e45b13b96ca055b906f5d6afb
 router.put('/editForm/:id/:companyId', async function (req, res) {
   var lawyerId = req.params.id
   var companyId = req.params.companyId
@@ -390,11 +387,7 @@ router.put('/editForm/:id/:companyId', async function (req, res) {
     res.json({ msg: 'fourm updated successfully' })
   }
 })
-<<<<<<< HEAD
 //alaa
-=======
-
->>>>>>> 4814b2fea0c3c98e45b13b96ca055b906f5d6afb
 router.post('/lawyerinvestor/createspccompany', async (req, res) => {
   var stat = 0
   try {
@@ -474,11 +467,7 @@ router.post('/lawyerinvestor/createspccompany', async (req, res) => {
     console.log(error)
   }
 })
-<<<<<<< HEAD
 //alaa
-=======
-
->>>>>>> 4814b2fea0c3c98e45b13b96ca055b906f5d6afb
 router.post('/lawyerinvestor/createssccompany', async (req, res) => {
   var stat = 0
   try {
@@ -562,11 +551,7 @@ router.post('/lawyerinvestor/createssccompany', async (req, res) => {
     console.log(error)
   }
 })
-<<<<<<< HEAD
 //alaa
-=======
-
->>>>>>> 4814b2fea0c3c98e45b13b96ca055b906f5d6afb
 router.get('/getall/cases', async (req, res) => {
   var stat = 0
   try {
@@ -705,17 +690,21 @@ router.put('/addcomment/:id/:companyId', async function (req, res) {
     ]
   }
   const editableCompanies = await Company.find(query)
+  var stat=0
   var token = req.headers['x-access-token']
   if (!token) {
     return res.status(401).send({ auth: false, message: 'No token provided.' })
   }
   jwt.verify(token, config.secret, function (err, decoded) {
+    stat=decoded.id
     if (err) {
       return res
         .status(500)
         .send({ auth: false, message: 'Failed to authenticate token.' })
     }
   })
+  if(lawyerId!==stat)
+    return res.status(401).send({message: 'Token does not match lawyer' })
   if (!editableCompanies) {
     return res.status(404).send({ error: 'There are no Fourms to be edited' })
   } else {
@@ -818,8 +807,6 @@ router.put('/resubmit/:id/:companyId', async function (req, res) {
   } else {
     await Company.findByIdAndUpdate(companyId, { status: 'PendingReviewer' })
     res.json({ msg: 'fourm resubmitted successfully' })
-<<<<<<< HEAD
-=======
   }
 })
 router.get('/mycases/:id', async (req, res) => {
@@ -841,7 +828,6 @@ router.get('/mycases/:id', async (req, res) => {
     } else return res.status(400).send({ error: 'Wrong ID' })
   } catch (error) {
     console.log(error)
->>>>>>> 4814b2fea0c3c98e45b13b96ca055b906f5d6afb
   }
 })
 module.exports = router

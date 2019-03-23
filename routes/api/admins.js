@@ -7,6 +7,13 @@ const bcrypt = require('bcryptjs')
 const Company = require('../../models/Company')
 var jwt = require('jsonwebtoken')
 
+
+//Logout Sprin2
+router.get('/logout', function(req, res) {
+  res.status(200).send( { auth: false, token: null });
+})
+
+
 router.get('/', async (req, res) => {
   try {
     var token = req.headers['x-access-token']
@@ -189,10 +196,7 @@ router.post('/login', function (req, res) {
   })
 })
 
-//Logout Sprin2
-router.get('/logout', function(req, res) {
-  res.status(200).send( { auth: false, token: null });
-})
+
 
 router.delete('/', async (req, res) => {
   try {

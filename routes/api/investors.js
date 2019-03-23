@@ -8,6 +8,23 @@ var jwt = require('jsonwebtoken')
 var config = require('../../config/jwt')
 const Admin = require('../../models/Admin')
 const Company = require('../../models/Company')
+
+//Logout Sprint2
+router.get('/logout', function(req, res) {
+  res.status(200).send( { auth: false, token: null });
+})
+
+router.get('/getall/cases', async (req, res) => {
+  try {
+    const company = await Company.find()
+    console.log(company)
+    res.json({ data: company })
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+
 // View All Investors
 router.get('/', async (req, res) => {
    var token = req.headers['x-access-token']
@@ -594,20 +611,6 @@ router.post('/login', function (req, res) {
   })
 })
 
-//Logout Sprint2
-router.get('/logout', function(req, res) {
-  res.status(200).send( { auth: false, token: null });
-})
-
-router.get('/getall/cases', async (req, res) => {
-  try {
-    const company = await Company.find()
-    console.log(company)
-    res.json({ data: company })
-  } catch (error) {
-    console.log(error)
-  }
-})
 
 router.get('/:companyID/viewFees', async (req, res) => {
   var stat = 0
