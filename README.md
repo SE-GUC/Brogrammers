@@ -100,8 +100,8 @@
         - status: string()
 - /api/lawyer/spc
     - POST `//=> lawyer can create a spc company form his own portal `
-	- !regulationLaw : string()
-  	- !legalCompanyForm : string()
+	- !regulationLaw: string()
+  	- !legalCompanyForm: string()
         - !nameInArabic: string()
         - !nameInEnglish: string()
         - !governerateHQ: string()
@@ -129,8 +129,8 @@
 	
 - /api/lawyer/ssc
     - POST `//=> Investor can create a ssc company form his own portal `
-	- !regulationLaw : string()
-  	- !legalCompanyForm : string()
+	- !regulationLaw: string()
+  	- !legalCompanyForm: string()
         - !nameInArabic: string()
         - !nameInEnglish: string()
         - !governerateHQ: string()
@@ -159,8 +159,8 @@
 	
 - /api/investors/spc
     - POST `//=> Investor can create a spc company form his own portal `
-    	- !regulationLaw : string()
-  	- !legalCompanyForm : string()
+    	- !regulationLaw: string()
+  	- !legalCompanyForm: string()
         - !nameInArabic: string()
         - !nameInEnglish: string()
         - !governerateHQ: string()
@@ -188,8 +188,8 @@
 	
 - /api/investors/ssc
     - POST `//=> lawyer can create a ssc company form his own portal `
-  	- !regulationLaw : string()
-  	- !legalCompanyForm : string()
+  	- !regulationLaw: string()
+  	- !legalCompanyForm: string()
         - !nameInArabic: string()
         - !nameInEnglish: string()
         - !governerateHQ: string()
