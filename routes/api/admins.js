@@ -4,7 +4,7 @@ const Admin = require("../../models/Admin.js");
 var config = require("../../config/jwt");
 const validator = require("../../validations/adminValidations");
 const bcrypt = require("bcryptjs");
-const Companys = require("../../models/Company");
+const Company = require("../../models/Company");
 var jwt = require("jsonwebtoken");
 
 router.get("/", async (req, res) => {
