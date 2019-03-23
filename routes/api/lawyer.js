@@ -377,7 +377,7 @@ router.put('/editForm/:id/:companyId', async function (req, res) {
       { _id: companyId }
     ]
   }
-  const editableCompanies = await Company.find(query)
+  const editableCompanies = await Company.findOne(query)
 
   var token = req.headers['x-access-token']
   if (!token) {
