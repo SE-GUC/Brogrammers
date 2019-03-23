@@ -535,7 +535,7 @@ router.get('/mycases/:id', async (req, res) => {
       var query = {
         $and: [
           { status: 'PendingReviewer' },
-          { lawyer: ssn }
+          { Reviewer: ssn }
          
         ]
         
