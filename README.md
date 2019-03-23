@@ -214,18 +214,18 @@
 - /api/investors/
     - GET `=> View all investors (accessible for logged in users)`
     - PUT `=> Edit currently logged in investor's information`
-        - name: string().min(3).required()
-	- type: string().length(3)
-	- gender: string().valid('male', 'female')
-	- nationality: string().max(25)
-	- idType: string().valid('Passport', 'National ID')
-	- idNumber: number()
-	- dob: date()
-	- address: string()
-	- telephone: number()
-	- fax: number()
-	- mail: string()
-	- password: string()
+    	 - name: string().min(3).required()
+		- type: string().length(3)
+		- gender: string().valid('male', 'female')
+		- nationality: string().max(25)
+		- idType: string().valid('Passport', 'National ID')
+		- idNumber: number()
+		- dob: date()
+		- address: string()
+		- telephone: number()
+		- fax: number()
+		- mail: string()
+		- password: string()
     - DELETE `=> Delete currently logged in investor`
  
 - /api/investors/:id
@@ -239,15 +239,16 @@
     - GET `=> View all lawyers (accessible for logged in users)`
     - PUT `=> Edit information of currently logged in lawyer`
     	- firstName: string().min(1)
-	- middleName: string().min(1)
-	- lastName: string().min(1)
-	- email: string().email()
-	- password: string().min(8)
-	- mobile_number: string().min(6)
-	- Social_Security_Number: string().min(14).max(14)
-	- salary: number()
-	- birth_Date: date()
-	- yearsOfExperience = number()
+		- middleName: string().min(1)
+		- lastName: string().min(1)
+		- email: string().email()
+		- password: string().min(8)
+		- mobile_number: string().min(6)
+		- Social_Security_Number: string().min(14).max(14)
+		- salary: number()
+		- birth_Date: date()
+		- yearsOfExperience = number()
+
     - DELETE `=> Delete currently logged in lawyer`
     
 - /api/lawyer/:id
@@ -256,17 +257,17 @@
     
 - /api/reviewer/
     - GET `=> View all reviewers (accessible for logged in users)`
-    - PUT `=> Edit information of currently logged in lawyer`
+    - PUT `=> Edit information of currently logged in reviewer`
     	- ssn: string()
-	- name: string()
-	- gender: string()
-	- address: string()
-	- phone: number()
-	- email: string()
-	- password: string()
-	- yearsOfExperience: number()
-	- age: number()
-	- birth: string()
+		- name: string()
+		- gender: string()
+		- address: string()
+		- phone: number()
+		- email: string()
+		- password: string()
+		- yearsOfExperience: number()
+		- age: number()
+		- birth: string()
     - DELETE `=> Delete currently logged in reviewer`
    
 - /api/reviewer/:id
