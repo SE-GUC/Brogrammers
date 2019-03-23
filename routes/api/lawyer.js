@@ -815,7 +815,7 @@ router.get('/mycases/:id', async (req, res) => {
     } if (stat === req.params.id) {
       const lawyer = await Lawyer.findById(req.params.id)
       const company = await Company.find()
-      if (company.lawyer === lawyer.email) { res.json({ data: company }) }
+      if (company.lawyer === lawyer.socialSecurityNumber) { res.json({ data: company }) }
     } else return res.status(400).send({ error: 'Wrong ID' })
   } catch (error) {
     console.log(error)
