@@ -1,8 +1,9 @@
 const nfetch = require('node-fetch')
 const Lawyer = require('../models/Lawyer')
-const AdminsTest = require('./admins')
 const Admin = require('../models/Admin')
-const adminsTests = new AdminsTest(3000, 'admins')
+const Company = require('../models/Company')
+
+
 
 class LawyersTest{
     constructor (PORT, ROUTE) {
@@ -10,7 +11,8 @@ class LawyersTest{
      this.sharedState = {
         id: null,
         adminToken:null,
-        token:null
+        token:null,
+        socialSecurityNumber:null
       }
     }
 
@@ -23,7 +25,10 @@ class LawyersTest{
               this.creatingLawyerWithoutLoggingIn(),
               this.creatingLawyerByAdmin(),
               this.creatingLawyerByLawyer(),
-              this.creatingLawyerCorruptedToken()
+              this.creatingLawyerCorruptedToken(),
+              this.showwithoutloggingin(),
+              this.wrongAuthShowMyCase(),
+              this.showMyCases()
             })
             resolve()
           })
@@ -68,9 +73,9 @@ class LawyersTest{
             middleName: "reyaaaad",
             lastName: "mohamed",
             password: "abcakakaka",
-            email: "tes11q12t.com",
+            email: "omar.com",
             mobileNumber: "01060187952",
-            socialSecurityNumber: "29821114524525",
+            socialSecurityNumber: "12345",
             salary: "105151",
             birthDate: "1998-04-03T22:00:00.000Z",
             yearsOfExperience: "4"
@@ -90,11 +95,15 @@ class LawyersTest{
         
              // go check in the mongo database
              const lawyer = await Lawyer.findById(jsonResponse.data._id).exec()
-             expect(lawyer.name).toEqual(requestBody.name)
+             expect(lawyer.firstName).toEqual(requestBody.firstName)
              expect(lawyer.phone).toEqual(requestBody.phone)
              expect(lawyer.email).toEqual(requestBody.email)
+             expect(lawyer.socialSecurityNumber).toEqual(requestBody.socialSecurityNumber)
              this.sharedState.id = lawyer.id
              this.sharedState.token=jsonResponse.token
+             this.sharedState.socialSecurityNumber = lawyer.socialSecurityNumber
+            
+             
           
     
       })
@@ -108,10 +117,10 @@ class LawyersTest{
             middleName: "reyaaaad",
             lastName: "mohamed",
             password: "abcakakaka",
-            email: "tes11q12t.com",
+            email: "omar.com",
             mobileNumber: "01060187952",
-            socialSecurityNumber: "29821114524525",
-            salary: "105151",
+            socialSecurityNumber: "12345",
+            salary: "1235234",
             birthDate: "1998-04-03T22:00:00.000Z",
             yearsOfExperience: "4"
       }
@@ -203,7 +212,70 @@ class LawyersTest{
     
       })
     
+      
+    }
+    wrongAuthShowMyCase(){
+      test(`Showing my cases with wrong authauntication,\t\t\t[=> GET\t${this.base_url}mycases/:id\t`, async () => {
+        const response = await nfetch(`http://localhost:3000/api/lawyer/mycases/${this.sharedState.id}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json',
+          'x-access-token': "tasdfasdf"}
+                
+        })
+        const jsonResponse = await response.json()
+        // check if the json response has data not error
+        expect(jsonResponse).toEqual({"auth": false, "message": "Failed to authenticate token."})
+        
+    
+      })
+    }
+    showwithoutloggingin(){
+      test(`Showing my cases without logging in,\t\t\t[=> GET\t${this.base_url}mycases/:id\t`, async () => {
+        const response = await nfetch(`http://localhost:3000/api/lawyer/mycases/${this.sharedState.id}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json'}
+                
+        })
+        const jsonResponse = await response.json()
+        // check if the json response has data not error
+        expect(jsonResponse).toEqual({"auth": false, "message": "Please login first."})
+        
+    
+      })}
+      showMyCases(){
+      test(`Showing my cases,\t\t\t[=> GET\t${this.base_url}mycases/:id\t`, async () => {
+        const response = await nfetch(`http://localhost:3000/api/lawyer/mycases/${this.sharedState.id}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json',
+          'x-access-token': this.sharedState.token }
+                
+        })
+        const jsonResponse = await response.json()
+        // check if the json response has data not error
+        expect(Object.keys(jsonResponse)).toEqual(['data'])
+        
+        var query = {
+            $and: [{ status: 'PendingLawyer' }, { lawyer: this.sharedState.socialSecurityNumber }]
+          }
+        const checkCase = await Company.find(query).exec().then()
+        console.log(checkCase)
+        if(checkCase==[])
+        expect(checkCase).toEqual([])
+        else{
+        for(var i = 0 ; i<checkCase.length ; i++)
+        {
+            console.log(123)
+            expect(checkCase[i].status).toEqual("PendingLawyer"),
+            expect(checkCase[i].lawyer).toEqual(this.sharedState.socialSecurityNumber)
+        }}
+            
+
+        
+     
+      })
+    
       }
+
     
     }
     

@@ -884,36 +884,5 @@ router.get('/mycases/:id', async (req, res) => {
   }
 })
 
-router.get('/mycases/:id', async (req, res) => {
-  try {
-    var stat = 0
-    var token = req.headers['x-access-token']
-    if (!token) {
-      return res
-        .status(401)
-        .send({ auth: false, message: 'Please login first.' })
-    }
-    jwt.verify(token, config.secret, async function (err, decoded) {
-      if (err) {
-        return res
-          .status(500)
-          .send({ auth: false, message: 'Failed to authenticate token.' })
-      }
-      stat = decoded.id
-    })
-    const lawyers = await Lawyer.findById(stat)
-    if (!lawyers) {
-      return res.status(400).send({ error: 'You are not a Lawyer' })
-    }
-    if (stat === req.params.id) {
-      const lawyer = await Lawyer.findById(req.params.id)
-      const company = await Company.find()
-      if (company.lawyer === lawyer.socialSecurityNumber) {
-        return res.json({ data: company })
-      }
-    } else return res.status(400).send({ error: 'Wrong ID' })
-  } catch (error) {
-    console.log(error)
-  }
-})
+
 module.exports = router
