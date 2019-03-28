@@ -54,7 +54,7 @@ class AdminsTest {
         headers: { "Content-Type": "application/json", "x-access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOWQyZjYzNWI4ZTBkNThkZTNkNWE0ZSIsImlhdCI6MTU1MzgwNTE1NSwiZXhwIjoxNTUzODkxNTU1fQ.M16SoTzlmTczwurymL1ZVSo6k9DJOY_hda45v4feSdY"}
       });
       const jsonResponse = await response.json();
-      expect(Object.keys(jsonResponse)).toEqual(["msg"]);
+      expect(jsonResponse).toEqual({"msg": "Information updated successfully"});
       console.log('shared state is is ' + this.sharedState._id);
       const admin = await Admin.findById(this.sharedState._id);
       console.log(admin)
@@ -79,7 +79,7 @@ class AdminsTest {
         headers: { "Content-Type": "application/json", "x-access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOWQyZjYzNWI4ZTBkNThkZTNkNWE0ZSIsImlhdCI6MTU1MzgwNTE1NSwiZXhwIjoxNTUzODkxNTU1fQ.M16SoTzlmTczwurymL1ZVSo6k9DJOY_hda45v4feSdY"}
       });
       const jsonResponse = await response.json();
-      expect(Object.keys(jsonResponse)).toEqual(["msg"]);
+      expect(jsonResponse).toEqual({"msg": "You don't have the authorization"});
     });
   }
 
@@ -94,7 +94,7 @@ class AdminsTest {
         headers: { "Content-Type": "application/json", "x-access-token": "1q2w3e4r5t6y7u"}
       });
       const jsonResponse = await response.json();
-      expect(Object.keys(jsonResponse)).toEqual(["auth", "message"]);
+      expect(jsonResponse).toEqual({"auth": false, "message": "Failed to authenticate token."});
     });
   }
 }
