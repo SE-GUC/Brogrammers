@@ -7,12 +7,12 @@ const companies = require('./routes/api/company')
 const admins = require('./routes/api/admins')
 const investors = require('./routes/api/investors')
 
-// DB Config
-//const db = require('./config/keys').mongoURI
+///DB Config
+const db = require('./config/keys').mongoURI
 
 // Connect to mongo
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(db)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.log(err))
 
