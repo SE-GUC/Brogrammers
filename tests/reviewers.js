@@ -2,12 +2,12 @@ const nfetch = require('node-fetch')
 const Lawyer = require('../models/Lawyer')
 const AdminsTest = require('./admins')
 const Admin = require('../models/Admin')
-const adminsTests = new AdminsTest(3000, 'admins')
+const Reviewer = require('../models/Reviewer')
 
-class LawyersTest{
+class ReviewersTest{
     constructor (PORT, ROUTE) {
         this.base_url = `http://localhost:${PORT}/routes/api/${ROUTE}`
-     this.sharedState = {
+       this.sharedState = {
         id: null,
         adminToken:null,
         token:null
@@ -19,11 +19,11 @@ class LawyersTest{
         try {
           return new Promise((resolve, reject) => {
             describe('Checking company Sprint 1 tests', () => {
+              this.creatingReviewerWithoutLoggingIn(),
               this.creatingAnAdminAsCrud(),
-              this.creatingLawyerWithoutLoggingIn(),
-              this.creatingLawyerByAdmin(),
-              this.creatingLawyerByLawyer(),
-              this.creatingLawyerCorruptedToken()
+              this.creatingReviewerByAdmin(),
+              this.creatingReviewerByReviewer(),
+              this.creatingReviewerCorruptedToken()
             })
             resolve()
           })
@@ -31,23 +31,23 @@ class LawyersTest{
       }
     
     
-      creatingLawyerWithoutLoggingIn() {
+      creatingReviewerWithoutLoggingIn() {
         const requestBody = {
-          
-                firstName: "please no2",
-                middleName: "reyaaaad",
-                lastName: "mohamed",
-                password: "abcakakaka",
-                email: "tes11q121t.com",
-                mobileNumber: "01060187952",
-                socialSecurityNumber: "29821114524525",
-                salary: 105151,
-                birthDate: "1998-04-03T22:00:00.000Z",
-                yearsOfExperience: 4
+            "ssn": 696969696969,
+            "name": "Omar Sherif",
+            "gender": "male",
+            "address": "korba",
+            "phone": 55,
+            "email": "alo21112.com",
+            "password": "abc",
+            "yearsOfExperience": 20,
+            "age": 20,
+            "birth": "2 / 2 / 1999",
+            "task": 2
         }
     
-        test(`Creeating A Lawyer without logging in,\t\t[=> POST ${this.base_url}\register`, async () => {
-          const response = await nfetch("http://localhost:3000/api/lawyer/register", {
+        test(`Creeating A Reviewer without logging in,\t\t[=> POST ${this.base_url}\register`, async () => {
+          const response = await nfetch("http://localhost:3000/api/reviewer/register", {
             method: 'POST',
             body: JSON.stringify(requestBody),
             headers: { 'Content-Type': 'application/json' }
@@ -62,22 +62,23 @@ class LawyersTest{
       }
     
     
-      creatingLawyerByAdmin(){
+      creatingReviewerByAdmin(){
         const requestBody = {
-            firstName: "please no2",
-            middleName: "reyaaaad",
-            lastName: "mohamed",
-            password: "abcakakaka",
-            email: "tes11q12t.com",
-            mobileNumber: "01060187952",
-            socialSecurityNumber: "29821114524525",
-            salary: "105151",
-            birthDate: "1998-04-03T22:00:00.000Z",
-            yearsOfExperience: "4"
+          "ssn": 696969696969,
+          "name": "Omar Sherif",
+          "gender": "male",
+          "address": "korba",
+          "phone": 55,
+          "email": "alo21112.com",
+          "password": "abc",
+          "yearsOfExperience": 20,
+          "age": 20,
+          "birth": "2 / 2 / 1999",
+          "task": 2
       }
     
-      test(`Creating A Lawyer as using authentication by another admin,\t\t[=> POST ${this.base_url}\register`, async () => {
-        const response = await nfetch("http://localhost:3000/api/lawyer/register", {
+      test(`Creating A Reviewer as using authentication by another admin,\t\t[=> POST ${this.base_url}\register`, async () => {
+        const response = await nfetch("http://localhost:3000/api/reviewer/register", {
           method: 'POST',
           body: JSON.stringify(requestBody),
           headers: { 'Content-Type': 'application/json' ,
@@ -89,11 +90,11 @@ class LawyersTest{
              expect(Object.keys(jsonResponse)).toEqual(['auth','token','msg','data'])
         
              // go check in the mongo database
-             const lawyer = await Lawyer.findById(jsonResponse.data._id).exec()
-             expect(lawyer.name).toEqual(requestBody.name)
-             expect(lawyer.phone).toEqual(requestBody.phone)
-             expect(lawyer.email).toEqual(requestBody.email)
-             this.sharedState.id = lawyer.id
+             const reviewer = await Reviewer.findById(jsonResponse.data._id).exec()
+             expect(reviewer.name).toEqual(requestBody.name)
+             expect(reviewer.phone).toEqual(requestBody.phone)
+             expect(reviewer.email).toEqual(requestBody.email)
+             this.sharedState.id = reviewer.id
              this.sharedState.token=jsonResponse.token
           
     
@@ -102,22 +103,23 @@ class LawyersTest{
       }
     
 
-      creatingLawyerByLawyer(){
+      creatingReviewerByReviewer(){
         const requestBody = {
-            firstName: "please no2",
-            middleName: "reyaaaad",
-            lastName: "mohamed",
-            password: "abcakakaka",
-            email: "tes11q12t.com",
-            mobileNumber: "01060187952",
-            socialSecurityNumber: "29821114524525",
-            salary: "105151",
-            birthDate: "1998-04-03T22:00:00.000Z",
-            yearsOfExperience: "4"
+          "ssn": 696969696969,
+          "name": "Omar Sherif",
+          "gender": "male",
+          "address": "korba",
+          "phone": 55,
+          "email": "alo21112.com",
+          "password": "abc",
+          "yearsOfExperience": 20,
+          "age": 20,
+          "birth": "2 / 2 / 1999",
+          "task": 2
       }
     
-      test(`Creating A Lawyer as using authentication by another lawyer,\t\t[=> POST ${this.base_url}\register`, async () => {
-        const response = await nfetch("http://localhost:3000/api/lawyer/register", {
+      test(`Creating A Reviewer as using authentication by another lawyer,\t\t[=> POST ${this.base_url}\register`, async () => {
+        const response = await nfetch("http://localhost:3000/api/reviewer/register", {
           method: 'POST',
           body: JSON.stringify(requestBody),
           headers: { 'Content-Type': 'application/json' ,
@@ -135,22 +137,23 @@ class LawyersTest{
       }
 
 
-      creatingLawyerCorruptedToken(){
+      creatingReviewerCorruptedToken(){
         const requestBody = {
-            firstName: "please no2",
-            middleName: "reyaaaad",
-            lastName: "mohamed",
-            password: "abcakakaka",
-            email: "tes11q12t.com",
-            mobileNumber: "01060187952",
-            socialSecurityNumber: "29821114524525",
-            salary: "105151",
-            birthDate: "1998-04-03T22:00:00.000Z",
-            yearsOfExperience: "4"
+          "ssn": 696969696969,
+          "name": "Omar Sherif",
+          "gender": "male",
+          "address": "korba",
+          "phone": 55,
+          "email": "alo21112.com",
+          "password": "abc",
+          "yearsOfExperience": 20,
+          "age": 20,
+          "birth": "2 / 2 / 1999",
+          "task": 2
       }
     
-      test(`Creating A Lawyer as using authentication by corrupted token,\t\t[=> POST ${this.base_url}\register`, async () => {
-        const response = await nfetch("http://localhost:3000/api/lawyer/register", {
+      test(`Creating A Reviewer as using authentication by corrupted token,\t\t[=> POST ${this.base_url}\register`, async () => {
+        const response = await nfetch("http://localhost:3000/api/reviewer/register", {
           method: 'POST',
           body: JSON.stringify(requestBody),
           headers: { 'Content-Type': 'application/json' ,
@@ -167,9 +170,6 @@ class LawyersTest{
     
       }
 
-
-
-
       creatingAnAdminAsCrud(){
         const requestBody = {
           name: "manga",
@@ -177,7 +177,7 @@ class LawyersTest{
           birthDate: "2018-05-01",
           gender: "Female",
           joinDate:"5/5/2017",
-          email: "kancom",
+          email: "kancomnma",
           phone: "01111088333"
       }
     
@@ -207,4 +207,4 @@ class LawyersTest{
     
     }
     
-module.exports = LawyersTest
+module.exports = ReviewersTest
