@@ -7,7 +7,7 @@ const companies = require('./routes/api/company')
 const admins = require('./routes/api/admins')
 const investors = require('./routes/api/investors')
 
-///DB Config
+/// DB Config
 const db = require('./config/keys').mongoURI
 
 // Connect to mongo

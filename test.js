@@ -3,10 +3,8 @@ const mongoose = require('mongoose')
 const db = require('./config/keys').mongoURI
 const AdminsTest = require('./tests/admins')
 
-
 const {
-  PORT = 3000,
-  db = require('./config/keys').mongoURI
+  PORT = 3000
 } = process.env
 
 mongoose.connect(db, {
