@@ -122,24 +122,24 @@ router.put('/:id', async (req, res) => {
 router.post('/register', async (req, res) => {
   var stat = 0
   try {
-    // var token = req.headers['x-access-token']
-    // if (!token) {
-    //   return res
-    //     .status(401)
-    //     .send({ auth: false, message: 'Please login first.' })
-    // }
-    // jwt.verify(token, config.secret, async function (err, decoded) {
-    //   if (err) {
-    //     return res
-    //       .status(500)
-    //       .send({ auth: false, message: 'Failed to authenticate token.' })
-    //   }
-    //   stat = decoded.id
-    // })
-    // const admin2 = await Admin.findById(stat)
-    // if (!admin2) {
-    //   return res.status(400).json({ error: 'You are not an admin' })
-    // }
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first.' })
+    }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+    const admin2 = await Admin.findById(stat)
+    if (!admin2) {
+      return res.status(400).json({ error: 'You are not an admin' })
+    }
     const {
       name,
       email,
@@ -292,6 +292,50 @@ router.get('/getall/cases', async (req, res) => {
   } catch (error) {
     console.log(error)
   }
+})
+
+// Register admin by another admin
+router.post('/registerNo', async (req, res) => {
+  const {
+    name,
+    email,
+    password,
+    phone,
+    gender,
+    birthDate,
+    joinDate
+  } = req.body
+  const isValidated = validator.createValidation(req.body)
+  const admin = await Admin.findOne({ email })
+  if (admin) return res.status(400).json({ error: 'Email already exists' })
+  if (isValidated.error) {
+    return res
+      .status(400)
+      .send({ error: isValidated.error.details[0].message })
+  }
+  const salt = bcrypt.genSaltSync(10)
+  const hashedPassword = bcrypt.hashSync(password, salt)
+  const newAdmin = new Admin({
+    name,
+    email,
+    password: hashedPassword,
+    phone,
+    gender,
+    birthDate,
+    joinDate
+  })
+  var newAd = await Admin.create(newAdmin)
+  token = jwt.sign({ id: newAd._id }, config.secret, {
+    expiresIn: 86400 // expires in 24 hours
+  })
+  res.status(200).send({
+    auth: true,
+    token: token,
+    msg: 'Admin was created successfully',
+    data: newAdmin
+  })
+  res.json({ msg: 'Admin was created successfully', data: newAdmin })
+  res.json({ msg: 'Admin created successfully', data: newAdmin })
 })
 
 module.exports = router

@@ -1,21 +1,34 @@
-// require("dotenv").config();
-const mongoose = require("mongoose");
-const db = require("./config/keys").mongoURI;
-const AdminsTest = require("./tests/admins");
-// mongoose.connect(db, { useNewUrlParser: true });
-// beforeAll(async () => {
-//   await mongoose.connection.dropDatabase();
-// });
+const mongoose = require('mongoose')
+const db = require('./config/keys').mongoURI
 
-// afterAll(async () => {
-//   await mongoose.connection.dropDatabase();
-//});
+const AdminsTest = require('./tests/admins')
+
+
 mongoose.connect(db, {
   useNewUrlParser: true
 })
+//= =---------------------------------------------------= =//
 
-const adminsTest = new AdminsTest(3000, "admins");
+//= =---------------------------------------------------= =//
+// ---== Setup before & after all tests run
+//= =---------------------------------------------------= =//
+beforeAll(async () => {
+  await mongoose.connection.dropDatabase()
+})
 
-describe("Let me first run the independent tests", () => {
-  Promise.all([adminsTest.runIndependently()])
-});
+afterAll(async () => {
+  await mongoose.connection.dropDatabase()
+})
+//= =---------------------------------------------------= =//
+
+//= =---------------------------------------------------= =//
+// ---== Core tests
+//= =---------------------------------------------------= =//
+const adminsTests = new AdminsTest(3000, 'admins')
+
+describe('Let me first run the independent tests', () => {
+  Promise.all([
+    adminsTests.runTests()
+  ]).then(result => {
+  })
+})

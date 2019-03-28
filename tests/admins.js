@@ -3,8 +3,9 @@ const Admin = require("../models/Admin");
 
 class AdminsTest {
   constructor(PORT, ROUTE) {
+    this.base_url = `http://localhost:${PORT}/routes/api/${ROUTE}`;
     this.sharedState = {
-      _id: '5c9d2f635b8e0d58de3d5a4e',
+      id: null,
       token: null,
       name: null,
       email: null,
@@ -16,31 +17,209 @@ class AdminsTest {
     };
   }
 
-  runIndependently() {
+  runTests() {
     try {
       return new Promise((resolve, reject) => {
-        describe("Making sure independent admin routes works", () => {
-          this.updateAdminWithCorrectIdAndToken();
-          this.updateAdminWithWrongId();
-          this.updateAdminWithWrongToken();
+        describe("Checking company Sprint 1 tests", () => {
+          this.creatingAdminWithoutLoggingIn(),
+            this.creatingAnAdminAsCrud(),
+            this.creatingAnAdminByAdmin(),
+            this.creatingAnAdminAlreadyExsistent(),
+            this.creatingAnAdminWithCorruptedToken(),
+            this.updateAdminWithCorrectIdAndToken(),
+            this.updateAdminWithWrongId(),
+            this.updateAdminWithWrongToken();
         });
         resolve();
       });
     } catch (err) {}
   }
 
-  runDependently() {
-    try {
-      return new Promise((resolve, reject) => {
-        describe("Making sure dependent admin routes work", () => {
-          // this.postRequestDependently();
-          // this.getRequestDependently();
-          // this.putRequestDependently();
-          // this.deleteRequestDependently();
-        });
-        resolve();
+  creatingAdminWithoutLoggingIn() {
+    const requestBody = {
+      name: "manga",
+      password: "momonjvjf",
+      birthDate: "2018-05-01",
+      gender: "Female",
+      joinDate: "5/5/2017",
+      email: "kh.a392b2com",
+      phone: "01111088333"
+    };
+
+    test(`Creeating An Admin without logging in,\t\t[=> POST ${
+      this.base_url
+    }\register`, async () => {
+      const response = await nfetch(
+        "http://localhost:3000/routes/api/admins/register",
+        {
+          method: "POST",
+          body: JSON.stringify(requestBody),
+          headers: { "Content-Type": "application/json" }
+        }
+      );
+      const jsonResponse = await response.json();
+
+      console.log(`${this.base_url}\register`);
+      // check if the json response has data not error
+      expect(jsonResponse).toEqual({
+        auth: false,
+        message: "Please login first."
       });
-    } catch (err) {}
+    });
+  }
+
+  creatingAnAdminAsCrud() {
+    const requestBody = {
+      name: "manga",
+      password: "momonjvjf",
+      birthDate: "2018-05-01",
+      gender: "Female",
+      joinDate: "5/5/2017",
+      email: "kh.a392b2com",
+      phone: "01111088333"
+    };
+
+    test(`Creating An Admin as CRUD without authentication,\t\t[=> POST ${
+      this.base_url
+    }\register`, async () => {
+      const response = await nfetch(
+        "http://localhost:3000/routes/api/admins/registerNo",
+        {
+          method: "POST",
+          body: JSON.stringify(requestBody),
+          headers: { "Content-Type": "application/json" }
+        }
+      );
+      const jsonResponse = await response.json();
+
+      // check if the json response has data not error
+      expect(Object.keys(jsonResponse)).toEqual([
+        "auth",
+        "token",
+        "msg",
+        "data"
+      ]);
+
+      // go check in the mongo database
+      const admin = await Admin.findById(jsonResponse.data._id).exec();
+      expect(admin.name).toEqual(requestBody.name);
+      expect(admin.phone).toEqual(requestBody.phone);
+      expect(admin.email).toEqual(requestBody.email);
+      this.sharedState.id = admin.id;
+      this.sharedState.token = jsonResponse.token;
+    });
+  }
+
+  creatingAnAdminByAdmin() {
+    const requestBody = {
+      name: "manga",
+      password: "momonjvjf",
+      birthDate: "2018-05-01",
+      gender: "Female",
+      joinDate: "5/5/2017",
+      email: "khaled.com",
+      phone: "01111088333"
+    };
+
+    test(`Creating An Admin as using authentication by another admin,\t\t[=> POST ${
+      this.base_url
+    }\register`, async () => {
+      const response = await nfetch(
+        "http://localhost:3000/routes/api/admins/register",
+        {
+          method: "POST",
+          body: JSON.stringify(requestBody),
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": this.sharedState.token
+          }
+        }
+      );
+      const jsonResponse = await response.json();
+
+      // check if the json response has data not error
+      expect(Object.keys(jsonResponse)).toEqual([
+        "auth",
+        "token",
+        "msg",
+        "data"
+      ]);
+
+      // go check in the mongo database
+      const admin = await Admin.findById(jsonResponse.data._id).exec();
+      expect(admin.name).toEqual(requestBody.name);
+      expect(admin.phone).toEqual(requestBody.phone);
+      expect(admin.email).toEqual(requestBody.email);
+      this.sharedState.id = admin.id;
+      this.sharedState.token = jsonResponse.token;
+    });
+  }
+
+  creatingAnAdminAlreadyExsistent() {
+    const requestBody = {
+      name: "manga",
+      password: "momonjvjf",
+      birthDate: "2018-05-01",
+      gender: "Female",
+      joinDate: "5/5/2017",
+      email: "khaled.com",
+      phone: "01111088333"
+    };
+
+    test(`Creating An Admin using an already existent email,\t\t[=> POST ${
+      this.base_url
+    }\register`, async () => {
+      const response = await nfetch(
+        "http://localhost:3000/routes/api/admins/register",
+        {
+          method: "POST",
+          body: JSON.stringify(requestBody),
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": this.sharedState.token
+          }
+        }
+      );
+      const jsonResponse = await response.json();
+
+      // check if the json response has data not error
+      expect(jsonResponse).toEqual({ error: "Email already exists" });
+    });
+  }
+
+  creatingAnAdminWithCorruptedToken() {
+    const requestBody = {
+      name: "manga",
+      password: "momonjvjf",
+      birthDate: "2018-05-01",
+      gender: "Female",
+      joinDate: "5/5/2017",
+      email: "khaled.com",
+      phone: "01111088333"
+    };
+
+    test(`Creating An Admin using Corrupted token,\t\t[=> POST ${
+      this.base_url
+    }\register`, async () => {
+      const response = await nfetch(
+        "http://localhost:3000/routes/api/admins/register",
+        {
+          method: "POST",
+          body: JSON.stringify(requestBody),
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": "abcd"
+          }
+        }
+      );
+      const jsonResponse = await response.json();
+
+      // check if the json response has data not error
+      expect(jsonResponse).toEqual({
+        auth: false,
+        message: "Failed to authenticate token."
+      });
+    });
   }
 
   updateAdminWithCorrectIdAndToken() {
@@ -48,54 +227,73 @@ class AdminsTest {
       phone: "01142830041"
     };
     test(`Updating information of specified admin`, async () => {
-      const response = await nfetch('http://localhost:3000/routes/api/admins/5c9d2f635b8e0d58de3d5a4e', {
-        method: "PUT",
-        body: JSON.stringify(requestBody),
-        headers: { "Content-Type": "application/json", "x-access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOWQyZjYzNWI4ZTBkNThkZTNkNWE0ZSIsImlhdCI6MTU1MzgwNTE1NSwiZXhwIjoxNTUzODkxNTU1fQ.M16SoTzlmTczwurymL1ZVSo6k9DJOY_hda45v4feSdY"}
-      });
+      const response = await nfetch(
+        "http://localhost:3000/routes/api/admins/" + this.sharedState.id,
+        {
+          method: "PUT",
+          body: JSON.stringify(requestBody),
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": this.sharedState.token
+          }
+        }
+      );
       const jsonResponse = await response.json();
-      expect(jsonResponse).toEqual({"msg": "Information updated successfully"});
-      console.log('shared state is is ' + this.sharedState._id);
-      const admin = await Admin.findById(this.sharedState._id);
-      console.log(admin)
+      expect(jsonResponse).toEqual({ msg: "Information updated successfully" });
+      const admin = await Admin.findById(this.sharedState.id);
       this.sharedState.name = admin.name;
       this.sharedState.birthDate = admin.birthDate;
       this.sharedState.email = admin.email;
       this.sharedState.gender = admin.gender;
       this.sharedState.password = admin.password;
       this.sharedState.phone = admin.phone;
-      //ask about updating the sharedState updating
     });
   }
 
-  updateAdminWithWrongId(){
+  updateAdminWithWrongId() {
     const requestBody = {
       email: "1234gmailgmail@yahoo.com"
     };
     test(`Updating information of specified admin with wrong ID`, async () => {
-      const response = await nfetch('http://localhost:3000/routes/api/admins/2abcd', {
-        method: "PUT",
-        body: JSON.stringify(requestBody),
-        headers: { "Content-Type": "application/json", "x-access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOWQyZjYzNWI4ZTBkNThkZTNkNWE0ZSIsImlhdCI6MTU1MzgwNTE1NSwiZXhwIjoxNTUzODkxNTU1fQ.M16SoTzlmTczwurymL1ZVSo6k9DJOY_hda45v4feSdY"}
-      });
+      const response = await nfetch(
+        "http://localhost:3000/routes/api/admins/2abcd",
+        {
+          method: "PUT",
+          body: JSON.stringify(requestBody),
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": this.sharedState.token
+          }
+        }
+      );
       const jsonResponse = await response.json();
-      expect(jsonResponse).toEqual({"msg": "You don't have the authorization"});
+      expect(jsonResponse).toEqual({ msg: "You don't have the authorization" });
     });
   }
 
-  updateAdminWithWrongToken(){
+  updateAdminWithWrongToken() {
     const requestBody = {
       email: "1234gmailgmail@yahoo.com"
     };
     test(`Updating information of specified admin with wrong Token`, async () => {
-      const response = await nfetch('http://localhost:3000/routes/api/admins/5c9d2f635b8e0d58de3d5a4e', {
-        method: "PUT",
-        body: JSON.stringify(requestBody),
-        headers: { "Content-Type": "application/json", "x-access-token": "1q2w3e4r5t6y7u"}
-      });
+      const response = await nfetch(
+        "http://localhost:3000/routes/api/admins/" + this.sharedState.id,
+        {
+          method: "PUT",
+          body: JSON.stringify(requestBody),
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": "1q2w3e4r5t6y7u"
+          }
+        }
+      );
       const jsonResponse = await response.json();
-      expect(jsonResponse).toEqual({"auth": false, "message": "Failed to authenticate token."});
+      expect(jsonResponse).toEqual({
+        auth: false,
+        message: "Failed to authenticate token."
+      });
     });
   }
 }
-module.exports = AdminsTest
+
+module.exports = AdminsTest;
