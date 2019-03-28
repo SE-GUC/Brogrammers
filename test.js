@@ -1,6 +1,6 @@
 require('dotenv').config()
 const mongoose = require('mongoose')
-
+const db = require('./config/keys').mongoURI
 const AdminsTest = require('./tests/admins')
 
 
@@ -28,4 +28,3 @@ describe('Let me first run the independent tests', () => {
   ]).then(result => {
   })
 })
-
