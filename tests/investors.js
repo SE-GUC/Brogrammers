@@ -15,10 +15,13 @@ class InvestorsTest {
         try {
             return new Promise((resolve, reject) => {
                 describe(`Testing Investors ability to fill a case for the start of his company application`, () => {
-                    this.creatingInvestor(),
+                        this.creatingInvestor(),
+                        this.logInWithUserNotFound(),
+                        this.logInWithWrongPassword(),
+                        this.logInWithRightPassword(),
                         this.creatingInvestorAlreadyLogged(),
-                        this.creatingInvestorExistingEmail()
-                    this.investorCreateCompanySSCLoggedIn(),
+                        this.creatingInvestorExistingEmail(),
+                        this.investorCreateCompanySSCLoggedIn(),
                         this.investorCreateCompanySSCNotLoggedIn(),
                         this.investorCreateCompanySSCLoggedInWithCorruptToken(),
                         //this.investorCreateCompanySSCNotLoggedInWithInvestor(),
@@ -28,6 +31,7 @@ class InvestorsTest {
                         this.investorCreateCompanySPCLoggedInWithCorruptToken(),
                        // this.investorCreateCompanySPCNotLoggedInWithInvestor(),
                         this.investorCreateCompanySPCInvalidCompanyFields()
+                        
                 })
                 resolve();
             })
@@ -365,6 +369,67 @@ class InvestorsTest {
             this.sharedState.token = jsonResponse.token
         })
     }
+    logInWithUserNotFound(){ 
+        const requestBody = {
+        email: 'qwhat.com',
+        password: '2123'
+      }
+  
+      test(`logInWithUserNotFound,\t\t[=> POST ${this.base_url}\/login`, async () => {
+        const response = await nfetch('http://localhost:3000/api/investors/login', {
+          method: 'POST',
+          body: JSON.stringify(requestBody),
+          headers: { 'Content-Type': 'application/json' }
+        })
+        const jsonResponse = await response.json()
+  
+        console.log(`${this.base_url}\/login`)
+  
+        expect(jsonResponse).toEqual({ auth: false, message: 'No user found.' })
+      })
+
+    }
+    logInWithWrongPassword(){
+        const requestBody = {
+        email: 'Manga.ab1o1b1m11uia1k5215233252r312@gmail.com',
+        password: '12345678'
+      }
+  
+      test(`logInWithWrongPassword,\t\t[=> POST ${this.base_url}\/login`, async () => {
+        const response = await nfetch('http://localhost:3000/api/investors/login', {
+          method: 'POST',
+          body: JSON.stringify(requestBody),
+          headers: { 'Content-Type': 'application/json' }
+        })
+        const jsonResponse = await response.json()
+  
+        console.log(`${this.base_url}\/login`)
+  
+        expect(jsonResponse).toEqual({ auth: false, token: null })
+      })
+
+    }
+    logInWithRightPassword(){
+        
+    const requestBody = {
+        email: 'Manga.ab1o1b1m11uia1k5215233252r312@gmail.com',
+        password: 'NewPassworddd'
+      }
+  
+      test(`logInWithRightPassword,\t\t[=> POST ${this.base_url}\/login`, async () => {
+        const response = await nfetch('http://localhost:3000/api/investors/login', {
+          method: 'POST',
+          body: JSON.stringify(requestBody),
+          headers: { 'Content-Type': 'application/json' }
+        })
+        const jsonResponse = await response.json()
+        const token = this.sharedState.token
+  
+        console.log(`${this.base_url}\/login`)
+        expect(Object.keys(jsonResponse)).toEqual(['auth', 'token'])
+      })
+
+    }
 
     creatingInvestorAlreadyLogged() {
         const requestBody = {
@@ -426,6 +491,13 @@ class InvestorsTest {
 
         })
     }
+
+
+   
 }
+
+
+
+
 
 module.exports = InvestorsTest
