@@ -8,11 +8,11 @@ const admins = require('./routes/api/admins')
 const investors = require('./routes/api/investors')
 
 // DB Config
-//const db = require('./config/keys').mongoURI
+const db = require('./config/keys').mongoURI
 
 // Connect to mongo
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(db)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.log(err))
 
@@ -43,5 +43,5 @@ app.use((req, res) => {
 // S2
 
 // S2
-const port = 3000
+const port = process.env.PORT || 3000
 app.listen(port, () => console.log(`Server up and running on port ${port}`))
