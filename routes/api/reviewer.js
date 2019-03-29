@@ -566,7 +566,7 @@ router.get('/mycases/:id', async (req, res) => {
       const reviewer = await Reviewer.findById(id)
       const ssn = reviewer.ssn
       var query = {
-        $and: [{ status: 'PendingReviewer' }, { Reviewer: ssn }]
+        $and: [{ status: 'PendingReviewer' }, { reviewer: ssn }]
       }
       const company = await Company.find(query)
       res.json({ data: company })

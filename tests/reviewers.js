@@ -1,8 +1,9 @@
 const nfetch = require('node-fetch')
 const Lawyer = require('../models/Lawyer')
-const AdminsTest = require('./admins')
+
 const Admin = require('../models/Admin')
 const Reviewer = require('../models/Reviewer')
+const Company = require('../models/Company')
 
 class ReviewersTest{
     constructor (PORT, ROUTE) {
@@ -10,7 +11,8 @@ class ReviewersTest{
        this.sharedState = {
         id: null,
         adminToken:null,
-        token:null
+        token:null,
+        ssn:null
       }
     }
 
@@ -23,7 +25,10 @@ class ReviewersTest{
               this.creatingAnAdminAsCrud(),
               this.creatingReviewerByAdmin(),
               this.creatingReviewerByReviewer(),
-              this.creatingReviewerCorruptedToken()
+              this.creatingReviewerCorruptedToken(),
+              this.showwithoutloggingin(),
+              this.wrongAuthShowMyCase(),
+              this.showMyCases()
             })
             resolve()
           })
@@ -33,7 +38,7 @@ class ReviewersTest{
     
       creatingReviewerWithoutLoggingIn() {
         const requestBody = {
-            "ssn": 696969696969,
+            "ssn": 1212,
             "name": "Omar Sherif",
             "gender": "male",
             "address": "korba",
@@ -96,6 +101,7 @@ class ReviewersTest{
              expect(reviewer.email).toEqual(requestBody.email)
              this.sharedState.id = reviewer.id
              this.sharedState.token=jsonResponse.token
+             this.sharedState.ssn = reviewer.ssn
           
     
       })
@@ -201,6 +207,70 @@ class ReviewersTest{
              this.sharedState.adminToken=jsonResponse.token
           
     
+      })
+    
+      }
+
+
+      
+    wrongAuthShowMyCase(){
+      test(`Showing my cases with wrong authauntication,\t\t\t[=> GET\t${this.base_url}mycases/:id\t`, async () => {
+        const response = await nfetch(`http://localhost:3000/api/reviewer/mycases/${this.sharedState.id}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json',
+          'x-access-token': "tasdfasdf"}
+                
+        })
+        const jsonResponse = await response.json()
+        // check if the json response has data not error
+        expect(jsonResponse).toEqual({"auth": false, "message": "Failed to authenticate token."})
+        
+    
+      })
+    }
+    showwithoutloggingin(){
+      test(`Showing my cases without logging in,\t\t\t[=> GET\t${this.base_url}mycases/:id\t`, async () => {
+        const response = await nfetch(`http://localhost:3000/api/reviewer/mycases/${this.sharedState.id}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json'}
+                
+        })
+        const jsonResponse = await response.json()
+        // check if the json response has data not error
+        expect(jsonResponse).toEqual({"auth": false, "message": "Please login first."})
+        
+    
+      })}
+      showMyCases(){
+      test(`Showing my cases,\t\t\t[=> GET\t${this.base_url}mycases/:id\t`, async () => {
+        const response = await nfetch(`http://localhost:3000/api/reviewer/mycases/${this.sharedState.id}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json',
+          'x-access-token': this.sharedState.token }
+                
+        })
+        const jsonResponse = await response.json()
+        // check if the json response has data not error
+        expect(Object.keys(jsonResponse)).toEqual(['data'])
+        
+        var query = {
+            $and: [{ status: 'PendingReviewer' }, { lawyer: this.sharedState.socialSecurityNumber }]
+          }
+        const checkCase = await Company.find(query).exec().then()
+        console.log(checkCase)
+        if(checkCase==[])
+        expect(checkCase).toEqual([])
+        else{
+        for(var i = 0 ; i<checkCase.length ; i++)
+        {
+            console.log(123)
+            expect(checkCase[i].status).toEqual("PendingReviewer"),
+            expect(checkCase[i].reviewer).toEqual(this.sharedState.ssn)
+        }}
+            
+
+        
+     
       })
     
       }
