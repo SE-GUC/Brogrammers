@@ -407,7 +407,7 @@ class AdminsTest {
         middleName: "reyaaaad",
         lastName: "mohamed",
         password: "abcakakaka",
-        email: "tes11qt.com",
+        email: "tes11qt@b.com",
         mobileNumber: "01060187952",
         socialSecurityNumber: "29891114524525",
         salary: "105151",
