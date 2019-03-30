@@ -218,8 +218,14 @@ router.post('/register', async (req, res) => {
     mail,
     password
   } = req.body
+  const isValidated = validator.createValidation(req.body)
   const investor = await Investor.findOne({ mail })
   if (investor) return res.status(400).json({ error: 'Email already exists' })
+    if (isValidated.error) {
+      return res
+        .status(400)
+        .send({ error: isValidated.error.details[0].message })
+    }
   const hashedPassword = bcrypt.hashSync(password, 10)
   const newInv = new Investor({
     name,
@@ -247,6 +253,7 @@ router.post('/register', async (req, res) => {
   })
   res.json({ msg: 'Investor was created successfully', data: newInvestor })
 })
+
 
 router.put('/:id', async (req, res) => {
   try {
