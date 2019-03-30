@@ -4,6 +4,8 @@ const Lawyer = require('../models/Lawyer')
 const Admin = require('../models/Admin')
 const Reviewer = require('../models/Reviewer')
 const Company = require('../models/Company')
+var jwt = require('jsonwebtoken')
+var config = require('../config/jwt')
 
 class ReviewersTest{
     constructor (PORT, ROUTE) {
@@ -11,8 +13,20 @@ class ReviewersTest{
        this.sharedState = {
         id: null,
         adminToken:null,
+        wrongToken:jwt.sign({ id: "5c9d20d34087a25fc4147d17" }, config.secret, {
+          expiresIn: 86400 // expires in 24 hours
+        }),
         token:null,
-        ssn:null
+        ssn:null,
+        name: null,
+        gender: null,
+        address: null,
+        phone: null,
+        email: null,
+        password: null,
+        yearsOfExperience: null,
+        age: null,
+        birth: null
       }
     }
 
@@ -29,13 +43,19 @@ class ReviewersTest{
               this.showwithoutloggingin(),
               this.wrongAuthShowMyCase(),
               this.showMyCases(),
+              this.showMyCaseswithanotherNotMatchingID(),
+              this.showMyCaseswithWrongToken(),
               this.logInWithUserNotFound(),
               this.logInWithWrongPassword(),
               this.logInWithRightPassword(),
               this.DeleteAReviewerNotLoggedIn(),
               this.DeleteAReviewerWrongToken(),
               this.DeleteAReviewerNotAuthorized(),
-              this.DeleteAReviewerLoggedIn()
+              this.DeleteAReviewerLoggedIn(),
+              this.updateReviewerWithCorrectIdAndToken(),
+              this.updateReviewerWithWrongId(),
+              this.updateReviewerWithWrongToken(),
+              this.updateReviewerWithNullToken()
             })
             resolve()
           })
@@ -248,6 +268,38 @@ class ReviewersTest{
         
     
       })}
+
+      showMyCaseswithanotherNotMatchingID(){
+        test(`Showing my cases without logging in,\t\t\t[=> GET\t${this.base_url}mycases/:id\t`, async () => {
+          const response = await nfetch(`http://localhost:3000/api/reviewer/mycases/5c9d20d34087a25fc4147d17`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json',
+                      'x-access-token':this.sharedState.token}
+                  
+          })
+          const jsonResponse = await response.json()
+          // check if the json response has data not error
+          expect(jsonResponse).toEqual({error: "wrong ID"})
+          
+      
+        })}
+
+
+        showMyCaseswithWrongToken(){
+          test(`Showing my cases without logging in,\t\t\t[=> GET\t${this.base_url}mycases/:id\t`, async () => {
+            const response = await nfetch(`http://localhost:3000/api/reviewer/mycases/${this.sharedState.id}`, {
+              method: 'GET',
+              headers: { 'Content-Type': 'application/json',
+                        'x-access-token':this.sharedState.wrongToken}
+                    
+            })
+            const jsonResponse = await response.json()
+            // check if the json response has data not error
+            expect(jsonResponse).toEqual({error: "You are not a reviewer"})
+            
+        
+          })}
+
       showMyCases(){
       test(`Showing my cases,\t\t\t[=> GET\t${this.base_url}mycases/:id\t`, async () => {
         const response = await nfetch(`http://localhost:3000/api/reviewer/mycases/${this.sharedState.id}`, {
@@ -404,6 +456,76 @@ class ReviewersTest{
 
 
     
+      updateReviewerWithCorrectIdAndToken() {
+        const requestBody = {
+          email: "yeet@gmail.com",
+        }
+        test(`Updating a certain reviewer's info providing the correct id and token`, async () => {
+          const response = await nfetch('http://localhost:3000/api/reviewer/' + this.sharedState.id, {
+            method: 'PUT',
+            body: JSON.stringify(requestBody),
+            headers: {'Content-Type': 'application/json', 'x-access-token': this.sharedState.token}
+          });
+          const jsonResponse = await response.json();
+          expect(jsonResponse).toEqual({msg: "Reviewer updated successfully"});
+          const reviewer = Reviewer.findById(this.sharedState.id);
+          this.sharedState.address = reviewer.address;
+          this.sharedState.age = reviewer.age;
+          this.sharedState.birth = reviewer.birth;
+          this.sharedState.email = reviewer.email;
+          this.sharedState.gender = reviewer.gender;
+          this.sharedState.name = reviewer.name;
+          this.sharedState.password = reviewer.password;
+          this.sharedState.phone = reviewer.phone;
+          this.sharedState.ssn = reviewer.ssn;
+          this.sharedState.yearsOfExperience = reviewer.yearsOfExperience;
+        })
+      }
+
+      updateReviewerWithWrongId() {
+        const requestBody = {
+          email: 'yeet@gmail.com'
+        };
+        test('Updating a certain reviewers info providing the wrong id', async () => {
+          const response = await nfetch('http://localhost:3000/api/reviewer/abcde', {
+            method: 'PUT',
+            body:  JSON.stringify(requestBody),
+            headers: {'Content-Type': 'application/json', 'x-access-token': this.sharedState.token}
+          });
+          const jsonResponse = await response.json();
+          expect(jsonResponse).toEqual({ msg: "You do not have the authorization"});
+        })
+      }
+
+      updateReviewerWithWrongToken() {
+        const requestBody = {
+          email: 'yeet@gmail.com'
+        };
+        test('Updating a certain reviewers info providing the wrong id', async () => {
+          const response = await nfetch('http://localhost:3000/api/reviewer/' + this.sharedState.token, {
+            method: 'PUT',
+            body:  JSON.stringify(requestBody),
+            headers: {'Content-Type': 'application/json', 'x-access-token': 'boi'}
+          });
+          const jsonResponse = await response.json();
+          expect(jsonResponse).toEqual({ auth: false, message: "Failed to authenticate token." });
+        })
+      }
+
+      updateReviewerWithNullToken() {
+        const requestBody = {
+          email: 'yeet@gmail.com'
+        };
+        test('Updating a certain reviewers info providing the wrong id', async () => {
+          const response = await nfetch('http://localhost:3000/api/reviewer/' + this.sharedState.token, {
+            method: 'PUT',
+            body:  JSON.stringify(requestBody),
+            headers: {'Content-Type': 'application/json'}
+          });
+          const jsonResponse = await response.json();
+          expect(jsonResponse).toEqual({ auth: false, message: "Please login first." });
+        })
+      }
     }
     
 module.exports = ReviewersTest

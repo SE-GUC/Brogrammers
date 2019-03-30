@@ -1,13 +1,19 @@
+require('dotenv').config()
 const mongoose = require('mongoose')
 const db = require('./config/keys').mongoURI
+//const AdminsTest = require('./tests/admins')
+//const InvestorsTest = require('./tests/investors');
+//const LawyerTests = require('./tests/lawyers');
 
+const {
+  PORT = 3000
+} = process.env
 
 const ReviewersTest = require('./tests/reviewers')
 
 mongoose.connect(db, {
   useNewUrlParser: true
 })
-//= =---------------------------------------------------= =//
 
 //= =---------------------------------------------------= =//
 // ---== Setup before & after all tests run
@@ -17,7 +23,7 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
- //await mongoose.connection.dropDatabase()
+await mongoose.connection.dropDatabase()
 })
 //= =---------------------------------------------------= =//
 
