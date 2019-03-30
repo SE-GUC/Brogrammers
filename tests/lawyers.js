@@ -2,6 +2,8 @@ const nfetch = require('node-fetch')
 const Lawyer = require('../models/Lawyer')
 const Admin = require('../models/Admin')
 const Company = require('../models/Company')
+var jwt = require('jsonwebtoken')
+var config = require('../config/jwt')
 
 
 
@@ -12,10 +14,22 @@ class LawyersTest{
         id: null,
         adminToken:null,
         token:null,
-        socialSecurityNumber:null,
         wrongsocialSecurityNumber: 64168186,
         wrongSsn: 64168186,
-        wrongcompanyID: "5c93edd75c231e4f2c79e9b4"
+        wrongcompanyID: "5c93edd75c231e4f2c79e9b4",
+        wrongToken:jwt.sign({ id: "5c9d20d34087a25fc4147d17" }, config.secret, {
+          expiresIn: 86400 // expires in 24 hours
+        }),
+        socialSecurityNumber:null,
+        firstName: null,
+        middleName: null,
+        lastName: null,
+        email: null,
+        password: null,
+        mobileNumber: null,
+        salary: null,
+        birthDate: null,
+        yearsOfExperience: null
       }
     }
 
@@ -32,6 +46,8 @@ class LawyersTest{
               this.showwithoutloggingin(),
               this.wrongAuthShowMyCase(),
               this.showMyCases(),
+              this.showMyCaseswithAnotherToken(),
+              this.showMyCaseswithtokenThatisforAnotherPerson(),
               this.logInWithUserNotFound(),
               this.logInWithWrongPassword(),
               this.lawyersViewEditableCompaniesAfterRejectionAlreadyLogged(),
@@ -43,8 +59,11 @@ class LawyersTest{
               this.lawyersEditForumWrongSsn(),
               this.lawyersEditForumWrongCompanyId(),
               this.lawyersEditForumWrongSsnAndCompanyId(),
-              this.logInWithRightPassword()
-
+              this.logInWithRightPassword(),
+              this.updateLawyerCorrectIdAndToken(),
+              this.updateLawyerWrongId(),
+              this.updateLawyerWrongToken(),
+              this.updateLawyerNullToken()
             })
             resolve()
           })
@@ -259,6 +278,38 @@ class LawyersTest{
         
     
       })}
+      showMyCaseswithAnotherToken(){
+        test(`Showing my cases with another token,\t\t\t[=> GET\t${this.base_url}mycases/:id\t`, async () => {
+          const response = await nfetch(`http://localhost:3000/api/lawyer/mycases/${this.sharedState.id}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json',
+            'x-access-token':this.sharedState.wrongToken}
+                  
+          })
+          const jsonResponse = await response.json()
+          // check if the json response has data not error
+          expect(jsonResponse).toEqual({error: 'You are not a Lawyer' })
+          
+      
+        })}
+
+
+        showMyCaseswithtokenThatisforAnotherPerson(){
+          test(`Showing my cases with another token,\t\t\t[=> GET\t${this.base_url}mycases/:id\t`, async () => {
+            const response = await nfetch(`http://localhost:3000/api/lawyer/mycases/5c9d20d34087a25fc4147d17`, {
+              method: 'GET',
+              headers: { 'Content-Type': 'application/json',
+              'x-access-token':this.sharedState.token}
+                    
+            })
+            const jsonResponse = await response.json()
+            // check if the json response has data not error
+            expect(jsonResponse).toEqual({ error: 'Wrong ID' })
+            
+        
+          })}
+
+
       showMyCases(){
       test(`Showing my cases,\t\t\t[=> GET\t${this.base_url}mycases/:id\t`, async () => {
         const response = await nfetch(`http://localhost:3000/api/lawyer/mycases/${this.sharedState.id}`, {
@@ -479,6 +530,96 @@ class LawyersTest{
       }
 
 
+
+      updateLawyerCorrectIdAndToken() {
+          const requestBody = {
+              email: "ahmedhsaid@gmail.com",
+              password: "kill me now"
+          }
+
+          test(`Updating the specified lawyer's information providing the correct Id and token`, async() => {
+              const response = await nfetch('http://localhost:3000/api/lawyer/' + this.sharedState.id, {
+                  method: "PUT",
+                  body: JSON.stringify(requestBody),
+                  headers: {
+                      'Content-Type' : 'application/json',
+                      'x-access-token': this.sharedState.token
+                }
+              });
+              const jsonResponse = await response.json();
+              expect(jsonResponse).toEqual({msg: 'Lawyer updated successfully'});
+          })
+      }
+
+      updateLawyerWrongId() {
+        const requestBody = {
+            email: "ahmedhsaid@gmail.com.com",
+            password: "kill me now"
+        }
+
+        test(`Updating the specified lawyer's information providing the correct Id and token`, async() => {
+            const response = await nfetch('http://localhost:3000/api/lawyer/yeet', {
+                method: "PUT",
+                body: JSON.stringify(requestBody),
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'x-access-token': this.sharedState.token
+              }
+            });
+            const jsonResponse = await response.json();
+            expect(jsonResponse).toEqual({msg: 'You do not have the authorization'});
+        })
+      }
+
+      updateLawyerWrongToken() {
+        const requestBody = {
+            email: "ahmedhsaid@gmail.com",
+            password: "kill me now"
+        }
+
+        test(`Updating the specified lawyer's information providing the correct Id and token`, async() => {
+            const response = await nfetch('http://localhost:3000/api/lawyer/' + this.sharedState.id, {
+                method: "PUT",
+                body: JSON.stringify(requestBody),
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'x-access-token': 'hehexd'
+              }
+            });
+            const jsonResponse = await response.json();
+            expect(jsonResponse).toEqual({auth:false, message: 'Failed to authenticate token.'});
+            const lawyer = await Lawyer.findById(this.sharedState.id);
+            this.sharedState.birthDate = lawyer.birthDate
+            this.sharedState.email = lawyer.email
+            this.sharedState.firstName = lawyer.firstName
+            this.sharedState.middleName = lawyer.middleName
+            this.sharedState.lastName = lawyer.lastName
+            this.sharedState.mobileNumber = lawyer.mobileNumber
+            this.sharedState.password = lawyer.password
+            this.sharedState.salary = lawyer.salary
+            this.sharedState.socialSecurityNumber = lawyer.socialSecurityNumber
+            this.sharedState.yearsOfExperience = lawyer.yearsOfExperience
+        })
+      }
+
+      updateLawyerNullToken() {
+        const requestBody = {
+            email: "ahmedhsaid@gmail.com",
+            password: "kill me now"
+        }
+
+        test(`Updating the specified lawyer's information providing the correct Id and token`, async() => {
+            const response = await nfetch('http://localhost:3000/api/lawyer/' + this.sharedState.id, {
+                method: "PUT",
+                body: JSON.stringify(requestBody),
+                headers: {
+                    'Content-Type' : 'application/json',
+              }
+            });
+            const jsonResponse = await response.json();
+            expect(jsonResponse).toEqual({auth:false, message: 'No token provided.'});
+        })
+      }
     }
     
 module.exports = LawyersTest

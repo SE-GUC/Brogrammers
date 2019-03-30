@@ -1,13 +1,17 @@
+require('dotenv').config()
 const mongoose = require('mongoose')
 const db = require('./config/keys').mongoURI
+//const AdminsTest = require('./tests/admins')
+//const InvestorsTest = require('./tests/investors');
+const LawyerTests = require('./tests/lawyers');
 
-
-const LawyerTests= require('./tests/lawyers')
+const {
+  PORT = 3000
+} = process.env
 mongoose.connect(db, {
   useNewUrlParser: true
 })
-//= =---------------------------------------------------= =//
-
+// this is fasdlfha;lskdjfl
 //= =---------------------------------------------------= =//
 // ---== Setup before & after all tests run
 //= =---------------------------------------------------= =//

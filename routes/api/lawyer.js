@@ -642,8 +642,8 @@ router.get('/:id', async (req, res) => {
   const lawyer = await Lawyer.findById(id)
   res.send(lawyer)
 })
-
-router.put('/', async (req, res) => {
+//added :id to this method
+router.put('/:id', async (req, res) => {
   try {
     var stat = 0
     var token = req.headers['x-access-token']
@@ -670,8 +670,15 @@ router.put('/', async (req, res) => {
         .status(400)
         .send({ error: isValidated.error.details[0].message })
     }
-    await Lawyer.findByIdAndUpdate(stat, req.body)
-    res.json({ msg: 'Lawyer updated successfully' })
+    if(stat === req.params.id)
+    {
+      await Lawyer.findByIdAndUpdate(stat, req.body)
+      res.json({ msg: 'Lawyer updated successfully' })
+    }
+    else
+    {
+      return res.json({msg: 'You do not have the authorization'});
+    }
   } catch (error) {
     // We will be handling the error later
     console.log(error)
