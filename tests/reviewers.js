@@ -4,6 +4,8 @@ const Lawyer = require('../models/Lawyer')
 const Admin = require('../models/Admin')
 const Reviewer = require('../models/Reviewer')
 const Company = require('../models/Company')
+var jwt = require('jsonwebtoken')
+var config = require('../config/jwt')
 
 class ReviewersTest{
     constructor (PORT, ROUTE) {
@@ -11,6 +13,9 @@ class ReviewersTest{
        this.sharedState = {
         id: null,
         adminToken:null,
+        wrongToken:jwt.sign({ id: "5c9d20d34087a25fc4147d17" }, config.secret, {
+          expiresIn: 86400 // expires in 24 hours
+        }),
         token:null,
         ssn:null,
         name: null,
@@ -38,6 +43,8 @@ class ReviewersTest{
               this.showwithoutloggingin(),
               this.wrongAuthShowMyCase(),
               this.showMyCases(),
+              this.showMyCaseswithanotherNotMatchingID(),
+              this.showMyCaseswithWrongToken(),
               this.logInWithUserNotFound(),
               this.logInWithWrongPassword(),
               this.logInWithRightPassword(),
@@ -257,6 +264,38 @@ class ReviewersTest{
         
     
       })}
+
+      showMyCaseswithanotherNotMatchingID(){
+        test(`Showing my cases without logging in,\t\t\t[=> GET\t${this.base_url}mycases/:id\t`, async () => {
+          const response = await nfetch(`http://localhost:3000/api/reviewer/mycases/5c9d20d34087a25fc4147d17`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json',
+                      'x-access-token':this.sharedState.token}
+                  
+          })
+          const jsonResponse = await response.json()
+          // check if the json response has data not error
+          expect(jsonResponse).toEqual({error: "wrong ID"})
+          
+      
+        })}
+
+
+        showMyCaseswithWrongToken(){
+          test(`Showing my cases without logging in,\t\t\t[=> GET\t${this.base_url}mycases/:id\t`, async () => {
+            const response = await nfetch(`http://localhost:3000/api/reviewer/mycases/${this.sharedState.id}`, {
+              method: 'GET',
+              headers: { 'Content-Type': 'application/json',
+                        'x-access-token':this.sharedState.wrongToken}
+                    
+            })
+            const jsonResponse = await response.json()
+            // check if the json response has data not error
+            expect(jsonResponse).toEqual({error: "You are not a reviewer"})
+            
+        
+          })}
+
       showMyCases(){
       test(`Showing my cases,\t\t\t[=> GET\t${this.base_url}mycases/:id\t`, async () => {
         const response = await nfetch(`http://localhost:3000/api/reviewer/mycases/${this.sharedState.id}`, {
