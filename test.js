@@ -12,13 +12,13 @@ mongoose.connect(db, {
   useNewUrlParser: true
 })
 
-//beforeAll(async () => {
-//  await mongoose.connection.dropDatabase()
-//})
-//
-//afterAll(async () => {
-//  //await mongoose.connection.dropDatabase()
-//})
+beforeAll(async () => {
+ await mongoose.connection.dropDatabase()
+})
+
+afterAll(async () => {
+ await mongoose.connection.dropDatabase()
+})
 //= =---------------------------------------------------= =//
 
 //= =---------------------------------------------------= =//

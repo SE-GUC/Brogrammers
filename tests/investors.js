@@ -34,6 +34,7 @@ class InvestorsTest {
                         this.logInWithRightPassword(),
                         this.creatingInvestorAlreadyLogged(),
                         this.creatingInvestorExistingEmail(),
+                        this.creatingInvestorMissingInputs(),
                         this.investorCreateCompanySSCLoggedIn(),
                         this.investorCreateCompanySSCNotLoggedIn(),
                         this.investorCreateCompanySSCLoggedInWithCorruptToken(),
@@ -61,6 +62,36 @@ class InvestorsTest {
         } catch (err) {
 
         }
+    }
+
+
+    creatingInvestorMissingInputs(){
+      const requestBody = {
+          name: "bassem",
+          type: "SPC",
+          gender: "male",
+          nationality: "'5awaga'",
+          idType: "Passport",
+          idNumber: "123456789",
+          dob: "1998-02-02T22:00:00.000Z",
+          address: "Nasr-City",
+          telephone: "011271131666",
+          password: "NewPassworddd"
+    }
+  
+    test(`Creating An Investor with missing inputs,\t\t[=> POST ${this.base_url}\register`, async () => {
+      const response = await nfetch("http://localhost:3000/api/investors/register", {
+        method: 'POST',
+        body: JSON.stringify(requestBody),
+        headers: { 'Content-Type': 'application/json'}
+      })
+      const jsonResponse = await response.json()
+  
+           // check if the json response has data not error
+      expect(jsonResponse).toEqual({"error": "\"mail\" is required"})
+        
+  
+    })
     }
 
     investorCreateCompanySSCLoggedIn() {
@@ -366,7 +397,7 @@ class InvestorsTest {
             gender: "male",
             nationality: "'5awaga'",
             idType: "Passport",
-            idNumber: 123456789,
+            idNumber: "123456789",
             dob: "1998-02-02T22:00:00.000Z",
             address: "Nasr-City",
             telephone: "011271131666",
@@ -374,7 +405,7 @@ class InvestorsTest {
             password: "NewPassworddd"
         }
 
-        test(`Creating A Reviewer,\t\t[=> POST ${this.base_url}\register`, async () => {
+        test(`Creating A Investror,\t\t[=> POST ${this.base_url}\register`, async () => {
             const response = await nfetch("http://localhost:3000/api/investors/register", {
                 method: 'POST',
                 body: JSON.stringify(requestBody),
@@ -464,7 +495,7 @@ class InvestorsTest {
             gender: "male",
             nationality: "'5awaga'",
             idType: "Passport",
-            idNumber: 123456789,
+            idNumber: "123456789",
             dob: "1998-02-02T22:00:00.000Z",
             address: "Nasr-City",
             telephone: "011271131666",
@@ -495,7 +526,7 @@ class InvestorsTest {
             gender: "male",
             nationality: "'5awaga'",
             idType: "Passport",
-            idNumber: 123456789,
+            idNumber: "123456789",
             dob: "1998-02-02T22:00:00.000Z",
             address: "Nasr-City",
             telephone: "011271131666",
