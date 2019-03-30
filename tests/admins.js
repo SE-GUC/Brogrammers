@@ -17,7 +17,7 @@ class AdminsTest {
     };
   }
 
-  runTests () {
+  runTests() {
     try {
       return new Promise((resolve, reject) => {
         describe("Checking company Sprint 1 tests", () => {
@@ -31,8 +31,7 @@ class AdminsTest {
             this.logInWithRightPassword(),
             this.updateAdminWithCorrectIdAndToken(),
             this.updateAdminWithWrongId(),
-            this.updateAdminWithWrongToken(),
-            this.updateAdminWithNullToken()
+            this.updateAdminWithWrongToken();
         });
         resolve();
       });
@@ -63,7 +62,7 @@ class AdminsTest {
       );
       const jsonResponse = await response.json();
 
-      console.log(`${this.base_url}\register`)
+      console.log(`${this.base_url}\register`);
       // check if the json response has data not error
       expect(jsonResponse).toEqual({
         auth: false,
@@ -304,7 +303,7 @@ class AdminsTest {
       email: "1234gmail@yahoo.com"
     };
     test(`Updating information of specified admin with a null token`, async () => {
-      const response = await nfetch('http://localhost:3000/routes/api/admins/' + this.sharedState.id,
+      const response = await nfetch('http://localhost:3000/routes/api/admins' + this.sharedState.id,
       {
         method: "PUT",
         body: JSON.stringify(requestBody),
@@ -320,64 +319,79 @@ class AdminsTest {
     })
   }
 
-  logInWithUserNotFound () {
+  logInWithUserNotFound() {
     const requestBody = {
-      email: 'notreg@sumerge.com',
-      password: '123456789'
-    }
+      email: "notreg@sumerge.com",
+      password: "123456789"
+    };
 
-    test(`logInWithUserNotFound,\t\t[=> POST ${this.base_url}\/login`, async () => {
-      const response = await nfetch('http://localhost:3000/routes/api/admins/login', {
-        method: 'POST',
-        body: JSON.stringify(requestBody),
-        headers: { 'Content-Type': 'application/json' }
-      })
-      const jsonResponse = await response.json()
+    test(`logInWithUserNotFound,\t\t[=> POST ${
+      this.base_url
+    }\/login`, async () => {
+      const response = await nfetch(
+        "http://localhost:3000/routes/api/admins/login",
+        {
+          method: "POST",
+          body: JSON.stringify(requestBody),
+          headers: { "Content-Type": "application/json" }
+        }
+      );
+      const jsonResponse = await response.json();
 
-      console.log(`${this.base_url}\/login`)
+      console.log(`${this.base_url}\/login`);
 
-      expect(jsonResponse).toEqual({ auth: false, message: 'No user found.' })
-    })
+      expect(jsonResponse).toEqual({ auth: false, message: "No user found." });
+    });
   }
 
-  logInWithWrongPassword () {
+  logInWithWrongPassword() {
     const requestBody = {
-      email: 'khaled.com',
-      password: '12345678'
-    }
+      email: "khaled.com",
+      password: "12345678"
+    };
 
-    test(`logInWithWrongPassword,\t\t[=> POST ${this.base_url}\/login`, async () => {
-      const response = await nfetch('http://localhost:3000/routes/api/admins/login', {
-        method: 'POST',
-        body: JSON.stringify(requestBody),
-        headers: { 'Content-Type': 'application/json' }
-      })
-      const jsonResponse = await response.json()
+    test(`logInWithWrongPassword,\t\t[=> POST ${
+      this.base_url
+    }\/login`, async () => {
+      const response = await nfetch(
+        "http://localhost:3000/routes/api/admins/login",
+        {
+          method: "POST",
+          body: JSON.stringify(requestBody),
+          headers: { "Content-Type": "application/json" }
+        }
+      );
+      const jsonResponse = await response.json();
 
-      console.log(`${this.base_url}\/login`)
+      console.log(`${this.base_url}\/login`);
 
-      expect(jsonResponse).toEqual({ auth: false, token: null })
-    })
+      expect(jsonResponse).toEqual({ auth: false, token: null });
+    });
   }
 
-  logInWithRightPassword () {
+  logInWithRightPassword() {
     const requestBody = {
-      email: 'khaled.com',
-      password: 'momonjvjf'
-    }
+      email: "khaled.com",
+      password: "momonjvjf"
+    };
 
-    test(`logInWithRightPassword,\t\t[=> POST ${this.base_url}\/login`, async () => {
-      const response = await nfetch('http://localhost:3000/routes/api/admins/login', {
-        method: 'POST',
-        body: JSON.stringify(requestBody),
-        headers: { 'Content-Type': 'application/json' }
-      })
-      const jsonResponse = await response.json()
-      const token = this.sharedState.token
+    test(`logInWithRightPassword,\t\t[=> POST ${
+      this.base_url
+    }\/login`, async () => {
+      const response = await nfetch(
+        "http://localhost:3000/routes/api/admins/login",
+        {
+          method: "POST",
+          body: JSON.stringify(requestBody),
+          headers: { "Content-Type": "application/json" }
+        }
+      );
+      const jsonResponse = await response.json();
+      const token = this.sharedState.token;
 
-      console.log(`${this.base_url}\/login`)
-      expect(jsonResponse).toEqual({ auth: true, token: token })
-    })
+      console.log(`${this.base_url}\/login`);
+      expect(jsonResponse).toEqual({ auth: true, token: token });
+    });
   }
 }
 
