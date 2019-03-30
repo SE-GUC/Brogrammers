@@ -298,6 +298,27 @@ class AdminsTest {
     });
   }
 
+  updateAdminWithNullToken() {
+    const requestBody = {
+      email: "1234gmail@yahoo.com"
+    };
+    test(`Updating information of specified admin with a null token`, async () => {
+      const response = await nfetch('http://localhost:3000/routes/api/admins' + this.sharedState.id,
+      {
+        method: "PUT",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      const jsonResponse = await response.json();
+      expect(jsonResponse).toEqual({
+        auth: false,
+        message: 'Please login first'
+      });
+    })
+  }
+
   logInWithUserNotFound () {
     const requestBody = {
       email: 'notreg@sumerge.com',
