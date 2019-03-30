@@ -40,6 +40,7 @@ class ReviewersTest{
               this.creatingReviewerByAdmin(),
               this.creatingReviewerByReviewer(),
               this.creatingReviewerCorruptedToken(),
+              this.creatingReviewerWrongInput(),
               this.showwithoutloggingin(),
               this.wrongAuthShowMyCase(),
               this.showMyCases(),
@@ -96,7 +97,7 @@ class ReviewersTest{
     
       creatingReviewerByAdmin(){
         const requestBody = {
-          "ssn": 696969696969,
+          "ssn": "696969696969",
           "name": "Omar Sherif",
           "gender": "male",
           "address": "korba",
@@ -105,8 +106,7 @@ class ReviewersTest{
           "password": "abc",
           "yearsOfExperience": 20,
           "age": 20,
-          "birth": "2 / 2 / 1999",
-          "task": 2
+          "birth": "2 / 2 / 1999"
       }
     
       test(`Creating A Reviewer as using authentication by another admin,\t\t[=> POST ${this.base_url}\register`, async () => {
@@ -138,7 +138,7 @@ class ReviewersTest{
 
       creatingReviewerByReviewer(){
         const requestBody = {
-          "ssn": 696969696969,
+          "ssn": "696969696969",
           "name": "Omar Sherif",
           "gender": "male",
           "address": "korba",
@@ -147,8 +147,7 @@ class ReviewersTest{
           "password": "abc",
           "yearsOfExperience": 20,
           "age": 20,
-          "birth": "2 / 2 / 1999",
-          "task": 2
+          "birth": "2 / 2 / 1999"
       }
     
       test(`Creating A Reviewer as using authentication by another lawyer,\t\t[=> POST ${this.base_url}\register`, async () => {
@@ -172,7 +171,7 @@ class ReviewersTest{
 
       creatingReviewerCorruptedToken(){
         const requestBody = {
-          "ssn": 696969696969,
+          "ssn": "696969696969",
           "name": "Omar Sherif",
           "gender": "male",
           "address": "korba",
@@ -181,8 +180,7 @@ class ReviewersTest{
           "password": "abc",
           "yearsOfExperience": 20,
           "age": 20,
-          "birth": "2 / 2 / 1999",
-          "task": 2
+          "birth": "2 / 2 / 1999"
       }
     
       test(`Creating A Reviewer as using authentication by corrupted token,\t\t[=> POST ${this.base_url}\register`, async () => {
@@ -237,6 +235,39 @@ class ReviewersTest{
       })
     
       }
+
+
+      creatingReviewerWrongInput(){
+        const requestBody = {
+          "ssn": "696969696969",
+          "name": "Omar Sherif",
+          "gender": "male",
+          "address": "korba",
+          "phone": 55,
+          "password": "abc",
+          "yearsOfExperience": 20,
+          "age": 20,
+          "birth": "2 / 2 / 1999"
+      }
+    
+      test(`Creating A Reviewer with faulty input,\t\t[=> POST ${this.base_url}\register`, async () => {
+        const response = await nfetch("http://localhost:3000/api/reviewer/register", {
+          method: 'POST',
+          body: JSON.stringify(requestBody),
+          headers: { 'Content-Type': 'application/json' ,
+           'x-access-token': this.sharedState.adminToken}
+        })
+        const jsonResponse = await response.json()
+    
+             // check if the json response has data not error
+             expect(jsonResponse).toEqual({"error": "\"email\" is required"})
+
+          
+    
+      })
+    
+      }
+    
 
 
       

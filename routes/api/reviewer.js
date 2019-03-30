@@ -340,27 +340,32 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.post("/register", async (req, res) => {
-  var stat = 0;
-  var token = req.headers["x-access-token"];
+router.post('/register', async (req, res) => {
+  var stat = 0
+  var token = req.headers['x-access-token']
   if (!token) {
     return res
       .status(401)
-      .send({ auth: false, message: "Please login first." });
+      .send({ auth: false, message: 'Please login first.' })
   }
-  jwt.verify(token, config.secret, async function(err, decoded) {
+  jwt.verify(token, config.secret, async function (err, decoded) {
     if (err) {
       return res
         .status(500)
-        .send({ auth: false, message: "Failed to authenticate token." });
+        .send({ auth: false, message: 'Failed to authenticate token.' })
     }
-    stat = decoded.id;
-  });
-  const admin = await Admin.findById(stat);
+    stat = decoded.id
+  })
+  const isValidated = validator.createValidation(req.body)
+  const admin = await Admin.findById(stat)
   if (!admin) {
-    return res.status(400).send({ error: "You are not an admin" });
+    return res.status(400).send({ error: 'You are not an admin' })
   }
-
+  if (isValidated.error) {
+    return res
+      .status(400)
+      .send({ error: isValidated.error.details[0].message })
+  }
   const {
     ssn,
     name,
@@ -371,13 +376,12 @@ router.post("/register", async (req, res) => {
     password,
     yearsOfExperience,
     age,
-    birth,
-    task
-  } = req.body;
-  const reviewers = await Reviewer.findOne({ email });
-  if (reviewers) return res.status(400).json({ error: "Email already exists" });
-  const salt = bcrypt.genSaltSync(10);
-  const hashedPassword = bcrypt.hashSync(password, salt);
+    birth
+  } = req.body
+  const reviewers = await Reviewer.findOne({ email })
+  if (reviewers) return res.status(400).json({ error: 'Email already exists' })
+  const salt = bcrypt.genSaltSync(10)
+  const hashedPassword = bcrypt.hashSync(password, salt)
   var newReviewer = new Reviewer({
     ssn,
     name,
@@ -388,22 +392,21 @@ router.post("/register", async (req, res) => {
     password: hashedPassword,
     yearsOfExperience,
     age,
-    birth,
-    task
-  });
+    birth
+  })
 
-  var newRev = await Reviewer.create(newReviewer);
+  var newRev = await Reviewer.create(newReviewer)
   token = jwt.sign({ id: newRev._id }, config.secret, {
     expiresIn: 86400 // expires in 24 hours
-  });
+  })
   res.status(200).send({
     auth: true,
     token: token,
-    msg: "Reviewer was created successfully",
+    msg: 'Reviewer was created successfully',
     data: newReviewer
-  });
-  res.json({ msg: "Reviewer was created successfully", data: newReviewer });
-});
+  })
+  res.json({ msg: 'Reviewer was created successfully', data: newReviewer })
+})
 
 router.delete("/", async (req, res) => {
   try {
