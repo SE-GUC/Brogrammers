@@ -248,7 +248,7 @@ router.post('/register', async (req, res) => {
   res.json({ msg: 'Investor was created successfully', data: newInvestor })
 })
 
-router.put('/', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     var stat = 0
     var token = req.headers['x-access-token']
@@ -275,8 +275,15 @@ router.put('/', async (req, res) => {
         .status(400)
         .send({ error: isValidated.error.details[0].message })
     }
-    await Investor.findByIdAndUpdate(stat, req.body)
-    res.json({ msg: 'Investor updated successfully' })
+    if(stat === req.params.id)
+    {
+      await Investor.findByIdAndUpdate(stat, req.body)
+      res.json({ msg: 'Investor updated successfully' })
+    }
+    else
+    {
+      res.json({msg: "You do not have the authorization"});
+    }
   } catch (error) {
     // We will be handling the error later
     console.log(error)
