@@ -428,7 +428,7 @@ router.delete('/', async (req, res) => {
         data: deletedreviewer
       })
     } else {
-      return res.json({ msg: 'You do not have the authroization' })
+      return res.json({ msg: 'Reviewer does not exists' })
     }
   } catch (error) {
     // We will be handling the error later
@@ -456,8 +456,6 @@ router.delete('/:id', async (req, res) => {
     const admin = await Admin.findById(stat)
     const id = req.params.id
     const reviewer = await Reviewer.findById(id)
-    console.log('reviewer is ' + reviewer)
-    console.log(admin)
     if (admin) {
       if (reviewer) {
         await Reviewer.findByIdAndRemove(id)

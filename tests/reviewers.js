@@ -31,7 +31,11 @@ class ReviewersTest{
               this.showMyCases(),
               this.logInWithUserNotFound(),
               this.logInWithWrongPassword(),
-              this.logInWithRightPassword()
+              this.logInWithRightPassword(),
+              this.DeleteAReviewerNotLoggedIn(),
+              this.DeleteAReviewerWrongToken(),
+              this.DeleteAReviewerNotAuthorized(),
+              this.DeleteAReviewerLoggedIn()
             })
             resolve()
           })
@@ -339,6 +343,65 @@ class ReviewersTest{
           
         })
       }
+
+      DeleteAReviewerNotLoggedIn () {
+        test(`Trying to delete a reviewer but does not have token as he is logged out,\t\t[=> POST ${this.base_url}\/:id`, async () => {
+          const response = await nfetch(`http://localhost:3000/api/reviewer/${this.sharedState.id}`, {
+            method: 'delete',
+          headers: { 'Content-Type': 'application/json'}
+          })
+          
+          const jsonResponse = await response.json()
+          expect(jsonResponse).toEqual({ auth: false, message: 'Please login first.' })
+          
+        })
+      }
+
+      DeleteAReviewerNotAuthorized () {
+        test(`Unauthorized user trying to delete reviewer,\t\t[=> POST ${this.base_url}\/:id`, async () => {
+          const response = await nfetch(`http://localhost:3000/api/reviewer/${this.sharedState.id}`, {
+            method: 'delete',
+          headers: { 'Content-Type': 'application/json',
+          'x-access-token': this.sharedState.token }
+          })
+          
+          const jsonResponse = await response.json()
+          expect(jsonResponse).toEqual({ message: 'You do not have the authorization.' })
+          
+        })
+      }
+
+
+      DeleteAReviewerWrongToken () {
+        test(`user with courupt token trying to delete reviewer,\t\t[=> POST ${this.base_url}\/:id`, async () => {
+          const response = await nfetch(`http://localhost:3000/api/reviewer/${this.sharedState.id}`, {
+            method: 'delete',
+          headers: { 'Content-Type': 'application/json',
+          'x-access-token': "ayJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOWZjMTkyYjAyMGU4MzlmMDUwYjcyZCIsImlhdCI6MTU1Mzk3MzY1NCwiZXhwIjoxNTU0NDYwMDU0fQ.rkd3kAYRrPA1LsUnKncLX5EeU97qdVXKLE1TR5Z6v9Y" }
+          })
+          
+          const jsonResponse = await response.json()
+          expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' })
+          
+        })
+      }
+
+
+      DeleteAReviewerLoggedIn () {
+        test(`Authorized user trying to delete a non-existing reviewer,\t\t[=> POST ${this.base_url}\/:id`, async () => {
+          const response = await nfetch(`http://localhost:3000/api/reviewer/000000000000`, {
+            method: 'delete',
+          headers: { 'Content-Type': 'application/json',
+          'x-access-token': this.sharedState.adminToken }
+          })
+          
+          const jsonResponse = await response.json()
+          expect(jsonResponse).toEqual({ msg: 'Reviewer does not exist' })
+          
+        })
+      }
+
+
 
     
     }
