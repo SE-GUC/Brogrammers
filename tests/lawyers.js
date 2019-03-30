@@ -29,7 +29,8 @@ class LawyersTest{
         mobileNumber: null,
         salary: null,
         birthDate: null,
-        yearsOfExperience: null
+        yearsOfExperience: null,
+        companyID:null
       }
     }
 
@@ -64,7 +65,13 @@ class LawyersTest{
               this.updateLawyerCorrectIdAndToken(),
               this.updateLawyerWrongId(),
               this.updateLawyerWrongToken(),
-              this.updateLawyerNullToken()
+              this.updateLawyerNullToken(),
+              this.lawyersViewFees(),
+              this.lawyersViewFeesWithoutLogin(),
+              this.lawyersViewFeesWrongID(),
+              this.lawyersResubmitForum(),
+              this.lawyersResubmitForumWithoutLogin(),
+              this.lawyersResubmitForumWrongID()
             })
             resolve()
           })
@@ -650,6 +657,75 @@ class LawyersTest{
             });
             const jsonResponse = await response.json();
             expect(jsonResponse).toEqual({auth:false, message: 'No token provided.'});
+        })
+      }
+      lawyersViewFees () {
+        test(`Fetching the company creation fees ,[=> GET${this.base_url}/:id/:companyID/viewFees`, async () => {
+          const response = await nfetch(`${this.base_url}/${this.sharedState.id}/${this.sharedState.companyID}/viewFees`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' ,'x-access-token':this.sharedState.token }
+          })
+          const jsonResponse = await response.json()
+          
+          expect(Object.keys(jsonResponse)).toEqual([ "EstimatedFees" ])
+        })
+      }
+      lawyersViewFeesWithoutLogin () {
+        test(`Fetching the company creation fees without logging in ,[=> GET${this.base_url}/:id/:companyID/viewFees`, async () => {
+          const response = await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/${this.sharedState.companyID}/viewFees`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', 'x-access-token': 'wrongToken' }
+          })
+          const jsonResponse = await response.json()
+          
+          expect(Object.keys(jsonResponse)).toEqual(["auth","message"])
+        })
+      }
+      lawyersViewFeesWrongID () {
+        test(`Fetching the company creation fees with a wrong investor ID ,[=> GET${this.base_url}/:id/:companyID/viewFees`, async () => {
+          const response = await nfetch(`http://localhost:3000/api/lawyer/wrongID/${this.sharedState.companyID}/viewFees`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
+          })
+          const jsonResponse = await response.json()
+          
+          expect(Object.keys(jsonResponse)).toEqual(["auth","message"])
+        })
+      }
+      lawyersResubmitForum() {
+    
+        test(`Resubmitting the disaproved forms after updating them according to the reviewer's guidelines,[=>PUT${this.base_url}/resubmit/:id/:companyId`, async () => {
+          const response = await nfetch(`${this.base_url}/resubmit/${this.sharedState.id}/${this.sharedState.companyID}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' , 'x-access-token': this.sharedState.token }
+          })
+          const jsonResponse = await response.json()
+        
+          expect(Object.keys(jsonResponse)).toEqual(["msg"])
+        })
+      }
+      lawyersResubmitForumWithoutLogin() {
+    
+        test(`Lawyer resubmits form without logging in,[=>PUT${this.base_url}/resubmit/:id/:companyId`, async () => {
+          const response = await nfetch(`${this.base_url}/resubmit/${this.sharedState.id}/${this.sharedState.companyID}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' , 'x-access-token': 'wrongToken' }
+          })
+          const jsonResponse = await response.json()
+        
+          expect(Object.keys(jsonResponse)).toEqual(["auth","message"])
+        })
+      }
+      lawyersResubmitForumWrongID() {
+    
+        test(`Lawyer tries to resubmit the form but the id is incorrect,[=>PUT${this.base_url}/resubmit/:id/:companyId`, async () => {
+          const response = await nfetch(`${this.base_url}/resubmit/wrongID/${this.sharedState.companyID}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' , 'x-access-token': this.sharedState.token }
+          })
+          const jsonResponse = await response.json()
+        
+          expect(Object.keys(jsonResponse)).toEqual(["auth","message"])
         })
       }
     }
