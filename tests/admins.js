@@ -32,7 +32,15 @@ class AdminsTest {
             this.updateAdminWithCorrectIdAndToken(),
             this.updateAdminWithWrongId(),
             this.updateAdminWithWrongToken(),
-            this.updateAdminWithNullToken()
+            this.updateAdminWithNullToken(),
+            this.adminGetOneCrudWithCorrectTokenAndId(),
+            this.adminGetOneCrudWithWrongId(),
+            this.adminGetOneCrudWithNullToken(),
+            this.adminGetOneCrudWithWrongToken(),
+            this.adminGetAllAdminsCrudWithCorrectToken(),
+            this.adminGetAllAdminsCrudWithNullToken(),
+            this.adminGetAllAdminsCrudWithWrongToken()
+
         });
         resolve();
       });
@@ -393,6 +401,83 @@ class AdminsTest {
       console.log(`${this.base_url}\/login`);
       expect(jsonResponse).toEqual({ auth: true, token: token });
     });
+  }
+
+  adminGetOneCrudWithCorrectTokenAndId() {
+    test('Get the information of a specific admin', async () => {
+      const response = await nfetch('http://localhost:3000/routes/api/admins/' + this.sharedState.id, {
+        method: "GET",
+        headers: {'Content-Type': 'application/json', 'x-access-token': this.sharedState.token}
+      });
+      const jsonResponse = await response.json();
+      expect(Object.keys(jsonResponse)).toEqual(["name", "id", "birthDate", "gender", "joinDate", "email", "phone"]);
+    })
+  }
+
+  adminGetOneCrudWithWrongId(){
+        test('Get the information of a specific admin', async () => {
+      const response = await nfetch('http://localhost:3000/routes/api/admins/gluglu', {
+        method: "GET",
+        headers: {'Content-Type': 'application/json', 'x-access-token': this.sharedState.token}
+      });
+      const jsonResponse = await response.json();
+      expect(jsonResponse).toEqual({ msg: "Admin doesn't exist" });
+    })
+  }
+
+  adminGetOneCrudWithWrongToken() {
+    test('Get the information of a specific admin', async () => {
+      const response = await nfetch('http://localhost:3000/routes/api/admins/' + this.sharedState.id, {
+        method: "GET",
+        headers: {'Content-Type': 'application/json', 'x-access-token': 'abcdefg'}
+      });
+      const jsonResponse = await response.json();
+      expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' });
+    });
+  }
+
+  adminGetOneCrudWithNullToken() {
+    test('Get the information of a specific admin', async () => {
+      const response = await nfetch('http://localhost:3000/routes/api/admins/' + this.sharedState.id, {
+        method: "GET",
+        headers: {'Content-Type': 'application/json'}
+      });
+      const jsonResponse = await response.json();
+      expect(jsonResponse).toEqual({ auth: false, message: 'Please login first.' });
+    });
+  }
+
+  adminGetAllAdminsCrudWithCorrectToken() {
+    test('Get the information of all the admins', async () => {
+      const response = await nfetch('http://localhost:3000/routes/api/admins' , {
+        method: 'GET',
+        headers: {'Content-Type' : 'application/json', 'x-access-token': this.sharedState.token}
+      });
+      const jsonResponse = await response.json();
+      expect(Object.keys(jsonResponse)).toEqual(["data"]);
+    })
+  }
+
+  adminGetAllAdminsCrudWithWrongToken() {
+    test('Get the information of all the admins providing the wrong token', async () => {
+      const response = await nfetch('http://localhost:3000/routes/api/admins' , {
+        method: 'GET',
+        headers: {'Content-Type' : 'application/json', 'x-access-token': 'glublugb'}
+      });
+      const jsonResponse = await response.json();
+      expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' });
+    })
+  }
+
+  adminGetAllAdminsCrudWithNullToken() {
+    test('Get the information of all the admins providing the wrong token', async () => {
+      const response = await nfetch('http://localhost:3000/routes/api/admins' , {
+        method: 'GET',
+        headers: {'Content-Type' : 'application/json'}
+      });
+      const jsonResponse = await response.json();
+      expect(jsonResponse).toEqual({ auth: false, message: 'Please login first.' });
+    })
   }
 }
 
