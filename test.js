@@ -1,7 +1,7 @@
 require('dotenv').config()
 const mongoose = require('mongoose')
 const db = require('./config/keys').mongoURI
-const AdminsTest = require('./tests/admins')
+// const AdminsTest = require('./tests/admins')
 const InvestorsTest = require('./tests/investors');
 
 const {
@@ -19,7 +19,7 @@ mongoose.connect(db, {
 //   await mongoose.connection.dropDatabase()
 // })
 
-const adminsTests = new AdminsTest(PORT, 'admins')
+//const adminsTests = new AdminsTest(PORT, 'admins')
 const investorTests = new InvestorsTest(PORT, 'investors');
 
 describe('Let me first run the independent tests', () => {
