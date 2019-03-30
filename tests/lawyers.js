@@ -43,6 +43,7 @@ class LawyersTest{
               this.creatingLawyerByAdmin(),
               this.creatingLawyerByLawyer(),
               this.creatingLawyerCorruptedToken(),
+              this.creatingLawyerWrongInput(),
               this.showwithoutloggingin(),
               this.wrongAuthShowMyCase(),
               this.showMyCases(),
@@ -78,7 +79,7 @@ class LawyersTest{
                 middleName: "reyaaaad",
                 lastName: "mohamed",
                 password: "abcakakaka",
-                email: "tes11q121t.com",
+                email: "tes11q121t@1.com",
                 mobileNumber: "01060187952",
                 socialSecurityNumber: "29821114524525",
                 salary: 105151,
@@ -108,9 +109,9 @@ class LawyersTest{
             middleName: "reyaaaad",
             lastName: "mohamed",
             password: "abcakakaka",
-            email: "omar.com",
+            email: "omar@1.com",
             mobileNumber: "01060187952",
-            socialSecurityNumber: "12345",
+            socialSecurityNumber: "29821114524525",
             salary: "105151",
             birthDate: "1998-04-03T22:00:00.000Z",
             yearsOfExperience: "4"
@@ -153,9 +154,9 @@ class LawyersTest{
             middleName: "reyaaaad",
             lastName: "mohamed",
             password: "abcakakaka",
-            email: "omar.com",
+            email: "omar@1.com",
             mobileNumber: "01060187952",
-            socialSecurityNumber: "12345",
+            socialSecurityNumber: "29821114524525",
             salary: "1235234",
             birthDate: "1998-04-03T22:00:00.000Z",
             yearsOfExperience: "4"
@@ -186,7 +187,7 @@ class LawyersTest{
             middleName: "reyaaaad",
             lastName: "mohamed",
             password: "abcakakaka",
-            email: "tes11q12t.com",
+            email: "tes11q12t@1.com",
             mobileNumber: "01060187952",
             socialSecurityNumber: "29821114524525",
             salary: "105151",
@@ -249,6 +250,37 @@ class LawyersTest{
       })
     
       
+    }
+
+    creatingLawyerWrongInput(){
+      const requestBody = {
+          firstName: "please no2",
+          middleName: "reyaaaad",
+          lastName: "mohamed",
+          password: "abcakakaka",
+          mobileNumber: "01060187952",
+          socialSecurityNumber: "29121114524525",
+          salary: "105151",
+          birthDate: "1998-04-03T22:00:00.000Z",
+          yearsOfExperience: "4"
+    }
+  
+    test(`Creating A Lawyer with wrong input from admin,\t\t[=> POST ${this.base_url}\register`, async () => {
+      const response = await nfetch("http://localhost:3000/api/lawyer/register", {
+        method: 'POST',
+        body: JSON.stringify(requestBody),
+        headers: { 'Content-Type': 'application/json' ,
+         'x-access-token': this.sharedState.adminToken}
+      })
+      const jsonResponse = await response.json()
+  
+           // check if the json response has data not error
+           expect(jsonResponse).toEqual({"error": "\"email\" is required"}             )
+      
+
+  
+    })
+  
     }
     wrongAuthShowMyCase(){
       test(`Showing my cases with wrong authauntication,\t\t\t[=> GET\t${this.base_url}mycases/:id\t`, async () => {
@@ -366,7 +398,7 @@ class LawyersTest{
     
       logInWithWrongPassword () {
         const requestBody = {
-          email: 'omar.com',
+          email: 'omar@1.com',
           password: '12345678'
         }
     
@@ -386,7 +418,7 @@ class LawyersTest{
     
       logInWithRightPassword () {
         const requestBody = {
-          email: 'omar.com',
+          email: 'omar@1.com',
           password: 'abcakakaka'
         }
     

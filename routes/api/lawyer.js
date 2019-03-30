@@ -273,11 +273,16 @@ router.post('/register', async (req, res) => {
     birthDate,
     yearsOfExperience
   } = req.body
+  const isValidated = validator.createValidation(req.body)
   const lawyer = await Lawyer.findOne({ email })
   if (lawyer) return res.status(400).json({ error: 'Email already exists' })
   const ssn = await Lawyer.findOne({ socialSecurityNumber })
   if (ssn) return res.status(400).json({ error: 'SSN already exists' })
-
+  if (isValidated.error) {
+    return res
+      .status(400)
+      .send({ error: isValidated.error.details[0].message })
+  }
   const salt = bcrypt.genSaltSync(10)
   const hashedPassword = bcrypt.hashSync(password, salt)
   const newLawyer = new Lawyer({
