@@ -182,6 +182,11 @@ router.get('/:id/MyRequests', async (req, res) => {
       .send({ auth: false, message: 'Failed to authenticate' })
   }
   const investor = await Investor.findById(id)
+  if (!investor) {
+    return res
+      .status(500)
+      .send({ auth: false, message: 'Failed to authenticate' })
+  }
   const inid = investor.idNumber
   const query = {
     investorIdentificationNumber: inid,
@@ -200,9 +205,7 @@ router.get('/:id/MyRequests', async (req, res) => {
 router.post('/register', async (req, res) => {
   var token = req.headers['x-access-token']
   if (token) {
-    return res
-      .status(401)
-      .send({ auth: false, message: 'You are already logged in' })
+    return res.status(401).send({ message: 'You are already logged in' })
   }
   const {
     name,
