@@ -1,5 +1,6 @@
 const nfetch = require("node-fetch");
 const Admin = require("../models/Admin");
+const Lawyer = require('../models/Lawyer')
 
 class AdminsTest {
   constructor(PORT, ROUTE) {
@@ -13,7 +14,8 @@ class AdminsTest {
       birthDate: null,
       gender: null,
       joinDate: null,
-      phone: null
+      phone: null,
+      lawyerToken:null
     };
   }
 
@@ -21,7 +23,7 @@ class AdminsTest {
     try {
       return new Promise((resolve, reject) => {
         describe("Checking company Sprint 1 tests", () => {
-          this.creatingAdminWithoutLoggingIn(),
+            this.creatingAdminWithoutLoggingIn(),
             this.creatingAnAdminAsCrud(),
             this.creatingAnAdminByAdmin(),
             this.creatingAnAdminAlreadyExsistent(),
@@ -39,8 +41,10 @@ class AdminsTest {
             this.adminGetOneCrudWithWrongToken(),
             this.adminGetAllAdminsCrudWithCorrectToken(),
             this.adminGetAllAdminsCrudWithNullToken(),
-            this.adminGetAllAdminsCrudWithWrongToken()
-
+            this.adminGetAllAdminsCrudWithWrongToken(),
+            this.creatingLawyerByAdmin(),
+            this.creatingAnAdminByLawyer(),
+            this.creatingAnAdminTestingJoi()
         });
         resolve();
       });
@@ -478,6 +482,99 @@ class AdminsTest {
       const jsonResponse = await response.json();
       expect(jsonResponse).toEqual({ auth: false, message: 'Please login first.' });
     })
+  }
+
+  creatingLawyerByAdmin(){
+    const requestBody = {
+        firstName: "please no2",
+        middleName: "reyaaaad",
+        lastName: "mohamed",
+        password: "abcakakaka",
+        email: "tes11qt@b.com",
+        mobileNumber: "01060187952",
+        socialSecurityNumber: "29891114524525",
+        salary: "105151",
+        birthDate: "1998-04-03T22:00:00.000Z",
+        yearsOfExperience: "4"
+  }
+
+  test(`Creating A Lawyer as using authentication by another admin,\t\t[=> POST ${this.base_url}\register`, async () => {
+    const response = await nfetch("http://localhost:3000/api/lawyer/register", {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: { 'Content-Type': 'application/json' ,
+       'x-access-token': this.sharedState.token}
+    })
+    const jsonResponse = await response.json()
+
+         // check if the json response has data not error
+         expect(Object.keys(jsonResponse)).toEqual(['auth','token','msg','data'])
+    
+         // go check in the mongo database
+         const lawyer = await Lawyer.findById(jsonResponse.data._id).exec()
+         expect(lawyer.firstName).toEqual(requestBody.firstName)
+         expect(lawyer.phone).toEqual(requestBody.phone)
+         expect(lawyer.email).toEqual(requestBody.email)
+         expect(lawyer.socialSecurityNumber).toEqual(requestBody.socialSecurityNumber)
+        // this.sharedState.id = lawyer.id
+         this.sharedState.lawyerToken=jsonResponse.token
+  })
+
+  }
+
+
+  creatingAnAdminByLawyer(){
+    const requestBody = {
+      name: "manga",
+      password:"momonjvjf",
+      birthDate: "2018-05-01",
+      gender: "Female",
+      joinDate:"5/5/2017",
+      email: "khaled3.com",
+      phone: "01111088333"
+  }
+
+  test(`Creating An Admin as using authentication of lawyer,\t\t[=> POST ${this.base_url}\register`, async () => {
+    const response = await nfetch("http://localhost:3000/routes/api/admins/register", {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: { 'Content-Type': 'application/json' ,
+       'x-access-token': this.sharedState.lawyerToken}
+    })
+    const jsonResponse = await response.json()
+         // check if the json response has data not error
+         expect(jsonResponse).toEqual({"error": "You are not an admin"}
+         ) 
+
+  })
+
+  }
+
+  
+  creatingAnAdminTestingJoi(){
+    const requestBody = {
+      name: "manga",
+      password:"momonjvjf",
+      birthDate: "2018-05-01",
+      gender: "Female",
+      joinDate:"5/5/2017",
+      phone: "01111088333"
+  }
+
+  test(`Creating An Admin as using authentication by another admin but with wrong input,\t\t[=> POST ${this.base_url}\register`, async () => {
+    const response = await nfetch("http://localhost:3000/routes/api/admins/register", {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: { 'Content-Type': 'application/json' ,
+       'x-access-token': this.sharedState.token}
+    })
+    const jsonResponse = await response.json()
+
+         // check if the json response has data not error
+         expect(jsonResponse).toEqual({"error": "\"email\" is required"})
+
+  })
+
   }
 }
 
