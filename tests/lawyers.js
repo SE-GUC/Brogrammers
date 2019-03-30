@@ -12,7 +12,10 @@ class LawyersTest{
         id: null,
         adminToken:null,
         token:null,
-        socialSecurityNumber:null
+        socialSecurityNumber:null,
+        wrongsocialSecurityNumber: 64168186,
+        wrongSsn: 64168186,
+        wrongcompanyID: "5c93edd75c231e4f2c79e9b4"
       }
     }
 
@@ -31,7 +34,17 @@ class LawyersTest{
               this.showMyCases(),
               this.logInWithUserNotFound(),
               this.logInWithWrongPassword(),
+              this.lawyersViewEditableCompaniesAfterRejectionAlreadyLogged(),
+              this.lawyersViewEditableCompaniesWithoutLogin(),
+              this.lawyersViewEditableCompaniesThatIsNotHisCheckingByToken(),
+              this.lawyersViewEditableCompaniesThatIsNotHisCheckingBySsn(),
+              this.lawyersEditForum(),
+              this.lawyersEdittForumWithoutLogin(),
+              this.lawyersEditForumWrongSsn(),
+              this.lawyersEditForumWrongCompanyId(),
+              this.lawyersEditForumWrongSsnAndCompanyId(),
               this.logInWithRightPassword()
+
             })
             resolve()
           })
@@ -104,6 +117,7 @@ class LawyersTest{
              expect(lawyer.socialSecurityNumber).toEqual(requestBody.socialSecurityNumber)
              this.sharedState.id = lawyer.id
              this.sharedState.token=jsonResponse.token
+             console.log(this.sharedState.token)
              this.sharedState.socialSecurityNumber = lawyer.socialSecurityNumber
             
              
@@ -333,13 +347,138 @@ class LawyersTest{
           })
           
           const jsonResponse = await response.json()
+          this.sharedState.token=jsonResponse.token
           const token = jsonResponse.token
     
           console.log(`${this.base_url}\/login`)
           expect(jsonResponse).toEqual({ auth: true, token: token })
-          
         })
       }
+
+      lawyersViewEditableCompaniesAfterRejectionAlreadyLogged () {
+        test(`Getting this logged in lawyers's editable companies that was rejected by reviewer ,[=> GET${this.base_url}/editForm/:id`, async () => {
+          const response = await nfetch(`${this.base_url}/editForm/${this.sharedState.socialSecurityNumber}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' ,'x-access-token':this.sharedState.token }
+          })
+          const jsonResponse = await response.json()
+          
+          expect(Object.keys(jsonResponse)).toEqual([ "data" ])
+        })
+      }
+      lawyersViewEditableCompaniesWithoutLogin () {
+        test(`Getting not logged in lawyers's editable companies that was rejected by reviewer ,[=> GET${this.base_url}/editForm/:id`, async () => {
+          const response = await nfetch(`${this.base_url}/editForm/${this.sharedState.socialSecurityNumber}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json'}
+          })
+          const jsonResponse = await response.json()
+          
+          expect(jsonResponse).toEqual({ auth: false, message: 'No token provided.' })
+        })
+      }
+
+      lawyersViewEditableCompaniesThatIsNotHisCheckingByToken () {
+        test(`Lawyer trying to view editable companies that are not his as he has a wrong token ,[=> GET${this.base_url}/editForm/:id`, async () => {
+          const response = await nfetch(`${this.base_url}/editForm/${this.sharedState.socialSecurityNumber}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', 'x-access-token': 'wrongToken' }
+          })
+          const jsonResponse = await response.json()
+          expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' })
+        })
+      }
+
+      lawyersViewEditableCompaniesThatIsNotHisCheckingBySsn () {
+        test(`Lawyer trying to view editable companies that are not his as he has a wrong token ,[=> GET${this.base_url}/editForm/:id`, async () => {
+          const response = await nfetch(`${this.base_url}/editForm/${this.sharedState.wrongsocialSecurityNumber}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
+          })
+          const jsonResponse = await response.json()
+          expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' })
+        })
+      }
+
+
+      lawyersEditForum() {
+        const requestBody = {
+          investorName: "lll"
+        }
+        test(`editing a disaproved form from reviewer,[=>PUT${this.base_url}/editForm/:id/:companyId`, async () => {
+          const response = await nfetch(`${this.base_url}/editForm/${this.sharedState.socialSecurityNumber}/${this.sharedState.companyID}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' , 'x-access-token': this.sharedState.token }
+          })
+          const jsonResponse = await response.json()
+        
+          expect(Object.keys(jsonResponse)).toEqual(["msg"])
+        })
+      }
+      lawyersEdittForumWithoutLogin() {
+        const requestBody = {
+          investorName: "lll"
+        }
+    
+        test(`Lawyer trys to edit form without logging in,[=>PUT${this.base_url}/editForm/:id/:companyId`, async () => {
+          const response = await nfetch(`${this.base_url}/editForm/${this.sharedState.socialSecurityNumber}/${this.sharedState.companyID}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' , 'x-access-token': 'wrongToken' }
+          })
+          const jsonResponse = await response.json()
+        
+          expect(Object.keys(jsonResponse)).toEqual(["auth","message"])
+        })
+      }
+      lawyersEditForumWrongSsn() {
+        const requestBody = {
+          investorName: "lll"
+        }
+    
+        test(`Lawyer tries to edit the form but the SSN is incorrect,[=>PUT${this.base_url}/editForm/:id/:companyId`, async () => {
+          const response = await nfetch(`${this.base_url}/editForm/1/${this.sharedState.companyID}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' , 'x-access-token': this.sharedState.token }
+          })
+          const jsonResponse = await response.json()
+        
+          expect(Object.keys(jsonResponse)).toEqual(["auth","message"])
+        })
+      }
+      
+      lawyersEditForumWrongCompanyId() {
+        const requestBody = {
+          investorName: "lll"
+        }
+    
+        test(`Lawyer tries to edit the form but the company doest not exist,[=>PUT${this.base_url}/editForm/:id/:companyId`, async () => {
+          const response = await nfetch(`${this.base_url}/editForm/${this.sharedState.socialSecurityNumber}/${this.sharedState.wrongcompanyID}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' , 'x-access-token': this.sharedState.token }
+          })
+          const jsonResponse = await response.json()
+        
+          expect(Object.keys(jsonResponse)).toEqual(["error"])
+        })
+      }
+
+      lawyersEditForumWrongSsnAndCompanyId() {
+        const requestBody = {
+          investorName: "lll"
+        }
+    
+        test(`Lawyer tries to edit the form but the company doest not exist and SSN is incorrect,[=>PUT${this.base_url}/editForm/:id/:companyId`, async () => {
+          const response = await nfetch(`${this.base_url}/editForm/${this.sharedState.wrongSsn}/${this.sharedState.wrongcompanyID}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' , 'x-access-token': this.sharedState.token }
+          })
+          const jsonResponse = await response.json()
+        
+          expect(Object.keys(jsonResponse)).toEqual(["auth","message"])
+        })
+      }
+
+
     }
     
 module.exports = LawyersTest

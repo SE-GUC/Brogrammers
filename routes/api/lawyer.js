@@ -376,6 +376,7 @@ router.get('/logout', function (req, res) {
 })
 
 router.put('/editForm/:id/:companyId', async function (req, res) {
+  var stat = 0
   var lawyerId = req.params.id
   var companyId = req.params.companyId
   const query = {
@@ -398,20 +399,38 @@ router.put('/editForm/:id/:companyId', async function (req, res) {
         .status(500)
         .send({ auth: false, message: 'Failed to authenticate token.' })
     }
+    stat = decoded.id
   })
-
-  if (!editableCompanies) {
-    return res.status(404).send({ error: 'There are no Fourms to be edited' })
-  } else {
-    const isValidated = companyvalidator.updateValidationSSC(req.body)
-    if (isValidated.error) {
+    if(!stat){
       return res
-        .status(400)
-        .send({ error: isValidated.error.details[0].message })
+      .status(500)
+      .send({ auth: false, message: 'Failed to authenticate token.' })
     }
-    await Company.findByIdAndUpdate(companyId, req.body)
-    res.json({ msg: 'fourm updated successfully' })
-  }
+    const id = stat
+    const lawyer = await Lawyer.findOne({socialSecurityNumber: lawyerId}, { _id: 1 })
+    if(!lawyer){
+      return res
+      .status(500)
+      .send({ auth: false, message: 'Failed to authenticate token.' })
+    }
+    if(lawyer._id==id){
+      if (!editableCompanies) {
+        return res.status(404).send({ error: 'There are no Fourms to be edited' })
+      } else {
+        const isValidated = companyvalidator.updateValidationSSC(req.body)
+        if (isValidated.error) {
+          return res
+            .status(400)
+            .send({ error: isValidated.error.details[0].message })
+        }
+        await Company.findByIdAndUpdate(companyId, req.body)
+        res.json({ msg: 'fourm updated successfully' })
+      }
+    }
+    else{
+      res.json({ auth: false, message: 'Failed to authenticate token.' })
+    }
+
 })
 // alaa
 router.post('/lawyerinvestor/createspccompany', async (req, res) => {
@@ -689,6 +708,7 @@ router.delete('/', async (req, res) => {
 })
 
 router.get('/editForm/:id', async function (req, res) {
+  var stat = 0
   var lawyerId = req.params.id
   const query = {
     $and: [{ status: 'RejectedReviewer' }, { lawyer: lawyerId }]
@@ -705,9 +725,23 @@ router.get('/editForm/:id', async function (req, res) {
         .status(500)
         .send({ auth: false, message: 'Failed to authenticate token.' })
     }
-
-    res.json({ data: editableCompanies })
+    stat = decoded.id
   })
+    const id = stat
+    const lawyer = await Lawyer.findOne({socialSecurityNumber: lawyerId}, { _id: 1 })
+    if(lawyer==id){
+      if(!editableCompanies){
+        res.json({ message: 'No companies to edit.'})
+      }
+      else{
+        res.json({ data: editableCompanies })
+      }
+      
+    }
+    else{
+      res.json({ auth: false, message: 'Failed to authenticate token.' })
+    }
+
 })
 
 router.put('/addcomment/:id/:companyId', async function (req, res) {
