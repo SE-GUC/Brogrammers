@@ -202,7 +202,7 @@ router.post('/register', async (req, res) => {
   if (token) {
     return res
       .status(401)
-      .send({ auth: false, message: 'You are already logged in' })
+      .send({ message: 'You are already logged in' })
   }
   const {
     name,
