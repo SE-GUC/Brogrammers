@@ -19,7 +19,8 @@ class InvestorsTest {
             telephone: null,
             fax: null,
             mail: null,
-            password: null
+            password: null,
+            companyID: null
         }
     }
 
@@ -49,7 +50,11 @@ class InvestorsTest {
                         this.viewCompaniesInvestorCorrectIdAndToken(),
                         this.viewCompaniesInvestorWrongToken(),
                         this.viewCompaniesInvestorNullToken(),
-                        this.updateInvestorWithNullToken()
+                        this.updateInvestorWithNullToken(),
+                        this.investorCreateCompanySPCInvalidCompanyFields(),
+                        this.investorsViewFees(),
+                        this.investorsViewFeesWithoutLogin(),
+                        this.investorsViewFeesWrongID()
                 })
                 resolve();
             })
@@ -71,7 +76,8 @@ class InvestorsTest {
             faxHQ: 7775000,
             capitalCurrency: "US Dollars",
             capital: 80000,
-            managers: []
+            managers: [],
+            investorIdentificationNumber:"123456789"
         }
         test(`Testing investors ability to fill a new SSC company form while logged in, \t\t[=> POST ${this.base_url}\createssccompany`, async () => {
             const response = await nfetch("http://localhost:3000/api/investors/createssccompany", {
@@ -97,6 +103,7 @@ class InvestorsTest {
             expect(company.capitalCurrency).toEqual(requestBody.capitalCurrency)
             expect(company.capital).toEqual(requestBody.capital)
             expect(company.manager).toEqual(requestBody.manager)
+            this.sharedState.companyID=company.id
         })
     }
 
@@ -445,6 +452,7 @@ class InvestorsTest {
   
         console.log(`${this.base_url}\/login`)
         expect(Object.keys(jsonResponse)).toEqual(['auth', 'token'])
+        this.sharedState.token=jsonResponse.token
       })
 
     }
@@ -652,6 +660,39 @@ class InvestorsTest {
         });
         const jsonResponse = await response.json();
         expect(jsonResponse).toEqual({auth: false, message: 'No token provided.'});
+      })
+    }
+    investorsViewFees () {
+      test(`Fetching the company creation fees ,[=> GET${this.base_url}/:id/:companyID/viewFees`, async () => {
+        const response = await nfetch(`http://localhost:3000/api/investors/${this.sharedState.id}/${this.sharedState.companyID}/viewFees`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
+        })
+        const jsonResponse = await response.json()
+        
+        expect(Object.keys(jsonResponse)).toEqual([ "EstimatedFees" ])
+      })
+    }
+    investorsViewFeesWithoutLogin () {
+      test(`Fetching the company creation fees without logging in ,[=> GET${this.base_url}/:id/:companyID/viewFees`, async () => {
+        const response = await nfetch(`http://localhost:3000/api/investors/${this.sharedState.id}/${this.sharedState.companyID}/viewFees`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json', 'x-access-token': 'wrongToken' }
+        })
+        const jsonResponse = await response.json()
+        
+        expect(Object.keys(jsonResponse)).toEqual(["auth","message"])
+      })
+    }
+    investorsViewFeesWrongID () {
+      test(`Fetching the company creation fees with a wrong investor ID ,[=> GET${this.base_url}/:id/:companyID/viewFees`, async () => {
+        const response = await nfetch(`http://localhost:3000/api/investors/wrongID/${this.sharedState.companyID}/viewFees`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
+        })
+        const jsonResponse = await response.json()
+        
+        expect(Object.keys(jsonResponse)).toEqual(["auth","message"])
       })
     }
   }

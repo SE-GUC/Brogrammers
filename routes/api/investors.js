@@ -652,9 +652,10 @@ router.get('/:id/:companyID/viewFees', async (req, res) => {
   if (!investor) {
     return res.status(400).send({ error: 'You are not an investor' })
   }
+  const investorIdentification = investor.idNumber
   const companyId = req.params.companyID
   const query = {
-    $and: [{ investorIdentificationNumber: id }, { _id: companyId }]
+    $and: [{ investorIdentificationNumber: investorIdentification }, { _id: companyId }]
   }
 
   const c = await Company.findOne(query)
