@@ -2,6 +2,8 @@ const nfetch = require('node-fetch')
 const Lawyer = require('../models/Lawyer')
 const Admin = require('../models/Admin')
 const Company = require('../models/Company')
+var jwt = require('jsonwebtoken')
+var config = require('../config/jwt')
 
 
 
@@ -12,6 +14,9 @@ class LawyersTest{
         id: null,
         adminToken:null,
         token:null,
+        wrongToken:jwt.sign({ id: "5c9d20d34087a25fc4147d17" }, config.secret, {
+          expiresIn: 86400 // expires in 24 hours
+        }),
         socialSecurityNumber:null,
         firstName: null,
         middleName: null,
@@ -38,6 +43,8 @@ class LawyersTest{
               this.showwithoutloggingin(),
               this.wrongAuthShowMyCase(),
               this.showMyCases(),
+              this.showMyCaseswithAnotherToken(),
+              this.showMyCaseswithtokenThatisforAnotherPerson(),
               this.logInWithUserNotFound(),
               this.logInWithWrongPassword(),
               this.logInWithRightPassword(),
@@ -258,6 +265,38 @@ class LawyersTest{
         
     
       })}
+      showMyCaseswithAnotherToken(){
+        test(`Showing my cases with another token,\t\t\t[=> GET\t${this.base_url}mycases/:id\t`, async () => {
+          const response = await nfetch(`http://localhost:3000/api/lawyer/mycases/${this.sharedState.id}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json',
+            'x-access-token':this.sharedState.wrongToken}
+                  
+          })
+          const jsonResponse = await response.json()
+          // check if the json response has data not error
+          expect(jsonResponse).toEqual({error: 'You are not a Lawyer' })
+          
+      
+        })}
+
+
+        showMyCaseswithtokenThatisforAnotherPerson(){
+          test(`Showing my cases with another token,\t\t\t[=> GET\t${this.base_url}mycases/:id\t`, async () => {
+            const response = await nfetch(`http://localhost:3000/api/lawyer/mycases/5c9d20d34087a25fc4147d17`, {
+              method: 'GET',
+              headers: { 'Content-Type': 'application/json',
+              'x-access-token':this.sharedState.token}
+                    
+            })
+            const jsonResponse = await response.json()
+            // check if the json response has data not error
+            expect(jsonResponse).toEqual({ error: 'Wrong ID' })
+            
+        
+          })}
+
+
       showMyCases(){
       test(`Showing my cases,\t\t\t[=> GET\t${this.base_url}mycases/:id\t`, async () => {
         const response = await nfetch(`http://localhost:3000/api/lawyer/mycases/${this.sharedState.id}`, {
