@@ -880,7 +880,7 @@ router.put('/resubmit/:id/:companyId', async function (req, res) {
     return res.status(400).send({ error: 'You are not an lawyer' })
   }
   const ssn = lawyer.socialSecurityNumber
-  const companyId = req.params.companyID
+  const companyId = req.params.companyId
   const query = {
     $and: [{ lawyer: ssn }, { _id: companyId }, { status: { $ne: 'Accepted' } }]
   }
@@ -891,8 +891,11 @@ router.put('/resubmit/:id/:companyId', async function (req, res) {
       .status(404)
       .send({ error: 'There are no Fourms to be resubmitted' })
   } else {
-    await Company.findByIdAndUpdate(companyId, { status: 'PendingReviewer' })
-    res.json({ msg: 'fourm resubmitted successfully' })
+    const x = await Company.findOneAndUpdate(query, { status: 'PendingReviewer' })
+    if(x)
+      res.json({ msg: 'fourm resubmitted successfully' })
+    else
+      res.json({ msg: 'fourm not resubmitted' })
   }
 })
 router.get('/mycases/:id', async (req, res) => {
