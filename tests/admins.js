@@ -31,7 +31,8 @@ class AdminsTest {
             this.logInWithRightPassword(),
             this.updateAdminWithCorrectIdAndToken(),
             this.updateAdminWithWrongId(),
-            this.updateAdminWithWrongToken();
+            this.updateAdminWithWrongToken(),
+            this.updateAdminWithNullToken()
         });
         resolve();
       });
@@ -303,7 +304,7 @@ class AdminsTest {
       email: "1234gmail@yahoo.com"
     };
     test(`Updating information of specified admin with a null token`, async () => {
-      const response = await nfetch('http://localhost:3000/routes/api/admins' + this.sharedState.id,
+      const response = await nfetch('http://localhost:3000/routes/api/admins/' + this.sharedState.id,
       {
         method: "PUT",
         body: JSON.stringify(requestBody),
