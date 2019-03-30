@@ -7,7 +7,7 @@ const Company = require('../models/Company')
 
 class LawyersTest{
     constructor (PORT, ROUTE) {
-        this.base_url = `http://localhost:${PORT}/routes/api/${ROUTE}`
+        this.base_url = `http://localhost:${PORT}/api/${ROUTE}`
      this.sharedState = {
         id: null,
         adminToken:null,
@@ -28,7 +28,10 @@ class LawyersTest{
               this.creatingLawyerCorruptedToken(),
               this.showwithoutloggingin(),
               this.wrongAuthShowMyCase(),
-              this.showMyCases()
+              this.showMyCases(),
+              this.logInWithUserNotFound(),
+              this.logInWithWrongPassword(),
+              this.logInWithRightPassword()
             })
             resolve()
           })
@@ -276,7 +279,67 @@ class LawyersTest{
     
       }
 
+      logInWithUserNotFound () {
+        const requestBody = {
+          email: 'notreg@sumerge.com',
+          password: '123456789'
+        }
     
+        test(`logInWithUserNotFound,\t\t[=> POST ${this.base_url}\/login`, async () => {
+          const response = await nfetch('http://localhost:3000/api/lawyer/login', {
+            method: 'POST',
+            body: JSON.stringify(requestBody),
+            headers: { 'Content-Type': 'application/json' }
+          })
+          const jsonResponse = await response.json()
+    
+          console.log(`${this.base_url}\/login`)
+    
+          expect(jsonResponse).toEqual({ auth: false, message: 'No user found.' })
+        })
+      }
+    
+      logInWithWrongPassword () {
+        const requestBody = {
+          email: 'omar.com',
+          password: '12345678'
+        }
+    
+        test(`logInWithWrongPassword,\t\t[=> POST ${this.base_url}\/login`, async () => {
+          const response = await nfetch('http://localhost:3000/api/lawyer/login', {
+            method: 'POST',
+            body: JSON.stringify(requestBody),
+            headers: { 'Content-Type': 'application/json' }
+          })
+          const jsonResponse = await response.json()
+    
+          console.log(`${this.base_url}\/login`)
+    
+          expect(jsonResponse).toEqual({ auth: false, token: null })
+        })
+      }
+    
+      logInWithRightPassword () {
+        const requestBody = {
+          email: 'omar.com',
+          password: 'abcakakaka'
+        }
+    
+        test(`logInWithRightPassword,\t\t[=> POST ${this.base_url}\/login`, async () => {
+          const response = await nfetch('http://localhost:3000/api/lawyer/login', {
+            method: 'POST',
+            body: JSON.stringify(requestBody),
+            headers: { 'Content-Type': 'application/json' }
+          })
+          
+          const jsonResponse = await response.json()
+          const token = jsonResponse.token
+    
+          console.log(`${this.base_url}\/login`)
+          expect(jsonResponse).toEqual({ auth: true, token: token })
+          
+        })
+      }
     }
     
 module.exports = LawyersTest

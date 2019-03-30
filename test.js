@@ -11,20 +11,20 @@ mongoose.connect(db, {
 //= =---------------------------------------------------= =//
 // ---== Setup before & after all tests run
 //= =---------------------------------------------------= =//
-//beforeAll(async () => {
-//  await mongoose.connection.dropDatabase()
-//})
-//
-//afterAll(async () => {
-//  //await mongoose.connection.dropDatabase()
-//})
+beforeAll(async () => {
+ await mongoose.connection.dropDatabase()
+})
+
+afterAll(async () => {
+await mongoose.connection.dropDatabase()
+})
 //= =---------------------------------------------------= =//
 
 //= =---------------------------------------------------= =//
 // ---== Core tests
 //= =---------------------------------------------------= =//
 
-const lawyerTests = new LawyerTests(3000, 'admins')
+const lawyerTests = new LawyerTests(3000, 'lawyer')
 describe('Let me first run the independent tests', () => {
   Promise.all([
     
