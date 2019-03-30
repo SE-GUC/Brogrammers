@@ -51,11 +51,11 @@ class ReviewersTest{
               this.DeleteAReviewerNotLoggedIn(),
               this.DeleteAReviewerWrongToken(),
               this.DeleteAReviewerNotAuthorized(),
-              this.DeleteAReviewerLoggedIn(),
               this.updateReviewerWithCorrectIdAndToken(),
               this.updateReviewerWithWrongId(),
               this.updateReviewerWithWrongToken(),
-              this.updateReviewerWithNullToken()
+              this.updateReviewerWithNullToken(),
+              this.DeleteAReviewerLoggedIn()
             })
             resolve()
           })
