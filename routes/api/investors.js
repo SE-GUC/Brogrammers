@@ -125,6 +125,7 @@ router.put('/:id/MyRequests/:companyid/', async (req, res) => {
         .status(500)
         .send({ auth: false, message: 'Failed to authenticate' })
     }
+    
     const companyid = req.params.companyid
     console.log(companyid)
     const investor = await Investor.findById(id)
@@ -182,6 +183,11 @@ router.get('/:id/MyRequests', async (req, res) => {
       .send({ auth: false, message: 'Failed to authenticate' })
   }
   const investor = await Investor.findById(id)
+  if (!investor) {
+    return res
+      .status(500)
+      .send({ auth: false, message: 'Failed to authenticate' })
+  }
   const inid = investor.idNumber
   const query = {
     investorIdentificationNumber: inid,
@@ -200,9 +206,7 @@ router.get('/:id/MyRequests', async (req, res) => {
 router.post('/register', async (req, res) => {
   var token = req.headers['x-access-token']
   if (token) {
-    return res
-      .status(401)
-      .send({ auth: false, message: 'You are already logged in' })
+    return res.status(401).send({ message: 'You are already logged in' })
   }
   const {
     name,
@@ -218,8 +222,14 @@ router.post('/register', async (req, res) => {
     mail,
     password
   } = req.body
+  const isValidated = validator.createValidation(req.body)
   const investor = await Investor.findOne({ mail })
   if (investor) return res.status(400).json({ error: 'Email already exists' })
+    if (isValidated.error) {
+      return res
+        .status(400)
+        .send({ error: isValidated.error.details[0].message })
+    }
   const hashedPassword = bcrypt.hashSync(password, 10)
   const newInv = new Investor({
     name,
@@ -248,7 +258,8 @@ router.post('/register', async (req, res) => {
   res.json({ msg: 'Investor was created successfully', data: newInvestor })
 })
 
-router.put('/', async (req, res) => {
+
+router.put('/:id', async (req, res) => {
   try {
     var stat = 0
     var token = req.headers['x-access-token']
@@ -275,8 +286,15 @@ router.put('/', async (req, res) => {
         .status(400)
         .send({ error: isValidated.error.details[0].message })
     }
-    await Investor.findByIdAndUpdate(stat, req.body)
-    res.json({ msg: 'Investor updated successfully' })
+    if(stat === req.params.id)
+    {
+      await Investor.findByIdAndUpdate(stat, req.body)
+      res.json({ msg: 'Investor updated successfully' })
+    }
+    else
+    {
+      res.json({msg: "You do not have the authorization"});
+    }
   } catch (error) {
     // We will be handling the error later
     console.log(error)
@@ -594,10 +612,18 @@ router.post('/createssccompany', async (req, res) => {
 
 // s2
 router.post('/login', function (req, res) {
-  Investor.findOne({ email: req.body.email }, function (err, user) {
-    if (err) return res.status(500).send('Error on the server.')
-    if (!user) return res.status(404).send('No user found.')
-    // const admin = Admin.findOne({ email: req.body.email});
+  Investor.findOne({ mail: req.body.email }, function (err, user) {
+    if (err) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Server error.' })
+    }
+    if (!user) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'No user found.' })
+    }
+    
     const loginPassword = req.body.password
     const userPassword = user.password
     const match = bcrypt.compareSync(loginPassword, userPassword)
@@ -637,9 +663,10 @@ router.get('/:id/:companyID/viewFees', async (req, res) => {
   if (!investor) {
     return res.status(400).send({ error: 'You are not an investor' })
   }
+  const investorIdentification = investor.idNumber
   const companyId = req.params.companyID
   const query = {
-    $and: [{ investorIdentificationNumber: id }, { _id: companyId }]
+    $and: [{ investorIdentificationNumber: investorIdentification }, { _id: companyId }]
   }
 
   const c = await Company.findOne(query)

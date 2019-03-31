@@ -45,8 +45,7 @@ const reviewerSchema = new Schema({
     required: true
   },
   task: {
-    type: Number,
-    required: true
+    type: Number
   }
 
 })
