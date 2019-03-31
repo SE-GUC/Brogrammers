@@ -78,7 +78,7 @@ class InvestorsTest {
   runTests() {
     try {
       return new Promise((resolve, reject) => {
-        describe(`Testing Investors ability to fill a case for the start of his company application`, () => {
+        describe(`Testing Investors ability to fill a case for the start of his company `, () => {
             this.creatingInvestor(),
             this.logInWithUserNotFound(),
             this.logInWithWrongPassword(),
@@ -216,6 +216,13 @@ class InvestorsTest {
       expect(company.manager).toEqual(requestBody.manager);
       this.sharedState.companyID = company.id;
       this.sharedStateCompany.id=company.id;
+      this.sharedStateCompany.investorIdentificationNumber =
+      company.investorIdentificationNumber;
+    this.sharedStateCompany.regulationLaw = company.regulationLaw;
+    this.sharedStateCompany.legalCompanyForm = company.legalCompanyForm;
+    this.sharedStateCompany.nameInArabic = company.nameInArabic;
+    this.sharedStateCompany.status = company.status;
+    this.sharedStateCompany.nameInEnglish=company.nameInEnglish;
     });
   }
 
@@ -404,7 +411,15 @@ class InvestorsTest {
       expect(company.faxHQ).toEqual(requestBody.faxHQ);
       expect(company.capitalCurrency).toEqual(requestBody.capitalCurrency);
       expect(company.capital).toEqual(requestBody.capital);
-      this.sharedStateCompany.id=company.id
+      this.sharedState.companyID = company.id;
+      this.sharedStateCompany.id=company.id;
+      this.sharedStateCompany.investorIdentificationNumber =
+      company.investorIdentificationNumber;
+    this.sharedStateCompany.regulationLaw = company.regulationLaw;
+    this.sharedStateCompany.legalCompanyForm = company.legalCompanyForm;
+    this.sharedStateCompany.nameInArabic = company.nameInArabic;
+    this.sharedStateCompany.status = company.status;
+    this.sharedStateCompany.nameInEnglish=company.nameInEnglish;
     });
   }
 
@@ -629,13 +644,7 @@ class InvestorsTest {
       expect(company.capitalCurrency).toEqual(requestBody.capitalCurrency);
       expect(company.capital).toEqual(requestBody.capital);
       expect(company.manager).toEqual(requestBody.manager);
-      this.sharedStateCompany.investorIdentificationNumber =
-        company.investorIdentificationNumber;
-      this.sharedStateCompany.id = company.id;
-      this.sharedStateCompany.regulationLaw = company.regulationLaw;
-      this.sharedStateCompany.legalCompanyForm = company.legalCompanyForm;
-      this.sharedStateCompany.nameInArabic = company.nameInArabic;
-      this.sharedStateCompany.status = company.status;
+      
     });
   }
 
@@ -779,39 +788,7 @@ class InvestorsTest {
     });
   }
 
-  investorCreateCompanySPCLoggedIn() {
-    const requestBody = {
-      regulationLaw: "Law 159",
-      legalCompanyForm: "CompanyForm",
-      nameInArabic: "esm bel 3araby",
-      nameInEnglish: "WAW",
-      governerateHQ: "New Cairo",
-      cityHQ: "Cairo",
-      addressHQ: "Rehab City",
-      telephoneHQ: 7775000,
-      faxHQ: 7775000,
-      capitalCurrency: "US Dollars",
-      capital: 80000
-    };
-    test(`Testing investors ability to fill a new SPC company form while logged in, \t\t[=> POST ${
-      this.base_url
-    }\createspccompany`, async () => {
-      const response = await nfetch(
-        "http://localhost:3000/api/investors/createspccompany",
-        {
-          method: "POST",
-          body: JSON.stringify(requestBody),
-          headers: { "Content-Type": "application/json" }
-        }
-      );
-      const jsonResponse = await response.json();
-      const token = this.sharedState.token;
-
-      console.log(`${this.base_url}\/login`);
-      expect(Object.keys(jsonResponse)).toEqual(["auth", "token"]);
-      this.sharedState.token = jsonResponse.token;
-    });
-  }
+  
 
   creatingInvestorAlreadyLogged() {
     const requestBody = {
@@ -1072,7 +1049,7 @@ class InvestorsTest {
       gender: "male",
       nationality: "'5awaga'",
       idType: "Passport",
-      idNumber: 123456789,
+      idNumber: "123456789",
       dob: "1998-02-02T22:00:00.000Z",
       address: "Nasr-City",
       telephone: "011271131666",
@@ -1080,9 +1057,7 @@ class InvestorsTest {
       password: "NewPassworddd"
     };
 
-    test(`Creating A Reviewer,\t\t[=> POST ${
-      this.base_url
-    }\register`, async () => {
+    test(`Creating A Reviewer,\t\t[=> POST ${this.base_url}/register`, async () => {
       const response = await nfetch(
         "http://localhost:3000/api/investors/register",
         {
@@ -1546,10 +1521,10 @@ class InvestorsTest {
   }
   EditMyRequestWrongFields() {
     const requestBody = {
-      legalCompanyForm: "SSC",
+      legalCompanyForm: 123,
       nameInArabic: "شركة احمد"
     };
-    test(`Updating a company request form while logged in,\t[=> PUT\t\t${
+    test(`Updating a company request form with wrong fields,\t[=> PUT\t\t${
       this.base_url
     }/:id/MyRequests/:companyid\t`, async () => {
       const response = await nfetch(
