@@ -28,7 +28,7 @@ class LawyersTest {
             salary: null,
             birthDate: null,
             yearsOfExperience: null,
-            companyID: null
+            companyId: null
         }
     }
 
@@ -41,7 +41,7 @@ class LawyersTest {
                         this.creatingLawyerByAdmin(),
                         this.creatingLawyerByLawyer(),
                         this.creatingLawyerCorruptedToken(),
-                 //       this.creatingLawyerWrongInput(),
+                        this.creatingLawyerWrongInput(),
                         this.showwithoutloggingin(),
                         this.wrongAuthShowMyCase(),
                         this.showMyCases(),
