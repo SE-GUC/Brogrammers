@@ -373,3 +373,6 @@
 	
  - /api/company/approved
 	- GET `//=> Registered on Unregistered Users view all the 'Accepted' companies`
+	
+	
+   - deployment on heroku link: https://mysterious-dusk-61508.herokuapp.com/
