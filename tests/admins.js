@@ -404,7 +404,7 @@ class AdminsTest {
       const token = this.sharedState.token;
 
       console.log(`${this.base_url}\/login`);
-      expect(jsonResponse).toEqual({ auth: true, token: token });
+      expect(Object.keys(jsonResponse)).toEqual(["auth", "token"]);
     });
   }
 
