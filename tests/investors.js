@@ -118,7 +118,7 @@ class InvestorsTest {
             this.EditMyRequestWrongCompany(),
             this.EditMyRequestWrongFields()
         });
-        resolve();
+        resolve();  
       });
     } catch (err) {}
   }
