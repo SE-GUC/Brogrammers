@@ -76,7 +76,8 @@ class ReviewersTest{
               this.corruptTokenReviewerApproveTask(),
             this.corruptTokenReviewerDisapproveTask(),
            this.noTasksToBeAssignedReviewerChoosesHisTasks(),
-              this.noTasksForReviewerToApprove()
+              this.noTasksForReviewerToApprove(),
+              this.reviewerAddingCommentCorrectly()
             })
             resolve()
           })
@@ -1069,6 +1070,41 @@ reviewerAddingCommentWithWrongid(){
       err: 'error occured' 
     })     
   })
+}
+reviewerAddingCommentCorrectly(){
+  const requestBody = {
+    reviewerComment: 'The Investor need to pay the full fees to resume company'
+  };
+  test(`Adding a reviewer comment to a company`, async () => {
+    const response = await nfetch(
+      `http://localhost:3000/api/reviewer/addcomment/${this.sharedState.id}/${this.sharedState.companyId}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": this.sharedState.token
+        }
+      }
+    );
+    var query = {
+      $and: [{ status: 'RejectedReviewer' }, {reviewer: this.sharedState.socialSecurityNumber },{reviewerComment:requestBody.reviewerComment}]}
+    const checkCase = await Company.find(query).exec().then()
+    console.log(checkCase)
+    if(checkCase==[])
+    expect(checkCase).toEqual([])
+    else{
+  for(var i = 0 ; i<checkCase.length ; i++)
+  {
+      console.log(123)
+      expect(checkCase[i].status).toEqual("RejectedReviewer"),
+      expect(checkCase[i].reviewer).toEqual(this.sharedState.ssn),
+      expect(checkCase[i].reviewerComment).toEqual(requestBody.reviewerComment)
+  }}
+      
+
+  })
+ 
 }
 
     }
