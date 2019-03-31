@@ -78,7 +78,13 @@ class ReviewersTest{
            this.noTasksToBeAssignedReviewerChoosesHisTasks(),
               this.noTasksForReviewerToApprove(),
               this.reviewerAddingCommentCorrectly(),
+              this.getreviewerCorrectly(),
+              this.getreviewerCorrectlyWithId(),
+              this.getreviewerWithIdButWrongToken(),
+              this.getreviewerWithIdButnullToken(),
+              this.getreviewerwithwrongtoken()
               this.loggingOut()
+              
               
             })
             resolve()
@@ -1118,6 +1124,110 @@ loggingOut(){
       expect(jsonResponse).toEqual({"auth": false, "token": null})       
   })
 }
+getreviewerwithwrongtoken(){
+  test(`getting all reviewers but with wrong token (without logging in)`, async () => {
+    const response = await nfetch(
+      `http://localhost:3000/api/reviewer/`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": "hadg"
+        }
+      }
+    );
+    const jsonResponse = await response.json()
+        // check if the json response has data not error
+        expect(jsonResponse).toEqual({"auth": false, "message":"Failed to authenticate token." })
+ 
+
+    })
+  }
+
+  getreviewerCorrectly(){
+    test(`getting all reviewers`, async () => {
+      const response = await nfetch(
+        `http://localhost:3000/api/reviewer/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": this.sharedState.token
+          }
+        }
+      );
+      const jsonResponse = await response.json()
+          // check if the json response has data not error
+          expect(Object.keys(jsonResponse)).toEqual(['data'])
+   
+  
+      })
+    }
+
+    getreviewerCorrectlyWithId(){
+      test(`getting a specific reviewer correctly`, async () => {
+        const response = await nfetch(
+          `http://localhost:3000/api/reviewer/${this.sharedState.id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": this.sharedState.token
+            }
+          }
+        );
+        const jsonResponse = await response.json()
+            // check if the json response has data not error
+            expect(Object.keys(jsonResponse)).toEqual(["_id","ssn", "name","gender","address","phone","email","password","yearsOfExperience","age","birth", "__v"]);
+     
+    
+        })
+      }
+
+      getreviewerWithIdButWrongToken(){
+        test(`getting a specific reviewer with wrong token`, async () => {
+          const response = await nfetch(
+            `http://localhost:3000/api/reviewer/${this.sharedState.id}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                "x-access-token": "hahahau"
+              }
+            }
+          );
+          const jsonResponse = await response.json()
+              // check if the json response has data not error
+              expect(jsonResponse).toEqual({"auth": false, "message":"Failed to authenticate token." })
+ 
+       
+      
+          })
+        }
+
+
+        getreviewerWithIdButnullToken(){
+          test(`getting a specific reviewer with wrong token`, async () => {
+            const response = await nfetch(
+              `http://localhost:3000/api/reviewer/${this.sharedState.id}`,
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                }
+              }
+            );
+            const jsonResponse = await response.json()
+                // check if the json response has data not error
+                expect(jsonResponse).toEqual({"auth": false, "message":"Please login first." })
+   
+         
+        
+            })
+          }
+
+
+
   }
     
 module.exports = ReviewersTest
