@@ -54,7 +54,7 @@ class AdminsTest {
     } catch (err) {}
   }
 
-//Atef methods
+//Atef methodss
 
 deleteAdmin(){
   test(`deleting an admin CRUD,\t=> DELETE ${this.base_url}/:id`, async () =>{
@@ -80,6 +80,7 @@ var theAdmin=await Admin.find( { _id:this.sharedState.id2 } )
 
   })
 }
+
 
 
 //ends here
