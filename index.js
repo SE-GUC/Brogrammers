@@ -7,7 +7,7 @@ const companies = require('./routes/api/company')
 const admins = require('./routes/api/admins')
 const investors = require('./routes/api/investors')
 
-// DB Config
+/// DB Config
 const db = require('./config/keys').mongoURI
 
 // Connect to mongo
@@ -43,5 +43,5 @@ app.use((req, res) => {
 // S2
 
 // S2
-const port = 3000
+const port = process.env.PORT || 3000
 app.listen(port, () => console.log(`Server up and running on port ${port}`))
