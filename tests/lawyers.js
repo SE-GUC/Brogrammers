@@ -118,7 +118,12 @@ class LawyersTest {
 
 
 
-
+                        this.lawyerGetAllLawyersCrudWithCorrectToken(),
+                        this.lawyerGetAllLawyersCrudWithNullToken(),
+                        this.lawyerGetAllLawyersCrudWithWrongToken(),
+                        this.lawyerGetOneCrudWithCorrectTokenAndID(),
+                        this.lawyerGetOneCrudWithNullToken(),
+                        this.lawyerGetOneCrudWithWrongToken()
 
 
 
@@ -1544,7 +1549,7 @@ class LawyersTest {
             email: "ahmedhsaid@gmail.com",
             password: "kill me now"
         }
-
+    
         test(`Updating the specified lawyer's information providing the correct Id and token`, async () => {
             const response = await nfetch('http://localhost:3000/api/lawyer/' + this.sharedState.id, {
                 method: "PUT",
@@ -1558,14 +1563,14 @@ class LawyersTest {
             expect(jsonResponse).toEqual({ msg: 'Lawyer updated successfully' });
         })
     }
-
+    
     updateLawyerWrongId() {
         const requestBody = {
             email: "ahmedhsaid@gmail.com.com",
             password: "kill me now"
         }
-
-        test(`Updating the specified lawyer's information providing the correct Id and token`, async () => {
+    
+        test(`Updating the specified lawyer's information providing the wrong Id`, async () => {
             const response = await nfetch('http://localhost:3000/api/lawyer/yeet', {
                 method: "PUT",
                 body: JSON.stringify(requestBody),
@@ -1578,14 +1583,14 @@ class LawyersTest {
             expect(jsonResponse).toEqual({ msg: 'You do not have the authorization' });
         })
     }
-
+    
     updateLawyerWrongToken() {
         const requestBody = {
             email: "ahmedhsaid@gmail.com",
             password: "kill me now"
         }
-
-        test(`Updating the specified lawyer's information providing the correct Id and token`, async () => {
+    
+        test(`Updating the specified lawyer's information providing the wrong token`, async () => {
             const response = await nfetch('http://localhost:3000/api/lawyer/' + this.sharedState.id, {
                 method: "PUT",
                 body: JSON.stringify(requestBody),
@@ -1596,17 +1601,16 @@ class LawyersTest {
             });
             const jsonResponse = await response.json();
             expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' });
-        
         })
     }
-
+    
     updateLawyerNullToken() {
         const requestBody = {
             email: "ahmedhsaid@gmail.com",
             password: "kill me now"
         }
-
-        test(`Updating the specified lawyer's information providing the correct Id and token`, async () => {
+    
+        test(`Updating the specified lawyer's information providing a null token`, async () => {
             const response = await nfetch('http://localhost:3000/api/lawyer/' + this.sharedState.id, {
                 method: "PUT",
                 body: JSON.stringify(requestBody),
@@ -1994,6 +1998,69 @@ class LawyersTest {
     
        })
    }
+
+  
+lawyerGetOneCrudWithCorrectTokenAndID(){
+test('Get the information of a specific Lawyer', async () => {
+    const response = await nfetch('http://localhost:3000/api/lawyer/' + this.sharedState.id, {
+      method: "GET",
+      headers: {'Content-Type': 'application/json', 'x-access-token': this.sharedState.token}
+    });
+    const jsonResponse = await response.json();
+    expect(Object.keys(jsonResponse)).toEqual(["_id","firstName","middleName","lastName","password","email","mobileNumber", "socialSecurityNumber","salary", "birthDate", "yearsOfExperience","__v"]);
+  })
+}
+
+lawyerGetOneCrudWithWrongToken() {
+test('Get the information of a specific lawyer with wrong token', async () => {
+  const response = await nfetch('http://localhost:3000/api/lawyer/' + this.sharedState.id, {
+    method: "GET",
+    headers: {'Content-Type': 'application/json', 'x-access-token': 'abcdefg'}
+  });
+  const jsonResponse = await response.json();
+  expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' });
+});
+}
+lawyerGetOneCrudWithNullToken() {
+test('Get the information of a specific lawyer with null token', async () => {
+  const response = await nfetch('http://localhost:3000/api/lawyer/' + this.sharedState.id, {
+    method: "GET",
+    headers: {'Content-Type': 'application/json'}
+  });
+  const jsonResponse = await response.json();
+  expect(jsonResponse).toEqual({ auth: false, message: 'No token provided.' });
+});
+}
+lawyerGetAllLawyersCrudWithCorrectToken() {
+test('Get the information of all the lawyers', async () => {
+  const response = await nfetch('http://localhost:3000/api/lawyer' , {
+    method: 'GET',
+    headers: {'Content-Type' : 'application/json', 'x-access-token': this.sharedState.token}
+  });
+  const jsonResponse = await response.json();
+  expect(Object.keys(jsonResponse)).toEqual(["data"]);
+})
+}
+lawyerGetAllLawyersCrudWithWrongToken() {
+test('Get the information of all the lawyers providing the wrong token', async () => {
+  const response = await nfetch('http://localhost:3000/api/lawyer' , {
+    method: 'GET',
+    headers: {'Content-Type' : 'application/json', 'x-access-token': 'glublugb'}
+  });
+  const jsonResponse = await response.json();
+  expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' });
+})
+}
+lawyerGetAllLawyersCrudWithNullToken() {
+test('Get the information of all the lawyers providing the null token', async () => {
+  const response = await nfetch('http://localhost:3000/api/lawyer' , {
+    method: 'GET',
+    headers: {'Content-Type' : 'application/json'}
+  });
+  const jsonResponse = await response.json();
+  expect(jsonResponse).toEqual({ auth: false, message: 'No token provided.' });
+})
+}
 
 }
 
