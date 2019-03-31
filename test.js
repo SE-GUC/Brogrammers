@@ -16,8 +16,9 @@ beforeAll(async () => {
  await mongoose.connection.dropDatabase()
 })
 
+
 afterAll(async () => {
- //await mongoose.connection.dropDatabase()
+ await mongoose.connection.dropDatabase()
 })
 //= =---------------------------------------------------= =//
 
