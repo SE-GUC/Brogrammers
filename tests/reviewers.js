@@ -77,7 +77,9 @@ class ReviewersTest{
             this.corruptTokenReviewerDisapproveTask(),
            this.noTasksToBeAssignedReviewerChoosesHisTasks(),
               this.noTasksForReviewerToApprove(),
-              this.reviewerAddingCommentCorrectly()
+              this.reviewerAddingCommentCorrectly(),
+              this.loggingOut()
+              
             })
             resolve()
           })
@@ -1107,6 +1109,15 @@ reviewerAddingCommentCorrectly(){
  
 }
 
-    }
+loggingOut(){
+  test(`Logging an Admin out,\t\t[=> GET ${this.base_url}\logout`, async () => {
+    const response = await nfetch("http://localhost:3000/routes/api/admins/logout", {
+      method: 'GET'                    
+      })           
+      const jsonResponse = await response.json()         
+      expect(jsonResponse).toEqual({"auth": false, "token": null})       
+  })
+}
+  }
     
 module.exports = ReviewersTest
