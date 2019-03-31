@@ -10,6 +10,7 @@ const dotenv=require('dotenv')
 dotenv.config()
 
 // Connect to mongo
+//as
 mongoose
   .connect(process.env.mongoURI)
   .then(() => console.log('Connected to MongoDB'))
