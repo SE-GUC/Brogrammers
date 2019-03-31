@@ -17,7 +17,8 @@ class CompanysTest {
                         this.lawyerCreateCompanySSC(),
                         this.lawyerCreateCompanySPC(),
                         this.viewCompanys(),
-                        this.viewCompanysById()
+                        this.viewCompanysById(),
+                        this.viewAcceptedCompanies()
                      
                 })
                 resolve()
@@ -199,6 +200,17 @@ viewCompanysById() {
 
     })
 
+}
+
+viewAcceptedCompanies() {
+    test(`Viewing all accepted companies,\t\t\t[=> GET\t${this.base_url}\t`, async () => {
+        const response = await nfetch("http://localhost:3000/api/company/approved", {
+            method: 'GET'
+        })
+        const jsonResponse = await response.json()
+        // check if the json response has data not error
+        expect(Object.keys(jsonResponse)).toEqual(['data'])
+    })
 }
 
 }
