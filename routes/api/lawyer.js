@@ -273,11 +273,17 @@ router.post('/register', async (req, res) => {
     birthDate,
     yearsOfExperience
   } = req.body
-  const lawyer = await Lawyer.findOne({ email })
-  if (lawyer) return res.status(400).json({ error: 'Email already exists' })
-  const ssn = await Lawyer.findOne({ socialSecurityNumber })
-  if (ssn) return res.status(400).json({ error: 'SSN already exists' })
+  const isValidated = validator.createValidation(req.body)
+  const lawyer = await Lawyer.findOne({ email })	 
+  if (lawyer) return res.status(400).json({ error: 'Email already exists' })	 
+  const ssn = await Lawyer.findOne({ socialSecurityNumber })	 
+  if (ssn) return res.status(400).json({ error: 'SSN already exists' })	
 
+   if (isValidated.error) {
+    return res
+      .status(400)
+      .send({ error: isValidated.error.details[0].message })
+  }
   const salt = bcrypt.genSaltSync(10)
   const hashedPassword = bcrypt.hashSync(password, salt)
   const newLawyer = new Lawyer({
@@ -641,7 +647,7 @@ router.get('/:id', async (req, res) => {
   res.send(lawyer)
 })
 
-router.put('/', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     var stat = 0
     var token = req.headers['x-access-token']
@@ -668,13 +674,21 @@ router.put('/', async (req, res) => {
         .status(400)
         .send({ error: isValidated.error.details[0].message })
     }
-    await Lawyer.findByIdAndUpdate(stat, req.body)
-    res.json({ msg: 'Lawyer updated successfully' })
+    if(stat === req.params.id)
+    {
+      await Lawyer.findByIdAndUpdate(stat, req.body)
+      res.json({ msg: 'Lawyer updated successfully' })
+    }
+    else
+    {
+      return res.json({msg: 'You do not have the authorization'});
+    }
   } catch (error) {
     // We will be handling the error later
     console.log(error)
   }
 })
+
 router.delete('/', async (req, res) => {
   try {
     var stat = 0
@@ -873,7 +887,7 @@ router.put('/resubmit/:id/:companyId', async function (req, res) {
     return res.status(400).send({ error: 'You are not an lawyer' })
   }
   const ssn = lawyer.socialSecurityNumber
-  const companyId = req.params.companyID
+  const companyId = req.params.companyId
   const query = {
     $and: [{ lawyer: ssn }, { _id: companyId }, { status: { $ne: 'Accepted' } }]
   }
@@ -884,8 +898,12 @@ router.put('/resubmit/:id/:companyId', async function (req, res) {
       .status(404)
       .send({ error: 'There are no Fourms to be resubmitted' })
   } else {
-    await Company.findByIdAndUpdate(companyId, { status: 'PendingReviewer' })
-    res.json({ msg: 'fourm resubmitted successfully' })
+    const x = await Company.findOneAndUpdate(query, { status: 'PendingReviewer' })
+    res.json({ msg: 'fourm resubmitted successfully' })	   
+    if(x)
+      res.json({ msg: 'fourm resubmitted successfully' })
+    else
+      res.json({ msg: 'fourm not resubmitted' })
   }
 })
 router.get('/mycases/:id', async (req, res) => {
