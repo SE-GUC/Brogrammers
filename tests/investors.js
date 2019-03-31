@@ -118,7 +118,8 @@ class InvestorsTest {
             this.EditMyRequestLoggedIn(),
             this.EditMyRequestIncorrectToken(),
             this.EditMyRequestWrongCompany(),
-            this.EditMyRequestWrongFields();
+            this.EditMyRequestWrongFields()
+            this.loggingOut();
         });
         resolve();
       });
@@ -1165,7 +1166,7 @@ class InvestorsTest {
       gender: "male",
       nationality: "'5awaga'",
       idType: "Passport",
-      idNumber: 123456789,
+      idNumber: "123456789",
       dob: "1998-02-02T22:00:00.000Z",
       address: "Nasr-City",
       telephone: "011271131666",
@@ -1777,6 +1778,18 @@ class InvestorsTest {
       expect(Object.keys(jsonResponse)).toEqual(["auth", "message"]);
     });
   }
+
+  //Panda logouts
+  loggingOut(){
+    test(`Logging an Investor out,\t\t[=> GET ${this.base_url}\logout`, async () => {
+      const response = await nfetch("http://localhost:3000/routes/api/admins/logout", {
+        method: 'GET'                    
+        })           
+        const jsonResponse = await response.json()         
+        expect(jsonResponse).toEqual({"auth": false, "token": null})       
+    })
+  }
+
 }
 
 module.exports = InvestorsTest;
