@@ -11,7 +11,7 @@ var jwt = require('jsonwebtoken')
 router.get('/logout', function (req, res) {
   res.status(200).send({ auth: false, token: null })
 })
-
+//changed by manga, IF YOU'RE NOT GOING TO CHANGE THIS ADMIN FILE PLEASE TAKE THIS FILE
 router.get('/', async (req, res) => {
   try {
     var token = req.headers['x-access-token']
@@ -42,7 +42,7 @@ router.get('/', async (req, res) => {
       }
       info.push(curr)
     }
-    res.send(info)
+    res.send({data: info});
   } catch (error) {
     res.status(404).send({ msg: "Admin doesn't exist" })
   }

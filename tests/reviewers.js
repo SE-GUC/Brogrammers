@@ -1,6 +1,4 @@
 const nfetch = require('node-fetch')
-const Lawyer = require('../models/Lawyer')
-
 const Admin = require('../models/Admin')
 const Reviewer = require('../models/Reviewer')
 const Company = require('../models/Company')
@@ -65,18 +63,12 @@ class ReviewersTest{
               //these tests should run after creating a company
               this.notLoggedIntReviewerChoosesHisTasks(),
               this.corruptTokenIntReviewerChoosesHisTasks(),
-              this.loggedInReviewerChoosesHisTasks(),
               this.reviewerDisapproveTaskWrongId(),
-              this.loggedInForReviewerToDisapprove(),
-              this.noTasksForReviewerToDisapprove(),
              this.reviewerApproveTaskWrongId(),
               this.loggedInReviewerApprovesTask(),        
               this.noLoginReviewerApproveTask(),
-              this.noLoginReviewerDisapproveTask(),
               this.corruptTokenReviewerApproveTask(),
             this.corruptTokenReviewerDisapproveTask(),
-           this.noTasksToBeAssignedReviewerChoosesHisTasks(),
-              this.noTasksForReviewerToApprove(),
               this.reviewerAddingCommentCorrectly(),
               this.getreviewerCorrectly(),
               this.getreviewerCorrectlyWithId(),

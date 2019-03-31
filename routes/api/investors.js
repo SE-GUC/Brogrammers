@@ -125,6 +125,7 @@ router.put('/:id/MyRequests/:companyid/', async (req, res) => {
         .status(500)
         .send({ auth: false, message: 'Failed to authenticate' })
     }
+    
     const companyid = req.params.companyid
     console.log(companyid)
     const investor = await Investor.findById(id)
@@ -182,6 +183,11 @@ router.get('/:id/MyRequests', async (req, res) => {
       .send({ auth: false, message: 'Failed to authenticate' })
   }
   const investor = await Investor.findById(id)
+  if (!investor) {
+    return res
+      .status(500)
+      .send({ auth: false, message: 'Failed to authenticate' })
+  }
   const inid = investor.idNumber
   const query = {
     investorIdentificationNumber: inid,
@@ -200,9 +206,7 @@ router.get('/:id/MyRequests', async (req, res) => {
 router.post('/register', async (req, res) => {
   var token = req.headers['x-access-token']
   if (token) {
-    return res
-      .status(401)
-      .send({ message: 'You are already logged in' })
+    return res.status(401).send({ message: 'You are already logged in' })
   }
   const {
     name,
@@ -218,8 +222,14 @@ router.post('/register', async (req, res) => {
     mail,
     password
   } = req.body
+  const isValidated = validator.createValidation(req.body)
   const investor = await Investor.findOne({ mail })
   if (investor) return res.status(400).json({ error: 'Email already exists' })
+    if (isValidated.error) {
+      return res
+        .status(400)
+        .send({ error: isValidated.error.details[0].message })
+    }
   const hashedPassword = bcrypt.hashSync(password, 10)
   const newInv = new Investor({
     name,
@@ -247,6 +257,7 @@ router.post('/register', async (req, res) => {
   })
   res.json({ msg: 'Investor was created successfully', data: newInvestor })
 })
+
 
 router.put('/:id', async (req, res) => {
   try {
@@ -652,9 +663,10 @@ router.get('/:id/:companyID/viewFees', async (req, res) => {
   if (!investor) {
     return res.status(400).send({ error: 'You are not an investor' })
   }
+  const investorIdentification = investor.idNumber
   const companyId = req.params.companyID
   const query = {
-    $and: [{ investorIdentificationNumber: id }, { _id: companyId }]
+    $and: [{ investorIdentificationNumber: investorIdentification }, { _id: companyId }]
   }
 
   const c = await Company.findOne(query)

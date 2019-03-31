@@ -1,23 +1,19 @@
-require('dotenv').config()
 const mongoose = require('mongoose')
 const db = require('./config/keys').mongoURI
-//const AdminsTest = require('./tests/admins')
-//const InvestorsTest = require('./tests/investors');
-//const LawyerTests = require('./tests/lawyers');
+const InvestorsTest = require('./tests/investors');
+const AdminsTest = require('./tests/admins')
+const ReviewersTest = require('./tests/reviewers')
 
 const {
   PORT = 3000
 } = process.env
 
-const ReviewersTest = require('./tests/reviewers')
 
 mongoose.connect(db, {
   useNewUrlParser: true
-})
+});
 
-//= =---------------------------------------------------= =//
-// ---== Setup before & after all tests run
-//= =---------------------------------------------------= =//
+
 beforeAll(async () => {
  await mongoose.connection.dropDatabase()
 })
@@ -25,19 +21,24 @@ beforeAll(async () => {
 afterAll(async () => {
 await mongoose.connection.dropDatabase()
 })
-//= =---------------------------------------------------= =//
 
-//= =---------------------------------------------------= =//
-// ---== Core tests
-//= =---------------------------------------------------= =//
 
 const reviewerTests = new ReviewersTest(3000,'reviewer')
-
-
-describe('Let me first run the independent tests', () => {
+const adminsTests = new AdminsTest(PORT, 'admins')
+const investorTests = new InvestorsTest(3000, "investors");
+describe("Let me first run the independent tests", () => {
   Promise.all([
     
-    reviewerTests.runTests()
+    reviewerTests.runTests(),
+    investorTests.runTests(),
+    adminsTests.runTests()
   ]).then(result => {
-  })
-})
+    describe("Now running the dependent tests", () => {
+      Promise.all([
+        //run dependent tests
+       // investorTests.runTestsDependently()
+
+      ]).then(_ => {});
+    });
+  });
+});
