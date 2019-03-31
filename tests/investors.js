@@ -93,7 +93,6 @@ class InvestorsTest {
             this.getMyRequestDetailsIncorrectToken(),
             this.getMyRequestDetailsWrongRequest(),
             this.EditMyRequestLoggedOut(),
-            this.EditMyRequestLoggedIn(),
             this.EditMyRequestIncorrectToken(),
             this.EditMyRequestWrongCompany(),
             this.EditMyRequestWrongFields()
@@ -913,32 +912,32 @@ class InvestorsTest {
     });
   }
   // GET another token from reviewer
-  // investorCreateCompanySPCNotLoggedInWithInvestor() {
-  //     const requestBody = {
-  //         regulationLaw: "Law 159",
-  //         legalCompanyForm: "CompanyForm",
-  //         nameInArabic: "esm bel 3araby",
-  //         nameInEnglish: "WAW",
-  //         governerateHQ: "New Cairo",
-  //         cityHQ: "Cairo",
-  //         addressHQ: "Rehab City",
-  //         telephoneHQ: 7775000,
-  //         faxHQ: 7775000,
-  //         capitalCurrency: "US Dollars",
-  //         capital: 80000
-  //     }
-  //     test(`Testing ability to fill a new SPC company form while not logged in as an investor, \t\t[=> POST ${this.base_url}\createspccompany`, async () => {
-  //         const response = await nfetch("http://localhost:3000/api/investors/createspccompany", {
-  //             method: 'POST',
-  //             body: JSON.stringify(requestBody),
-  //             headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
-  //         })
-  //         const jsonResponse = await response.json()
-  //         expect
-  //         console.log(`Testing ability to fill a new SPC company form while not logged in as an investor`)
-  //         expect(jsonResponse).toEqual({ "error": 'Investor does not exist' })
-  //     })
-  // }
+  investorCreateCompanySPCNotLoggedInWithInvestor() {
+      const requestBody = {
+          regulationLaw: "Law 159",
+          legalCompanyForm: "CompanyForm",
+          nameInArabic: "esm bel 3araby",
+          nameInEnglish: "WAW",
+          governerateHQ: "New Cairo",
+          cityHQ: "Cairo",
+          addressHQ: "Rehab City",
+          telephoneHQ: 7775000,
+          faxHQ: 7775000,
+          capitalCurrency: "US Dollars",
+          capital: 80000
+      }
+      test(`Testing ability to fill a new SPC company form while not logged in as an investor, \t\t[=> POST ${this.base_url}\createspccompany`, async () => {
+          const response = await nfetch("http://localhost:3000/api/investors/createspccompany", {
+              method: 'POST',
+              body: JSON.stringify(requestBody),
+              headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.adminToken }
+          })
+          const jsonResponse = await response.json()
+          expect
+          console.log(`Testing ability to fill a new SPC company form while not logged in as an investor`)
+          expect(jsonResponse).toEqual({ "error": 'Investor does not exist' })
+      })
+  }
 
   investorCreateCompanySPCInvalidCompanyFields() {
     const requestBody = {

@@ -4,6 +4,7 @@ const InvestorsTest = require('./tests/investors');
 const AdminsTest = require('./tests/admins')
 const ReviewersTest = require('./tests/reviewers')
 const CompanyTest=require('./tests/companys')
+const LawyerTest=require('./tests/lawyers')
 
 const {
   PORT = 3000
@@ -29,12 +30,16 @@ const reviewerTests = new ReviewersTest(3000,'reviewer')
 const adminsTests = new AdminsTest(PORT, 'admins')
 const investorTests = new InvestorsTest(3000, "investors");
 const companyTests = new CompanyTest(3000, 'company');
+const lawyerTests = new LawyerTest(3000, 'lawyer');
+
 describe("Let me first run the independent tests", () => {
   Promise.all([
     reviewerTests.runTests(),
     investorTests.runTests(),
     adminsTests.runTests(),
-    companyTests.runTests()
+    companyTests.runTests(),
+    lawyerTests.runTests1(),
+    lawyerTests.runTests2()
   ]).then(result => {
     describe("Now running the dependent tests", () => {
       Promise.all([
