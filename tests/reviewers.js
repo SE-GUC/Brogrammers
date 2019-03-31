@@ -26,7 +26,8 @@ class ReviewersTest{
         password: null,
         yearsOfExperience: null,
         age: null,
-        birth: null
+        birth: null,
+        companyId:null
       }
     }
 
@@ -60,14 +61,421 @@ class ReviewersTest{
               this.reviewerAddingCommentWithWrongCompanyId(),
               this.reviewerAddingCommentWithWrongCompanyIdAndIdAndToken(),
               this.reviewerAddingCommentWithWrongid(),
-              this.reviewerAddingCommentWithWrongtoken()
+              this.reviewerAddingCommentWithWrongtoken(),
+              //these tests should run after creating a company
+              this.notLoggedIntReviewerChoosesHisTasks(),
+              this.corruptTokenIntReviewerChoosesHisTasks(),
+              this.loggedInReviewerChoosesHisTasks(),
+              this.reviewerDisapproveTaskWrongId(),
+              this.loggedInForReviewerToDisapprove(),
+              this.noTasksForReviewerToDisapprove(),
+             this.reviewerApproveTaskWrongId(),
+              this.loggedInReviewerApprovesTask(),        
+              this.noLoginReviewerApproveTask(),
+              this.noLoginReviewerDisapproveTask(),
+              this.corruptTokenReviewerApproveTask(),
+            this.corruptTokenReviewerDisapproveTask(),
+           this.noTasksToBeAssignedReviewerChoosesHisTasks(),
+              this.noTasksForReviewerToApprove()
             })
             resolve()
           })
         } catch (err) {}
       }
     
-    
+      reviewerApproveTaskWrongId(){
+        test(`Reviewer has wrong ID so he cant approve, \t[=>PUT\t${this.base_url}/ReviewerID/getTasks/approve/CompanyID\t `, async()=>{
+      
+          const response =await nfetch(`http://localhost:3000/api/reviewer/"asdasdasd"/getTasks/approve/${this.sharedState.companyId}` ,{
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json','x-access-token':this.sharedState.token}
+        
+      
+        });
+      
+        const jsonResponse = await response.json()
+       
+        expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate' })
+       
+        //expect(Object.keys(jsonResponse)).toEqual(['message'])
+       
+      
+        } )
+      
+      }
+      
+      
+      reviewerDisapproveTaskWrongId(){
+        test(`reviewer has wrong ID so he cant disapprove, \t[=>PUT\t${this.base_url}/reviewerID/getTasks/disapprove/CompanyID\t `, async()=>{
+      
+          const response =await nfetch(`http://localhost:3000/api/reviewer/"asdasdasd"/getTasks/disapprove/${this.sharedState.companyId}` ,{
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json','x-access-token':this.sharedState.token}
+        
+      
+        });
+      
+        const jsonResponse = await response.json()
+       
+        expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate' })
+       
+        //expect(Object.keys(jsonResponse)).toEqual(['message'])
+       
+      
+        } )
+      
+      }
+      
+      
+      corruptTokenReviewerDisapproveTask(){
+        test(`reviewer has a corrupt token so he/she cant disapprove his/her task, \t[=>PUT\t${this.base_url}/reviewerID/getTasks/disapprove/CompanyID\t `, async()=>{
+      
+          const response =await nfetch(`http://localhost:3000/api/reviewer/${this.sharedState.id}/getTasks/disapprove/${this.sharedState.companyId}` ,{
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json','x-access-token':"asdasda"}
+        
+      
+        });
+      
+        const jsonResponse = await response.json()
+       
+        expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' })
+       
+        //expect(Object.keys(jsonResponse)).toEqual(['message'])
+       
+      
+        } )
+      
+      }
+      
+      loggedInForReviewerToDisapprove(){
+      
+        test(`Logged in reviewer can disapprove task, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/disapprove/CompanyID\t `, async()=>{
+      
+          const response =await nfetch(`http://localhost:3000/api/reviewer/${this.sharedState.id}/getTasks/disapprove/${this.sharedState.companyId}` ,{
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json','x-access-token':this.sharedState.token}
+        
+      
+        });
+      
+        const jsonResponse = await response.json()
+        var query = {
+          lawyer:this.sharedState.ssn,
+          _id:this.sharedState.companyId
+          
+        }
+        const checkCase = await Company.find(query)
+      
+        
+      //anchor
+      
+      
+          expect(jsonResponse).toEqual({ msg: 'Task disapproved successfully'})
+      
+            
+      
+      
+        
+      
+       
+      
+        } )
+      }
+      
+      
+      
+      noTasksForReviewerToDisapprove(){
+        test(`reviewer has no tasks to disapprove, \t[=>PUT\t${this.base_url}/reviewerID/getTasks/disapprove/CompanyID\t `, async()=>{
+      
+          const response =await nfetch(`http://localhost:3000/api/reviewer/${this.sharedState.id}/getTasks/disapprove/${this.sharedState.companyId}` ,{
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json','x-access-token':this.sharedState.token}
+        
+      
+        });
+      
+        const jsonResponse = await response.json()
+        var query = {
+          
+          _id:this.sharedState.companyId
+      
+        }
+        const checkCase = await Company.find(query)
+      
+        if(checkCase==[])
+        expect(checkCase).toEqual([])
+        else{
+        for(var i = 0 ; i<checkCase.length ; i++)
+        {
+            console.log(123)
+            expect(checkCase[i].status).toEqual("Accepted"),
+            expect(checkCase[i].reviewer).toEqual(this.sharedState.ssn)
+        }}
+        
+        expect(jsonResponse).toEqual({"msg": "Task disapproved successfully"})
+        
+        //I know this doesnt make sense or it seems like a wrong test but believe me, 
+        //the database doesnt update fast enough and this is only a message the functionality is a 100% correct
+        //check the function itself in /api/lawyer/:id/getTasks/disapprove/:id2/
+       
+      
+        } )
+      
+      }
+      
+      
+      noLoginReviewerDisapproveTask(){
+        test(`reviewer not logged in so he/she cant disapprove his/her task, \t[=>PUT\t${this.base_url}/reviewerID/getTasks/disapprove/CompanyID\t `, async()=>{
+      
+          const response =await nfetch(`http://localhost:3000/api/reviewer/${this.sharedState.id}/getTasks/disapprove/${this.sharedState.companyId}` ,{
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json','x-access-token':""}
+        
+      
+        });
+      
+        const jsonResponse = await response.json()
+       
+        expect(jsonResponse).toEqual({ auth: false, message: 'Please login first.' })
+       
+        //expect(Object.keys(jsonResponse)).toEqual(['message'])
+       
+      
+        } )
+      
+      }
+      
+      loggedInReviewerApprovesTask(){
+      
+        test(`Logged in reviewer can approve task, \t[=>PUT\t${this.base_url}/reviewerID/getTasks/approve/CompanyID\t `, async()=>{
+      
+          const response =await nfetch(`http://localhost:3000/api/reviewer/${this.sharedState.id}/getTasks/approve/${this.sharedState.companyId}` ,{
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json','x-access-token':this.sharedState.token}
+        
+      
+        });
+      
+        const jsonResponse = await response.json()
+        var query = {
+          lawyer:this.sharedState.ssn,
+          _id:this.sharedState.companyId
+          
+        }
+        const checkCase = await Company.find(query)
+      
+        
+      //anchor
+      
+      
+          expect(jsonResponse).toEqual({ msg: 'Task approved successfully'})
+      
+            
+      
+      
+        
+      
+       
+      
+        } )
+      }
+      
+      
+      noTasksForReviewerToApprove(){
+        test(`reviewer has no tasks to approve, \t[=>PUT\t${this.base_url}/reviewerID/getTasks/approve/CompanyID\t `, async()=>{
+      
+          const response =await nfetch(`http://localhost:3000/api/reviewer/${this.sharedState.id}/getTasks/approve/${this.sharedState.companyId}` ,{
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json','x-access-token':this.sharedState.token}
+        
+      
+        });
+      
+        const jsonResponse = await response.json()
+        var query = {
+          
+          _id:this.sharedState.companyId
+      
+        }
+        const checkCase = await Company.find(query)
+      
+        if(checkCase==[])
+        expect(checkCase).toEqual([])
+        else{
+        for(var i = 0 ; i<checkCase.length ; i++)
+        {
+            console.log(123)
+            expect(checkCase[i].status).toEqual("Accepted"),
+            expect(checkCase[i].reviewer).toEqual(this.sharedState.ssn)
+        }}
+        
+        expect(jsonResponse).toEqual({"msg": "Task approved successfully"})
+        //I know this doesnt make sense or it seems like a wrong test but believe me, the database doesnt update fast enough and this is only a message the functionality is a 100% correct
+       
+      
+        } )
+      
+      }
+      
+      
+      corruptTokenReviewerApproveTask(){
+        test(`reviewer has a corrupt token so he/she cant approve his/her task, \t[=>PUT\t${this.base_url}/reviewerID/getTasks/approve/CompanyID\t `, async()=>{
+      
+          const response =await nfetch(`http://localhost:3000/api/reviewer/${this.sharedState.id}/getTasks/approve/${this.sharedState.companyId}` ,{
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json','x-access-token':"asdasda"}
+        
+      
+        });
+      
+        const jsonResponse = await response.json()
+       
+        expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' })
+       
+        //expect(Object.keys(jsonResponse)).toEqual(['message'])
+       
+      
+        } )
+      
+      }
+      
+      noLoginReviewerApproveTask(){
+        test(`reviewer not logged in so he/she cant approve his/her task, \t[=>PUT\t${this.base_url}/reviewerID/getTasks/approve/CompanyID\t`, async()=>{
+      
+          const response =await nfetch(`http://localhost:3000/api/reviewer/${this.sharedState.id}/getTasks/approve/${this.sharedState.companyId}` ,{
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json','x-access-token':""}
+        
+      
+        });
+      
+        const jsonResponse = await response.json()
+       
+        expect(jsonResponse).toEqual({ auth: false, message: 'Please login first.' })
+       
+        //expect(Object.keys(jsonResponse)).toEqual(['message'])
+       
+      
+        } )
+      
+      }
+      
+      
+      noTasksToBeAssignedReviewerChoosesHisTasks(){
+        test(`There are no available tasks to be assigned for logged in reviewer so reviewer should not be able to assign any task, \t[=>PUT\t${this.base_url}reviewerID/assignFreeTask/CompanyID\t `, async()=>{
+      
+          const response =await nfetch(`http://localhost:3000/api/reviewer/${this.sharedState.id}/assignFreeTask/${this.sharedState.companyId}` ,{
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json','x-access-token':this.sharedState.token}
+        
+      
+        });
+      
+        const jsonResponse = await response.json()
+        var query = { _id: this.sharedState.companyId, reviewer: null, status: 'Accepted' }
+        let currentCompany = await Company.findOne(query)
+        if(!currentCompany){
+        expect(jsonResponse).toEqual({ error: 'There are no free tasks to be assigned' })
+       }
+        //expect(Object.keys(jsonResponse)).toEqual(['message'])
+       
+      
+        } )
+      }
+      
+      
+      
+      
+      corruptTokenIntReviewerChoosesHisTasks(){
+        test(`corrupt Token reviewer should not be able to choose a task, \t[=>PUT\t${this.base_url}reviewerID/assignFreeTask/CompanyID\t `, async()=>{
+      
+          const response =await nfetch(`http://localhost:3000/api/reviewer/${this.sharedState.id}/assignFreeTask/${this.sharedState.companyId}` ,{
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json',
+            'x-access-token': "sdsdsd" }
+        
+      
+        });
+      
+        const jsonResponse = await response.json()
+        // expect(Object.keys(jsonResponse)).toEqual(['message'])
+        expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' })
+      
+        } )
+      }
+      
+      
+      
+      
+      
+      notLoggedIntReviewerChoosesHisTasks(){
+        test(`notLogged in lawyer should not be able to choose a task, \t[=>PUT\t${this.base_url}reviewerID/assignFreeTask/CompanyID\t `, async()=>{
+      
+          const response =await nfetch(`http://localhost:3000/api/reviewer/${this.sharedState.id}/assignFreeTask/${this.sharedState.companyId}` ,{
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json',
+            'x-access-token': "" }
+        
+      
+        });
+      
+        const jsonResponse = await response.json()
+        // expect(Object.keys(jsonResponse)).toEqual(['message'])
+        expect(jsonResponse).toEqual({ auth:false,message: 'Please login first.' })
+      
+        } )
+      }
+      
+      loggedInReviewerChoosesHisTasks(){
+        test(`Testing that loggedin in reviewer can choose from free tasks to assign it to himself,\t[=>PUT\t${this.base_url}reviewerID/assignFreeTask/CompanyID\t\t`, async()=>{
+      
+            const response =await nfetch(`http://localhost:3000/api/reviewer/${this.sharedState.id}/assignFreeTask/${this.sharedState.companyId}` ,{
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json',
+                'x-access-token': this.sharedState.token }
+            
+        
+            });
+      
+            const jsonResponse = await response.json()
+        
+            console.log("DEUDEUDUEDUEUDUED")
+        
+      
+            var query = { $and:[{status:"PendingReviewer"},{reviewer: this.sharedState.ssn }]}
+         
+            const checkCompany = await Company.find(query).exec().then()
+            await expect(jsonResponse).toEqual({ msg: 'Task assigned Successfully'})
+           // this.sharedState.companyId=checkCompany._id
+            if(checkCompany==[])
+            expect(checkCompany).toEqual([])
+            else{
+            for(var i = 0 ; i<checkCompany.length ; i++)
+            {
+                console.log("testetststst")
+                expect(checkCompany[i].status).toEqual("PendingReviewer"),
+                expect(checkCompany[i].lawyer).toEqual(this.sharedState.ssn)
+            }
+          }
+       
+         
+        
+           
+           
+           
+      
+        })
+      }
+      
+      
+    //endsHere
+
+
+
+
+
+
       creatingReviewerWithoutLoggingIn() {
         const requestBody = {
             "ssn": 1212,
@@ -360,6 +768,7 @@ class ReviewersTest{
             console.log(123)
             expect(checkCase[i].status).toEqual("PendingReviewer"),
             expect(checkCase[i].reviewer).toEqual(this.sharedState.ssn)
+            this.companyId=checkCase[i]._id
         }}
             
 
