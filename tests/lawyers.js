@@ -73,6 +73,7 @@ class LawyersTest {
                         this.lawyerCreateCompanySSCInvalidCompanyOrInvestorFields(),
                         this.lawyerCreateCompanySPCLoggedIn(),
                         this.lawyerCreateCompanySSCLoggedIn2(),
+                        this.lawyersEditForum(),
                         this.lawyerCreateCompanySPCNotLoggedIn(),
                         this.lawyerCreateCompanySPCCorruptToken(),
                         this.lawyerCreateCompanySPCNotLoggedInAsLawyer(),
@@ -109,8 +110,6 @@ class LawyersTest {
                         this.lawyersViewEditableCompaniesAfterRejectionAlreadyLogged(),
                         this.lawyersViewEditableCompaniesWithoutLogin(),
                         this.lawyersViewEditableCompaniesThatIsNotHisCheckingByToken(),
-                        this.lawyersViewEditableCompaniesThatIsNotHisCheckingBySsn(),
-                        this.lawyersEditForum(),
                         this.lawyersEdittForumWithoutLogin(),
                         this.lawyersEditForumWrongSsn(),
                         this.lawyersEditForumWrongCompanyId(),
@@ -1434,18 +1433,6 @@ class LawyersTest {
         })
     }
 
-    lawyersViewEditableCompaniesThatIsNotHisCheckingBySsn() {
-        test(`Lawyer trying to view editable companies that are not his as he has a wrong SSN ,[=> GET${this.base_url}/editForm/:id`, async () => {
-            const response = await nfetch(`${this.base_url}/editForm/00000000000000`, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
-            })
-            const jsonResponse = await response.json()
-            expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' })
-        })
-    }
-
-
     lawyersEditForum() {
         const requestBody = {
             investorName: "lll"
@@ -1457,7 +1444,7 @@ class LawyersTest {
             })
             const jsonResponse = await response.json()
 
-            expect(jsonResponse).toEqual(["msg"])
+            expect(jsonResponse).toEqual({"error": "There are no Fourms to be edited"})
         })
     }
     lawyersEdittForumWithoutLogin() {
