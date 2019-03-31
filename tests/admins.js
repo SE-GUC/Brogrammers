@@ -76,7 +76,7 @@ var theAdmin=await Admin.find( { _id:this.sharedState.id2 } )
 
  expect(theAdmin.name).toEqual(undefined)    ,
  expect(theAdmin.email).toEqual(undefined)   
- //etc...       
+       
 
   })
 }
