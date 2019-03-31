@@ -273,11 +273,17 @@ router.post('/register', async (req, res) => {
     birthDate,
     yearsOfExperience
   } = req.body
-  const lawyer = await Lawyer.findOne({ email })
-  if (lawyer) return res.status(400).json({ error: 'Email already exists' })
-  const ssn = await Lawyer.findOne({ socialSecurityNumber })
-  if (ssn) return res.status(400).json({ error: 'SSN already exists' })
+  const isValidated = validator.createValidation(req.body)
+  const lawyer = await Lawyer.findOne({ email })	 
+  if (lawyer) return res.status(400).json({ error: 'Email already exists' })	 
+  const ssn = await Lawyer.findOne({ socialSecurityNumber })	 
+  if (ssn) return res.status(400).json({ error: 'SSN already exists' })	
 
+   if (isValidated.error) {
+    return res
+      .status(400)
+      .send({ error: isValidated.error.details[0].message })
+  }
   const salt = bcrypt.genSaltSync(10)
   const hashedPassword = bcrypt.hashSync(password, salt)
   const newLawyer = new Lawyer({
@@ -376,6 +382,7 @@ router.get('/logout', function (req, res) {
 })
 
 router.put('/editForm/:id/:companyId', async function (req, res) {
+  var stat = 0
   var lawyerId = req.params.id
   var companyId = req.params.companyId
   const query = {
@@ -386,32 +393,48 @@ router.put('/editForm/:id/:companyId', async function (req, res) {
     ]
   }
   const editableCompanies = await Company.findOne(query)
-
   var token = req.headers['x-access-token']
   if (!token) {
     return res.status(401).send({ auth: false, message: 'No token provided.' })
   }
-
   jwt.verify(token, config.secret, function (err, decoded) {
     if (err) {
       return res
         .status(500)
         .send({ auth: false, message: 'Failed to authenticate token.' })
     }
+    stat = decoded.id
   })
-
-  if (!editableCompanies) {
-    return res.status(404).send({ error: 'There are no Fourms to be edited' })
-  } else {
-    const isValidated = companyvalidator.updateValidationSSC(req.body)
-    if (isValidated.error) {
+  if(!stat){
       return res
-        .status(400)
-        .send({ error: isValidated.error.details[0].message })
+      .status(500)
+      .send({ auth: false, message: 'Failed to authenticate token.' })
     }
-    await Company.findByIdAndUpdate(companyId, req.body)
-    res.json({ msg: 'fourm updated successfully' })
-  }
+    const id = stat
+    const lawyer = await Lawyer.findOne({socialSecurityNumber: lawyerId}, { _id: 1 })
+    if(!lawyer){
+      return res
+      .status(500)
+      .send({ auth: false, message: 'Failed to authenticate token.' })
+    }
+    if(lawyer._id==id){
+      if (!editableCompanies) {
+        return res.status(404).send({ error: 'There are no Fourms to be edited' })
+      } else {
+        const isValidated = companyvalidator.updateValidationSSC(req.body)
+        if (isValidated.error) {
+          return res
+            .status(400)
+            .send({ error: isValidated.error.details[0].message })
+        }
+        await Company.findByIdAndUpdate(companyId, req.body)
+        res.json({ msg: 'fourm updated successfully' })
+      }
+    }
+    else{
+      res.json({ auth: false, message: 'Failed to authenticate token.' })
+    }
+
 })
 // alaa
 router.post('/lawyerinvestor/createspccompany', async (req, res) => {
@@ -623,7 +646,7 @@ router.get('/:id', async (req, res) => {
   const lawyer = await Lawyer.findById(id)
   res.send(lawyer)
 })
-//added :id to this method
+
 router.put('/:id', async (req, res) => {
   try {
     var stat = 0
@@ -665,6 +688,7 @@ router.put('/:id', async (req, res) => {
     console.log(error)
   }
 })
+
 router.delete('/', async (req, res) => {
   try {
     var stat = 0
@@ -696,6 +720,7 @@ router.delete('/', async (req, res) => {
 })
 
 router.get('/editForm/:id', async function (req, res) {
+  var stat = 0
   var lawyerId = req.params.id
   const query = {
     $and: [{ status: 'RejectedReviewer' }, { lawyer: lawyerId }]
@@ -705,22 +730,35 @@ router.get('/editForm/:id', async function (req, res) {
   if (!token) {
     return res.status(401).send({ auth: false, message: 'No token provided.' })
   }
-
   jwt.verify(token, config.secret, function (err, decoded) {
     if (err) {
       return res
         .status(500)
         .send({ auth: false, message: 'Failed to authenticate token.' })
     }
-
-    res.json({ data: editableCompanies })
+    stat = decoded.id
   })
+    const id = stat
+    const lawyer = await Lawyer.findOne({socialSecurityNumber: lawyerId}, { _id: 1 })
+    if(lawyer==id){
+      if(!editableCompanies){
+        res.json({ message: 'No companies to edit.'})
+      }
+      else{
+        res.json({ data: editableCompanies })
+      }
+
+    }
+    else{
+      res.json({ auth: false, message: 'Failed to authenticate token.' })
+    }
+
 })
 
 router.put('/addcomment/:id/:companyId', async function (req, res) {
   var lawyerId = req.params.id
   var companyId = req.params.companyId
-  const query = {
+ try{ const query = {
     $and: [
       { status: 'RejectedLawyer' },
       { lawyer: lawyerId },
@@ -756,6 +794,9 @@ router.put('/addcomment/:id/:companyId', async function (req, res) {
     })
     res.json({ msg: 'Comment added Successfully' })
   }
+}catch(error){
+  res.json({ err:'error occured' })
+}
 })
 
 router.get('/:id/:companyID/viewFees', async (req, res) => {
@@ -846,7 +887,7 @@ router.put('/resubmit/:id/:companyId', async function (req, res) {
     return res.status(400).send({ error: 'You are not an lawyer' })
   }
   const ssn = lawyer.socialSecurityNumber
-  const companyId = req.params.companyID
+  const companyId = req.params.companyId
   const query = {
     $and: [{ lawyer: ssn }, { _id: companyId }, { status: { $ne: 'Accepted' } }]
   }
@@ -857,8 +898,12 @@ router.put('/resubmit/:id/:companyId', async function (req, res) {
       .status(404)
       .send({ error: 'There are no Fourms to be resubmitted' })
   } else {
-    await Company.findByIdAndUpdate(companyId, { status: 'PendingReviewer' })
-    res.json({ msg: 'fourm resubmitted successfully' })
+    const x = await Company.findOneAndUpdate(query, { status: 'PendingReviewer' })
+    res.json({ msg: 'fourm resubmitted successfully' })	   
+    if(x)
+      res.json({ msg: 'fourm resubmitted successfully' })
+    else
+      res.json({ msg: 'fourm not resubmitted' })
   }
 })
 router.get('/mycases/:id', async (req, res) => {
@@ -899,5 +944,36 @@ router.get('/mycases/:id', async (req, res) => {
   }
 })
 
-
+router.get('/mycases/:id', async (req, res) => {
+  try {
+    var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first.' })
+    }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+    const lawyers = await Lawyer.findById(stat)
+    if (!lawyers) {
+      return res.status(400).send({ error: 'You are not a Lawyer' })
+    }
+    if (stat === req.params.id) {
+      const lawyer = await Lawyer.findById(req.params.id)
+      const company = await Company.find()
+      if (company.lawyer === lawyer.socialSecurityNumber) {
+        return res.json({ data: company })
+      }
+    } else return res.status(400).send({ error: 'Wrong ID' })
+  } catch (error) {
+    console.log(error)
+  }
+})
 module.exports = router

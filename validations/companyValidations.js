@@ -64,6 +64,8 @@ module.exports = {
   },
   updateValidationSSC: request => {
     const updateSchemaSSC = {
+      regulationLaw: Joi,
+      legalCompanyForm: Joi,
       nameInArabic: Joi.string(),
       nameInEnglish: Joi.string(),
       governerateHQ: Joi.string(),
@@ -94,6 +96,8 @@ module.exports = {
   },
   updateValidationSPC: request => {
     const updateSchemaSPC = {
+      regulationLaw: Joi,
+      legalCompanyForm: Joi,
       nameInArabic: Joi.string(),
       nameInEnglish: Joi.string(),
       governerateHQ: Joi.string(),
