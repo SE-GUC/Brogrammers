@@ -44,7 +44,8 @@ class AdminsTest {
             this.adminGetAllAdminsCrudWithWrongToken(),
             this.creatingLawyerByAdmin(),
             this.creatingAnAdminByLawyer(),
-            this.creatingAnAdminTestingJoi()
+            this.creatingAnAdminTestingJoi(),
+            this.loggingOut()
         });
         resolve();
       });
@@ -575,6 +576,17 @@ class AdminsTest {
 
   })
 
+  }
+
+  //Panda logouts
+  loggingOut(){
+    test(`Logging an Admin out,\t\t[=> GET ${this.base_url}\logout`, async () => {
+      const response = await nfetch("http://localhost:3000/routes/api/admins/logout", {
+        method: 'GET'                    
+        })           
+        const jsonResponse = await response.json()         
+        expect(jsonResponse).toEqual({"auth": false, "token": null})       
+    })
   }
 }
 
