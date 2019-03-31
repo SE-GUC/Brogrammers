@@ -412,6 +412,7 @@ router.put('/editForm/:id/:companyId', async function (req, res) {
     }
     const id = stat
     const lawyer = await Lawyer.findOne({socialSecurityNumber: lawyerId}, { _id: 1 })
+  
     if(!lawyer){
       return res
       .status(500)
@@ -740,7 +741,8 @@ router.get('/editForm/:id', async function (req, res) {
   })
     const id = stat
     const lawyer = await Lawyer.findOne({socialSecurityNumber: lawyerId}, { _id: 1 })
-    if(lawyer==id){
+    const lawyerid=lawyer.id;
+    if(lawyerid==id){
       if(!editableCompanies){
         res.json({ message: 'No companies to edit.'})
       }
@@ -750,7 +752,7 @@ router.get('/editForm/:id', async function (req, res) {
 
     }
     else{
-      res.json({ auth: false, message: 'Failed to authenticate token.' })
+      res.json({ aushoth: false, message: 'Failed to authenticate token.' })
     }
 
 })

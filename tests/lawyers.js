@@ -28,7 +28,8 @@ class LawyersTest {
             salary: null,
             birthDate: null,
             yearsOfExperience: null,
-            companyId: null
+            companyId: null,
+            companyId2: null
         }
     }
 
@@ -36,7 +37,7 @@ class LawyersTest {
         try {
             return new Promise((resolve, reject) => {
                 describe('Checking company Sprint 1 tests', () => {
-                        this.creatingAnAdminAsCrud(),
+                    this.creatingAnAdminAsCrud(),
                         this.creatingLawyerWithoutLoggingIn(),
                         this.creatingLawyerByAdmin(),
                         this.creatingLawyerByLawyer(),
@@ -49,37 +50,18 @@ class LawyersTest {
                         this.showMyCaseswithtokenThatisforAnotherPerson(),
                         this.logInWithUserNotFound(),
                         this.logInWithWrongPassword(),
-                        this.lawyersViewEditableCompaniesAfterRejectionAlreadyLogged(),
-                        this.lawyersViewEditableCompaniesWithoutLogin(),
-                        this.lawyersViewEditableCompaniesThatIsNotHisCheckingByToken(),
-                        this.lawyersViewEditableCompaniesThatIsNotHisCheckingBySsn(),
-                        this.lawyersEditForum(),
-                        this.lawyersEdittForumWithoutLogin(),
-                        this.lawyersEditForumWrongSsn(),
-                        this.lawyersEditForumWrongCompanyId(),
-                        this.lawyersEditForumWrongSsnAndCompanyId(),
                         this.logInWithRightPassword(),
                         this.updateLawyerCorrectIdAndToken(),
                         this.updateLawyerWrongId(),
                         this.updateLawyerWrongToken(),
                         this.updateLawyerNullToken()
-                        this.lawyersViewFees(),
-                        this.lawyersViewFeesWithoutLogin(),
-                        this.lawyersViewFeesWrongID(),
-                        this.lawyersResubmitForum(),
-                        this.lawyersResubmitForumWithoutLogin(),
-                        this.lawyersResubmitForumWrongID(),
-                        this.lawyerAddingCommentWithWrongCompanyId(),
-                        this.lawyerAddingCommentWithWrongCompanyIdAndIdAndToken(),
-                        this.lawyerAddingCommentWithWrongid(),
-                        this.lawyerAddingCommentWithWrongtoken()
-
-                })
+                        
+                    })
                 resolve()
             })
         } catch (err) { }
     }
-
+    
     runTests2() {
         try {
             return new Promise((resolve, reject) => {
@@ -90,10 +72,15 @@ class LawyersTest {
                         this.lawyerCreateCompanySSCNotLoggedInAsLawyer(),
                         this.lawyerCreateCompanySSCInvalidCompanyOrInvestorFields(),
                         this.lawyerCreateCompanySPCLoggedIn(),
+                        this.lawyerCreateCompanySSCLoggedIn2(),
                         this.lawyerCreateCompanySPCNotLoggedIn(),
                         this.lawyerCreateCompanySPCCorruptToken(),
                         this.lawyerCreateCompanySPCNotLoggedInAsLawyer(),
                         this.lawyerCreateCompanySPCInvalidCompanyOrInvestorFields(),
+                        this.lawyerViewAllCompaniesWhileLoggedIn(),
+                        this.lawyerViewAllCompaniesWhileNotLoggedInAsLawyer(),
+                        this.lawyerViewAllCompaniesWhileNotLoggedIn(),
+                        this.lawyerViewAllCompaniesWhileWithCorruptToken(),
                         this.lawyerAddingCommentCorrectly(),
                         this.notLoggedIntLawyerChoosesHisTasks(),
                         this.corruptTokenIntLawyerChoosesHisTasks(),
@@ -101,410 +88,434 @@ class LawyersTest {
                         this.LawyerDisapproveTaskWrongId(),
                         this.loggedInForLawyerToDisapprove(),
                         this.noTasksForLawyerToDisapprove(),
-                       this.LawyerApproveTaskWrongId(),
-                        this.loggedInLawyerApprovesTask(),        
+                        this.LawyerApproveTaskWrongId(),
+                        this.loggedInLawyerApprovesTask(),
                         this.noLoginLawyerApproveTask(),
                         this.noLoginLawyerDisapproveTask(),
                         this.corruptTokenLawyerApproveTask(),
-                      this.corruptTokenLawyerDisapproveTask(),
-                     this.noTasksToBeAssignedLawyerChoosesHisTasks(),
-                        this.noTasksForLawyerToApprove()
-                })
+                        this.corruptTokenLawyerDisapproveTask(),
+                        this.noTasksToBeAssignedLawyerChoosesHisTasks(),
+                        this.noTasksForLawyerToApprove(),
+                        this.lawyersViewFees(),
+                        this.lawyersViewFeesWithoutLogin(),
+                        this.lawyersViewFeesWrongID(),
+                        this.lawyersResubmitForum(),
+                        this.lawyersResubmitForumWithoutLogin(),
+                        this.lawyersResubmitForumWrongID(),
+                        this.lawyerAddingCommentWithWrongCompanyId(),
+                        this.lawyerAddingCommentWithWrongCompanyIdAndIdAndToken(),
+                        this.lawyerAddingCommentWithWrongid(),
+                        this.lawyerAddingCommentWithWrongtoken(),
+                        this.lawyersViewEditableCompaniesAfterRejectionAlreadyLogged(),
+                        this.lawyersViewEditableCompaniesWithoutLogin(),
+                        this.lawyersViewEditableCompaniesThatIsNotHisCheckingByToken(),
+                        this.lawyersViewEditableCompaniesThatIsNotHisCheckingBySsn(),
+                        this.lawyersEditForum(),
+                        this.lawyersEdittForumWithoutLogin(),
+                        this.lawyersEditForumWrongSsn(),
+                        this.lawyersEditForumWrongCompanyId(),
+                        this.lawyersEditForumWrongSsnAndCompanyId()
+                    })
 
                 resolve();
             })
         } catch (err) {
-
+            
         }
     }
 
     //AtefMethods
-    LawyerApproveTaskWrongId(){
-        test(`Lawyer has wrong ID so he cant approve, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/approve/CompanyID\t `, async()=>{
-      
-          const response =await nfetch(`http://localhost:3000/api/lawyer/"asdasdasd"/getTasks/approve/${this.sharedState.companyId}` ,{
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json','x-access-token':this.sharedState.token}
-        
-      
-        });
-      
-        const jsonResponse = await response.json()
-       
-        expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate' })
-       
-        //expect(Object.keys(jsonResponse)).toEqual(['message'])
-       
-      
-        } )
-      
-      }
-      
-      
-      LawyerDisapproveTaskWrongId(){
-        test(`Lawyer has wrong ID so he cant disapprove, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/disapprove/CompanyID\t `, async()=>{
-      
-          const response =await nfetch(`http://localhost:3000/api/lawyer/"asdasdasd"/getTasks/disapprove/${this.sharedState.companyId}` ,{
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json','x-access-token':this.sharedState.token}
-        
-      
-        });
-      
-        const jsonResponse = await response.json()
-       
-        expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate' })
-       
-        //expect(Object.keys(jsonResponse)).toEqual(['message'])
-       
-      
-        } )
-      
-      }
-      
-      
-      corruptTokenLawyerDisapproveTask(){
-        test(`Lawyer has a corrupt token so he/she cant disapprove his/her task, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/disapprove/CompanyID\t `, async()=>{
-      
-          const response =await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/getTasks/disapprove/${this.sharedState.companyId}` ,{
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json','x-access-token':"asdasda"}
-        
-      
-        });
-      
-        const jsonResponse = await response.json()
-       
-        expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' })
-       
-        //expect(Object.keys(jsonResponse)).toEqual(['message'])
-       
-      
-        } )
-      
-      }
-      
-      loggedInForLawyerToDisapprove(){
-      
-        test(`Logged in lawyer can disapprove task, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/disapprove/CompanyID\t `, async()=>{
-      
-          const response =await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/getTasks/disapprove/${this.sharedState.companyId}` ,{
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json','x-access-token':this.sharedState.token}
-        
-      
-        });
-      
-        const jsonResponse = await response.json()
-        var query = {
-          lawyer:this.sharedState.socialSecurityNumber,
-          _id:this.sharedState.companyId
-          
-        }
-        const checkCase = await Company.find(query)
-      
-        
-      //anchor
-      
-      
-          expect(jsonResponse).toEqual({ msg: 'Task disapproved successfully'})
-      
-            
-      
-      
-        
-      
-       
-      
-        } )
-      }
-      
-      
-      
-      noTasksForLawyerToDisapprove(){
-        test(`lawyer has no tasks to disapprove, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/disapprove/CompanyID\t `, async()=>{
-      
-          const response =await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/getTasks/disapprove/${this.sharedState.companyId}` ,{
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json','x-access-token':this.sharedState.token}
-        
-      
-        });
-      
-        const jsonResponse = await response.json()
-        var query = {
-          
-          _id:this.sharedState.companyId
-      
-        }
-        const checkCase = await Company.find(query)
-      
-        if(checkCase==[])
-        expect(checkCase).toEqual([])
-        else{
-        for(var i = 0 ; i<checkCase.length ; i++)
-        {
-            console.log(123)
-            expect(checkCase[i].status).toEqual("RejectedLawyer"),
-            expect(checkCase[i].lawyer).toEqual(this.sharedState.socialSecurityNumber)
-        }}
-        
-        expect(jsonResponse).toEqual({"msg": "Task disapproved successfully"})
-        
-        //I know this doesnt make sense or it seems like a wrong test but believe me, 
-        //the database doesnt update fast enough and this is only a message the functionality is a 100% correct
-        //check the function itself in /api/lawyer/:id/getTasks/disapprove/:id2/
-       
-      
-        } )
-      
-      }
-      
-      
-      noLoginLawyerDisapproveTask(){
-        test(`Lawyer not logged in so he/she cant disapprove his/her task, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/disapprove/CompanyID\t `, async()=>{
-      
-          const response =await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/getTasks/disapprove/${this.sharedState.companyId}` ,{
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json','x-access-token':""}
-        
-      
-        });
-      
-        const jsonResponse = await response.json()
-       
-        expect(jsonResponse).toEqual({ auth: false, message: 'Please login first.' })
-       
-        //expect(Object.keys(jsonResponse)).toEqual(['message'])
-       
-      
-        } )
-      
-      }
-      
-      loggedInLawyerApprovesTask(){
-      
-        test(`Logged in lawyer can approve task, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/approve/CompanyID\t `, async()=>{
-      
-          const response =await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/getTasks/approve/${this.sharedState.companyId}` ,{
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json','x-access-token':this.sharedState.token}
-        
-      
-        });
-      
-        const jsonResponse = await response.json()
-        var query = {
-          lawyer:this.sharedState.socialSecurityNumber,
-          _id:this.sharedState.companyId
-          
-        }
-        const checkCase = await Company.find(query)
-      
-        
-      //anchor
-      
-      
-          expect(jsonResponse).toEqual({ msg: 'Task approved successfully'})
-      
-            
-      
-      
-        
-      
-       
-      
-        } )
-      }
-      
-      
-      noTasksForLawyerToApprove(){
-        test(`lawyer has no tasks to approve, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/approve/CompanyID\t `, async()=>{
-      
-          const response =await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/getTasks/approve/${this.sharedState.companyId}` ,{
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json','x-access-token':this.sharedState.token}
-        
-      
-        });
-      
-        const jsonResponse = await response.json()
-        var query = {
-          
-          _id:this.sharedState.companyId
-      
-        }
-        const checkCase = await Company.find(query)
-      
-        if(checkCase==[])
-        expect(checkCase).toEqual([])
-        else{
-        for(var i = 0 ; i<checkCase.length ; i++)
-        {
-            console.log(123)
-            expect(checkCase[i].status).toEqual("PendingReviewer"),
-            expect(checkCase[i].lawyer).toEqual(this.sharedState.socialSecurityNumber)
-        }}
-        
-        expect(jsonResponse).toEqual({"msg": "Task approved successfully"})
-        //I know this doesnt make sense or it seems like a wrong test but believe me, the database doesnt update fast enough and this is only a message the functionality is a 100% correct
-       
-      
-        } )
-      
-      }
-      
-      
-      corruptTokenLawyerApproveTask(){
-        test(`Lawyer has a corrupt token so he/she cant approve his/her task, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/approve/CompanyID\t `, async()=>{
-      
-          const response =await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/getTasks/approve/${this.sharedState.companyId}` ,{
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json','x-access-token':"asdasda"}
-        
-      
-        });
-      
-        const jsonResponse = await response.json()
-       
-        expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' })
-       
-        //expect(Object.keys(jsonResponse)).toEqual(['message'])
-       
-      
-        } )
-      
-      }
-      
-      noLoginLawyerApproveTask(){
-        test(`Lawyer not logged in so he/she cant approve his/her task, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/approve/CompanyID\t`, async()=>{
-      
-          const response =await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/getTasks/approve/${this.sharedState.companyId}` ,{
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json','x-access-token':""}
-        
-      
-        });
-      
-        const jsonResponse = await response.json()
-       
-        expect(jsonResponse).toEqual({ auth: false, message: 'Please login first.' })
-       
-        //expect(Object.keys(jsonResponse)).toEqual(['message'])
-       
-      
-        } )
-      
-      }
-      
-      
-      noTasksToBeAssignedLawyerChoosesHisTasks(){
-        test(`There are no available tasks to be assigned for logged in lawyer so lawyer should not be able to assign any task, \t[=>PUT\t${this.base_url}LawyerID/assignFreeTask/CompanyID\t `, async()=>{
-      
-          const response =await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/assignFreeTask/${this.sharedState.companyId}` ,{
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json','x-access-token':this.sharedState.token}
-        
-      
-        });
-      
-        const jsonResponse = await response.json()
-        var query = { _id: this.sharedState.companyId, lawyer: null, status: 'PendingLawyer' }
-        let currentCompany = await Company.findOne(query)
-        if(!currentCompany){
-        expect(jsonResponse).toEqual({ error: 'There are no free tasks to be assigned' })
-       }
-        //expect(Object.keys(jsonResponse)).toEqual(['message'])
-       
-      
-        } )
-      }
-      
-      
-      
-      
-      corruptTokenIntLawyerChoosesHisTasks(){
-        test(`corrupt Token lawyer should not be able to choose a task, \t[=>PUT\t${this.base_url}LawyerID/assignFreeTask/CompanyID\t `, async()=>{
-      
-          const response =await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/assignFreeTask/${this.sharedState.companyId}` ,{
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json',
-            'x-access-token': "sdsdsd" }
-        
-      
-        });
-      
-        const jsonResponse = await response.json()
-        // expect(Object.keys(jsonResponse)).toEqual(['message'])
-        expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' })
-      
-        } )
-      }
-      
-      
-      
-      
-      
-      notLoggedIntLawyerChoosesHisTasks(){
-        test(`notLogged in lawyer should not be able to choose a task, \t[=>PUT\t${this.base_url}LawyerID/assignFreeTask/CompanyID\t `, async()=>{
-      
-          const response =await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/assignFreeTask/${this.sharedState.companyId}` ,{
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json',
-            'x-access-token': "" }
-        
-      
-        });
-      
-        const jsonResponse = await response.json()
-        // expect(Object.keys(jsonResponse)).toEqual(['message'])
-        expect(jsonResponse).toEqual({ auth:false,message: 'Please login first.' })
-      
-        } )
-      }
-      
-      loggedInLawyerChoosesHisTasks(){
-        test(`Testing that loggedin in lawyer can choose from free tasks to assign it to himself,\t[=>PUT\t${this.base_url}LawyerID/assignFreeTask/CompanyID\t\t`, async()=>{
-      
-            const response =await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/assignFreeTask/${this.sharedState.companyId}` ,{
+    LawyerApproveTaskWrongId() {
+        test(`Lawyer has wrong ID so he cant approve, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/approve/CompanyID\t `, async () => {
+
+            const response = await nfetch(`http://localhost:3000/api/lawyer/"asdasdasd"/getTasks/approve/${this.sharedState.companyId}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json',
-                'x-access-token': this.sharedState.token }
-            
-        
+                headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
+
+
             });
-      
+
             const jsonResponse = await response.json()
-        
-            console.log("DEUDEUDUEDUEUDUED")
-        
-      
-            var query = { $and:[{status:"PendingLawyer"},{lawyer: this.sharedState.socialSecurityNumber }]}
-         
-            const checkCompany = await Company.find(query).exec().then()
-            await expect(jsonResponse).toEqual({ msg: 'Task assigned Successfully'})
-           // this.sharedState.companyId=checkCompany._id
-            if(checkCompany==[])
-            expect(checkCompany).toEqual([])
-            else{
-            for(var i = 0 ; i<checkCompany.length ; i++)
-            {
-                console.log("testetststst")
-                expect(checkCompany[i].status).toEqual("PendingLawyer"),
-                expect(checkCompany[i].lawyer).toEqual(this.sharedState.socialSecurityNumber)
-            }
-          }
-       
-         
-        
-           
-           
-           
-      
+
+            expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate' })
+
+            //expect(Object.keys(jsonResponse)).toEqual(['message'])
+
+
         })
-      }
-      
-      
+
+    }
+
+
+    LawyerDisapproveTaskWrongId() {
+        test(`Lawyer has wrong ID so he cant disapprove, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/disapprove/CompanyID\t `, async () => {
+
+            const response = await nfetch(`http://localhost:3000/api/lawyer/"asdasdasd"/getTasks/disapprove/${this.sharedState.companyId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
+
+
+            });
+
+            const jsonResponse = await response.json()
+
+            expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate' })
+
+            //expect(Object.keys(jsonResponse)).toEqual(['message'])
+
+
+        })
+
+    }
+
+
+    corruptTokenLawyerDisapproveTask() {
+        test(`Lawyer has a corrupt token so he/she cant disapprove his/her task, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/disapprove/CompanyID\t `, async () => {
+
+            const response = await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/getTasks/disapprove/${this.sharedState.companyId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'x-access-token': "asdasda" }
+
+
+            });
+
+            const jsonResponse = await response.json()
+
+            expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' })
+
+            //expect(Object.keys(jsonResponse)).toEqual(['message'])
+
+
+        })
+
+    }
+
+    loggedInForLawyerToDisapprove() {
+
+        test(`Logged in lawyer can disapprove task, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/disapprove/CompanyID\t `, async () => {
+
+            const response = await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/getTasks/disapprove/${this.sharedState.companyId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
+
+
+            });
+
+            const jsonResponse = await response.json()
+            var query = {
+                lawyer: this.sharedState.socialSecurityNumber,
+                _id: this.sharedState.companyId
+
+            }
+            const checkCase = await Company.find(query)
+
+
+            //anchor
+
+
+            expect(jsonResponse).toEqual({ msg: 'Task disapproved successfully' })
+
+
+
+
+
+
+
+
+        })
+    }
+
+
+
+    noTasksForLawyerToDisapprove() {
+        test(`lawyer has no tasks to disapprove, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/disapprove/CompanyID\t `, async () => {
+
+            const response = await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/getTasks/disapprove/${this.sharedState.companyId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
+
+
+            });
+
+            const jsonResponse = await response.json()
+            var query = {
+
+                _id: this.sharedState.companyId
+
+            }
+            const checkCase = await Company.find(query)
+
+            if (checkCase == [])
+                expect(checkCase).toEqual([])
+            else {
+                for (var i = 0; i < checkCase.length; i++) {
+                    console.log(123)
+                    expect(checkCase[i].status).toEqual("RejectedLawyer"),
+                        expect(checkCase[i].lawyer).toEqual(this.sharedState.socialSecurityNumber)
+                }
+            }
+
+            expect(jsonResponse).toEqual({ "msg": "Task disapproved successfully" })
+
+            //I know this doesnt make sense or it seems like a wrong test but believe me, 
+            //the database doesnt update fast enough and this is only a message the functionality is a 100% correct
+            //check the function itself in /api/lawyer/:id/getTasks/disapprove/:id2/
+
+
+        })
+
+    }
+
+
+    noLoginLawyerDisapproveTask() {
+        test(`Lawyer not logged in so he/she cant disapprove his/her task, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/disapprove/CompanyID\t `, async () => {
+
+            const response = await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/getTasks/disapprove/${this.sharedState.companyId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'x-access-token': "" }
+
+
+            });
+
+            const jsonResponse = await response.json()
+
+            expect(jsonResponse).toEqual({ auth: false, message: 'Please login first.' })
+
+            //expect(Object.keys(jsonResponse)).toEqual(['message'])
+
+
+        })
+
+    }
+
+    loggedInLawyerApprovesTask() {
+
+        test(`Logged in lawyer can approve task, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/approve/CompanyID\t `, async () => {
+
+            const response = await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/getTasks/approve/${this.sharedState.companyId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
+
+
+            });
+
+            const jsonResponse = await response.json()
+            var query = {
+                lawyer: this.sharedState.socialSecurityNumber,
+                _id: this.sharedState.companyId
+
+            }
+            const checkCase = await Company.find(query)
+
+
+            //anchor
+
+
+            expect(jsonResponse).toEqual({ msg: 'Task approved successfully' })
+
+
+
+
+
+
+
+
+        })
+    }
+
+
+    noTasksForLawyerToApprove() {
+        test(`lawyer has no tasks to approve, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/approve/CompanyID\t `, async () => {
+
+            const response = await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/getTasks/approve/${this.sharedState.companyId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
+
+
+            });
+
+            const jsonResponse = await response.json()
+            var query = {
+
+                _id: this.sharedState.companyId
+
+            }
+            const checkCase = await Company.find(query)
+
+            if (checkCase == [])
+                expect(checkCase).toEqual([])
+            else {
+                for (var i = 0; i < checkCase.length; i++) {
+                    console.log(123)
+                    expect(checkCase[i].status).toEqual("PendingReviewer"),
+                        expect(checkCase[i].lawyer).toEqual(this.sharedState.socialSecurityNumber)
+                }
+            }
+
+            expect(jsonResponse).toEqual({ "msg": "Task approved successfully" })
+            //I know this doesnt make sense or it seems like a wrong test but believe me, the database doesnt update fast enough and this is only a message the functionality is a 100% correct
+
+
+        })
+
+    }
+
+
+    corruptTokenLawyerApproveTask() {
+        test(`Lawyer has a corrupt token so he/she cant approve his/her task, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/approve/CompanyID\t `, async () => {
+
+            const response = await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/getTasks/approve/${this.sharedState.companyId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'x-access-token': "asdasda" }
+
+
+            });
+
+            const jsonResponse = await response.json()
+
+            expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' })
+
+            //expect(Object.keys(jsonResponse)).toEqual(['message'])
+
+
+        })
+
+    }
+
+    noLoginLawyerApproveTask() {
+        test(`Lawyer not logged in so he/she cant approve his/her task, \t[=>PUT\t${this.base_url}/LawyerID/getTasks/approve/CompanyID\t`, async () => {
+
+            const response = await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/getTasks/approve/${this.sharedState.companyId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'x-access-token': "" }
+
+
+            });
+
+            const jsonResponse = await response.json()
+
+            expect(jsonResponse).toEqual({ auth: false, message: 'Please login first.' })
+
+            //expect(Object.keys(jsonResponse)).toEqual(['message'])
+
+
+        })
+
+    }
+
+
+    noTasksToBeAssignedLawyerChoosesHisTasks() {
+        test(`There are no available tasks to be assigned for logged in lawyer so lawyer should not be able to assign any task, \t[=>PUT\t${this.base_url}LawyerID/assignFreeTask/CompanyID\t `, async () => {
+
+            const response = await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/assignFreeTask/${this.sharedState.companyId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
+
+
+            });
+
+            const jsonResponse = await response.json()
+            var query = { _id: this.sharedState.companyId, lawyer: null, status: 'PendingLawyer' }
+            let currentCompany = await Company.findOne(query)
+            if (!currentCompany) {
+                expect(jsonResponse).toEqual({ error: 'There are no free tasks to be assigned' })
+            }
+            //expect(Object.keys(jsonResponse)).toEqual(['message'])
+
+
+        })
+    }
+
+
+
+
+    corruptTokenIntLawyerChoosesHisTasks() {
+        test(`corrupt Token lawyer should not be able to choose a task, \t[=>PUT\t${this.base_url}LawyerID/assignFreeTask/CompanyID\t `, async () => {
+
+            const response = await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/assignFreeTask/${this.sharedState.companyId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-access-token': "sdsdsd"
+                }
+
+
+            });
+
+            const jsonResponse = await response.json()
+            // expect(Object.keys(jsonResponse)).toEqual(['message'])
+            expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' })
+
+        })
+    }
+
+
+
+
+
+    notLoggedIntLawyerChoosesHisTasks() {
+        test(`notLogged in lawyer should not be able to choose a task, \t[=>PUT\t${this.base_url}LawyerID/assignFreeTask/CompanyID\t `, async () => {
+
+            const response = await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/assignFreeTask/${this.sharedState.companyId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-access-token': ""
+                }
+
+
+            });
+
+            const jsonResponse = await response.json()
+            // expect(Object.keys(jsonResponse)).toEqual(['message'])
+            expect(jsonResponse).toEqual({ auth: false, message: 'Please login first.' })
+
+        })
+    }
+
+    loggedInLawyerChoosesHisTasks() {
+        test(`Testing that loggedin in lawyer can choose from free tasks to assign it to himself,\t[=>PUT\t${this.base_url}LawyerID/assignFreeTask/CompanyID\t\t`, async () => {
+
+            const response = await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/assignFreeTask/${this.sharedState.companyId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-access-token': this.sharedState.token
+                }
+
+
+            });
+
+            const jsonResponse = await response.json()
+
+            console.log("DEUDEUDUEDUEUDUED")
+
+
+            var query = { $and: [{ status: "PendingLawyer" }, { lawyer: this.sharedState.socialSecurityNumber }] }
+
+            const checkCompany = await Company.find(query).exec().then()
+            await expect(jsonResponse).toEqual({ msg: 'Task assigned Successfully' })
+            // this.sharedState.companyId=checkCompany._id
+            if (checkCompany == [])
+                expect(checkCompany).toEqual([])
+            else {
+                for (var i = 0; i < checkCompany.length; i++) {
+                    console.log("testetststst")
+                    expect(checkCompany[i].status).toEqual("PendingLawyer"),
+                        expect(checkCompany[i].lawyer).toEqual(this.sharedState.socialSecurityNumber)
+                }
+            }
+
+
+
+
+
+
+
+        })
+    }
+
+
     //endsHere
 
     lawyerCreateCompanySSCLoggedIn() {
@@ -532,7 +543,8 @@ class LawyersTest {
             investorAddress: "rehab",
             investorTelephone: "25262512",
             investorFax: "51622415",
-            investorEmail: "mohamed@gmail.com"
+            investorEmail: "mohamed@gmail.com",
+            lawyer: "11111111111111"
         }
         test(`Testing lawyer's ability to fill a new SSC company form for an investor while logged in, \t\t[=> POST ${this.base_url}\/lawyerinvestor\/createssccompany`, async () => {
             const response = await nfetch("http://localhost:3000/api/lawyer/lawyerinvestor/createssccompany", {
@@ -541,6 +553,7 @@ class LawyersTest {
                 headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
             })
             const jsonResponse = await response.json()
+
 
             expect(Object.keys(jsonResponse)).toEqual(["msg", "data"])
 
@@ -569,7 +582,77 @@ class LawyersTest {
             expect(company.investorTelephone).toEqual(requestBody.investorTelephone)
             expect(company.investorFax).toEqual(requestBody.investorFax)
             expect(company.investorEmail).toEqual(requestBody.investorEmail)
-            this.sharedState.companyId=company.id
+//this.sharedState.socialSecurityNumber = company.lawyer
+            this.sharedState.companyId = company._id
+        })
+    }
+
+    lawyerCreateCompanySSCLoggedIn2() {
+        var date1 = new Date('December 17, 1995 03:24:00');
+        const requestBody = {
+            regulationLaw: "Law 159",
+            legalCompanyForm: "CompanyForm",
+            nameInArabic: "esm bel 3araby",
+            nameInEnglish: "WAW",
+            governerateHQ: "New Cairo",
+            cityHQ: "Cairo",
+            addressHQ: "Rehab City",
+            telephoneHQ: 7775000,
+            faxHQ: 7775000,
+            capitalCurrency: "US Dollars",
+            capital: 80000,
+            managers: [],
+            investorName: "mohamed",
+            investorType: "alaa",
+            investorSex: "male",
+            investorNationality: "Egyptian",
+            investorIdentificationType: "basbor",
+            investorIdentificationNumber: "4516515165156",
+            investorBD: date1,
+            investorAddress: "rehab",
+            investorTelephone: "25262512",
+            investorFax: "51622415",
+            investorEmail: "mohamed@gmail.com",
+            lawyer: "11111111111111",
+            status: "RejectedReviewer"
+        }
+        test(`Testing lawyer's ability to fill a new SSC company form for an investor while logged in, \t\t[=> POST ${this.base_url}\/lawyerinvestor\/createssccompany`, async () => {
+            const response = await nfetch("http://localhost:3000/api/lawyer/lawyerinvestor/createssccompany", {
+                method: 'POST',
+                body: JSON.stringify(requestBody),
+                headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
+            })
+            const jsonResponse = await response.json()
+
+
+            expect(Object.keys(jsonResponse)).toEqual(["msg", "data"])
+
+            const company = await Company.findById(jsonResponse.data._id).exec()
+
+            expect(company.regulationLaw).toEqual(requestBody.regulationLaw)
+            expect(company.legalCompanyForm).toEqual(requestBody.legalCompanyForm)
+            expect(company.nameInArabic).toEqual(requestBody.nameInArabic)
+            expect(company.nameInEnglish).toEqual(requestBody.nameInEnglish)
+            expect(company.governerateHQ).toEqual(requestBody.governerateHQ)
+            expect(company.cityHQ).toEqual(requestBody.cityHQ)
+            expect(company.addressHQ).toEqual(requestBody.addressHQ)
+            expect(company.telephoneHQ).toEqual(requestBody.telephoneHQ)
+            expect(company.faxHQ).toEqual(requestBody.faxHQ)
+            expect(company.capitalCurrency).toEqual(requestBody.capitalCurrency)
+            expect(company.capital).toEqual(requestBody.capital)
+            expect(company.manager).toEqual(requestBody.manager)
+            expect(company.investorName).toEqual(requestBody.investorName)
+            expect(company.investorType).toEqual(requestBody.investorType)
+            expect(company.investorSex).toEqual(requestBody.investorSex)
+            expect(company.investorNationality).toEqual(requestBody.investorNationality)
+            expect(company.investorIdentificationType).toEqual(requestBody.investorIdentificationType)
+            expect(company.investorIdentificationNumber).toEqual(requestBody.investorIdentificationNumber)
+            expect(company.investorBD).toEqual(requestBody.investorBD)
+            expect(company.investorAddress).toEqual(requestBody.investorAddress)
+            expect(company.investorTelephone).toEqual(requestBody.investorTelephone)
+            expect(company.investorFax).toEqual(requestBody.investorFax)
+            expect(company.investorEmail).toEqual(requestBody.investorEmail)
+            this.sharedState.companyId2 = company._id
         })
     }
 
@@ -604,7 +687,7 @@ class LawyersTest {
             const response = await nfetch("http://localhost:3000/api/lawyer/lawyerinvestor/createssccompany", {
                 method: 'POST',
                 body: JSON.stringify(requestBody),
-                headers: { 'Content-Type': 'application/json'}
+                headers: { 'Content-Type': 'application/json' }
             })
             const jsonResponse = await response.json()
             console.log(`Creating Form for Lawyer`)
@@ -765,7 +848,8 @@ class LawyersTest {
             investorAddress: "rehab",
             investorTelephone: "25262512",
             investorFax: "51622415",
-            investorEmail: "mohamed@gmail.com"
+            investorEmail: "mohamed@gmail.com",
+            lawyer: "11111111111111"
         }
         test(`Testing lawyer's ability to fill a new SSC company form for an investor while logged in, \t\t[=> POST ${this.base_url}\/lawyerinvestor\/createspccompany`, async () => {
             const response = await nfetch("http://localhost:3000/api/lawyer/lawyerinvestor/createspccompany", {
@@ -800,7 +884,8 @@ class LawyersTest {
             expect(company.investorTelephone).toEqual(requestBody.investorTelephone)
             expect(company.investorFax).toEqual(requestBody.investorFax)
             expect(company.investorEmail).toEqual(requestBody.investorEmail)
-            this.sharedState.companyId=company.id
+   //         this.sharedState.socialSecurityNumber = company.lawyer
+            this.sharedState.companyId = company._id
         })
     }
 
@@ -1002,7 +1087,7 @@ class LawyersTest {
             password: "abcakakaka",
             email: "omar@1.com",
             mobileNumber: "01060187952",
-            socialSecurityNumber: "29821114524525",
+            socialSecurityNumber: "11111111111111",
             salary: "105151",
             birthDate: "1998-04-03T22:00:00.000Z",
             yearsOfExperience: "4"
@@ -1028,9 +1113,9 @@ class LawyersTest {
             expect(lawyer.phone).toEqual(requestBody.phone)
             expect(lawyer.email).toEqual(requestBody.email)
             expect(lawyer.socialSecurityNumber).toEqual(requestBody.socialSecurityNumber)
-            this.sharedState.id = lawyer.id
+            this.sharedState.id = jsonResponse.data._id
             this.sharedState.token = jsonResponse.token
-            console.log(this.sharedState.token)
+            console.log("WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAW   "+this.sharedState.socialSecurityNumber)
             this.sharedState.socialSecurityNumber = lawyer.socialSecurityNumber
 
 
@@ -1307,7 +1392,7 @@ class LawyersTest {
             })
 
             const jsonResponse = await response.json()
-        //    this.sharedState.token = jsonResponse.token
+            //    this.sharedState.token = jsonResponse.token
             const token = jsonResponse.token
 
             console.log(`${this.base_url}\/login`)
@@ -1351,7 +1436,7 @@ class LawyersTest {
 
     lawyersViewEditableCompaniesThatIsNotHisCheckingBySsn() {
         test(`Lawyer trying to view editable companies that are not his as he has a wrong SSN ,[=> GET${this.base_url}/editForm/:id`, async () => {
-            const response = await nfetch(`${this.base_url}/editForm/${this.sharedState.wrongsocialSecurityNumber}`, {
+            const response = await nfetch(`${this.base_url}/editForm/00000000000000`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
             })
@@ -1366,13 +1451,13 @@ class LawyersTest {
             investorName: "lll"
         }
         test(`editing a disaproved form from reviewer,[=>PUT${this.base_url}/editForm/:id/:companyId`, async () => {
-            const response = await nfetch(`${this.base_url}/editForm/${this.sharedState.socialSecurityNumber}/${this.sharedState.companyID}`, {
+            const response = await nfetch(`${this.base_url}/editForm/${this.sharedState.socialSecurityNumber}/${this.sharedState.companyId2}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
             })
             const jsonResponse = await response.json()
 
-            expect(Object.keys(jsonResponse)).toEqual(["msg"])
+            expect(jsonResponse).toEqual(["msg"])
         })
     }
     lawyersEdittForumWithoutLogin() {
@@ -1381,7 +1466,7 @@ class LawyersTest {
         }
 
         test(`Lawyer trys to edit form without logging in,[=>PUT${this.base_url}/editForm/:id/:companyId`, async () => {
-            const response = await nfetch(`${this.base_url}/editForm/${this.sharedState.socialSecurityNumber}/${this.sharedState.companyID}`, {
+            const response = await nfetch(`${this.base_url}/editForm/${this.sharedState.socialSecurityNumber}/${this.sharedState.companyId2}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json', 'x-access-token': 'wrongToken' }
             })
@@ -1396,7 +1481,7 @@ class LawyersTest {
         }
 
         test(`Lawyer tries to edit the form but the SSN is incorrect,[=>PUT${this.base_url}/editForm/:id/:companyId`, async () => {
-            const response = await nfetch(`${this.base_url}/editForm/1/${this.sharedState.companyID}`, {
+            const response = await nfetch(`${this.base_url}/editForm/00000000000000/${this.sharedState.companyId2}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
             })
@@ -1428,7 +1513,7 @@ class LawyersTest {
         }
 
         test(`Lawyer tries to edit the form but the company doest not exist and SSN is incorrect,[=>PUT${this.base_url}/editForm/:id/:companyId`, async () => {
-            const response = await nfetch(`${this.base_url}/editForm/${this.sharedState.wrongSsn}/${this.sharedState.wrongcompanyID}`, {
+            const response = await nfetch(`${this.base_url}/editForm/00000000000000/${this.sharedState.wrongcompanyID}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
             })
@@ -1497,17 +1582,7 @@ class LawyersTest {
             });
             const jsonResponse = await response.json();
             expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' });
-            const lawyer = await Lawyer.findById(this.sharedState.id);
-            this.sharedState.birthDate = lawyer.birthDate
-            this.sharedState.email = lawyer.email
-            this.sharedState.firstName = lawyer.firstName
-            this.sharedState.middleName = lawyer.middleName
-            this.sharedState.lastName = lawyer.lastName
-            this.sharedState.mobileNumber = lawyer.mobileNumber
-            this.sharedState.password = lawyer.password
-            this.sharedState.salary = lawyer.salary
-            this.sharedState.socialSecurityNumber = lawyer.socialSecurityNumber
-            this.sharedState.yearsOfExperience = lawyer.yearsOfExperience
+        
         })
     }
 
@@ -1531,7 +1606,7 @@ class LawyersTest {
     }
     lawyersViewFees() {
         test(`Fetching the company creation fees ,[=> GET${this.base_url}/:id/:companyID/viewFees`, async () => {
-            const response = await nfetch(`${this.base_url}/${this.sharedState.id}/${this.sharedState.companyID}/viewFees`, {
+            const response = await nfetch(`${this.base_url}/${this.sharedState.id}/${this.sharedState.companyId}/viewFees`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
             })
@@ -1542,7 +1617,7 @@ class LawyersTest {
     }
     lawyersViewFeesWithoutLogin() {
         test(`Fetching the company creation fees without logging in ,[=> GET${this.base_url}/:id/:companyID/viewFees`, async () => {
-            const response = await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/${this.sharedState.companyID}/viewFees`, {
+            const response = await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}/${this.sharedState.companyId}/viewFees`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', 'x-access-token': 'wrongToken' }
             })
@@ -1553,7 +1628,7 @@ class LawyersTest {
     }
     lawyersViewFeesWrongID() {
         test(`Fetching the company creation fees with a wrong investor ID ,[=> GET${this.base_url}/:id/:companyID/viewFees`, async () => {
-            const response = await nfetch(`http://localhost:3000/api/lawyer/wrongID/${this.sharedState.companyID}/viewFees`, {
+            const response = await nfetch(`http://localhost:3000/api/lawyer/wrongID/${this.sharedState.companyId}/viewFees`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
             })
@@ -1565,7 +1640,7 @@ class LawyersTest {
     lawyersResubmitForum() {
 
         test(`Resubmitting the disaproved forms after updating them according to the reviewer's guidelines,[=>PUT${this.base_url}/resubmit/:id/:companyId`, async () => {
-            const response = await nfetch(`${this.base_url}/resubmit/${this.sharedState.id}/${this.sharedState.companyID}`, {
+            const response = await nfetch(`${this.base_url}/resubmit/${this.sharedState.id}/${this.sharedState.companyId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
             })
@@ -1577,7 +1652,7 @@ class LawyersTest {
     lawyersResubmitForumWithoutLogin() {
 
         test(`Lawyer resubmits form without logging in,[=>PUT${this.base_url}/resubmit/:id/:companyId`, async () => {
-            const response = await nfetch(`${this.base_url}/resubmit/${this.sharedState.id}/${this.sharedState.companyID}`, {
+            const response = await nfetch(`${this.base_url}/resubmit/${this.sharedState.id}/${this.sharedState.companyId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json', 'x-access-token': 'wrongToken' }
             })
@@ -1589,7 +1664,7 @@ class LawyersTest {
     lawyersResubmitForumWrongID() {
 
         test(`Lawyer tries to resubmit the form but the id is incorrect,[=>PUT${this.base_url}/resubmit/:id/:companyId`, async () => {
-            const response = await nfetch(`${this.base_url}/resubmit/wrongID/${this.sharedState.companyID}`, {
+            const response = await nfetch(`${this.base_url}/resubmit/wrongID/${this.sharedState.companyId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
             })
@@ -1598,165 +1673,214 @@ class LawyersTest {
             expect(Object.keys(jsonResponse)).toEqual(["auth", "message"])
         })
     }
-//try w catch
-//try w catch
-lawyerAddingCommentWithWrongCompanyIdAndIdAndToken(){
-    const requestBody = {
-      lawyerComment: 'The Investor need to pay the full fees to resume company'
-    };
-    test(`Adding a lawyer comment to a company but with wrong token ,lawyer id and company id`, async () => {
-      const response = await nfetch(
-        "http://localhost:3000/api/lawyer/addcomment/nvnvn/hahya",
-        {
-          method: "PUT",
-          body: JSON.stringify(requestBody),
-          headers: {
-            "Content-Type": "application/json",
-            "x-access-token": "5444j"
-          }
+    //try w catch
+    //try w catch
+    lawyerAddingCommentWithWrongCompanyIdAndIdAndToken() {
+        const requestBody = {
+            lawyerComment: 'The Investor need to pay the full fees to resume company'
+        };
+        test(`Adding a lawyer comment to a company but with wrong token ,lawyer id and company id`, async () => {
+            const response = await nfetch(
+                "http://localhost:3000/api/lawyer/addcomment/nvnvn/hahya",
+                {
+                    method: "PUT",
+                    body: JSON.stringify(requestBody),
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-access-token": "5444j"
+                    }
+                }
+            );
+            const jsonResponse = await response.json()
+            // check if the json response has data not error
+            expect(jsonResponse).toEqual({
+                err: 'error occured'
+            })
+        })
+    }
+
+
+
+    lawyerAddingCommentWithWrongCompanyId() {
+        const requestBody = {
+            lawyerComment: 'The Investor need to pay the full fees to resume company'
+        };
+        test(`Adding a lawyer comment to a company but with wrong company id`, async () => {
+            const response = await nfetch(
+                `http://localhost:3000/api/lawyer/addcomment/${this.sharedState.id}/hahya`,
+                {
+                    method: "PUT",
+                    body: JSON.stringify(requestBody),
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-access-token": this.sharedState.token
+                    }
+                }
+            );
+            const jsonResponse = await response.json()
+            // check if the json response has data not error
+            expect(jsonResponse).toEqual({
+                err: 'error occured'
+            })
+        })
+    }
+
+
+    lawyerAddingCommentWithWrongtoken() {
+        const requestBody = {
+            lawyerComment: 'The Investor need to pay the full fees to resume company'
+        };
+        test(`Adding a lawyer comment to a company but with wrong token`, async () => {
+            const response = await nfetch(
+                `http://localhost:3000/api/lawyer/addcomment/${this.sharedState.id}/${this.sharedState.companyid}`,
+                {
+                    method: "PUT",
+                    body: JSON.stringify(requestBody),
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-access-token": "jajd"
+                    }
+                }
+            );
+            const jsonResponse = await response.json()
+            // check if the json response has data not error
+            expect(jsonResponse).toEqual({
+                err: 'error occured'
+            })
+        })
+    }
+
+    lawyerAddingCommentWithWrongid() {
+        const requestBody = {
+            lawyerComment: 'The Investor need to pay the full fees to resume company'
+        };
+        test(`Adding a lawyer comment to a company but with wrong lawyer id`, async () => {
+            const response = await nfetch(
+                `http://localhost:3000/api/lawyer/addcomment/hahya/${this.sharedState.companyid}`,
+                {
+                    method: "PUT",
+                    body: JSON.stringify(requestBody),
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-access-token": this.sharedState.token
+                    }
+                }
+            );
+            const jsonResponse = await response.json()
+            // check if the json response has data not error
+            expect(jsonResponse).toEqual({
+                err: 'error occured'
+            })
+        })
+    }
+
+    lawyerAddingCommentCorrectly() {
+        const requestBody = {
+            lawyerComment: 'The Investor need to pay the full fees to resume company'
+        };
+        test(`Adding a lawyer comment to a company`, async () => {
+            const response = await nfetch(
+                `http://localhost:3000/api/lawyer/addcomment/${this.sharedState.id}/${this.sharedState.companyId}`,
+                {
+                    method: "PUT",
+                    body: JSON.stringify(requestBody),
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-access-token": this.sharedState.token
+                    }
+                }
+            );
+            const jsonResponse = await response.json()
+            // check if the json response has data not error
+            expect(jsonResponse).toEqual({
+                msg: 'Comment added Successfully'
+            })
+            const company = await Company.findById(this.sharedState.companyId)
+            expect(company.lawyerComment).toEqual(requestBody.lawyerComment)
+
+        })
+
+    }
+
+
+    creatingLawyerWrongInput() {
+        const requestBody = {
+            firstName: "please no2",
+            middleName: "reyaaaad",
+            lastName: "mohamed",
+            password: "abcakakaka",
+            mobileNumber: "01060187952",
+            socialSecurityNumber: "29121114524525",
+            salary: "105151",
+            birthDate: "1998-04-03T22:00:00.000Z",
+            yearsOfExperience: "4"
         }
-      );
-        const jsonResponse = await response.json()
-      // check if the json response has data not error
-       expect(jsonResponse).toEqual({
-        err: 'error occured' 
-      })     
-    })
-  }
 
+        test(`Creating A Lawyer with wrong input from admin,\t\t[=> POST ${this.base_url}\register`, async () => {
+            const response = await nfetch("http://localhost:3000/api/lawyer/register", {
+                method: 'POST',
+                body: JSON.stringify(requestBody),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-access-token': this.sharedState.adminToken
+                }
+            })
+            const jsonResponse = await response.json()
 
+            // check if the json response has data not error
+            expect(jsonResponse).toEqual({ "error": "\"email\" is required" })
+        })
 
-  lawyerAddingCommentWithWrongCompanyId(){
-    const requestBody = {
-      lawyerComment: 'The Investor need to pay the full fees to resume company'
-    };
-    test(`Adding a lawyer comment to a company but with wrong company id`, async () => {
-      const response = await nfetch(
-        `http://localhost:3000/api/lawyer/addcomment/${this.sharedState.id}/hahya`,
-        {
-          method: "PUT",
-          body: JSON.stringify(requestBody),
-          headers: {
-            "Content-Type": "application/json",
-            "x-access-token": this.sharedState.token
-          }
-        }
-      );
-        const jsonResponse = await response.json()
-      // check if the json response has data not error
-       expect(jsonResponse).toEqual({
-        err: 'error occured' 
-      })     
-    })
-  }
+    }
 
+    lawyerViewAllCompaniesWhileLoggedIn() {
+        test(`Views companies by lawyer,[=> GET${this.base_url}/getall/cases`, async () => {
+            const response = await nfetch(`${this.base_url}/getall/cases`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
+            })
+            const jsonResponse = await response.json()
 
-  lawyerAddingCommentWithWrongtoken(){
-    const requestBody = {
-      lawyerComment: 'The Investor need to pay the full fees to resume company'
-    };
-    test(`Adding a lawyer comment to a company but with wrong token`, async () => {
-      const response = await nfetch(
-        `http://localhost:3000/api/lawyer/addcomment/${this.sharedState.id}/${this.sharedState.companyid}`,
-        {
-          method: "PUT",
-          body: JSON.stringify(requestBody),
-          headers: {
-            "Content-Type": "application/json",
-            "x-access-token":"jajd"
-          }
-        }
-      );
-        const jsonResponse = await response.json()
-      // check if the json response has data not error
-       expect(jsonResponse).toEqual({
-        err: 'error occured' 
-      })     
-    })
-  }
+            expect(Object.keys(jsonResponse)).toEqual(["data"])
+        })
+    }
 
-  lawyerAddingCommentWithWrongid(){
-    const requestBody = {
-      lawyerComment: 'The Investor need to pay the full fees to resume company'
-    };
-    test(`Adding a lawyer comment to a company but with wrong lawyer id`, async () => {
-      const response = await nfetch(
-        `http://localhost:3000/api/lawyer/addcomment/hahya/${this.sharedState.companyid}`,
-        {
-          method: "PUT",
-          body: JSON.stringify(requestBody),
-          headers: {
-            "Content-Type": "application/json",
-            "x-access-token": this.sharedState.token
-          }
-        }
-      );
-        const jsonResponse = await response.json()
-      // check if the json response has data not error
-       expect(jsonResponse).toEqual({
-        err: 'error occured' 
-      })     
-    })
-  }
+    lawyerViewAllCompaniesWhileNotLoggedInAsLawyer() {
+        test(`Views companies while logged in, but not as a lawyer,[=> GET${this.base_url}/getall/cases`, async () => {
+            const response = await nfetch(`${this.base_url}/getall/cases`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.adminToken }
+            })
+            const jsonResponse = await response.json()
 
-  lawyerAddingCommentCorrectly(){
-    const requestBody = {
-      lawyerComment: 'The Investor need to pay the full fees to resume company'
-    };
-    test(`Adding a lawyer comment to a company`, async () => {
-      const response = await nfetch(
-        `http://localhost:3000/api/lawyer/addcomment/${this.sharedState.id}/${this.sharedState.companyId}`,
-        {
-          method: "PUT",
-          body: JSON.stringify(requestBody),
-          headers: {
-            "Content-Type": "application/json",
-            "x-access-token": this.sharedState.token
-          }
-        }
-      );
-        const jsonResponse = await response.json()
-      // check if the json response has data not error
-       expect(jsonResponse).toEqual({
-        msg: 'Comment added Successfully' })
-        const company = await Company.findById(this.sharedState.companyId)
-    expect(company.lawyerComment).toEqual(requestBody.lawyerComment)    
+            expect(jsonResponse).toEqual({ "error": 'Lawyer does not exist' })
+        })
+    }
 
-    })
-   
-  }
-  
+    lawyerViewAllCompaniesWhileNotLoggedIn() {
+        test(`Views companies while not logged in,[=> GET${this.base_url}/getall/cases`, async () => {
+            const response = await nfetch(`${this.base_url}/getall/cases`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            const jsonResponse = await response.json()
 
-  creatingLawyerWrongInput(){
-    const requestBody = {
-        firstName: "please no2",
-        middleName: "reyaaaad",
-        lastName: "mohamed",
-        password: "abcakakaka",
-        mobileNumber: "01060187952",
-        socialSecurityNumber: "29121114524525",
-        salary: "105151",
-        birthDate: "1998-04-03T22:00:00.000Z",
-        yearsOfExperience: "4"
-  }
+            expect(jsonResponse).toEqual({ auth: false, message: 'Please login first.' })
+        })
+    }
 
-   test(`Creating A Lawyer with wrong input from admin,\t\t[=> POST ${this.base_url}\register`, async () => {
-    const response = await nfetch("http://localhost:3000/api/lawyer/register", {
-      method: 'POST',
-      body: JSON.stringify(requestBody),
-      headers: { 'Content-Type': 'application/json' ,
-       'x-access-token': this.sharedState.adminToken}
-    })
-    const jsonResponse = await response.json()
+    lawyerViewAllCompaniesWhileWithCorruptToken() {
+        test(`Views companies while having a corrput token,[=> GET${this.base_url}/getall/cases`, async () => {
+            const response = await nfetch(`${this.base_url}/getall/cases`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json', 'x-access-token': "vewjniv" }
+            })
+            const jsonResponse = await response.json()
 
-          // check if the json response has data not error
-         expect(jsonResponse).toEqual({"error": "\"email\" is required"}             )
-
-
-
-   })
-
-   }	    
+            expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' })
+        })
+    }
+    
 
 }
 
