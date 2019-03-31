@@ -15,7 +15,8 @@ class AdminsTest {
       gender: null,
       joinDate: null,
       phone: null,
-      lawyerToken:null
+      lawyerToken:null,
+      id2:null
     };
   }
 
@@ -45,12 +46,46 @@ class AdminsTest {
             this.creatingLawyerByAdmin(),
             this.creatingAnAdminByLawyer(),
             this.creatingAnAdminTestingJoi(),
-            this.loggingOut()
+            this.loggingOut(),
+           this.deleteAdmin()
         });
         resolve();
       });
     } catch (err) {}
   }
+
+//Atef methods
+
+deleteAdmin(){
+  test(`deleting an admin CRUD,\t=> DELETE ${this.base_url}/:id`, async () =>{
+const response= await nfetch(
+  `http://localhost:3000/routes/api/admins/${this.sharedState.id2}`,
+        {
+          method: "DELETE",
+       
+          headers: { "Content-Type": "application/json","x-access-token":this.sharedState.token }
+        }
+
+
+);
+
+const jsonResponse = await response.json();
+expect(jsonResponse).toEqual({ msg: 'Admin deleted successfully'})
+// if he doesnt exist then anyofhis attributes should be undefined
+var theAdmin=await Admin.find( { _id:this.sharedState.id2 } )
+
+ expect(theAdmin.name).toEqual(undefined)    ,
+ expect(theAdmin.email).toEqual(undefined)   
+ //etc...       
+
+  })
+}
+
+
+//ends here
+
+
+
 
   creatingAdminWithoutLoggingIn() {
     const requestBody = {
@@ -124,6 +159,7 @@ class AdminsTest {
       expect(admin.email).toEqual(requestBody.email);
       this.sharedState.id = admin.id;
       this.sharedState.token = jsonResponse.token;
+      this.sharedState.id2 = admin.id;
     });
   }
 
