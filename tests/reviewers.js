@@ -84,8 +84,10 @@ class ReviewersTest{
               this.getreviewerWithIdButnullToken(),
               this.getreviewerwithwrongtoken()
               this.loggingOut()
-              
-              
+              this.reviewerViewAllCompaniesWhileLoggedIn(),
+              this.reviewerViewAllCompaniesWhileNotLoggedInAsLawyer(),
+              this.reviewerViewAllCompaniesWhileNotLoggedIn(),
+              this.reviewerViewAllCompaniesWhileWithCorruptToken()
             })
             resolve()
           })
@@ -1227,6 +1229,53 @@ getreviewerwithwrongtoken(){
           }
 
 
+          reviewerViewAllCompaniesWhileLoggedIn() {
+            test(`Views companies by reviewer,[=> GET ${this.base_url}/getall/cases`, async () => {
+                const response = await nfetch(`http://localhost:3000/api/reviewer/getall/cases`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
+                })
+                const jsonResponse = await response.json()
+    
+                expect(jsonResponse).toEqual({"data":[]})
+            })
+        }
+    
+        reviewerViewAllCompaniesWhileNotLoggedInAsLawyer() {
+            test(`Views companies while logged in, but not as a reviewer,[=> GET ${this.base_url}/getall/cases`, async () => {
+                const response = await nfetch(`http://localhost:3000/api/reviewer/getall/cases`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.adminToken }
+                })
+                const jsonResponse = await response.json()
+    
+                expect(jsonResponse).toEqual({"error": 'Reviewer does not exist.'})
+            })
+        }
+    
+        reviewerViewAllCompaniesWhileNotLoggedIn() {
+            test(`Views companies while not logged in,[=> GET ${this.base_url}/getall/cases`, async () => {
+                const response = await nfetch(`http://localhost:3000/api/reviewer/getall/cases`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json'}
+                })
+                const jsonResponse = await response.json()
+    
+                expect(jsonResponse).toEqual({ auth: false, message: 'Please login first.' })
+            })
+        }
+    
+        reviewerViewAllCompaniesWhileWithCorruptToken() {
+            test(`Views companies while having a corrput token,[=> GET /getall/cases`, async () => {
+                const response = await nfetch(`http://localhost:3000/api/reviewer/getall/cases`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json', 'x-access-token': "vewjniv"}
+                })
+                const jsonResponse = await response.json()
+    
+                expect(jsonResponse).toEqual({ auth: false, message: 'Failed to authenticate token.' })
+            })
+        }
 
   }
     
