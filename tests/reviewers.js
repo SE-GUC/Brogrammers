@@ -1,6 +1,6 @@
 const nfetch = require('node-fetch')
 const Admin = require('../models/Admin')
-const Reviewer = require('../models/Reviewer')
+const Reviewer = require('../models/reviewer')
 const Company = require('../models/Company')
 var jwt = require('jsonwebtoken')
 var config = require('../config/jwt')
