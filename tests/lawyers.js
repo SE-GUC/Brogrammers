@@ -72,7 +72,8 @@ class LawyersTest {
                         this.lawyerAddingCommentWithWrongCompanyId(),
                         this.lawyerAddingCommentWithWrongCompanyIdAndIdAndToken(),
                         this.lawyerAddingCommentWithWrongid(),
-                        this.lawyerAddingCommentWithWrongtoken()
+                        this.lawyerAddingCommentWithWrongtoken(),
+                        this.loggingOut();
 
                 })
                 resolve()
@@ -1756,7 +1757,19 @@ lawyerAddingCommentWithWrongCompanyIdAndIdAndToken(){
 
    })
 
-   }	    
+   }
+   
+   
+   //Panda logouts
+  loggingOut(){
+    test(`Logging a lawyer out,\t\t[=> GET ${this.base_url}\logout`, async () => {
+      const response = await nfetch("http://localhost:3000/routes/api/admins/logout", {
+        method: 'GET'                    
+        })           
+        const jsonResponse = await response.json()         
+        expect(jsonResponse).toEqual({"auth": false, "token": null})       
+    })
+  }
 
 }
 
