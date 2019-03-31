@@ -1,21 +1,24 @@
-const mongoose = require("mongoose");
-const db = require("./config/keys").mongoURI;
+require('dotenv').config()
+const mongoose = require('mongoose')
+const db = require('./config/keys').mongoURI
+//const AdminsTest = require('./tests/admins')
+const InvestorsTest = require('./tests/investors');
 
-// const LawyerTest = require('./tests/lawyers')
-const InvestorsTest = require("./tests/investors");
-// const AdminsTest = require('./tests/admins')
+const {
+  PORT = 3000
+} = process.env
 
 mongoose.connect(db, {
   useNewUrlParser: true
 });
 
 beforeAll(async () => {
-  await mongoose.connection.dropDatabase();
-});
+ await mongoose.connection.dropDatabase()
+})
 
 afterAll(async () => {
-  await mongoose.connection.dropDatabase()
-});
+ //await mongoose.connection.dropDatabase()
+})
 //= =---------------------------------------------------= =//
 
 //= =---------------------------------------------------= =//

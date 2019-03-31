@@ -32,7 +32,19 @@ class InvestorsTest {
     this.base_url = `http://localhost:${PORT}/api/${ROUTE}`;
     this.sharedState = {
       id: null,
-      token: null
+      token: null,
+      name: null,
+      type: null,
+      gender: null,
+      nationality: null,
+      idType: null,
+      idNumber: null,
+      dob: null,
+      address: null,
+      telephone: null,
+      fax: null,
+      mail: null,
+      password: null
     };
     this.sharedStateCompany = {
       status: null,
@@ -62,6 +74,7 @@ class InvestorsTest {
       managers: [],
       __v: 0
     };
+   
   }
 
   runTests() {
@@ -69,34 +82,50 @@ class InvestorsTest {
       return new Promise((resolve, reject) => {
         describe(`Testing Investors ability to fill a case for the start of his company application`, () => {
           this.creatingInvestor(),
+            this.logInWithUserNotFound(),
+            this.logInWithWrongPassword(),
+            this.logInWithRightPassword(),
             this.creatingInvestorAlreadyLogged(),
-            this.creatingInvestorExistingEmail();
-          this.investorCreateCompanySSCLoggedIn(),
+            this.creatingInvestorExistingEmail(),
+            this.investorCreateCompanySSCLoggedIn(),
             this.investorCreateCompanySSCNotLoggedIn(),
             this.investorCreateCompanySSCLoggedInWithCorruptToken(),
-            // this.investorCreateCompanySSCNotLoggedInWithInvestor(),
+            //this.investorCreateCompanySSCNotLoggedInWithInvestor(),
             this.investorCreateCompanySSCInvalidCompanyFields(),
             this.investorCreateCompanySPCLoggedIn(),
             this.investorCreateCompanySPCNotLoggedIn(),
             this.investorCreateCompanySPCLoggedInWithCorruptToken(),
             // this.investorCreateCompanySPCNotLoggedInWithInvestor(),
             this.investorCreateCompanySPCInvalidCompanyFields(),
+            this.updateInvestorWithCorrectIdAndToken(),
+            this.updateInvestorWithWrongId(),
+            this.updateInvestorWithWrongToken(),
+            this.viewCompaniesInvestorCorrectIdAndToken(),
+            this.viewCompaniesInvestorWrongToken(),
+            this.viewCompaniesInvestorNullToken(),
+            this.updateInvestorWithNullToken(),
+
+            this.getMyRequestsLoggedIn(),
             this.getMyRequestsLoggedOut(),
-            this.getMyRequestDetailsLoggedOut(),
-            this.EditMyRequestLoggedOut();
             this.getMyRequestsIncorrectToken(),
-              this.EditMyRequestIncorrectToken();
-            this.getMyRequestDetailsIncorrectToken();
-          });
-          resolve();
+            this.getMyRequestDetailsLoggedOut(),
+            this.getMyRequestDetailsLoggedIn(),
+            this.getMyRequestDetailsIncorrectToken(),
+            this.getMyRequestDetailsWrongRequest(),
+            this.EditMyRequestLoggedOut(),
+            this.EditMyRequestLoggedIn(),
+            this.EditMyRequestIncorrectToken(),
+            this.EditMyRequestWrongCompany(),
+            this.EditMyRequestWrongFields()
         });
+        resolve();
+      });
     } catch (err) {}
   }
   runTestsDependently() {
     try {
       return new Promise((resolve, reject) => {
-        describe(`Testing the ability of an investor to act with his request`, () => {
-        });
+        describe(`Testing the ability of an investor to act with his request`, () => {});
         resolve();
       });
     } catch (err) {}
@@ -148,6 +177,12 @@ class InvestorsTest {
       expect(company.capitalCurrency).toEqual(requestBody.capitalCurrency);
       expect(company.capital).toEqual(requestBody.capital);
       expect(company.manager).toEqual(requestBody.manager);
+      this.sharedStateCompany.investorIdentificationNumber=company.investorIdentificationNumber;
+      this.sharedStateCompany.id = company.id;
+      this.sharedStateCompany.regulationLaw = company.regulationLaw;
+      this.sharedStateCompany.legalCompanyForm = company.legalCompanyForm;
+      this.sharedStateCompany.nameInArabic = company.nameInArabic;
+      this.sharedStateCompany.status = company.status;
     });
   }
 
@@ -156,7 +191,7 @@ class InvestorsTest {
       regulationLaw: "Law 159",
       legalCompanyForm: "CompanyForm",
       nameInArabic: "esm bel 3araby",
-      nameInEnglish: "WAW",
+      nameInEnglish: "WAW", 
       governerateHQ: "New Cairo",
       cityHQ: "Cairo",
       addressHQ: "Rehab City",
@@ -337,6 +372,13 @@ class InvestorsTest {
       expect(company.capitalCurrency).toEqual(requestBody.capitalCurrency);
       expect(company.capital).toEqual(requestBody.capital);
       this.sharedStateCompany.id = company.id;
+      this.sharedStateCompany.regulationLaw = company.regulationLaw;
+      this.sharedStateCompany.legalCompanyForm = company.legalCompanyForm;
+      this.sharedStateCompany.nameInArabic = company.nameInArabic;
+      this.sharedStateCompany.status = company.status;
+      this.sharedStateCompany.nameInEnglish = company.nameInEnglish;
+      this.sharedStateCompany.investorIdentificationNumber =
+        company.investorIdentificationNumber;
     });
   }
 
@@ -524,6 +566,78 @@ class InvestorsTest {
     });
   }
 
+  logInWithUserNotFound() {
+    const requestBody = {
+      email: "qwhat.com",
+      password: "2123"
+    };
+
+    test(`logInWithUserNotFound,\t\t[=> POST ${
+      this.base_url
+    }\/login`, async () => {
+      const response = await nfetch(
+        "http://localhost:3000/api/investors/login",
+        {
+          method: "POST",
+          body: JSON.stringify(requestBody),
+          headers: { "Content-Type": "application/json" }
+        }
+      );
+      const jsonResponse = await response.json();
+
+      console.log(`${this.base_url}\/login`);
+
+      expect(jsonResponse).toEqual({ auth: false, message: "No user found." });
+    });
+  }
+  logInWithWrongPassword() {
+    const requestBody = {
+      email: "Manga.ab1o1b1m11uia1k5215233252r312@gmail.com",
+      password: "12345678"
+    };
+
+    test(`logInWithWrongPassword,\t\t[=> POST ${
+      this.base_url
+    }\/login`, async () => {
+      const response = await nfetch(
+        "http://localhost:3000/api/investors/login",
+        {
+          method: "POST",
+          body: JSON.stringify(requestBody),
+          headers: { "Content-Type": "application/json" }
+        }
+      );
+      const jsonResponse = await response.json();
+
+      console.log(`${this.base_url}\/login`);
+
+      expect(jsonResponse).toEqual({ auth: false, token: null });
+    });
+  }
+  logInWithRightPassword() {
+    const requestBody = {
+      email: "Manga.ab1o1b1m11uia1k5215233252r312@gmail.com",
+      password: "NewPassworddd"
+    };
+
+    test(`logInWithRightPassword,\t\t[=> POST ${
+      this.base_url
+    }\/login`, async () => {
+      const response = await nfetch(
+        "http://localhost:3000/api/investors/login",
+        {
+          method: "POST",
+          body: JSON.stringify(requestBody),
+          headers: { "Content-Type": "application/json" }
+        }
+      );
+      const jsonResponse = await response.json();
+      const token = this.sharedState.token;
+
+      console.log(`${this.base_url}\/login`);
+      expect(Object.keys(jsonResponse)).toEqual(["auth", "token"]);
+    });
+  }
   creatingInvestorAlreadyLogged() {
     const requestBody = {
       name: "bassem",
@@ -559,7 +673,6 @@ class InvestorsTest {
       expect(jsonResponse).toEqual({ message: "You are already logged in" });
     });
   }
-
   creatingInvestorExistingEmail() {
     const requestBody = {
       name: "bassem",
@@ -617,7 +730,12 @@ class InvestorsTest {
       const company = await Company.findById(this.sharedStateCompany.id).exec();
 
       expect(company.status).toEqual(this.sharedStateCompany.status);
-      this.sharedStateCompany.nameInArabic;
+      expect(company.nameInArabic).toEqual(
+        this.sharedStateCompany.nameInArabic
+      );
+      expect(company.lawyerComment).toEqual(
+        this.sharedStateCompany.lawyerComment
+      );
     });
   }
   getMyRequestsLoggedOut() {
@@ -699,41 +817,9 @@ class InvestorsTest {
       expect(company.nameInEnglish).toEqual(
         this.sharedStateCompany.nameInEnglish
       );
-      expect(company.governerateHQ).toEqual(
-        this.sharedStateCompany.governerateHQ
-      );
-      expect(company.cityHQ).toEqual(this.sharedStateCompany.cityHQ);
-      expect(company.addressHQ).toEqual(this.sharedStateCompany.addressHQ);
-      expect(company.telephoneHQ).toEqual(this.sharedStateCompany.telephoneHQ);
-      expect(company.faxHQ).toEqual(this.sharedStateCompany.faxHQ);
-      expect(company.capitalCurrency).toEqual(
-        this.sharedStateCompany.capitalCurrency
-      );
-      expect(company.capital).toEqual(this.sharedStateCompany.capital);
-      expect(company.investorName).toEqual(
-        this.sharedStateCompany.investorName
-      );
-      expect(company.investorType).toEqual(
-        this.sharedStateCompany.investorType
-      );
-      expect(company.investorSex).toEqual(this.sharedStateCompany.investorSex);
-      expect(company.investorNationality).toEqual(
-        this.sharedStateCompany.investorNationality
-      );
-      expect(company.investorIdentificationType).toEqual(
-        this.sharedStateCompany.investorIdentificationType
-      );
+
       expect(company.investorIdentificationNumber).toEqual(
         this.sharedStateCompany.investorIdentificationNumber
-      );
-      expect(company.investorAddress).toEqual(
-        this.sharedStateCompany.investorAddress
-      );
-      expect(company.investorTelephone).toEqual(
-        this.sharedStateCompany.investorTelephone
-      );
-      expect(company.investorEmail).toEqual(
-        this.sharedStateCompany.investorEmail
       );
       expect(company.lawyerComment).toEqual(
         this.sharedStateCompany.lawyerComment
@@ -787,6 +873,58 @@ class InvestorsTest {
       });
     });
   }
+  getMyRequestDetailsWrongRequest(){
+    test(`Getting details of a wrong request,\t[=> GET\t\t${
+      this.base_url
+    }/:id/MyRequests/:companyid\t`, async () => {
+      const response = await nfetch(
+        `${this.base_url}/${this.sharedState.id}/MyRequests/${this.sharedState.id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": this.sharedState.token
+          }
+        }
+      );
+      const jsonResponse = await response.json();
+      expect(jsonResponse).toEqual({ error: "Company does not exist"});
+      
+    });
+  } 
+  //Lawyer must reject first
+  EditMyRequestLoggedIn() {
+    const requestBody = {
+      regulationLaw: "Law 72",
+      legalCompanyForm: "SSC",
+      nameInArabic: "شركة احمد"
+    };
+    test(`Updating a company request form while logged in,\t[=> PUT\t\t${
+      this.base_url
+    }/:id/MyRequests/:companyid\t`, async () => {
+      const response = await nfetch(
+        `${this.base_url}/${this.sharedState.id}/MyRequests/${
+          this.sharedStateCompany.id
+        }`,
+        {
+          method: "PUT",
+          body: JSON.stringify(requestBody),
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": this.sharedState.token
+          }
+        }
+      );
+      const jsonResponse = await response.json();
+      // check if the json response has data not error
+      console.log(`Updating a company form after being rejected`)
+      const company = await Company.findById(this.sharedStateCompany.id);
+      expect(jsonResponse).toEqual({ msg: "Form updated successfully"});
+      
+      expect(this.nameInArabic).toEqual(requestBody.nameInArabic)
+      this.sharedStateCompany.nameInArabic = company.nameInArabic;
+    });
+  }
   EditMyRequestLoggedOut() {
     test(`Updating a company request form while logged out,\t[=> PUT\t\t${
       this.base_url
@@ -796,7 +934,7 @@ class InvestorsTest {
           this.sharedStateCompany.id
         }`,
         {
-          method: "GET",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json"
           }
@@ -819,7 +957,7 @@ class InvestorsTest {
           this.sharedStateCompany.id
         }`,
         {
-          method: "GET",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
             "x-access-token": "wrongToken"
@@ -836,41 +974,19 @@ class InvestorsTest {
       });
     });
   }
-  EditMyRequestLoggedIn() {
+  EditMyRequestWrongCompany() {
     const requestBody = {
-      regulationLaw: "Law 72",
-      legalCompanyForm: "SSC",
-      nameInArabic: "شركة مختار مختار",
-      nameInEnglish: "Mokhtar Mokhtaar",
-      governerateHQ: "Cairo",
-      cityHQ: "Cairo",
-      addressHQ: "Tanta",
-      telephoneHQ: 10102354,
-      faxHQ: 1242436264026,
-      capitalCurrency: "USD",
-      capital: 54800,
-      investorName: "ahmed",
-      investorType: "type",
-      investorSex: "male",
-      investorNationality: "Czeckoslovakia",
-      investorIdentificationType: "passport",
-      investorIdentificationNumber: "123456789",
-      investorBD: "1882-04-03T21:54:51.000Z",
-      investorAddress: "Cairo",
-      investorTelephone: 64276721,
-      investorFax: 1326513,
-      investorEmail: "ahmed@gmail.com",
-      managers: []
+     
+      nameInArabic: "شركة احمد"
     };
-    test(`Fetching the data of a request as an investor,\t[=> PUT\t\t${
+    test(`Updating a company request form which is not rejected yet and commented on by a lawyer,\t[=> PUT\t\t${
       this.base_url
     }/:id/MyRequests/:companyid\t`, async () => {
       const response = await nfetch(
-        `${this.base_url}/${this.sharedState.id}//${
-          this.sharedStateCompany.id
-        }`,
+        `${this.base_url}/${this.sharedState.id}/MyRequests/${this.sharedState.id}`,
         {
           method: "PUT",
+          body: JSON.stringify(requestBody),
           headers: {
             "Content-Type": "application/json",
             "x-access-token": this.sharedState.token
@@ -878,13 +994,209 @@ class InvestorsTest {
         }
       );
       const jsonResponse = await response.json();
+      expect(jsonResponse).toEqual({ error: "Company does not exist"});
+      
+    });
+  }
+  EditMyRequestWrongFields() {
+    const requestBody = {
+     legalCompanyForm:"SSC",
+      nameInArabic: "شركة احمد"
+    };
+    test(`Updating a company request form while logged in,\t[=> PUT\t\t${
+      this.base_url
+    }/:id/MyRequests/:companyid\t`, async () => {
+      const response = await nfetch(
+        `${this.base_url}/${this.sharedState.id}/MyRequests/${
+          this.sharedStateCompany.id
+        }`,
+        {
+          method: "PUT",
+          body: JSON.stringify(requestBody),
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": this.sharedState.token
+          }
+        }
+      );
+      const jsonResponse = await response.json();
+      expect(jsonResponse).toEqual("error");
       // check if the json response has data not error
-      expect(Object.keys(jsonResponse)).toEqual(["data"]);
-      expect(Object.keys(jsonResponse)).not.toEqual(["error"]);
+      console.log(`Updating a company form with wrong fields`)
+     
+    });
+  }
 
-      const company = await Company.findById(jsonResponse.data.id).exec();
+
+
+
+
+  updateInvestorWithCorrectIdAndToken() {
+    const requestBody = {
+      name: "Ahmad Hesham Mohammed",
+      gender: "male",
+      mail: "yeetyeet.com"
+    };
+    test(`Updating specificed investor's info, providing correct token and ID`, async () => {
+      const response = await nfetch(
+        "http://localhost:3000/api/investors/" + this.sharedState.id,
+        {
+          method: "PUT",
+          body: JSON.stringify(requestBody),
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": this.sharedState.token
+          } 
+        }
+      );
+      const jsonResponse = await response.json();
+      expect(jsonResponse).toEqual({ msg: "Investor updated successfully" });
+      const investor = await Investor.findById(this.sharedState.id);
+      this.sharedState.address = investor.address;
+      this.sharedState.dob = investor.dob;
+      this.sharedState.fax = investor.fax;
+      this.sharedState.gender = investor.gender;
+      this.sharedState.idNumber = investor.idNumber;
+      this.sharedState.idType = investor.idType;
+      this.sharedState.mail = investor.mail;
+      this.sharedState.name = investor.name;
+      this.sharedState.nationality = investor.nationality;
+      this.sharedState.password = investor.password;
+      this.sharedState.telephone = investor.telephone;
+      this.sharedState.type = investor.type;
+    });
+  }
+
+  updateInvestorWithWrongId() {
+    const requestBody = {
+      name: "Ahmad Hesham Mohammed",
+      gender: "male",
+      mail: "yeetyeet.com"
+    };
+    test("Updating the specified investor's info, providing wrong ID", async () => {
+      const response = await nfetch(
+        "http://localhost:3000/api/investors/abcde",
+        {
+          method: "PUT",
+          body: JSON.stringify(requestBody),
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": this.sharedState.token
+          }
+        }
+      );
+      const jsonResponse = await response.json();
+      expect(jsonResponse).toEqual({
+        msg: "You do not have the authorization"
+      });
+    });
+  }
+
+  updateInvestorWithWrongToken() {
+    const requestBody = {
+      name: "Ahmad Hesham Mohammed",
+      gender: "male",
+      mail: "yeetyeet.com"
+    };
+    test("Updating the specified investor's info, providing wrong token", async () => {
+      const response = await nfetch(
+        "http://localhost:3000/api/investors/" + this.sharedState.id,
+        {
+          method: "PUT",
+          body: JSON.stringify(requestBody),
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": "aqwtyunbbj"
+          }
+        }
+      );
+      const jsonResponse = await response.json();
+      expect(jsonResponse).toEqual({
+        auth: false,
+        message: "Failed to authenticate token."
+      });
+    });
+  }
+
+  updateInvestorWithNullToken() {
+    const requestBody = {
+      name: "Ahmad Hesham Mohammed",
+      gender: "male",
+      mail: "yeetyeet.com"
+    };
+    test("Updating the specified investor's info, providing a null token", async () => {
+      const response = await nfetch(
+        "http://localhost:3000/api/investors/" + this.sharedState.id,
+        {
+          method: "PUT",
+          body: JSON.stringify(requestBody),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      const jsonResponse = await response.json();
+      expect(jsonResponse).toEqual({
+        auth: false,
+        message: "No token provided."
+      });
+    });
+  }
+
+  viewCompaniesInvestorCorrectIdAndToken() {
+    test(`Displaying all established and unestablished companies of an investor providing the correct token`, async () => {
+      const response = await nfetch(
+        "http://localhost:3000/api/investors/View/ViewCompanies",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": this.sharedState.token
+          }
+        }
+      );
+      const jsonResponse = await response.json();
+      expect(Object.keys(jsonResponse)).toEqual(["msg", "data"]);
+    });
+  }
+
+  viewCompaniesInvestorWrongToken() {
+    test(`Displaying all established and unestablished companies of an investor providing the correct token`, async () => {
+      const response = await nfetch(
+        "http://localhost:3000/api/investors/View/ViewCompanies",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": "abcde"
+          }
+        }
+      );
+      const jsonResponse = await response.json();
+      expect(jsonResponse).toEqual({
+        auth: false,
+        message: "Failed to authenticate token."
+      });
+    });
+  }
+  //removed the token from the headers to make it null
+  viewCompaniesInvestorNullToken() {
+    test(`Displaying all established and unestablished companies of an investor provoding the correct token`, async () => {
+      const response = await nfetch(
+        "http://localhost:3000/api/investors/View/ViewCompanies",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      const jsonResponse = await response.json();
+      expect(jsonResponse).toEqual({
+        auth: false,
+        message: "No token provided."
+      });
     });
   }
 }
-
 module.exports = InvestorsTest;

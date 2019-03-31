@@ -125,6 +125,7 @@ router.put('/:id/MyRequests/:companyid/', async (req, res) => {
         .status(500)
         .send({ auth: false, message: 'Failed to authenticate' })
     }
+    
     const companyid = req.params.companyid
     console.log(companyid)
     const investor = await Investor.findById(id)
@@ -251,7 +252,7 @@ router.post('/register', async (req, res) => {
   res.json({ msg: 'Investor was created successfully', data: newInvestor })
 })
 
-router.put('/', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     var stat = 0
     var token = req.headers['x-access-token']
@@ -278,8 +279,15 @@ router.put('/', async (req, res) => {
         .status(400)
         .send({ error: isValidated.error.details[0].message })
     }
-    await Investor.findByIdAndUpdate(stat, req.body)
-    res.json({ msg: 'Investor updated successfully' })
+    if(stat === req.params.id)
+    {
+      await Investor.findByIdAndUpdate(stat, req.body)
+      res.json({ msg: 'Investor updated successfully' })
+    }
+    else
+    {
+      res.json({msg: "You do not have the authorization"});
+    }
   } catch (error) {
     // We will be handling the error later
     console.log(error)
@@ -597,10 +605,18 @@ router.post('/createssccompany', async (req, res) => {
 
 // s2
 router.post('/login', function (req, res) {
-  Investor.findOne({ email: req.body.email }, function (err, user) {
-    if (err) return res.status(500).send('Error on the server.')
-    if (!user) return res.status(404).send('No user found.')
-    // const admin = Admin.findOne({ email: req.body.email});
+  Investor.findOne({ mail: req.body.email }, function (err, user) {
+    if (err) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Server error.' })
+    }
+    if (!user) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'No user found.' })
+    }
+    
     const loginPassword = req.body.password
     const userPassword = user.password
     const match = bcrypt.compareSync(loginPassword, userPassword)

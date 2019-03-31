@@ -519,8 +519,16 @@ router.put('/addcomment/:id/:companyId', async function (req, res) {
 // s2
 router.post('/login', function (req, res) {
   Reviewer.findOne({ email: req.body.email }, function (err, user) {
-    if (err) return res.status(500).send('Error on the server.')
-    if (!user) return res.status(404).send('No user found.')
+    if (err) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Server error' })
+    }
+    if (!user) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'No user found.' })
+    }
     // const admin = Admin.findOne({ email: req.body.email});
     const loginPassword = req.body.password
     const userPassword = user.password
