@@ -6,13 +6,14 @@ const lawyers = require('./routes/api/lawyer')
 const companies = require('./routes/api/company')
 const admins = require('./routes/api/admins')
 const investors = require('./routes/api/investors')
-
+const dotenv=require('dotenv')
+dotenv.config()
 // DB Config
 const db = require('./config/keys').mongoURI
 
 // Connect to mongo
 mongoose
-  .connect(db)
+  .connect(process.env.mongoURI)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.log(err))
 
