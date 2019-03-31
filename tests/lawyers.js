@@ -441,7 +441,7 @@ class LawyersTest{
       }
 
       lawyersViewEditableCompaniesThatIsNotHisCheckingBySsn () {
-        test(`Lawyer trying to view editable companies that are not his as he has a wrong token ,[=> GET${this.base_url}/editForm/:id`, async () => {
+        test(`Lawyer trying to view editable companies that are not his as he has a wrong Ssn ,[=> GET${this.base_url}/editForm/:id`, async () => {
           const response = await nfetch(`${this.base_url}/editForm/${this.sharedState.wrongsocialSecurityNumber}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', 'x-access-token': this.sharedState.token }
