@@ -117,10 +117,10 @@ const CompanySchema = new Schema({
     required: true
   },
   investorTelephone: {
-    type: Number
+    type: String
   },
   investorFax: {
-    type: Number
+    type: String
   },
   investorEmail: {
     type: String

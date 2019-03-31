@@ -387,12 +387,10 @@ router.put('/editForm/:id/:companyId', async function (req, res) {
     ]
   }
   const editableCompanies = await Company.findOne(query)
-
   var token = req.headers['x-access-token']
   if (!token) {
     return res.status(401).send({ auth: false, message: 'No token provided.' })
   }
-
   jwt.verify(token, config.secret, function (err, decoded) {
     if (err) {
       return res
@@ -401,7 +399,7 @@ router.put('/editForm/:id/:companyId', async function (req, res) {
     }
     stat = decoded.id
   })
-    if(!stat){
+  if(!stat){
       return res
       .status(500)
       .send({ auth: false, message: 'Failed to authenticate token.' })
@@ -642,8 +640,8 @@ router.get('/:id', async (req, res) => {
   const lawyer = await Lawyer.findById(id)
   res.send(lawyer)
 })
-//added :id to this method
-router.put('/:id', async (req, res) => {
+
+router.put('/', async (req, res) => {
   try {
     var stat = 0
     var token = req.headers['x-access-token']
@@ -670,15 +668,8 @@ router.put('/:id', async (req, res) => {
         .status(400)
         .send({ error: isValidated.error.details[0].message })
     }
-    if(stat === req.params.id)
-    {
-      await Lawyer.findByIdAndUpdate(stat, req.body)
-      res.json({ msg: 'Lawyer updated successfully' })
-    }
-    else
-    {
-      return res.json({msg: 'You do not have the authorization'});
-    }
+    await Lawyer.findByIdAndUpdate(stat, req.body)
+    res.json({ msg: 'Lawyer updated successfully' })
   } catch (error) {
     // We will be handling the error later
     console.log(error)
@@ -725,7 +716,6 @@ router.get('/editForm/:id', async function (req, res) {
   if (!token) {
     return res.status(401).send({ auth: false, message: 'No token provided.' })
   }
-
   jwt.verify(token, config.secret, function (err, decoded) {
     if (err) {
       return res
@@ -743,7 +733,7 @@ router.get('/editForm/:id', async function (req, res) {
       else{
         res.json({ data: editableCompanies })
       }
-      
+
     }
     else{
       res.json({ auth: false, message: 'Failed to authenticate token.' })
@@ -754,7 +744,7 @@ router.get('/editForm/:id', async function (req, res) {
 router.put('/addcomment/:id/:companyId', async function (req, res) {
   var lawyerId = req.params.id
   var companyId = req.params.companyId
-  const query = {
+ try{ const query = {
     $and: [
       { status: 'RejectedLawyer' },
       { lawyer: lawyerId },
@@ -790,6 +780,9 @@ router.put('/addcomment/:id/:companyId', async function (req, res) {
     })
     res.json({ msg: 'Comment added Successfully' })
   }
+}catch(error){
+  res.json({ err:'error occured' })
+}
 })
 
 router.get('/:id/:companyID/viewFees', async (req, res) => {
@@ -933,5 +926,36 @@ router.get('/mycases/:id', async (req, res) => {
   }
 })
 
-
+router.get('/mycases/:id', async (req, res) => {
+  try {
+    var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first.' })
+    }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+    const lawyers = await Lawyer.findById(stat)
+    if (!lawyers) {
+      return res.status(400).send({ error: 'You are not a Lawyer' })
+    }
+    if (stat === req.params.id) {
+      const lawyer = await Lawyer.findById(req.params.id)
+      const company = await Company.find()
+      if (company.lawyer === lawyer.socialSecurityNumber) {
+        return res.json({ data: company })
+      }
+    } else return res.status(400).send({ error: 'Wrong ID' })
+  } catch (error) {
+    console.log(error)
+  }
+})
 module.exports = router
