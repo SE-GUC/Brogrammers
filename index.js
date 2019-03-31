@@ -20,7 +20,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 app.get('/', (req, res) => {
-  res.send(`<h1>Welcome to GAFI</h1>
+  res.send(`<h1>Welcome to GAFI (Jest saying we added tests)</h1>
     <a href="/api/company">Companies</a> </br>
     <a href ="/api/reviewer">Reviewers</a> </br>
     <a href="/api/lawyer">Lawyers</a> </br>
