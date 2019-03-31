@@ -56,7 +56,11 @@ class ReviewersTest{
               this.updateReviewerWithWrongId(),
               this.updateReviewerWithWrongToken(),
               this.updateReviewerWithNullToken(),
-              this.DeleteAReviewerLoggedIn()
+              this.DeleteAReviewerLoggedIn(),
+              this.reviewerAddingCommentWithWrongCompanyId(),
+              this.reviewerAddingCommentWithWrongCompanyIdAndIdAndToken(),
+              this.reviewerAddingCommentWithWrongid(),
+              this.reviewerAddingCommentWithWrongtoken()
             })
             resolve()
           })
@@ -557,6 +561,107 @@ class ReviewersTest{
           expect(jsonResponse).toEqual({ auth: false, message: "Please login first." });
         })
       }
+      
+//try w catch
+reviewerAddingCommentWithWrongCompanyIdAndIdAndToken(){
+  const requestBody = {
+    lawyerComment: 'The Investor need to pay the full fees to resume company'
+  };
+  test(`Adding a reviewer comment to a company but with wrong token ,reviewer id and company id`, async () => {
+    const response = await nfetch(
+      "http://localhost:3000/api/reviewer/addcomment/nvnvn/hahya",
+      {
+        method: "PUT",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": "5444j"
+        }
+      }
+    );
+      const jsonResponse = await response.json()
+    // check if the json response has data not error
+     expect(jsonResponse).toEqual({
+      err: 'error occured' 
+    })     
+  })
+}
+
+
+
+reviewerAddingCommentWithWrongCompanyId(){
+  const requestBody = {
+    reviewerComment: 'The Investor need to pay the full fees to resume company'
+  };
+  test(`Adding a reviewer comment to a company but with wrong company id`, async () => {
+    const response = await nfetch(
+      `http://localhost:3000/api/reviewer/addcomment/${this.sharedState.id}/hahya`,
+      {
+        method: "PUT",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": this.sharedState.token
+        }
+      }
+    );
+      const jsonResponse = await response.json()
+    // check if the json response has data not error
+     expect(jsonResponse).toEqual({
+      err: 'error occured' 
+    })     
+  })
+}
+
+
+reviewerAddingCommentWithWrongtoken(){
+  const requestBody = {
+    reviewerComment: 'The Investor need to pay the full fees to resume company'
+  };
+  test(`Adding a reviewer comment to a company but with wrong token`, async () => {
+    const response = await nfetch(
+      `http://localhost:3000/api/reviewer/addcomment/${this.sharedState.id}/${this.sharedState.companyid}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token":"jajd"
+        }
+      }
+    );
+      const jsonResponse = await response.json()
+    // check if the json response has data not error
+     expect(jsonResponse).toEqual({
+      err: 'error occured' 
+    })     
+  })
+}
+
+reviewerAddingCommentWithWrongid(){
+  const requestBody = {
+    reviewerComment: 'The Investor need to pay the full fees to resume company'
+  };
+  test(`Adding a reviewer comment to a company but with wrong reviewer id`, async () => {
+    const response = await nfetch(
+      `http://localhost:3000/api/reviewer/addcomment/hahya/${this.sharedState.companyid}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": this.sharedState.token
+        }
+      }
+    );
+      const jsonResponse = await response.json()
+    // check if the json response has data not error
+     expect(jsonResponse).toEqual({
+      err: 'error occured' 
+    })     
+  })
+}
+
     }
     
 module.exports = ReviewersTest

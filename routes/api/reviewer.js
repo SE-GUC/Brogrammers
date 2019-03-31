@@ -484,7 +484,8 @@ router.delete("/:id", async (req, res) => {
 router.put("/addcomment/:id/:companyId", async function(req, res) {
   var reviewerId = req.params.id;
   var companyId = req.params.companyId;
-  const query = {
+  try{
+    const query = {
     $and: [
       { status: "RejectedReviewer" },
       { reviewer: reviewerId },
@@ -521,6 +522,9 @@ router.put("/addcomment/:id/:companyId", async function(req, res) {
     });
     res.json({ msg: "Comment added Successfully" });
   }
+}catch(error){
+  res.json({ err: "error occured" });
+}
 });
 
 // s2
