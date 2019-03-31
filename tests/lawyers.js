@@ -114,7 +114,21 @@ class LawyersTest {
                         this.lawyersEdittForumWithoutLogin(),
                         this.lawyersEditForumWrongSsn(),
                         this.lawyersEditForumWrongCompanyId(),
-                        this.lawyersEditForumWrongSsnAndCompanyId()
+                        this.lawyersEditForumWrongSsnAndCompanyId(),
+
+
+
+
+
+
+
+
+                        this.deletingLawyerWithcorruptedAdminTokenandCorrectLawyerID(),
+                        this.deletingLawyerWithAdminTokenandNOLawyerID(),
+                        this.deletingLawyerWithWorngTokenandLawyerID(),
+                        this.deletingLawyerWithNoAdminTokenandCorrectLawyerID(),
+                        this.deletingLawyerWithAdminTokenandCorrectLawyerID()
+
                     })
 
                 resolve();
@@ -1882,6 +1896,104 @@ class LawyersTest {
         })
     }
     
+
+
+
+    
+   deletingLawyerWithAdminTokenandCorrectLawyerID()
+   {
+    test(` Deleting a valid lawyer with correct admin token,\t\t[=> DELETE ${this.base_url}\:id`, async () => {
+        const response = await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}`, {
+          method: 'DELETE',
+         
+          headers: { 'Content-Type': 'application/json' ,
+           'x-access-token': this.sharedState.adminToken}
+        })
+        const jsonResponse = await response.json()
+    
+              // check if the json response has data not error
+             expect(jsonResponse).toEqual(  {msg: 'Lawyer deleted successfully' }           )
+    
+    
+    
+       })
+   }
+
+   deletingLawyerWithNoAdminTokenandCorrectLawyerID()
+   {
+    test(` Deleting a valid lawyer with no admin token,\t\t[=> DELETE ${this.base_url}\:id`, async () => {
+        const response = await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}`, {
+          method: 'DELETE',
+         
+          headers: { 'Content-Type': 'application/json' }
+        })
+        const jsonResponse = await response.json()
+    
+              // check if the json response has data not error
+             expect(jsonResponse).toEqual(  { auth: false, message: 'Please login first.' }           )
+    
+    
+    
+       })
+   }
+
+   
+   deletingLawyerWithcorruptedAdminTokenandCorrectLawyerID()
+   {
+    test(` Deleting a valid lawyer with corrputed admin token,\t\t[=> DELETE ${this.base_url}\:id`, async () => {
+        const response = await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}`, {
+          method: 'DELETE',
+         
+          headers: { 'Content-Type': 'application/json' ,
+          'x-access-token': "asldfkj;saldfj"}
+        })
+        const jsonResponse = await response.json()
+    
+              // check if the json response has data not error
+             expect(jsonResponse).toEqual(  { auth: false, message: 'Failed to authenticate token.' }           )
+    
+    
+    
+       })
+   }
+
+   deletingLawyerWithAdminTokenandNOLawyerID()
+   {
+    test(`Deleting a invalid lawyer with  admin token,\t\t[=> DELETE ${this.base_url}\:id`, async () => {
+        const response = await nfetch(`http://localhost:3000/api/lawyer/5c93edd75c231e4f2c79e9b4`, {
+          method: 'DELETE',
+        
+          headers: { 'Content-Type': 'application/json' ,
+          'x-access-token': this.sharedState.adminToken}
+        })
+        const jsonResponse = await response.json()
+    
+              // check if the json response has data not error
+             expect(jsonResponse).toEqual(  { msg: 'Lawyer does not exist'  }           )
+    
+    
+    
+       })
+   }
+
+   deletingLawyerWithWorngTokenandLawyerID()
+   {
+    test(`Deleting a valid lawyer with wrong token,\t\t[=> DELETE ${this.base_url}\:id`, async () => {
+        const response = await nfetch(`http://localhost:3000/api/lawyer/${this.sharedState.id}`, {
+          method: 'DELETE',
+         
+          headers: { 'Content-Type': 'application/json' ,
+          'x-access-token': this.sharedState.wrongToken}
+        })
+        const jsonResponse = await response.json()
+    
+              // check if the json response has data not error
+             expect(jsonResponse).toEqual(  { message: 'You do not have the authorization.'  }           )
+    
+    
+    
+       })
+   }
 
 }
 
