@@ -1,28 +1,3 @@
-// class investorTest {
-//   constructor(PORT, ROUTE) {
-//     this.base_url = `http://localhost:${PORT}/api/${ROUTE}`;
-//     this.sharedState = {
-//       token:
-//         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOWQyN2E2OTdmNjgzZTU2YzM2ZTQ0ZiIsImlhdCI6MTU1MzgwMzE3NSwiZXhwIjoxNTUzODg5NTc1fQ.6C42vAc4c5UeNdSNyGVvq0j_BrMGPpgvtlha1hEU3sw",
-//       id: "5c9d27a697f683e56c36e44f",
-//       name: null,
-//       type: null,
-//       gender: null,
-//       nationality: null,
-//       idType: null,
-//       idNumber: "123456789",
-//       dob: null,
-//       address: null,
-//       telephone: null,
-//       fax: null,
-//       mai: null,
-//       password: null
-//     };
-
-//   }
-// }
-
-// module.exports = investorTest;
 const nfetch = require("node-fetch");
 const Company = require("../models/Company");
 const Investor = require("../models/Investor");
