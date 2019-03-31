@@ -713,7 +713,7 @@ router.get('/editForm/:id', async function (req, res) {
 router.put('/addcomment/:id/:companyId', async function (req, res) {
   var lawyerId = req.params.id
   var companyId = req.params.companyId
-  const query = {
+ try{ const query = {
     $and: [
       { status: 'RejectedLawyer' },
       { lawyer: lawyerId },
@@ -749,6 +749,9 @@ router.put('/addcomment/:id/:companyId', async function (req, res) {
     })
     res.json({ msg: 'Comment added Successfully' })
   }
+}catch(error){
+  res.json({ err:'error occured' })
+}
 })
 
 router.get('/:id/:companyID/viewFees', async (req, res) => {

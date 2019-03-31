@@ -67,7 +67,12 @@ class LawyersTest {
                         this.lawyersViewFeesWrongID(),
                         this.lawyersResubmitForum(),
                         this.lawyersResubmitForumWithoutLogin(),
-                        this.lawyersResubmitForumWrongID()
+                        this.lawyersResubmitForumWrongID(),
+                        this.lawyerAddingCommentWithWrongCompanyId(),
+                        this.lawyerAddingCommentWithWrongCompanyIdAndIdAndToken(),
+                        this.lawyerAddingCommentWithWrongid(),
+                        this.lawyerAddingCommentWithWrongtoken()
+
                 })
                 resolve()
             })
@@ -87,7 +92,8 @@ class LawyersTest {
                         this.lawyerCreateCompanySPCNotLoggedIn(),
                         this.lawyerCreateCompanySPCCorruptToken(),
                         this.lawyerCreateCompanySPCNotLoggedInAsLawyer(),
-                        this.lawyerCreateCompanySPCInvalidCompanyOrInvestorFields()
+                        this.lawyerCreateCompanySPCInvalidCompanyOrInvestorFields(),
+                        this.lawyerAddingCommentCorrectly()
                 })
 
                 resolve();
@@ -159,6 +165,7 @@ class LawyersTest {
             expect(company.investorTelephone).toEqual(requestBody.investorTelephone)
             expect(company.investorFax).toEqual(requestBody.investorFax)
             expect(company.investorEmail).toEqual(requestBody.investorEmail)
+            this.sharedState.companyId=company.id
         })
     }
 
@@ -389,6 +396,7 @@ class LawyersTest {
             expect(company.investorTelephone).toEqual(requestBody.investorTelephone)
             expect(company.investorFax).toEqual(requestBody.investorFax)
             expect(company.investorEmail).toEqual(requestBody.investorEmail)
+            this.sharedState.companyId=company.id
         })
     }
 
@@ -1186,6 +1194,135 @@ class LawyersTest {
             expect(Object.keys(jsonResponse)).toEqual(["auth", "message"])
         })
     }
+//try w catch
+//try w catch
+lawyerAddingCommentWithWrongCompanyIdAndIdAndToken(){
+    const requestBody = {
+      lawyerComment: 'The Investor need to pay the full fees to resume company'
+    };
+    test(`Adding a lawyer comment to a company but with wrong token ,lawyer id and company id`, async () => {
+      const response = await nfetch(
+        "http://localhost:3000/api/lawyer/addcomment/nvnvn/hahya",
+        {
+          method: "PUT",
+          body: JSON.stringify(requestBody),
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": "5444j"
+          }
+        }
+      );
+        const jsonResponse = await response.json()
+      // check if the json response has data not error
+       expect(jsonResponse).toEqual({
+        err: 'error occured' 
+      })     
+    })
+  }
+
+
+
+  lawyerAddingCommentWithWrongCompanyId(){
+    const requestBody = {
+      lawyerComment: 'The Investor need to pay the full fees to resume company'
+    };
+    test(`Adding a lawyer comment to a company but with wrong company id`, async () => {
+      const response = await nfetch(
+        `http://localhost:3000/api/lawyer/addcomment/${this.sharedState.id}/hahya`,
+        {
+          method: "PUT",
+          body: JSON.stringify(requestBody),
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": this.sharedState.token
+          }
+        }
+      );
+        const jsonResponse = await response.json()
+      // check if the json response has data not error
+       expect(jsonResponse).toEqual({
+        err: 'error occured' 
+      })     
+    })
+  }
+
+
+  lawyerAddingCommentWithWrongtoken(){
+    const requestBody = {
+      lawyerComment: 'The Investor need to pay the full fees to resume company'
+    };
+    test(`Adding a lawyer comment to a company but with wrong token`, async () => {
+      const response = await nfetch(
+        `http://localhost:3000/api/lawyer/addcomment/${this.sharedState.id}/${this.sharedState.companyid}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(requestBody),
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token":"jajd"
+          }
+        }
+      );
+        const jsonResponse = await response.json()
+      // check if the json response has data not error
+       expect(jsonResponse).toEqual({
+        err: 'error occured' 
+      })     
+    })
+  }
+
+  lawyerAddingCommentWithWrongid(){
+    const requestBody = {
+      lawyerComment: 'The Investor need to pay the full fees to resume company'
+    };
+    test(`Adding a lawyer comment to a company but with wrong lawyer id`, async () => {
+      const response = await nfetch(
+        `http://localhost:3000/api/lawyer/addcomment/hahya/${this.sharedState.companyid}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(requestBody),
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": this.sharedState.token
+          }
+        }
+      );
+        const jsonResponse = await response.json()
+      // check if the json response has data not error
+       expect(jsonResponse).toEqual({
+        err: 'error occured' 
+      })     
+    })
+  }
+
+  lawyerAddingCommentCorrectly(){
+    const requestBody = {
+      lawyerComment: 'The Investor need to pay the full fees to resume company'
+    };
+    test(`Adding a lawyer comment to a company`, async () => {
+      const response = await nfetch(
+        `http://localhost:3000/api/lawyer/addcomment/${this.sharedState.id}/${this.sharedState.companyId}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(requestBody),
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": this.sharedState.token
+          }
+        }
+      );
+        const jsonResponse = await response.json()
+      // check if the json response has data not error
+       expect(jsonResponse).toEqual({
+        msg: 'Comment added Successfully' })
+        const company = await Company.findById(this.sharedState.companyId)
+    expect(company.lawyerComment).toEqual(requestBody.lawyerComment)    
+
+    })
+   
+  }
+  
+
 }
 
 module.exports = LawyersTest
