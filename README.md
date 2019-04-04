@@ -2,7 +2,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 npm install @material-ui/core
 
+npm audit fix
+
 npm install @material-ui/icons
+
+npm audit fix
 
 ## Available Scripts
 
