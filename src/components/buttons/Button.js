@@ -20,11 +20,12 @@ function ContainedButtons(props) {
   return (
     <div>
      
-      <Button variant="contained" color="secondary" className={classes.button}   onClick={() => { console.log('onClick'); }} >
+      <Button variant="contained" color="secondary" className={classes.button}   onClick={() => { console.log('onClick'); }}  >
         Take Task
+      
       </Button>
     
-      <input
+      {/* <input
         accept="image/*"
         className={classes.input}
         id="contained-button-file"
@@ -35,7 +36,7 @@ function ContainedButtons(props) {
         <Button variant="contained" component="span" className={classes.button}>
           Upload
         </Button>
-      </label>
+      </label> */}
     </div>
   );
 }
