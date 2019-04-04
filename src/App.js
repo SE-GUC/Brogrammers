@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import './App.css';
 import Navbar from  './components/layout/Navbar';
 import Buttons from './components/buttons/Button'
+import Signin from './components/signin/Signin'
+
 class App extends Component {
 
   state={
@@ -30,14 +32,11 @@ companys:
    
     return (
       <div>
-<Navbar/>
-<Buttons lawyers={this.state.lawyers}></Buttons>
-
-
-
+        <Navbar/>,
+    <Signin/>,
+    <Buttons></Buttons>
       </div>
     
-
      
     );
   }
