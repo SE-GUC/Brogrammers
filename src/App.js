@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 
 import './App.css';
 import Navbar from  './components/layout/Navbar';
+import Register from  './components/pages/Register';
+import 'typeface-roboto';
+import Input from  './components/layout/inputs/Input';
 import Buttons from './components/buttons/Button'
 import Signin from './components/signin/Signin'
 import axios from 'axios';
@@ -75,8 +78,11 @@ getDemLawyers(){
    }
 else{
     return (
+      <React.Fragment>
+    <Navbar/>
+    <Register/>
+    
       <div>
-        <Navbar/>,
     <Signin/>,
     <Buttons getLawyers={this.getLawyers}  ></Buttons>
    <ul>
@@ -90,7 +96,7 @@ else{
      ))};
      </ul>
       </div>
-    
+      </React.Fragment>
      
     );
   }
