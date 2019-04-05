@@ -4,7 +4,7 @@ import './App.css';
 import Navbar from  './components/layout/Navbar';
 import Buttons from './components/buttons/Button'
 import Signin from './components/signin/Signin'
-
+import axios from 'axios';
 class App extends Component {
 
 constructor(props){
@@ -41,12 +41,32 @@ componentDidMount(){
   })
 }
 
+getDemLawyers(){
+  fetch('http://localhost:3000/api/lawyer')
+  .then(res => res.json)
+  .then(law =>{
+    this.setState({
+      isLoaded:true,
+      test:law
+    })
+  })
+}
+
+ getLawyers =async()=> {
+  
+  const api_call= await fetch('https://jsonplaceholder.typicode.com/users');
+  const data=await api_call.json();
+  console.log(data)
+}
 
 
 
 
 
   render() {
+   
+  
+    
 
    var {isLoaded,test}=this.state
 
@@ -58,7 +78,7 @@ else{
       <div>
         <Navbar/>,
     <Signin/>,
-    <Buttons lawyers={this.state.lawyers}></Buttons>
+    <Buttons getLawyers={this.getLawyers}  ></Buttons>
    <ul>
 
      {test.map(hi=>(
