@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-
 # Endpoints
 
 - /api/investors/register
@@ -381,6 +378,8 @@
 =======
 =======
 >>>>>>> dd7c1e6db793905c3fa7a3cdd9c7383c66fe3707
+=======
+>>>>>>> dd7c1e6db793905c3fa7a3cdd9c7383c66fe3707
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 npm install @material-ui/core
@@ -457,7 +456,3 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
-<<<<<<< HEAD
->>>>>>> 41a98c7681b0562bb3abfaee452e2554c4837c3b
-=======
->>>>>>> dd7c1e6db793905c3fa7a3cdd9c7383c66fe3707
