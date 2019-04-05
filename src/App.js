@@ -9,7 +9,7 @@ import Buttons from './components/buttons/Button'
 import Signin from './components/signin/Signin'
 import axios from 'axios';
 import InvestorCompanyReg from './components/pages/InvestorCompanyReg'
-
+import CaseCard from './components/cards/CaseCard'
 
 class App extends Component {
 
@@ -17,7 +17,7 @@ constructor(props){
   super(props);
   this.state={
     test:[],
-    lawyers: [],
+    lawyerCases:[],
 companys:[],
 isLoaded:false
 
@@ -37,9 +37,9 @@ fetchCompanies(){
       
       
     })
-    console.log(this.state.companys)
-    const CC=this.state.companys
-    console.log(CC)
+    // console.log(this.state.companys)
+    // const CC=this.state.companys
+    // console.log(CC)
   
   
   })
@@ -47,19 +47,19 @@ fetchCompanies(){
 }
 
 
-fetchLawyers(){
-  fetch('http://localhost:3000/api/lawyer',{
+fetchLawyerCases(){
+  fetch('http://localhost:3000/api/lawyer/getall/cases',{
     headers: new Headers({
-      'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjYTY0ZjE3NzdhNWU2MjM5NDI4YjYyNSIsImlhdCI6MTU1NDQwMzA5NSwiZXhwIjoxNTU0NDg5NDk1fQ.1gjeXMxaEcrHUbqoIb0Q8e0-a-KN9E9UDwb9U0qGKqg'
-     // i dont know how to get this token again once it expires right now but in later sprints it will be implemented when the logging in method changes
+      'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjYTc2NzcwNjBmYjlhMzU3MDg1NDEzMSIsImlhdCI6MTU1NDQ3NDg2NCwiZXhwIjoxNTU0NTYxMjY0fQ.ohZaa1j6szCPY6ycIuiyc3kWL_aplpMEXv91Gcs4Oao'
+     // i dont know how to get this token again once it expires right now but in later sprints it will be implemented when the logging in methods are finilazied
     })
   })
   .then(res=> res.json())
   .then(json=>{
     this.setState({
-      lawyers:json
+      lawyerCases:json
     })
-    console.log(this.state.lawyers)
+    console.log(this.state.lawyerCases)
     
   })
 }
@@ -68,35 +68,17 @@ fetchLawyers(){
 
 componentDidMount(){
 this.fetchCompanies()
-this.fetchLawyers()
+this.fetchLawyerCases()
 
 }
 
-// getDemLawyers(){
-//   fetch('http://localhost:3000/api/lawyer')
-//   .then(res => res.json)
-//   .then(law =>{
-//     this.setState({
-//       isLoaded:true,
-//       test:law
-//     })
-//   })
-// }
-
-//  getLawyers =async()=> {
-  
-//   const api_call= await fetch('https://jsonplaceholder.typicode.com/users');
-//   const data=await api_call.json();
-//   console.log(data)
-// }
-
-// let companys=this.state.companys.map((company)=>{
-//   console.log("hi")
-//    })
 
 
   render() {
  
+   
+
+
 
    var {isLoaded,test}=this.state
 
@@ -104,6 +86,8 @@ this.fetchLawyers()
      return <div>Loading...</div>;
    }
 else{
+
+ 
   
     return (
       <React.Fragment>
@@ -114,7 +98,32 @@ else{
     <Signin/>,
     <Buttons ></Buttons>
     
+
+
+    {this.state.lawyerCases.map((comp,i) =>
+  <ul>
+    <p>nameInEnglish: {comp.nameInEnglish}</p>
+  <li>
+  
+  {comp.nameInArabic}
+  {comp.status}
+  
+  
+  </li>
+  </ul>
+)
+
+}
+
    
+    {/* <ul>
+          {this.state.companys.map(item1 => (
+            <li key={item1}>{item1}</li>
+          ))}
+        </ul> */}
+
+
+
 <ul>
 <li > 
  <p>hihihihhi</p>
