@@ -24,6 +24,7 @@ const styles = theme => ({
 
 class Required extends React.Component{
 
+  
 
 render() {
     const { classes } = this.props;
@@ -32,11 +33,13 @@ render() {
  <TextField
  required
  id="outlined-required"
+ name={this.props.name}
  label={this.props.field}
  className={classes.textField}
  margin="normal"
  variant="outlined"
  type={this.props.type}
+ onChange={this.props.callBack}
 />
 <br/>
 </React.Fragment>

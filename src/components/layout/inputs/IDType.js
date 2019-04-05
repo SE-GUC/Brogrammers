@@ -27,6 +27,7 @@ class IDType extends React.Component {
 
   handleChange = event => {
     this.setState({ value: event.target.value });
+    this.props.callBack(event)
   };
 
   render() {
@@ -38,7 +39,7 @@ class IDType extends React.Component {
           <FormLabel component="legend">Identification Type</FormLabel>
           <RadioGroup
             aria-label="Identification Type"
-            name="ID"
+            name="idType"
             className={classes.group}
             value={this.state.value}
             onChange={this.handleChange}

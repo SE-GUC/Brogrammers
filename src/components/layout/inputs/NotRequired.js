@@ -36,6 +36,8 @@ render() {
  margin="normal"
  variant="outlined"
  type={this.props.type}
+ onChange={this.props.callBack}
+ name={this.props.name}
 />
 <br/>
 </React.Fragment>

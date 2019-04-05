@@ -41,25 +41,22 @@ const styles = theme => ({
     backgroundColor: theme.palette.primary.main,
   },
 });
-class Register extends React.Component{
+class RegisterLawyer extends React.Component{
   constructor(props) {
     super(props);
 
     this.state = {
       investor: {
-        name: '',
-        mail: '',
-        type: '',
+        firstName: '',
+        middleName: '',
+        lastName: '',
+        email: '',
+        socialSecurityNumber: '',
         password: '',
-        gender: 'male',
-        nationality: 'Egypt',
-        idType: 'National ID',
-        idNumber: '',
-        dob:'',
-        address:'',
-        telephone:'',
-        fax:'',
-
+        birthDate:'',
+        yearsOfExperience:'',
+        salary:'',
+        mobileNumber:'',
       },
 
 
@@ -73,7 +70,7 @@ handleRegister(e){
     e.preventDefault();
     let userData = this.state.investor;
 console.log("abc")
-    fetch('http://localhost:3000/api/investors/register',{
+    fetch('http://localhost:3000/api/lawyer/register',{
         method: "POST",
         body: JSON.stringify(userData),
         headers: {
@@ -123,20 +120,16 @@ console.log("abc")
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-     <Required name= 'name' field={'Full Name'} type='text' callBack={this.handleInput}/>
-     <Required name= 'mail' field={'Email'} type='email' callBack={this.handleInput}/>
-     <Required name= 'password' field={'Password'} type='password' callBack={this.handleInput}/>
-     <Required name='type' field={'Investor Type'} type='text' callBack={this.handleInput}/>
-     <Gender name='gender' callBack={this.handleInput}/>
-     <Date name= 'dob' callBack={this.handleDate}/>
-     <IDType name = 'idType' callBack={this.handleInput}/>
-     <Required name = 'idNumber' field={'ID Number'} type='text' callBack={this.handleInput}/>
-     <Required name='address' field={'Address'} type='text' callBack={this.handleInput}/>
-     <Required name='telephone' field={'Telephone'} type='text' callBack={this.handleInput}/>
-     <NotRequired name='fax' field={'Fax'} type='text' callBack={this.handleInput}/>
-
-
-     <Country callBack={this.handleInput}/>
+     <Required name= 'firstName' field={'First Name'} type='text' callBack={this.handleInput}/>
+     <Required name= 'middleName' field={'Middle Name'} type='text' callBack={this.handleInput}/>
+     <Required name= 'lastName' field={'Last Name'} type='text' callBack={this.handleInput}/>
+     <Required name='email' field={'Email'} type='email' callBack={this.handleInput}/>
+     <Required name= 'password' field={'Password'} type='password' callBack={this.handleInput}/>     
+     <Required name = 'salary' field={'Salary'} type='number' callBack={this.handleInput}/>
+     <Required name='yearsOfExperience' field={'Years Of Experience'} type='number' callBack={this.handleInput}/>
+     <Required name='socialSecurityNumber' field={'Social Security Number'} type='text' callBack={this.handleInput}/>
+     <Required name='mobileNumber' field={'Phone Number'} type='text' callBack={this.handleInput}/>
+     <Date name= 'birthDate' callBack={this.handleDate}/>
      <AlertDialogSlide handleRegister={this.handleRegister}/>
     </Paper>
     </main>
@@ -147,4 +140,4 @@ console.log("abc")
 }
 
 }
-export default withStyles(styles)(Register);
+export default withStyles(styles)(RegisterLawyer);

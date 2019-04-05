@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 import Navbar from  './components/layout/Navbar';
 import Register from  './components/pages/Register';
+import RegisterLawyer from  './components/pages/RegisterLawyer';
+import RegisterReviewer from  './components/pages/RegisterReviewer';
 import 'typeface-roboto';
 import Input from  './components/layout/inputs/Input';
 import Buttons from './components/buttons/Button'
@@ -60,9 +62,18 @@ componentDidMount(){
    }
 else{
     return (
+      <Router>
       <React.Fragment>
     <Navbar/>
-    <Register/>
+    <Route exact path="/register" render={props => (
+               <Register/>
+            )} />
+    <Route exact path="/admin/register-lawyer" render={props => (
+               <RegisterLawyer/>
+            )} />
+             <Route exact path="/admin/register-reviewer" render={props => (
+               <RegisterReviewer/>
+            )} />
     <InvestorCompanyReg/>
       <div>
     <Signin/>,
@@ -79,7 +90,7 @@ else{
      </ul>
       </div>
       </React.Fragment>
-     
+      </Router>
     );
   }
 }
