@@ -68,11 +68,11 @@ fetchLawyerCases(){
 
 
 
-componentDidMount(){
-this.fetchCompanies()
-this.fetchLawyerCases()
+//componentDidMount(){
+//this.fetchCompanies()
+//this.fetchLawyerCases()
 
-}
+//}
 
 
 
@@ -82,12 +82,7 @@ this.fetchLawyerCases()
 
 
 
-   var {isLoaded,test}=this.state
 
-   if(!isLoaded){
-     return <div>Loading...</div>;
-   }
-else{
 
  
   
@@ -101,7 +96,7 @@ else{
     <Route exact path="/admin/register-lawyer" render={props => (
                <RegisterLawyer/>
             )} />
-             <Route exact path="/admin/register-reviewer" render={props => (
+    <Route exact path="/admin/register-reviewer" render={props => (
                <RegisterReviewer/>
             )} />
     <InvestorCompanyReg/>
@@ -111,20 +106,6 @@ else{
     
 
 
-    {this.state.lawyerCases.map((comp,i) =>
-  <ul>
-    <p>nameInEnglish: {comp.nameInEnglish}</p>
-  <li>
-  
-  {comp.nameInArabic}
-  {comp.status}
-  
-  
-  </li>
-  </ul>
-)
-
-}
 
    
     {/* <ul>
@@ -153,7 +134,6 @@ else{
       </Router>
     );
   }
-}
 }
 
 export default App;
