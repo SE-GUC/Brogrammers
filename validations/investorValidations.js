@@ -4,7 +4,7 @@ module.exports = {
   createValidation: request => {
     const createSchema = {
       name: Joi.string().min(3).required(),
-      type: Joi.string().length(3).required(),
+      type: Joi.string().required(),
       gender: Joi.string().valid('male', 'female').required(),
       nationality: Joi.string().max(25).required(),
       idType: Joi.string().valid('Passport', 'National ID').required(),
@@ -23,7 +23,7 @@ module.exports = {
   updateValidation: request => {
     const updateSchema = {
       name: Joi.string().min(3),
-      type: Joi.string().length(3),
+      type: Joi.string(),
       gender: Joi.string().valid('male', 'female'),
       nationality: Joi.string().max(25),
       idType: Joi.string().valid('Passport', 'National ID'),

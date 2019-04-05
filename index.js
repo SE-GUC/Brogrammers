@@ -6,6 +6,9 @@ const lawyers = require('./routes/api/lawyer')
 const companies = require('./routes/api/company')
 const admins = require('./routes/api/admins')
 const investors = require('./routes/api/investors')
+const cors = require('cors')
+
+app.use(cors())
 
 // DB Config
 const db = require('./config/keys').mongoURI
