@@ -8,6 +8,9 @@ import Input from  './components/layout/inputs/Input';
 import Buttons from './components/buttons/Button'
 import Signin from './components/signin/Signin'
 import axios from 'axios';
+import InvestorCompanyReg from './components/pages/InvestorCompanyReg'
+
+
 class App extends Component {
 
 constructor(props){
@@ -106,7 +109,7 @@ else{
       <React.Fragment>
     <Navbar/>
     <Register/>
-    
+    <InvestorCompanyReg/>
       <div>
     <Signin/>,
     <Buttons ></Buttons>

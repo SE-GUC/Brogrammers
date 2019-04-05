@@ -22,7 +22,7 @@ const styles = theme => ({
     },
   });
 
-class Required extends React.Component{
+class NotRequired extends React.Component{
 
 
 render() {
@@ -30,7 +30,6 @@ render() {
     return(
 <React.Fragment>
  <TextField
- required
  id="outlined-required"
  label={this.props.field}
  className={classes.textField}
@@ -45,7 +44,7 @@ render() {
 
 
 }
-Required.propTypes = {
+NotRequired.propTypes = {
     classes: PropTypes.object.isRequired,
   };
-export default withStyles(styles)(Required);
+export default withStyles(styles)(NotRequired);
