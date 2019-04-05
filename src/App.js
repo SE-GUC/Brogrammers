@@ -14,62 +14,86 @@ constructor(props){
   super(props);
   this.state={
     test:[],
-    lawyers:
-    [
-    {
-      lawyerId:"5ca651d277a5e6239428b626"
-    }
-  ],
-companys:
-[
-  {
-    companyId:"5ca6558c77a5e6239428b62d"
-  }
-],
+    lawyers: [],
+companys:[],
 isLoaded:false
 
   }
 
 }
 
-
-componentDidMount(){
-  fetch('https://jsonplaceholder.typicode.com/users')
+fetchCompanies(){
+  fetch('http://localhost:3000/api/company')
   .then(res => res.json())
   .then(json =>{
+    
     this.setState({
       isLoaded:true,
-      test:json
+    
+      companys:json
+      
+      
     })
-  })
-}
-
-getDemLawyers(){
-  fetch('http://localhost:3000/api/lawyer')
-  .then(res => res.json)
-  .then(law =>{
-    this.setState({
-      isLoaded:true,
-      test:law
-    })
-  })
-}
-
- getLawyers =async()=> {
+    console.log(this.state.companys)
+    const CC=this.state.companys
+    console.log(CC)
   
-  const api_call= await fetch('https://jsonplaceholder.typicode.com/users');
-  const data=await api_call.json();
-  console.log(data)
+  
+  })
+  .catch(error => this.setState({ error, isLoading: false }));
+}
+
+
+fetchLawyers(){
+  fetch('http://localhost:3000/api/lawyer',{
+    headers: new Headers({
+      'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjYTY0ZjE3NzdhNWU2MjM5NDI4YjYyNSIsImlhdCI6MTU1NDQwMzA5NSwiZXhwIjoxNTU0NDg5NDk1fQ.1gjeXMxaEcrHUbqoIb0Q8e0-a-KN9E9UDwb9U0qGKqg'
+     // i dont know how to get this token again once it expires right now but in later sprints it will be implemented when the logging in method changes
+    })
+  })
+  .then(res=> res.json())
+  .then(json=>{
+    this.setState({
+      lawyers:json
+    })
+    console.log(this.state.lawyers)
+    
+  })
 }
 
 
 
+componentDidMount(){
+this.fetchCompanies()
+this.fetchLawyers()
+
+}
+
+// getDemLawyers(){
+//   fetch('http://localhost:3000/api/lawyer')
+//   .then(res => res.json)
+//   .then(law =>{
+//     this.setState({
+//       isLoaded:true,
+//       test:law
+//     })
+//   })
+// }
+
+//  getLawyers =async()=> {
+  
+//   const api_call= await fetch('https://jsonplaceholder.typicode.com/users');
+//   const data=await api_call.json();
+//   console.log(data)
+// }
+
+// let companys=this.state.companys.map((company)=>{
+//   console.log("hi")
+//    })
 
 
   render() {
-   
-  
-    
+ 
 
    var {isLoaded,test}=this.state
 
@@ -77,6 +101,7 @@ getDemLawyers(){
      return <div>Loading...</div>;
    }
 else{
+  
     return (
       <React.Fragment>
     <Navbar/>
@@ -84,17 +109,22 @@ else{
     
       <div>
     <Signin/>,
-    <Buttons getLawyers={this.getLawyers}  ></Buttons>
-   <ul>
-
-     {test.map(hi=>(
-<li key={hi.id}>
-{
- hi.name 
-}
+    <Buttons ></Buttons>
+    
+   
+<ul>
+<li > 
+ <p>hihihihhi</p>
 </li>
-     ))};
-     </ul>
+<li>
+<h1>Companies should be displayed here</h1>
+  
+
+     
+  </li>
+</ul>
+
+
       </div>
       </React.Fragment>
      

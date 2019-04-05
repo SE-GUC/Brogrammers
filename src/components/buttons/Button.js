@@ -32,8 +32,12 @@ function ContainedButtons(props) {
   return (
     <div>
      
-      <Button variant="contained" color="secondary" className={classes.button}   >
+      <Button variant="contained" color="secondary" className={classes.button}  >
         Take Task
+      
+      </Button>
+      <Button variant="contained" color="primary" className={classes.button}  >
+        Show Companies
       
       </Button>
     
