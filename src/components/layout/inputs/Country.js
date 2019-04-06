@@ -277,6 +277,8 @@ function renderInput(inputProps) {
       margin="normal"
       width= "400"
       required
+      name="country"
+      onChange={inputProps.callBack}
    //   type={this.props.type}
  
     />
