@@ -15,52 +15,53 @@ import CaseCard from "./components/cards/CaseCard";
 import EditProfileInvestor from "./components/pages/EditProfileInvestor";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      test: [],
-      lawyerCases: [],
-      companys: [],
-      isLoaded: false
-    };
+
+constructor(props){
+  super(props);
+  this.state={
+    test:[],
+    lawyerCases:[],
+companys:[],
+isLoaded:false,
+token:null,
+
   }
+  this.setToken = this.setToken.bind(this);
+}
 
-  fetchCompanies() {
-    fetch("http://localhost:3000/api/company")
-      .then(res => res.json())
-      .then(json => {
-        this.setState({
-          isLoaded: true,
-
-          companys: json
-        });
-        // console.log(this.state.companys)
-        // const CC=this.state.companys
-        // console.log(CC)
-      })
-      .catch(error => this.setState({ error, isLoading: false }));
-  }
-
-  fetchLawyerCases() {
-    fetch("http://localhost:3000/api/lawyer/getall/cases", {
-      headers: new Headers({
-        "x-access-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjYTc2NzcwNjBmYjlhMzU3MDg1NDEzMSIsImlhdCI6MTU1NDQ3NDg2NCwiZXhwIjoxNTU0NTYxMjY0fQ.ohZaa1j6szCPY6ycIuiyc3kWL_aplpMEXv91Gcs4Oao"
-        // i dont know how to get this token again once it expires right now but in later sprints it will be implemented when the logging in methods are finilazied
-      })
+fetchCompanies(){
+  fetch('http://localhost:3000/api/company')
+  .then(res => res.json())
+  .then(json =>{
+    
+    this.setState({
+      isLoaded:true,
+    
+      companys:json
+      
+      
     })
-      .then(res => res.json())
-      .then(json => {
-        this.setState({
-          lawyerCases: json
-        });
-        console.log(this.state.lawyerCases);
-      });
-  }
+    // console.log(this.state.companys)
+    // const CC=this.state.companys
+    // console.log(CC)
+  
+  
+  })
+  .catch(error => this.setState({ error, isLoading: false }));
+}
 
-  //componentDidMount(){
-  //this.fetchCompanies()
-  //this.fetchLawyerCases()
+
+
+
+//componentDidMount(){
+//this.fetchCompanies()
+//this.fetchLawyerCases()
+
+//}
+setToken(t){
+  this.setState({token:t})
+  console.log(this.state.token)
+}
 
   //}
 

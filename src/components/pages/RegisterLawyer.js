@@ -79,6 +79,7 @@ console.log("abc")
       }).then(response => {
         response.json().then(data =>{
           console.log("Successful" + data);
+          this.props.callBack(data.token)
         })
     }) 
 }
