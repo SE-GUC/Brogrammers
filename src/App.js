@@ -17,12 +17,16 @@ class App extends Component {
 
 constructor(props){
   super(props);
+  this.token=null;
+  this.auth=null;
   this.state={
     test:[],
     lawyerCases:[],
 companys:[],
 isLoaded:false,
 token:null,
+auth:false,
+type:'',
 
   }
   this.setToken = this.setToken.bind(this);
@@ -74,15 +78,17 @@ fetchLawyerCases(){
 //this.fetchLawyerCases()
 
 //}
-setToken(t){
-  this.setState({token:t})
-  console.log(this.state.token)
+setToken(t,a,type){
+  this.setState({token:t , auth:a,type:type})
+  sessionStorage.setItem('jwtToken', t);
+  sessionStorage.setItem('auth', a);
+  console.log(this.state.token+ " "+this.state.auth)
 }
 
 
   render() {
  
-  
+    console.log(this.state.token+ " "+this.state.auth)
     return (
       <Router>
       <React.Fragment>
@@ -90,15 +96,14 @@ setToken(t){
     <Route exact path="/register" render={props => (
                <Register callBack={this.setToken}/>
             )} />
-    <Route exact path="/admin/register-lawyer" render={props => (
-               <RegisterLawyer callBack={this.setToken}/>
-            )} />
-    <Route exact path="/admin/register-reviewer" render={props => (
+
+    <Route exact path="/admin/register-lawyer" component={()=>sessionStorage.getItem('auth')? <RegisterLawyer callBack={this.setToken}/> : <Signin/>} />
+    <Route exact path="/admin/register-reviewer" component={()=>sessionStorage.getItem('auth')?<RegisterReviewer callBack={this.setToken}/> : <Signin/>} />
+    <Route exact path="/admin/register-admin" render={props => (
                <RegisterReviewer callBack={this.setToken}/>
             )} />
     <InvestorCompanyReg/>
       <div>
-    <Signin/>,
     <Buttons ></Buttons>
     
 
