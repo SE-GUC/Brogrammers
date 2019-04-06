@@ -9,13 +9,14 @@ class investorRequests extends Component {
 
         this.state = {
             requests: [
-                { nameInEnglish: "Ahmed", status: "pending", nameInArabic:"انبسشش" },
-                { nameInEnglish: "Ahmed", status: "pending", nameInArabic:"انبسشش" },
-                { nameInEnglish: "Ahmed", status: "pending", nameInArabic:"انبسشش" },
-                { nameInEnglish: "Ahmed", status: "pending", nameInArabic:"انبسشش" },
-                { nameInEnglish: "m n", status: "rejected", nameInArabic:"انبسشش" },
-            { nameInEnglish: "morsdvsdvsvsvan", status: "accepted", nameInArabic:"ايريريرينبسشش" }],
-           
+                { nameInEnglish: "Ahmed", status: "pending", nameInArabic: "مرجان احمد مرجان" },
+                { nameInEnglish: "Salah Corp", status: "rejected", nameInArabic: "حمادة يلعب", regulationLaw: "ssss", nameIEnglish: "Salah Corp", tatus: "rejected", namInArabic: "حمادة يلعب", reguationLaw: "ssss", nmeInEnglish: "Salah Corp", ttus: "rejected", nameInrabic: "حمادة يلعب", reulationLaw: "ssss" },
+                { nameInEnglish: "Ahmed", status: "pending", nameInArabic: "ابو فواز" },
+                { nameInEnglish: "Ahmed", status: "pending", nameInArabic: "انبسشش" },
+                { nameInEnglish: "m n", status: "rejected", nameInArabic: "انبسشش" },
+                { nameInEnglish: "morsdvsdvsvsvan", status: "accepted", nameInArabic: "ايريريرينبسشش" }
+            ],
+
             isLoading: false,
             error: null,
         };
@@ -42,14 +43,17 @@ class investorRequests extends Component {
     render() {
         const { requests } = this.state;
         if (this.state.error) {
-            return <Snackbar message={this.state.error.message} />
+            return <Snackbar variant='error' message="Something went wrong!" />
+        }
+        if (this.state.requests.length === 0) {
+            return <Snackbar variant='warning' message="There are no requests" />
         }
         if (this.state.isLoading) {
             return <LinearDeterminate />
         }
         return (
-            <div style={{display: 'flex',justifyContent: 'center'}}>
-                <TitleBarGridList data={this.state.requests}/>
+            <div style={{ display: 'flex', flexFlow: 'row wrap', justifyContent: 'space-around' }}>
+                <TitleBarGridList data={this.state.requests} />
             </div>
         );
     }
