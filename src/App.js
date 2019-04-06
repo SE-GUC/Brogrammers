@@ -17,6 +17,8 @@ import EditProfileAdmin from "./components/pages/EditProfileAdmin";
 import EditProfileLawyer from "./components/pages/EditProfileLawyer";
 import EditProfileReviewer from "./components/pages/EditProfileReviewer";
 import InvestorRequests from "./components/pages/InvestorRequests";
+import LawyerComment from "./components/pages/LawyerComment";
+import ReviewerComment from "./components/pages/ReviewerComment";
 
 class App extends Component {
 
@@ -64,9 +66,43 @@ setToken(t,a,type){
 
     <Route exact path="/admin/register-lawyer" component={()=>sessionStorage.getItem('auth')? <RegisterLawyer callBack={this.setToken}/> : <Signin/>} />
     <Route exact path="/admin/register-reviewer" component={()=>sessionStorage.getItem('auth')?<RegisterReviewer callBack={this.setToken}/> : <Signin/>} />
-    <Route exact path="/admin/register-admin" render={props => (
-               <RegisterReviewer callBack={this.setToken}/>
-            )} />
+    <Route exact path="/admin/register-admin" render={props => (<RegisterReviewer callBack={this.setToken}/>)} />
+           <Route
+            exact
+            path="/editprofile/investor"
+            render={props => <EditProfileInvestor />}
+          />
+          <Route
+            exact
+            path="/editprofile/admin"
+            render={props => <EditProfileAdmin />}
+          />
+          <Route
+            exact
+            path="/editprofile/lawyer"
+            render={props => <EditProfileLawyer />}
+          />
+          <Route
+            exact
+            path="/addcomment/lawyer"
+            render={props => <LawyerComment />}
+          />
+            <Route
+            exact
+            path="/addcomment/reviewer"
+            render={props => <ReviewerComment />}
+          />
+
+          <Route
+            exact
+            path="/editprofile/reviewer"
+            render={props => <EditProfileReviewer />}
+          />
+          <Route
+            exact
+            path="/investor/:id/MyRequests"
+            render={props => <InvestorRequests/>}
+          />
     <InvestorCompanyReg/>
       <div>
     <Buttons ></Buttons>
