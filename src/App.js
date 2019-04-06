@@ -21,10 +21,11 @@ constructor(props){
     test:[],
     lawyerCases:[],
 companys:[],
-isLoaded:false
+isLoaded:false,
+token:null,
 
   }
-
+  this.setToken = this.setToken.bind(this);
 }
 
 fetchCompanies(){
@@ -73,17 +74,13 @@ fetchLawyerCases(){
 //this.fetchLawyerCases()
 
 //}
-
+setToken(t){
+  this.setState({token:t})
+  console.log(this.state.token)
+}
 
 
   render() {
- 
-   
-
-
-
-
-
  
   
     return (
@@ -91,13 +88,13 @@ fetchLawyerCases(){
       <React.Fragment>
     <Navbar/>
     <Route exact path="/register" render={props => (
-               <Register/>
+               <Register callBack={this.setToken}/>
             )} />
     <Route exact path="/admin/register-lawyer" render={props => (
-               <RegisterLawyer/>
+               <RegisterLawyer callBack={this.setToken}/>
             )} />
     <Route exact path="/admin/register-reviewer" render={props => (
-               <RegisterReviewer/>
+               <RegisterReviewer callBack={this.setToken}/>
             )} />
     <InvestorCompanyReg/>
       <div>
