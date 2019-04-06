@@ -1,18 +1,11 @@
 import React, { Component } from "react";
-import InputLabel from "@material-ui/core/InputLabel";
 import NotRequired from "../layout/inputs/NotRequired";
-import NotRequiredSmall from "../layout/inputs/NotRequiredSmall";
-import IDType from "../layout/inputs/IDType";
 import Gender from "../layout/inputs/Gender";
-import Country from "../layout/inputs/Country";
-import Date from "../layout/inputs/Date";
-
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import { Icon, Button } from "@material-ui/core";
-import BlueButton from "../layout/Buttons/BlueButton";
 import SaveChangesButton from "../layout/Dialogs/SaveChangesButton";
-import Cancel from "../layout/Dialogs/Cancel";
+import Date from "../layout/inputs/Date";
 
 const styles = theme => ({
   main: {
@@ -38,11 +31,11 @@ const styles = theme => ({
     margin: theme.spacing.unit,
     backgroundColor: theme.palette.primary.main
   },
-  checks: {
-    display: "flex"
+  cluster:{
+      display: 'flex'
   }
 });
-class EditProfileInvestor extends Component {
+class EditProfileReviewer extends Component {
   render() {
     const { classes } = this.props;
     return (
@@ -52,20 +45,18 @@ class EditProfileInvestor extends Component {
             add_circle
           </Icon>
           <h2>Edit Your Profile</h2>
-          <NotRequired field={"Full Name"} type="text" />
+          <NotRequired field={"Name"} type="text" />
           <NotRequired field={"Email"} type="email" />
           <NotRequired field={"Password"} type="password" />
-          <NotRequired field={"Investor Type"} type="text" />
-          <NotRequired field={"ID Number"} type="text" />
-          <NotRequired field={"Address"} type="text" />
           <NotRequired field={"Telephone"} type="text" />
-          <NotRequired field={"Fax"} type="text" />
-          <div className={classes.checks}>
+          <NotRequired field={"Address"} type="text" />
+          <NotRequired field={"Social Security Number"} type="text" />
+          <NotRequired field={"Years Of Experience "} type="number" />
+          <NotRequired field={"Age"} type="number" />
+          <div className={classes.cluster}>
             <Gender />
-            <IDType />
+            <Date field={"Birth Date"} />
           </div>
-          <Date />
-          <Country />
           <SaveChangesButton />
         </Paper>
       </main>
@@ -73,4 +64,4 @@ class EditProfileInvestor extends Component {
   }
 }
 
-export default withStyles(styles)(EditProfileInvestor);
+export default withStyles(styles)(EditProfileReviewer);

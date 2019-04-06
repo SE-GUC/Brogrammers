@@ -13,55 +13,48 @@ import axios from "axios";
 import InvestorCompanyReg from "./components/pages/InvestorCompanyReg";
 import CaseCard from "./components/cards/CaseCard";
 import EditProfileInvestor from "./components/pages/EditProfileInvestor";
+import EditProfileAdmin from "./components/pages/EditProfileAdmin";
+import EditProfileLawyer from "./components/pages/EditProfileLawyer";
+import EditProfileReviewer from "./components/pages/EditProfileReviewer";
 
 class App extends Component {
-
-constructor(props){
-  super(props);
-  this.state={
-    test:[],
-    lawyerCases:[],
-companys:[],
-isLoaded:false,
-token:null,
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      test: [],
+      lawyerCases: [],
+      companys: [],
+      isLoaded: false,
+      token: null
+    };
+    this.setToken = this.setToken.bind(this);
   }
-  this.setToken = this.setToken.bind(this);
-}
 
-fetchCompanies(){
-  fetch('http://localhost:3000/api/company')
-  .then(res => res.json())
-  .then(json =>{
-    
-    this.setState({
-      isLoaded:true,
-    
-      companys:json
-      
-      
-    })
-    // console.log(this.state.companys)
-    // const CC=this.state.companys
-    // console.log(CC)
-  
-  
-  })
-  .catch(error => this.setState({ error, isLoading: false }));
-}
+  fetchCompanies() {
+    fetch("http://localhost:3000/api/company")
+      .then(res => res.json())
+      .then(json => {
+        this.setState({
+          isLoaded: true,
 
+          companys: json
+        });
+        // console.log(this.state.companys)
+        // const CC=this.state.companys
+        // console.log(CC)
+      })
+      .catch(error => this.setState({ error, isLoading: false }));
+  }
 
+  //componentDidMount(){
+  //this.fetchCompanies()
+  //this.fetchLawyerCases()
 
-
-//componentDidMount(){
-//this.fetchCompanies()
-//this.fetchLawyerCases()
-
-//}
-setToken(t){
-  this.setState({token:t})
-  console.log(this.state.token)
-}
+  //}
+  setToken(t) {
+    this.setState({ token: t });
+    console.log(this.state.token);
+  }
 
   //}
 
@@ -85,6 +78,21 @@ setToken(t){
             exact
             path="/editprofile/investor"
             render={props => <EditProfileInvestor />}
+          />
+          <Route
+            exact
+            path="/editprofile/admin"
+            render={props => <EditProfileAdmin />}
+          />
+          <Route
+            exact
+            path="/editprofile/lawyer"
+            render={props => <EditProfileLawyer />}
+          />
+          <Route
+            exact
+            path="/editprofile/reviewer"
+            render={props => <EditProfileReviewer />}
           />
           <InvestorCompanyReg />
           <div>
