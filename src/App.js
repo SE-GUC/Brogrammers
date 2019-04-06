@@ -8,10 +8,14 @@ import RegisterReviewer from  './components/pages/RegisterReviewer';
 import 'typeface-roboto';
 import Input from  './components/layout/inputs/Input';
 import Buttons from './components/buttons/Button'
-import Signin from './components/signin/Signin'
+import AdminSignIn from './components/signin/AdminSignin'
+import ReviewerSignIn from './components/signin/ReviewerSignIn'
+import LawyerSignIn from './components/signin/LawyerSignIn'
+import SignIn from './components/signin/SignIn'
 import axios from 'axios';
 import InvestorCompanyReg from './components/pages/InvestorCompanyReg'
 import CaseCard from './components/cards/CaseCard'
+import ComplexButton from './components/layout/Complex Button/ComplexButton'
 
 class App extends Component {
 
@@ -90,6 +94,9 @@ fetchLawyerCases(){
       <Router>
       <React.Fragment>
     <Navbar/>
+    <Route exact path="/home" render={props => (
+          <ComplexButton/>
+    )} />
     <Route exact path="/register" render={props => (
                <Register/>
             )} />
@@ -101,7 +108,18 @@ fetchLawyerCases(){
             )} />
     <InvestorCompanyReg/>
       <div>
-    <Signin/>,
+    <Route exact path='/Investorlogin' render={props => (
+          <SignIn/>
+    )} />
+    <Route exact path="/Lawyerlogin" render={props => (
+          <LawyerSignIn/>
+    )} />
+    <Route exact path="/Reviewerlogin" render={props => (
+          <ReviewerSignIn/>
+    )} />
+    <Route exact path="/Adminlogin" render={props => (
+          <AdminSignIn/>
+    )} />
     <Buttons ></Buttons>
     
 
