@@ -24,6 +24,12 @@ class AlertDialogSlide extends React.Component {
     this.setState({ open: false });
   };
 
+  handleClose2 = e => {
+    this.setState({ open: false });
+    this.props.handleRegister(e);
+  };
+
+
   render() {
     return (
       <div>
@@ -51,7 +57,7 @@ class AlertDialogSlide extends React.Component {
             <Button onClick={this.handleClose} color="primary">
               Disagree
             </Button>
-            <Button onClick={this.props.handleRegister} color="primary">
+            <Button onClick={this.handleClose2} color="primary">
               Agree
             </Button>
           </DialogActions>
