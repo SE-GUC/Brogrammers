@@ -16,6 +16,7 @@ import EditProfileInvestor from "./components/pages/EditProfileInvestor";
 import EditProfileAdmin from "./components/pages/EditProfileAdmin";
 import EditProfileLawyer from "./components/pages/EditProfileLawyer";
 import EditProfileReviewer from "./components/pages/EditProfileReviewer";
+import InvestorRequests from "./components/pages/InvestorRequests";
 
 class App extends Component {
   constructor(props) {
@@ -93,6 +94,11 @@ class App extends Component {
             exact
             path="/editprofile/reviewer"
             render={props => <EditProfileReviewer />}
+          />
+          <Route
+            exact
+            path="/investor/:id/MyRequests"
+            render={props => <InvestorRequests/>}
           />
           <InvestorCompanyReg />
           <div>
