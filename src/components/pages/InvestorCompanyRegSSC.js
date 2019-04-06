@@ -55,20 +55,39 @@ class InvestorCompanyReg extends React.Component {
                 managers: []
             },
         }
-        //this.handleClick = this.handleClick.bind(this);
+        this.handleRegister = this.handleRegister.bind(this);
         this.handleInput = this.handleInput.bind(this);
     }
 
-    handleCreate(event) {
+    handleRegister(event) {
         event.preventDefault();
-
+        fetch("http://localhost:3000/api/investors/createssccompany",
+            {
+                method: "POST",
+                body: JSON.stringify(this.state.company),
+                mode: "no-cors",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Origin': 'http://localhost:3000'
+                }
+            }).then(response => {
+                response.json().then(data => {
+                    console.log("Successful" + data);
+                })
+            })
     }
 
     handleInput(event) {
-        this.setState({
-            [event.target.name]: event.target.value
-        });
-        console.log(event.target.value)
+        let value = event.target.value
+        let name = event.target.name
+        this.setState(prevState => {
+            return {
+                company: {
+                    ...prevState, [name]: value
+                }
+            }
+        }, () => console.log(this.state.company)
+        );
     }
 
     render() {
@@ -89,43 +108,43 @@ class InvestorCompanyReg extends React.Component {
                     </Typography>
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <Required field={'Legal Company Form'} type={'text'} value={this.state.legalCompanyForm} callBack={this.handleInput} />
+                            <Required field={'Legal Company Form'} type={'text'} callBack={this.handleInput} name={"legalCompanyForm"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <Required field={'Name In Arabic'} type={'text'} />
+                            <Required field={'Name In Arabic'} type={'text'} callBack={this.handleInput} name={"nameInArabic"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <NotRequired field={'Name In English'} type={'text'} />
+                            <NotRequired field={'Name In English'} type={'text'} callBack={this.handleInput} name={"nameInEnglish"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <Required field={'Governemt HQ'} type={'text'} />
+                            <Required field={'Governemt HQ'} type={'text'} callBack={this.handleInput} name={"governemtHQ"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <Required field={'City HQ'} type={'text'} />
+                            <Required field={'City HQ'} type={'text'} callBack={this.handleInput} name={"cityHQ"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <Required field={'Address HQ'} type={'text'} />
+                            <Required field={'Address HQ'} type={'text'} callBack={this.handleInput} name={"addressHQ"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <Required field={'Telephone HQ'} type={'text'} />
+                            <Required field={'Telephone HQ'} type={'text'} callBack={this.handleInput} name={"telephoneHQ"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <Required field={'Fax HQ'} type={'text'} />
+                            <Required field={'Fax HQ'} type={'text'} callBack={this.handleInput} name={"faxHQ"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <Required field={'Capital Currency'} type={'text'} />
+                            <Required field={'Capital Currency'} type={'text'} callBack={this.handleInput} name={"capitalCurrency"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <Required field={'Capital'} type={'number'} />
+                            <Required field={'Capital'} type={'number'} callBack={this.handleInput} name={"capital"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <Required field={'Manager'} type={'text'} />
+                            <Required field={'Manager'} type={'text'} callBack={this.handleInput} name={"managers"} />
                         </Grid>
                         <Grid>
                             <br />
                         </Grid>
                         <Grid container direction="column" alignItems="flex-end" >
-                            <AlertDialogSlide />
+                            <AlertDialogSlide handleRegister={this.handleRegister}/>
                         </Grid>
                     </Grid>
                 </Paper>

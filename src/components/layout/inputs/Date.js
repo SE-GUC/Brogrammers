@@ -20,6 +20,8 @@ class Date extends React.Component {
 
   handleDateChange = date => {
     this.setState({ selectedDate: date });
+    this.props.callBack(date)
+    
   };
 
   render() {
@@ -32,6 +34,7 @@ class Date extends React.Component {
           <DatePicker
             margin="normal"
             label="Date of Birth"
+            name={this.props.name}
             variant="outlined"
             value={selectedDate}
             onChange={this.handleDateChange}

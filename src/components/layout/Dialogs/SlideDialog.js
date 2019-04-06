@@ -51,7 +51,7 @@ class AlertDialogSlide extends React.Component {
             <Button onClick={this.handleClose} color="primary">
               Disagree
             </Button>
-            <Button onClick={this.handleClose} color="primary">
+            <Button onClick={this.props.handleRegister} color="primary">
               Agree
             </Button>
           </DialogActions>

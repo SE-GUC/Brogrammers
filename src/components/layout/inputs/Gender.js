@@ -27,6 +27,7 @@ class Gender extends React.Component {
 
   handleChange = event => {
     this.setState({ value: event.target.value });
+    this.props.callBack(event)
   };
 
   render() {
@@ -38,10 +39,10 @@ class Gender extends React.Component {
           <FormLabel component="legend">Gender</FormLabel>
           <RadioGroup
             aria-label="Gender"
-            name="gender1"
+            name="gender"
             className={classes.group}
             value={this.state.value}
-            onChange={this.handleChange}
+            onChange={this.handleChange} 
           >
             <FormControlLabel value="male" control={<Radio color="primary"/>} label="Male" />
             <FormControlLabel value="female" control={<Radio  color="primary"/>} label="Female" />

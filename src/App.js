@@ -7,8 +7,8 @@ import 'typeface-roboto';
 import Input from './components/layout/inputs/Input';
 import Buttons from './components/buttons/Button'
 import Signin from './components/signin/Signin'
-import InvestorCompanyReg from './components/pages/InvestorCompanyReg'
-
+import InvestorCompanyRegSSC from './components/pages/InvestorCompanyRegSSC'
+import InvestorCompanyRegSPC from './components/pages/InvestorCompanyRegSPC'
 
 class App extends Component {
 
@@ -62,7 +62,8 @@ class App extends Component {
         <React.Fragment>
           <Navbar />
           <Register />
-          <InvestorCompanyReg />
+          <InvestorCompanyRegSSC />
+          <InvestorCompanyRegSPC />
           <div>
             <Signin />,
     <Buttons lawyers={this.state.lawyers}></Buttons>
