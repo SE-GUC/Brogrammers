@@ -78,13 +78,6 @@ fetchLawyerCases(){
 
   render() {
  
-   
-
-
-
-
-
- 
   
     return (
       <Router>
