@@ -81,7 +81,8 @@ console.log("abc")
         },
       }).then(response => {
         response.json().then(data =>{
-          console.log("Successful" + data);
+          console.log("Successful" + data+ data.auth);
+          this.props.callBack(data.token,data.auth)
         })
     }) 
 }
