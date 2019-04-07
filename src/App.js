@@ -88,12 +88,12 @@ class App extends Component {
           <Route
             exact
             path='/addcomment/lawyer'
-            render={props => <LawyerComment token={sessionStorage.getItem('jwtToken')} />}
+            component={() => sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='l'? <LawyerComment token={sessionStorage.getItem('jwtToken')}/> : <LawyerSignIn/>}
           />
           <Route
             exact
             path='/addcomment/reviewer'
-            render={props => <ReviewerComment token={sessionStorage.getItem('jwtToken')} />}
+            component={() => sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='r'? <ReviewerComment token={sessionStorage.getItem('jwtToken')}/> : <ReviewerSignIn/>}
           />
 
           <Route
