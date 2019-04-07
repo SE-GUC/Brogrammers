@@ -9,7 +9,7 @@ import SaveChangesButton from "../layout/Dialogs/SaveChangesButton";
 const styles = theme => ({
   main: {
     width: "auto",
-    display: "block", // Fix IE 11 issue.
+    display: "block", 
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
@@ -32,21 +32,62 @@ const styles = theme => ({
   }
 });
 class ReviewerComment extends Component {
+  constructor(props){
+    super(props);
+    this.state={
+      company:{
+        reviewercoment:'',
+        companyid:''
+    }
+  };
+    this.handleSubmission=this.handleSubmission.bind(this);
+    this.onChange=this.onChange.bind(this);
+  }
+handleSubmission(event){
+  event.preventDefault();
+  let updatedData=this.state;
+  fetch(`http://localhost:3000/api/reviewer/addcomment/${this.props.id}/${this.props.companyid}`,
+    {
+      method:"PUT",
+      body:JSON.stringify(updatedData),
+      headers:{
+       'Content-Type': 'application/json',
+       'x-access-token':this.props.token,
+          }
+        }).then(response=>{
+            console.log("Your comment has been posted successfully")
+       });
+  }
+onChange(e) {
+  let value = e.target.value;
+  let name = e.target.name;
+  this.setState(
+    prevState => {
+      return {
+        company: {
+          ...prevState.company,
+          [name]: value
+        }
+      };
+    },
+    () => console.log(value)
+  );
+}
   render() {
     const { classes } = this.props;
     return (
-      //<main className={classes.main}>
+      <main className={classes.main}>
         <Paper className={classes.paper}>
           <Icon className={classes.icon} color="primary">
             add_circle
           </Icon>
           <h2>Add Your Comment</h2>
-          <NotRequired field={"ReviewerComment"} type="text" />
-          <NotRequired field={"CompanyId"} type="text" />
+          <NotRequired field={"ReviewerComment"} type="text" callBack={this.onChange} name={"reviewercomment"} />
+          <NotRequired field={"CompanyId"} type="text" callBack={this.onChange} name={"companyid"} />
 
-          <SaveChangesButton />
+          <SaveChangesButton onClick={this.handleSubmission} />
         </Paper>
-     // </main>
+      </main>
     );
   }
 }
