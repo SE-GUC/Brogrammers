@@ -1,8 +1,12 @@
 import React, { Component } from "react";
-import axios from "axios";
 import LinearDeterminate from "../layout/loading/LinearDeterminate"
 import Snackbar from "../layout/snackbar/Snackbar"
 import TitleBarGridList from "../layout/List/GridList";
+import Paper from "../layout/paper/Paper";
+import Typography from '@material-ui/core/Typography';
+import Grid from "@material-ui/core/Grid";
+
+
 class investorRequests extends Component {
     constructor(props) {
         super(props);
@@ -12,8 +16,10 @@ class investorRequests extends Component {
             isLoading: false,
             error: null,
         };
+        
         this.handleRequests = this.handleRequests.bind(this);
     }
+    
     handleRequests(){
      
         this.setState({isLoading:true})
@@ -52,15 +58,18 @@ class investorRequests extends Component {
         if (this.state.requests.length === 0) {
             return <Snackbar variant='warning' message="There are no requests" />
         }
-        
-        
-            return (
-                <div style={{ display: 'flex', flexFlow: 'row wrap', justifyContent: 'space-around' }}>
-                    <TitleBarGridList data={this.state.requests} token={this.props.token}/>
-                </div>
+                            return (
+                                <div>
+                                <Paper title={this.state.requests.investorName} elevation={1}/>
+                             <Grid container direction="column" alignItems="center" style={{backgroundColor:'#3f3f3f'}}>
+                                <TitleBarGridList data={this.state.requests} token={this.props.token}/>
+                                </Grid>
+                            
+                              </div>
+                            
+              
+                 
             );
-            
-       
     }
 }
 

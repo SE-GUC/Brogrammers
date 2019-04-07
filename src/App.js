@@ -107,7 +107,7 @@ setToken(t,a,type,id){
           />
           <Route
             exact
-            path="/investors/MyRequests"
+            path="/investors/MyRequests/all"
             render={props => <InvestorRequests token={sessionStorage.getItem('jwtToken')}/>}
           />
            <Route
