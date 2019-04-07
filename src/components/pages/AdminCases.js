@@ -14,8 +14,9 @@ class AdminCases extends React.Component{
    fetchAdminCases(){
         fetch('http://localhost:3000/routes/api/admins/getall/cases',{
           headers: new Headers({
-           'x-access-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjYTk0MDYwM2I2M2Y1MTllYzZhN2EzOCIsImlhdCI6MTU1NDU5NTkzNiwiZXhwIjoxNTU0NjgyMzM2fQ.eKcFvWF1evQ_qpApNA9Qwlag9WCa00E7brE2dWI5Q40'
-        //hardcoding token for now till login is completed 
+          // 'x-access-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjYTk0MDYwM2I2M2Y1MTllYzZhN2EzOCIsImlhdCI6MTU1NDU5NTkzNiwiZXhwIjoxNTU0NjgyMzM2fQ.eKcFvWF1evQ_qpApNA9Qwlag9WCa00E7brE2dWI5Q40'
+        //if login is working and passing token correctly this will work 
+              'x-access-token':this.props.token
         })
         })
     
