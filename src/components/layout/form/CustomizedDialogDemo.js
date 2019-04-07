@@ -89,7 +89,7 @@ class CustomizedDialogDemo extends React.Component {
           open={this.state.open}
         >
           <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
-            {this.handleInputVal(this.props)[0]}
+            {this.props.data.nameInEnglish}
           </DialogTitle>
 
           <DialogContent>

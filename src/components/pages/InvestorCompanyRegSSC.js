@@ -10,6 +10,8 @@ import Grid from '@material-ui/core/Grid';
 import Required from '../layout/inputs/Required';
 import NotRequired from '../layout/inputs/NotRequired';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import BlueButton from '../layout/Buttons/BlueButton';
+import Manager from './Manager';
 
 const styles = theme => ({
     main: {
@@ -42,6 +44,7 @@ class InvestorCompanyReg extends React.Component {
         super(props);
         this.state = {
             company: {
+                regulationLaw: '',
                 legalCompanyForm: '',
                 nameInArabic: '',
                 nameInEnglish: '',
@@ -52,11 +55,23 @@ class InvestorCompanyReg extends React.Component {
                 faxHQ: '',
                 capitalCurrency: '',
                 capital: '',
-                managers: []
+                managers: new Array()
             },
+            // manager:{
+            //     name:'',
+            //     type:'',
+            //     sex:'',
+            //     nationality:'',
+            //     identificationType:'',
+            //     identificationNumber:'',
+            //     birthDate:'',
+            //     address:'',
+            //     managerialPosition:''
+            // }
         }
         this.handleRegister = this.handleRegister.bind(this);
         this.handleInput = this.handleInput.bind(this);
+        this.handleOnClick = this.handleOnClick.bind(this);
     }
 
     handleRegister(event) {
@@ -77,13 +92,25 @@ class InvestorCompanyReg extends React.Component {
             })
     }
 
+    handleOnClick(js) {
+        this.state.company.managers.push(js)
+        this.setState(prevState => {
+            return {
+                company: {
+                    ...prevState.company, managers: this.state.company.managers
+                }
+            }
+        }, () => console.log(this.state.company)
+        );
+    }
+
     handleInput(event) {
         let value = event.target.value
         let name = event.target.name
         this.setState(prevState => {
             return {
                 company: {
-                    ...prevState, [name]: value
+                    ...prevState.company, [name]: value
                 }
             }
         }, () => console.log(this.state.company)
@@ -108,6 +135,9 @@ class InvestorCompanyReg extends React.Component {
                     </Typography>
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
+                            <Required field={'Law'} type={'text'} callBack={this.handleInput} name={"regulationLaw"} />
+                        </Grid>
+                        <Grid container direction="column" alignItems="center" >
                             <Required field={'Legal Company Form'} type={'text'} callBack={this.handleInput} name={"legalCompanyForm"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
@@ -117,7 +147,7 @@ class InvestorCompanyReg extends React.Component {
                             <NotRequired field={'Name In English'} type={'text'} callBack={this.handleInput} name={"nameInEnglish"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <Required field={'Governemt HQ'} type={'text'} callBack={this.handleInput} name={"governemtHQ"} />
+                            <Required field={'Governemt HQ'} type={'text'} callBack={this.handleInput} name={"governerateHQ"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
                             <Required field={'City HQ'} type={'text'} callBack={this.handleInput} name={"cityHQ"} />
@@ -138,13 +168,13 @@ class InvestorCompanyReg extends React.Component {
                             <Required field={'Capital'} type={'number'} callBack={this.handleInput} name={"capital"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <Required field={'Manager'} type={'text'} callBack={this.handleInput} name={"managers"} />
+                            <Manager callBack= {this.handleOnClick}/>
                         </Grid>
                         <Grid>
                             <br />
                         </Grid>
                         <Grid container direction="column" alignItems="flex-end" >
-                            <AlertDialogSlide handleRegister={this.handleRegister}/>
+                            <AlertDialogSlide handleRegister={this.handleRegister} />
                         </Grid>
                     </Grid>
                 </Paper>

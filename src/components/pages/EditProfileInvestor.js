@@ -42,7 +42,31 @@ const styles = theme => ({
     display: "flex"
   }
 });
+
+
 class EditProfileInvestor extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      investor: {
+        fullname: null,
+        email: null,
+        password: null,
+        investorType: null,
+        idNumber: null,
+        address: null,
+        telephone: null,
+        fax: null,
+        gender: null,
+        idType: null,
+        dateOfBirth: null,
+        nationality: null
+      }
+    }
+    this.handleSubmission = this.handleSubmission.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.handleDate = this.handleDate.bind(this);
+  }
   render() {
     const { classes } = this.props;
     return (
@@ -52,23 +76,61 @@ class EditProfileInvestor extends Component {
             add_circle
           </Icon>
           <h2>Edit Your Profile</h2>
-          <NotRequired field={"Full Name"} type="text" />
-          <NotRequired field={"Email"} type="email" />
-          <NotRequired field={"Password"} type="password" />
-          <NotRequired field={"Investor Type"} type="text" />
-          <NotRequired field={"ID Number"} type="text" />
-          <NotRequired field={"Address"} type="text" />
-          <NotRequired field={"Telephone"} type="text" />
-          <NotRequired field={"Fax"} type="text" />
+          <NotRequired name={"fullname"} field={"Full Name"} type="text" callBack={this.onChange} />
+          <NotRequired name={"email"} field={"Email"} type="email" callBack={this.onChange} />
+          <NotRequired name={"password"} field={"Password"} type="password" callBack={this.onChange} />
+          <NotRequired name={"investorType"} field={"Investor Type"} type="text" callBack={this.onChange} />
+          <NotRequired name= {"idNumber"} field={"ID Number"} type="text" callBack={this.onChange} />
+          <NotRequired name= {"address"} field={"Address"} type="text" callBack={this.onChange} />
+          <NotRequired name={"telephone"} field={"Telephone"} type="text" callBack={this.onChange} />
+          <NotRequired name={"fax"} field={"Fax"} type="text" callBack={this.onChange} />
           <div className={classes.checks}>
-            <Gender />
-            <IDType />
+            <Gender name={"gender"}  callBack={this.onChange} />
+            <IDType name={"idType"} callBack={this.onChange} />
           </div>
-          <Date />
-          <Country />
-          <SaveChangesButton />
+          <Date name={"dateOfBirth"} callBack={this.handleDate}/> 
+          <Country name={"nationality"} callBack={this.onChange}  callBack={this.onChange}/>
+          <SaveChangesButton onClick={this.handleSubmission} callBack={this.handleSubmission} />
         </Paper>
       </main>
+    );
+  }
+  handleDate(v) {
+    this.setState( prevState => ({ investor : 
+         {...prevState.investor, dateOfBirth: v
+         }
+       }))
+      
+   }
+  handleSubmission(e) {
+    console.log('yeethandle')
+    let updatedData = this.state;
+    fetch("http://localhost:3000/api/investors/", {
+      method: "PUT",
+      body: JSON.stringify(updatedData),
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": this.props.token
+      }
+    }).then(response => {
+      console.log("Information updated successfully");
+    });
+  }
+
+  onChange(e) {
+    console.log('yeetchange')
+    let value = e.target.value;
+    let name = e.target.name;
+    this.setState(
+      prevState => {
+        return {
+          admin: {
+            ...prevState.investor,
+            [name]: value
+          }
+        };
+      },
+      () => console.log(value)
     );
   }
 }
