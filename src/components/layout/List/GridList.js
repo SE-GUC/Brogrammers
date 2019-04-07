@@ -12,7 +12,7 @@ const styles = theme => ({
   
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
     
@@ -37,12 +37,12 @@ class TitlebarGridList extends React.Component {
         return (
             <div className={styles.root}>
               <GridList cellHeight={200} className={styles.gridList}>
-                <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-                  <ListSubheader component="div">Your Requests</ListSubheader>
+                <GridListTile key="Subheader" cols={2} style={{ height: '50px' }}>
+               
                 </GridListTile>
                 {this.props.data.map((tile,i) => (
-                  <GridListTile style={{maxWidth:300}}>
-                   <CaseCard title={tile.nameInEnglish} key={i} subheader={tile.status} nameAr={tile.nameInArabic} data={tile} />
+                  <GridListTile style={{maxWidth:280}}>
+                   <CaseCard title={tile.nameInEnglish} key={i} id={tile._id} token= {this.props.token} subheader={tile.status} nameAr={tile.nameInArabic} data={tile} />
                   </GridListTile>
                 ))}
               </GridList>

@@ -21,11 +21,7 @@ const styles = {
     maxWidth: 275,
     height: 160
   },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)"
-  },
+ 
   title: {
     fontSize: 14
   },
@@ -40,7 +36,9 @@ class SimpleCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = { expanded: false,
-    color:blue[500] };
+    color:blue[500] ,
+     
+  };
 
   }
   checkrejectedicon=props =>{
@@ -65,6 +63,7 @@ class SimpleCard extends React.Component {
   }
 
   checkrej = props => {
+    
     if (props.subheader === 'RejectedLawyer') {
       return true
     } else return false;
@@ -86,13 +85,14 @@ class SimpleCard extends React.Component {
             </Avatar>
           }
           action={
-            <SimpleMenu a={this.checkrej(this.props)} data={this.props.data}/>
+            <SimpleMenu a={this.checkrej(this.props)} id={this.props.id} token={this.props.token} data={this.props.data}/>
           
           }
           title={this.props.title}
           subheader={this.props.nameAr}
         />
         <CardContent>
+          {this.props.lawyerComment}
         </CardContent>
       
       </Card>
