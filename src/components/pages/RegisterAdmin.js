@@ -66,11 +66,12 @@ handleRegister(e){
     e.preventDefault();
     let userData = this.state.admin;
 console.log("abc")
-    fetch('http://localhost:3000/routes/api/admins/registerNo',{
+    fetch('http://localhost:3000/routes/api/admins/register',{
         method: "POST",
         body: JSON.stringify(userData),
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-access-token':this.props.token
         },
       }).then(response => {
         response.json().then(data =>{
