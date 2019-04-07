@@ -37,8 +37,7 @@ const reviewerSchema = new Schema({
     reqired: true
   },
   age: {
-    type: Number,
-    required: true
+    type: Number
   },
   birth: {
     type: String,

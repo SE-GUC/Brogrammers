@@ -11,7 +11,6 @@ module.exports = {
       email: Joi.string().required(),
       password: Joi.string().required(),
       yearsOfExperience: Joi.number().required(),
-      age: Joi.number().required(),
       birth: Joi.string().required()
 
     }
