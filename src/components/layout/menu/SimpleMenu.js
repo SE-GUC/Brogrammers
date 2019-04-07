@@ -23,7 +23,7 @@ class SimpleMenu extends React.Component {
   };
   handleEdit = (props) => {
     
-    if (props.a === true) return <FormDialogue data={props.data}  />;
+    if (props.a === true) return <FormDialogue id= {props.id} token= {props.token} data={props.data}  />;
   };
   handledialog = props => {
     

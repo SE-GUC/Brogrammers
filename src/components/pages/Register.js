@@ -135,9 +135,9 @@ console.log("abc")
      <Required name='address' field={'Address'} type='text' callBack={this.handleInput}/>
      <Required name='telephone' field={'Telephone'} type='text' callBack={this.handleInput}/>
      <NotRequired name='fax' field={'Fax'} type='text' callBack={this.handleInput}/>
+     <Required name='nationality' field={'Country'} type='text' callBack={this.handleInput}/>
 
-
-     <Country callBack={this.handleInput}/>
+     {/* <Country callBack={this.handleInput}/> */}
      <AlertDialogSlide handleRegister={this.handleRegister}/>
     </Paper>
     </main>
