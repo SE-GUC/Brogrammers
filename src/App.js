@@ -119,13 +119,13 @@ setToken(t,a,type){
           <SignIn/>
     )} />
     <Route exact path="/Lawyerlogin" render={props => (
-          <LawyerSignIn/>
+          <LawyerSignIn callBack={this.setToken}/>
     )} />
     <Route exact path="/Reviewerlogin" render={props => (
-          <ReviewerSignIn/>
+          <ReviewerSignIn callBack={this.setToken}/>
     )} />
     <Route exact path="/Adminlogin" render={props => (
-          <AdminSignIn/>
+          <AdminSignIn callBack={this.setToken}/>
     )} />
     <Buttons ></Buttons>
     
