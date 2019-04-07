@@ -12,18 +12,6 @@ const styles = theme => ({
   },
 });
 
-// function getLawyers() {
-  
-    
-//     console.log("please1")
-//     return axios.get('https://jsonplaceholder.typicode.com/users');
-//     console.log("please")
-  
-  
-// }
-
-
-
 
 
 function ContainedButtons(props) {
@@ -32,12 +20,8 @@ function ContainedButtons(props) {
   return (
     <div>
      
-      <Button variant="contained" color="secondary" className={classes.button}  >
+      <Button variant="contained" color="secondary" className={classes.button}   onClick={() => { console.log('onClick'); }}  >
         Take Task
-      
-      </Button>
-      <Button variant="contained" color="primary" className={classes.button}  >
-        Show Companies
       
       </Button>
     

@@ -9,7 +9,7 @@ import CaseCard from '../cards/RequestsCards';
 
 const styles = theme => ({
   root: {
-    maxWidth:'80%',
+  
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
@@ -41,8 +41,8 @@ class TitlebarGridList extends React.Component {
                   <ListSubheader component="div">Your Requests</ListSubheader>
                 </GridListTile>
                 {this.props.data.map(tile => (
-                  <GridListTile style={{maxWidth:280}}>
-                   <CaseCard title={tile.nameInEnglish} subheader={tile.status} nameAr={tile.nameInArabic} />
+                  <GridListTile style={{maxWidth:300}}>
+                   <CaseCard title={tile.nameInEnglish} subheader={tile.status} nameAr={tile.nameInArabic} data={tile} />
                   </GridListTile>
                 ))}
               </GridList>

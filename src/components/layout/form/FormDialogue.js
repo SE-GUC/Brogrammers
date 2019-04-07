@@ -1,32 +1,35 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from "@material-ui/core/IconButton";
-import Edit from "@material-ui/icons/Edit"
-import MenuItem from '@material-ui/core/MenuItem';
+import React from "react";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import MenuItem from "@material-ui/core/MenuItem";
+import Required from  '../inputs/Required';
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
   root: {
-    width: '100%',
+    width: "100%",
     maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-  },
+    backgroundColor: theme.palette.background.paper
+  }
 });
 
- class FormDialogue extends React.Component {
-  state = {
-    open: false,
-    width: '100%',
-    maxWidth: 360
-  };
- 
+class FormDialogue extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      open: false,
+      width: "100%",
+      data:[]
+    };
+  }
+
   handleClickOpen = () => {
     this.setState({ open: true });
   };
@@ -34,37 +37,30 @@ const styles = theme => ({
   handleClose = () => {
     this.setState({ open: false });
   };
-
+  handleInput = props => {
+    return Object.keys(props.data).map(key => [key, props.data[key]][0]);
+  };
   render() {
     return (
       <div>
-         <MenuItem onClick={this.handleClickOpen}>Edit</MenuItem>
+        <MenuItem onClick={this.handleClickOpen}>Edit</MenuItem>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
-          
         >
           <DialogTitle id="form-dialog-title">Form Resubmission</DialogTitle>
-          <DialogContent >
+          <DialogContent>
             <DialogContentText>
-            This form has been commented on and rejected by the lawyer, please edit the required fields to proceed.
+              This form has been commented on and rejected by the lawyer, please
+              edit the required fields to proceed.
             </DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="email"
-              label="Email Address"
-              type="email"
-              fullWidth
-            />
-            <TextField
-              margin="dense"
-              id="name"
-              label="name"
-              type="string"
-              fullWidth
-            />
+          
+           {this.handleInput(this.props).map((input, i) => (
+        <Required name= 'name' field={input} type='text' />
+       
+    ))
+  }
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
@@ -79,4 +75,4 @@ const styles = theme => ({
     );
   }
 }
-export default withStyles(styles)(FormDialogue)
+export default withStyles(styles)(FormDialogue);

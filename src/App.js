@@ -9,7 +9,8 @@ import "typeface-roboto";
 import Input from "./components/layout/inputs/Input";
 import Buttons from "./components/buttons/Button";
 import axios from "axios";
-import InvestorCompanyReg from "./components/pages/InvestorCompanyReg";
+import InvestorCompanyRegSSC from "./components/pages/InvestorCompanyRegSSC";
+import InvestorCompanyRegSPC from "./components/pages/InvestorCompanyRegSPC";
 import CaseCard from "./components/cards/CaseCard";
 import EditProfileInvestor from "./components/pages/EditProfileInvestor";
 import EditProfileAdmin from "./components/pages/EditProfileAdmin";
@@ -21,7 +22,7 @@ import ReviewerComment from "./components/pages/ReviewerComment";
 import AdminSignIn from './components/signin/AdminSignin';
 import ReviewerSignIn from './components/signin/ReviewerSignIn';
 import LawyerSignIn from './components/signin/LawyerSignIn';
-import SignIn from './components/signin/SignIn';
+import SignIn from './components/signin/Signin';
 import ComplexButton from './components/layout/Complex Button/ComplexButton';
 
 class App extends Component {
@@ -110,7 +111,9 @@ setToken(t,a,type){
             path="/investor/:id/MyRequests"
             render={props => <InvestorRequests/>}
           />
-    <InvestorCompanyReg/>
+    <InvestorCompanyRegSSC/>
+    <InvestorCompanyRegSPC/>
+
       <div>
     <Route exact path='/Investorlogin' render={props => (
           <SignIn/>

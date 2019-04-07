@@ -9,6 +9,7 @@ import SimpleMenu from "../menu/SimpleMenu";
 import blue from "@material-ui/core/colors/blue";
 import red from "@material-ui/core/colors/red";
 import green from "@material-ui/core/colors/green";
+import yellow from "@material-ui/core/colors/yellow";
 import Done from "@material-ui/icons/Done";
 import Error from "@material-ui/icons/Warning";
 import HourGlass from "@material-ui/icons/HourglassEmpty"
@@ -51,7 +52,7 @@ class SimpleCard extends React.Component {
   }
   checkrejs =props =>{
     if (props.subheader === "rejected")
-    return red[500]
+    return yellow[500]
     if (props.subheader === "accepted")
     return green[500]
     if (props.subheader === "pending")
@@ -80,7 +81,7 @@ class SimpleCard extends React.Component {
             </Avatar>
           }
           action={
-            <SimpleMenu a={this.checkrej(this.props)}/>
+            <SimpleMenu a={this.checkrej(this.props)} data={this.props.data}/>
           
           }
           title={this.props.title}
