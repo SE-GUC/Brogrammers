@@ -1,14 +1,13 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import MenuItem from "@material-ui/core/MenuItem";
-import Required from  '../inputs/Required';
-
+import NotRequired from "../inputs/NotRequired";
+import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
@@ -26,7 +25,7 @@ class FormDialogue extends React.Component {
     this.state = {
       open: false,
       width: "100%",
-      data:[]
+      data: []
     };
   }
 
@@ -40,6 +39,19 @@ class FormDialogue extends React.Component {
   handleInput = props => {
     return Object.keys(props.data).map(key => [key, props.data[key]][0]);
   };
+  handleInputs(e) {
+    let value = e.target.value;
+    let name = e.target.name;
+   // console.log(this.state.investor)
+    this.setState( prevState => {
+       return { 
+          investor : {
+                   ...prevState.investor, [name]: value
+                  }
+       }
+    }, () => console.log(this.state.investor)
+    )
+}
   render() {
     return (
       <div>
@@ -49,18 +61,21 @@ class FormDialogue extends React.Component {
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Form Resubmission</DialogTitle>
+          {" "}
+          <Grid container direction="column" alignItems="center">
+            <DialogTitle id="form-dialog-title">Form Resubmission</DialogTitle>
+          </Grid>
           <DialogContent>
             <DialogContentText>
               This form has been commented on and rejected by the lawyer, please
               edit the required fields to proceed.
             </DialogContentText>
-          
-           {this.handleInput(this.props).map((input, i) => (
-        <Required name= 'name' field={input} type='text' />
-       
-    ))
-  }
+
+            {this.handleInput(this.props).map((input, i) => (
+              <Grid container direction="column" alignItems="center">
+                <NotRequired name="name" field={input} type="text" callBack={this.handleInputs} />
+              </Grid>
+            ))}
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">

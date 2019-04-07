@@ -1,35 +1,40 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
-import MenuItem from '@material-ui/core/MenuItem';
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import MuiDialogContent from "@material-ui/core/DialogContent";
+import MuiDialogActions from "@material-ui/core/DialogActions";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+import Typography from "@material-ui/core/Typography";
+import MenuItem from "@material-ui/core/MenuItem";
+import Grid from "@material-ui/core/Grid";
 
 const DialogTitle = withStyles(theme => ({
   root: {
     borderBottom: `1px solid ${theme.palette.divider}`,
     margin: 0,
     padding: theme.spacing.unit * 2,
-    minWidth:400
+    minWidth: 400
   },
   closeButton: {
-    position: 'absolute',
+    position: "absolute",
     right: theme.spacing.unit,
     top: theme.spacing.unit,
-    color: theme.palette.grey[500],
-  },
+    color: theme.palette.grey[500]
+  }
 }))(props => {
   const { children, classes, onClose } = props;
   return (
     <MuiDialogTitle disableTypography className={classes.root}>
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
-        <IconButton aria-label="Close" className={classes.closeButton} onClick={onClose}>
+        <IconButton
+          aria-label="Close"
+          className={classes.closeButton}
+          onClick={onClose}
+        >
           <CloseIcon />
         </IconButton>
       ) : null}
@@ -40,26 +45,26 @@ const DialogTitle = withStyles(theme => ({
 const DialogContent = withStyles(theme => ({
   root: {
     margin: 0,
-    padding: theme.spacing.unit * 2,
-  },
+    padding: theme.spacing.unit * 2
+  }
 }))(MuiDialogContent);
 
 const DialogActions = withStyles(theme => ({
   root: {
     borderTop: `1px solid ${theme.palette.divider}`,
     margin: 0,
-    padding: theme.spacing.unit,
-  },
+    padding: theme.spacing.unit
+  }
 }))(MuiDialogActions);
 
 class CustomizedDialogDemo extends React.Component {
   state = {
-    open: false,
+    open: false
   };
 
   handleClickOpen = () => {
     this.setState({
-      open: true,
+      open: true
     });
   };
   handleInput = props => {
@@ -75,8 +80,8 @@ class CustomizedDialogDemo extends React.Component {
   render() {
     return (
       <div>
-         <MenuItem onClick={this.handleClickOpen}>View Details</MenuItem>
-      
+        <MenuItem onClick={this.handleClickOpen}>View Details</MenuItem>
+
         <Dialog
           onClose={this.handleClose}
           aria-labelledby="customized-dialog-title"
@@ -85,15 +90,18 @@ class CustomizedDialogDemo extends React.Component {
           <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
             {this.handleInputVal(this.props)[0]}
           </DialogTitle>
+
           <DialogContent>
-          {this.handleInput(this.props).map((input, i) => (
-        <Typography>
-          {input} : {this.handleInputVal(this.props)[i]}
-          <br/>
-        </Typography>  
-        
-    ))
-  }
+            <ul>
+              {this.handleInput(this.props).map((input, i) => (
+                <li>
+                  <Grid container direction="column" alignItems="left">
+                    {input} : {this.handleInputVal(this.props)[i]}
+                    <br />
+                  </Grid>
+                </li>
+              ))}
+            </ul>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">

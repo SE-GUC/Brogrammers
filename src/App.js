@@ -111,8 +111,8 @@ setToken(t,a,type){
             path="/investor/:id/MyRequests"
             render={props => <InvestorRequests/>}
           />
-    <InvestorCompanyRegSSC/>
-    <InvestorCompanyRegSPC/>
+    {/* <InvestorCompanyRegSSC/>
+    <InvestorCompanyRegSPC/> */}
 
       <div>
     <Route exact path='/Investorlogin' render={props => (

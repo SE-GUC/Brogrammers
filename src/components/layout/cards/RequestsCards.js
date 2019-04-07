@@ -76,7 +76,7 @@ class SimpleCard extends React.Component {
             title: classes.title
           }}
           avatar={
-            <Avatar aria-label="Request" style={{backgroundColor:this.checkrejs(this.props)}} className={classes.avatar}>
+            <Avatar aria-label="Request" style={{backgroundColor:this.checkrejs(this.props)}} title={this.props.subheader} className={classes.avatar}>
              {this.checkrejectedicon(this.props)}
             </Avatar>
           }
