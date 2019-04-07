@@ -53,10 +53,11 @@ type:'',
 
  
 setToken(t,a,type){
-  this.setState({token:t , auth:a,type:type})
+ // this.setState({token:t , auth:a,type:type})
   sessionStorage.setItem('jwtToken', t);
   sessionStorage.setItem('auth', a);
-  console.log(this.state.token+ " "+this.state.auth)
+  sessionStorage.setItem('type', type);
+ // console.log(this.state.token+ " "+this.state.auth)
 }
 
   
@@ -75,8 +76,8 @@ setToken(t,a,type){
                <Register callBack={this.setToken}/>
             )} />
 
-    <Route exact path="/admin/register-lawyer" component={()=>sessionStorage.getItem('auth')? <RegisterLawyer callBack={this.setToken}/> : <LawyerSignIn/>} />
-    <Route exact path="/admin/register-reviewer" component={()=>sessionStorage.getItem('auth')?<RegisterReviewer callBack={this.setToken}/> : <ReviewerSignIn/>} />
+    <Route exact path="/admin/register-lawyer" component={()=>sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='a'? <RegisterLawyer callBack={this.setToken}/> : <LawyerSignIn/>} />
+    <Route exact path="/admin/register-reviewer" component={()=>sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='a'?<RegisterReviewer callBack={this.setToken}/> : <ReviewerSignIn/>} />
     <Route exact path="/admin/register-admin" render={props => (<RegisterReviewer callBack={this.setToken}/>)} />
            <Route
             exact
@@ -114,23 +115,26 @@ setToken(t,a,type){
             path="/investor/:id/MyRequests"
             render={props => <InvestorRequests/>}
           />
+
+    <InvestorCompanyRegSSC token={sessionStorage.getItem('jwtToken')}/>
+    <InvestorCompanyRegSPC token={sessionStorage.getItem('jwtToken')}/>
+
           <Route exact path="/lawyer/view-lawyer-cases-by/:id" component = {ViewLawyerCasesbyID} />
           <Route exact path="/reviewer/view-reviewer-cases-by/:id" component = {ViewReviewerCasesbyID} />
-    <InvestorCompanyRegSSC/>
-    <InvestorCompanyRegSPC/>
+
 
       <div>
     <Route exact path='/Investorlogin' render={props => (
           <SignIn/>
     )} />
     <Route exact path="/Lawyerlogin" render={props => (
-          <LawyerSignIn/>
+          <LawyerSignIn callBack={this.setToken}/>
     )} />
     <Route exact path="/Reviewerlogin" render={props => (
-          <ReviewerSignIn/>
+          <ReviewerSignIn callBack={this.setToken}/>
     )} />
     <Route exact path="/Adminlogin" render={props => (
-          <AdminSignIn/>
+          <AdminSignIn callBack={this.setToken}/>
     )} />
    
     
@@ -141,11 +145,11 @@ setToken(t,a,type){
   
 {/* Waiting for Login token  */}
 <Route exact path="/ReviewerCases" render={props =>(
-  <ReviewerCases  token={this.sessionStorage.getItem('jwtToken')}/>
+  <ReviewerCases token={this.sessionStorage.getItem('jwtToken')}  />
   )}/>
 
 <Route exact path="/AdminCases" render={props =>(
-  <AdminCases token={this.sessionStorage.getItem('jwtToken')} />
+  <AdminCases token={this.sessionStorage.getItem('jwtToken')}  />
   )}/>
 
 
@@ -157,5 +161,4 @@ setToken(t,a,type){
   }
 
 }
-  
 export default App;
