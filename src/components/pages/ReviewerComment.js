@@ -31,13 +31,14 @@ const styles = theme => ({
   }
 })
 class ReviewerComment extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      company: {
-        reviewercoment: ''
-      }
+  constructor(props){
+    super(props);
+    this.state={
+      company:{
+        reviewercoment:'',
+        companyid:''
     }
+  }
     this.handleSubmission = this.handleSubmission.bind(this)
     this.onChange = this.onChange.bind(this)
   }
