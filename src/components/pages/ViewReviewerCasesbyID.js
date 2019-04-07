@@ -15,7 +15,10 @@ class ViewReviewerCasesbyID extends Component  {
    
    componentDidMount()
    {
-    fetch('http://localhost:3000/api/reviewer/mycases/5ca8f3de0af7e20fa4ab054c')
+    fetch(`http://localhost:3000/api/reviewer/mycases/${this.props.id}`,{
+    headers: new Headers({
+        'x-access-token':this.props.token
+  })})
     .then(response => response.json())
     .then(json => {
         this.setState({isLoadied : true ,
