@@ -18,7 +18,7 @@ dotenv.config()
 // Connect to mongo
 //as
 mongoose
-  .connect(process.env.mongoURI)
+  .connect(db)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.log(err))
 
@@ -47,6 +47,13 @@ app.use((req, res) => {
   res.status(404).send({ err: 'We can not find what you are looking for' })
 })
 // S2
+
+app.options("/*", function(req, res, next){
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, x-access-token');
+  res.send(200);
+});
 
 // S2
 const port = process.env.PORT || 3000

@@ -6,7 +6,7 @@ module.exports = {
       email: Joi.string(),
       phone: Joi.number(),
       password: Joi.string().min(8).max(20),
-      gender: Joi.string().valid('Male', 'Female')
+      gender: Joi.string().valid('male', 'female')
     }
     return Joi.validate(request, updateSchema)
   },
@@ -18,7 +18,7 @@ module.exports = {
       birthDate: Joi.string().required(),
       joinDate: Joi.string(),
       password: Joi.string().min(8).max(20).required(),
-      gender: Joi.string().valid('Male', 'Female').required()
+      gender: Joi.string().valid('male', 'female').required()
     }
     return Joi.validate(request, createSchema)
   }
