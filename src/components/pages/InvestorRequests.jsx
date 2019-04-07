@@ -12,29 +12,29 @@ class investorRequests extends Component {
         super(props);
 
         this.state = {
-            requests: [] ,
+            requests: [],
             isLoading: false,
             error: null,
         };
-        
+
         this.handleRequests = this.handleRequests.bind(this);
     }
-    
-    handleRequests(){
-     
-        this.setState({isLoading:true})
-  
-        fetch('http://localhost:3000/api/investors/MyRequests/all',{
+
+    handleRequests() {
+        console.log(this.props.token)
+        this.setState({ isLoading: true })
+
+        fetch('http://localhost:3000/api/investors/MyRequests/all', {
             method: "GET",
             headers: {
-              'Content-Type': 'application/json',
-              'x-access-token':this.props.token
+                'Content-Type': 'application/json',
+                'x-access-token': this.props.token
             },
-          }).then(response => {
+        }).then(response => {
 
-            response.json().then(data =>{
-                this.setState({requests:data.data,isLoading:false})
-         
+            response.json().then(data => {
+                this.setState({ requests: data.data, isLoading: false })
+
             })
         }).catch(error =>
             this.setState({
@@ -55,21 +55,21 @@ class investorRequests extends Component {
         if (this.state.error) {
             return <Snackbar variant='error' message="Something went wrong!" />
         }
-        if (this.state.requests.length === 0) {
-            return <Snackbar variant='warning' message="There are no requests" />
+        if (this.state.requests) {
+            if (this.state.requests.length === 0) {
+
+                return <Snackbar variant='warning' message="There are no requests" />
+            }
         }
-                            return (
-                                <div>
-                                <Paper title={this.state.requests.investorName} elevation={1}/>
-                             <Grid container direction="column" alignItems="center" style={{backgroundColor:'#3f3f3f'}}>
-                                <TitleBarGridList data={this.state.requests} token={this.props.token}/>
-                                </Grid>
-                            
-                              </div>
-                            
-              
-                 
-            );
+
+        return (
+            <div>
+                <Paper title={this.state.requests.investorName} elevation={1} />
+                <Grid style={{ backgroundColor: '#3f3f3f' }}>
+                    <TitleBarGridList data={this.state.requests} token={this.props.token} />
+                </Grid>
+            </div>
+        );
     }
 }
 

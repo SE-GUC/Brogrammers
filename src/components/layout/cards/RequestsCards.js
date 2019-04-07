@@ -18,7 +18,7 @@ import HourGlass from "@material-ui/icons/HourglassEmpty"
 
 const styles = {
   card: {
-    maxWidth: 275,
+    maxWidth:300,
     height: 160
   },
  
