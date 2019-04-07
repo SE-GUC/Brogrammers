@@ -36,7 +36,8 @@ class ReviewerComment extends Component {
     super(props);
     this.state={
       company:{
-        reviewercoment:''
+        reviewercoment:'',
+        companyid:''
     }
   };
     this.handleSubmission=this.handleSubmission.bind(this);

@@ -37,6 +37,7 @@ class LawyerComment extends Component {
     this.state={
       company:{
         lawyercoment:'',
+        companyid:''
     }
   };
     this.handleSubmission=this.handleSubmission.bind(this);
