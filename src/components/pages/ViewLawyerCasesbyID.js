@@ -13,9 +13,12 @@ class ViewLawyerCasesbyID extends Component  {
         }
     }
    
-   componentDidMount()
+    componentDidMount()
    {
-    fetch('http://localhost:3000/api/lawyer/mycases/5ca8f3fc0af7e20fa4ab0557')
+    fetch(`http://localhost:3000/api/lawyer/mycases/${this.props.id}`,{
+    headers: new Headers({
+        'x-access-token':this.props.token
+  })})
     .then(response => response.json())
     .then(json => {
         this.setState({isLoadied : true ,
