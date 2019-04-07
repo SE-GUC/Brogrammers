@@ -52,10 +52,11 @@ type:'',
 
  
 setToken(t,a,type){
-  this.setState({token:t , auth:a,type:type})
+ // this.setState({token:t , auth:a,type:type})
   sessionStorage.setItem('jwtToken', t);
   sessionStorage.setItem('auth', a);
-  console.log(this.state.token+ " "+this.state.auth)
+  sessionStorage.setItem('type', type);
+ // console.log(this.state.token+ " "+this.state.auth)
 }
 
   
@@ -74,8 +75,8 @@ setToken(t,a,type){
                <Register callBack={this.setToken}/>
             )} />
 
-    <Route exact path="/admin/register-lawyer" component={()=>sessionStorage.getItem('auth')? <RegisterLawyer callBack={this.setToken}/> : <LawyerSignIn/>} />
-    <Route exact path="/admin/register-reviewer" component={()=>sessionStorage.getItem('auth')?<RegisterReviewer callBack={this.setToken}/> : <ReviewerSignIn/>} />
+    <Route exact path="/admin/register-lawyer" component={()=>sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='a'? <RegisterLawyer callBack={this.setToken}/> : <LawyerSignIn/>} />
+    <Route exact path="/admin/register-reviewer" component={()=>sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='a'?<RegisterReviewer callBack={this.setToken}/> : <ReviewerSignIn/>} />
     <Route exact path="/admin/register-admin" render={props => (<RegisterReviewer callBack={this.setToken}/>)} />
            <Route
             exact
@@ -113,8 +114,8 @@ setToken(t,a,type){
             path="/investor/:id/MyRequests"
             render={props => <InvestorRequests/>}
           />
-    <InvestorCompanyRegSSC/>
-    <InvestorCompanyRegSPC/>
+    <InvestorCompanyRegSSC token={sessionStorage.getItem('jwtToken')}/>
+    <InvestorCompanyRegSPC token={sessionStorage.getItem('jwtToken')}/>
 
       <div>
     <Route exact path='/Investorlogin' render={props => (
