@@ -6,6 +6,7 @@ class ViewLawyerCasesbyID extends Component  {
     {
         super(props)
         this.state = 
+        
         {   //id : this.params.id,
           companies:null,
           isLoadied:false

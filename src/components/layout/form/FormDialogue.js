@@ -45,7 +45,7 @@ class FormDialogue extends React.Component {
         reviewerComment: "",
         managers: [
           {
-            _id: "",
+           
             name: "",
             type: "",
             sex: "",
@@ -64,7 +64,7 @@ class FormDialogue extends React.Component {
   }
   clean = obj => {
     for (var propName in obj) {
-      if (obj[propName] === "" || obj[propName] === undefined) {
+      if (obj[propName] === "" || obj[propName] === undefined || obj[propName]===[]) {
         delete obj[propName];
       }
     }
@@ -75,7 +75,8 @@ class FormDialogue extends React.Component {
     let userData = this.state.company;
 
     this.clean(userData);
-
+    console.log(userData)
+console.log(this.props.id)
     fetch("http://localhost:3000/api/investors/MyRequests/" + this.props.id, {
       method: "PUT",
       body: JSON.stringify(userData),
@@ -87,6 +88,7 @@ class FormDialogue extends React.Component {
       response.json().then(data => {
         console.log("Successfuly updated" + data);
         this.setState({success:true})
+        window.location.reload(); 
       });
     });
   }
@@ -103,7 +105,7 @@ class FormDialogue extends React.Component {
   handleInputval = props => {
     return Object.keys(props.data).map(key => [key, props.data[key]][1]);
   };
-  handleInputs(e) {
+  handleInputs=(e)=> {
     let value = e.target.value;
     let name = e.target.name;
     // console.log(this.state.investor)
@@ -120,9 +122,8 @@ class FormDialogue extends React.Component {
     );
   }
   render() {
-    if(this.state.success){
-      return <Snackbar variant='Success' message="Something went wrong!" />
-     }
+  
+    
     return (
       <div>
         <MenuItem onClick={this.handleClickOpen}>Edit</MenuItem>
@@ -149,7 +150,7 @@ class FormDialogue extends React.Component {
               input !== "lawyerComment" &&
               input !== 'reviewer'&&
               input !== 'reviewerComment'
-               ? (
+              ? (
                 <Grid container direction="column" alignItems="center">
                   <NotRequired
                     name={input}
@@ -160,8 +161,8 @@ class FormDialogue extends React.Component {
                 </Grid>
               ) : (
                 console.log()
-              )
-            )}
+                )
+                )}
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
@@ -169,12 +170,13 @@ class FormDialogue extends React.Component {
             </Button>
             <Button
               onClick={event => {
-                this.handleSubmit();
+                this.handleSubmit(event);
                 this.handleClose();
               }}
               color="primary"
             >
               Submit
+          
             </Button>
            
           </DialogActions>

@@ -12,13 +12,13 @@ const styles = theme => ({
   
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
     
   },
   gridList: {
-   maxWidth:400
+   maxWidth:300
   },
   icon: {
     color: 'rgba(255, 255, 255, 0.54)',
@@ -41,7 +41,7 @@ class TitlebarGridList extends React.Component {
                
                 </GridListTile>
                 {this.props.data.map((tile,i) => (
-                  <GridListTile style={{maxWidth:280}}>
+                  <GridListTile style={{maxWidth:400}}>
                    <CaseCard title={tile.nameInEnglish} key={i} id={tile._id} token= {this.props.token} subheader={tile.status} nameAr={tile.nameInArabic} data={tile} />
                   </GridListTile>
                 ))}
