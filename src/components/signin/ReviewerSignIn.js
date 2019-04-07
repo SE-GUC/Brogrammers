@@ -60,18 +60,18 @@ export class ReviewerSignIn extends Component {
 
     handleRegister(e){
         e.preventDefault();
-        let data = this.state.reviewer;
+        let reviewerData = this.state.reviewer;
         fetch('http://localhost:3000/api/reviewer/login',{
             method: "POST",
             mode: "no-cors",
-            body: JSON.stringify(data),
+            body: JSON.stringify(reviewerData),
             headers: {
               'Content-Type': 'application/json'
             },
           }).then(response => {
             response.json().then(data =>{
               console.log("Successful" + data+ data.auth);
-              this.props.callBack(data.token,data.auth)
+              this.props.callBack(data.token,data.auth,'x',data.data._id)
             })
         }) 
     }
