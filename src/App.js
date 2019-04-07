@@ -26,6 +26,7 @@ import SignIn from './components/signin/Signin'
 import ComplexButton from './components/layout/Complex Button/ComplexButton'
 import ViewLawyerCasesbyID from './components/pages/ViewLawyerCasesbyID.js'
 import ViewReviewerCasesbyID from './components/pages/ViewReviewerCasesbyID'
+import ViewApprovedCompanies from '.components/pages/ViewApprovedCompanies'
 
 class App extends Component {
   constructor (props) {
@@ -143,6 +144,9 @@ class App extends Component {
               <AdminCases token={sessionStorage.getItem('jwtToken')} />
             )} />
 
+            <Route exact path='/company/approved' render = { props=> (
+              <ViewApprovedCompanies/>
+            )}
           </div>
         </React.Fragment>
       </Router>
