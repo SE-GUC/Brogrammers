@@ -41,25 +41,18 @@ const styles = theme => ({
     backgroundColor: theme.palette.primary.main,
   },
 });
-class Register extends React.Component{
+class RegisterAdmin extends React.Component{
   constructor(props) {
     super(props);
 
     this.state = {
-      investor: {
+      admin: {
         name: '',
-        mail: '',
-        type: '',
+        email: '',
+        gender:'male',
         password: '',
-        gender: 'male',
-        nationality: 'Egypt',
-        idType: 'National ID',
-        idNumber: '',
-        dob:'',
-        address:'',
-        telephone:'',
-        fax:'',
-
+        birthDate:'',
+        phone:'',
       },
 
 
@@ -71,9 +64,9 @@ class Register extends React.Component{
 
 handleRegister(e){
     e.preventDefault();
-    let userData = this.state.investor;
+    let userData = this.state.admin;
 console.log("abc")
-    fetch('http://localhost:3000/api/investors/register',{
+    fetch('http://localhost:3000/routes/api/admins/register',{
         method: "POST",
         body: JSON.stringify(userData),
         headers: {
@@ -81,14 +74,14 @@ console.log("abc")
         },
       }).then(response => {
         response.json().then(data =>{
-          console.log("Successful" + data+ data.auth);
-          this.props.callBack(data.token,data.auth,'i')
+          console.log("Successful" + data);
+          this.props.callBack(data.token,data.auth,'a')
         })
     }) 
 }
   handleDate(v) {
-    this.setState( prevState => ({ investor : 
-         {...prevState.investor, dob: v
+    this.setState( prevState => ({ admin : 
+         {...prevState.admin, dob: v
          }
        }))
       
@@ -96,14 +89,13 @@ console.log("abc")
    handleInput(e) {
     let value = e.target.value;
     let name = e.target.name;
-   // console.log(this.state.investor)
     this.setState( prevState => {
        return { 
-          investor : {
-                   ...prevState.investor, [name]: value
+          admin : {
+                   ...prevState.admin, [name]: value
                   }
        }
-    }, () => console.log(this.state.investor)
+    }, () => console.log(this.state.admin)
     )
 }
  render() {
@@ -124,20 +116,12 @@ console.log("abc")
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-     <Required name= 'name' field={'Full Name'} type='text' callBack={this.handleInput}/>
-     <Required name= 'mail' field={'Email'} type='email' callBack={this.handleInput}/>
-     <Required name= 'password' field={'Password'} type='password' callBack={this.handleInput}/>
-     <Required name='type' field={'Investor Type'} type='text' callBack={this.handleInput}/>
+     <Required name= 'name' field={'First Name'} type='text' callBack={this.handleInput}/>
+     <Required name='email' field={'Email'} type='email' callBack={this.handleInput}/>
+     <Required name= 'password' field={'Password'} type='password' callBack={this.handleInput}/>     
+     <Required name= 'phone' field={'Phone'} type='text' callBack={this.handleInput}/>
+     <Date name= 'birthDate' callBack={this.handleDate}/>
      <Gender name='gender' callBack={this.handleInput}/>
-     <Date name= 'dob' callBack={this.handleDate}/>
-     <IDType name = 'idType' callBack={this.handleInput}/>
-     <Required name = 'idNumber' field={'ID Number'} type='text' callBack={this.handleInput}/>
-     <Required name='address' field={'Address'} type='text' callBack={this.handleInput}/>
-     <Required name='telephone' field={'Telephone'} type='text' callBack={this.handleInput}/>
-     <NotRequired name='fax' field={'Fax'} type='text' callBack={this.handleInput}/>
-
-
-     <Country callBack={this.handleInput}/>
      <AlertDialogSlide handleRegister={this.handleRegister}/>
     </Paper>
     </main>
@@ -148,4 +132,4 @@ console.log("abc")
 }
 
 }
-export default withStyles(styles)(Register);
+export default withStyles(styles)(RegisterAdmin);
