@@ -71,18 +71,19 @@ class App extends Component {
           {/* <Route exact path="/admin/register-admin" render={props => (<RegisterAdmin callBack={this.setToken}/>)} /> */}
           <Route
             exact
-            path='/editprofile/investor'
-            render={props => <EditProfileInvestor token={this.state.token} />}
+            path="/editprofile/investor"
+            render={props => <EditProfileInvestor token={this.state.token} token={sessionStorage.getItem('jwtToken')} />}
+            component={() => sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='i'? <EditProfileInvestor token={sessionStorage.getItem('jwtToken')}/> : <SignIn/>}
           />
           <Route
             exact
-            path='/editprofile/admin'
-            render={props => <EditProfileAdmin />}
+            path="/editprofile/admin"
+            component={() => sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='a'? <EditProfileAdmin token={sessionStorage.getItem('jwtToken')}/> : <AdminSignIn/>}
           />
           <Route
             exact
-            path='/editprofile/lawyer'
-            render={props => <EditProfileLawyer />}
+            path="/editprofile/lawyer"
+            component={() => sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='l'? <EditProfileLawyer token={sessionStorage.getItem('jwtToken')}/> : <LawyerSignIn/>}
           />
           <Route
             exact
@@ -97,8 +98,8 @@ class App extends Component {
 
           <Route
             exact
-            path='/editprofile/reviewer'
-            render={props => <EditProfileReviewer />}
+            path="/editprofile/reviewer"
+            component={() => sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='r'? <EditProfileReviewer token={sessionStorage.getItem('jwtToken')}/> : <ReviewerSignIn/>}
           />
 
           <Route

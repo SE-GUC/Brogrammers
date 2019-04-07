@@ -40,7 +40,7 @@ class EditProfileAdmin extends Component {
       admin: {
         email: null,
         password: null,
-        telephone: null,
+        phone: null,
         gender: null
       }
     }
@@ -69,22 +69,46 @@ class EditProfileAdmin extends Component {
             callBack={this.onChange}
           />
           <NotRequired
+<<<<<<< HEAD
             name={'telephone'}
             field={'Telephone'}
             type='text'
             callBack={this.onChange}
           />
           <Gender name='gender' />
+=======
+            name={"phone"}
+            field={"Telephone"}
+            type="text"
+            callBack={this.onChange}
+          />
+          <Gender name="gender" callBack={this.onChange} />
+>>>>>>> 10c254536b878a939ea0d87b6e093ea55f8bdfad
           <SaveChangesButton onClick={this.handleSubmission} />
         </Paper>
       </main>
     )
   }
+  clean = obj => {
+    for (var propName in obj) {
+      if (obj[propName] === "" || obj[propName] === undefined || obj[propName] === null) {
+        delete obj[propName];
+      }
+    }
+  };
 
+<<<<<<< HEAD
   handleSubmission (e) {
     let updatedData = this.state
     fetch('http://localhost:3000/routes/api/admins/', {
       method: 'PUT',
+=======
+  handleSubmission(e) {
+    let updatedData = this.state.admin;
+    this.clean(updatedData);
+    fetch("http://localhost:3000/routes/api/admins/", {
+      method: "PUT",
+>>>>>>> 10c254536b878a939ea0d87b6e093ea55f8bdfad
       body: JSON.stringify(updatedData),
       headers: {
         'Content-Type': 'application/json',
