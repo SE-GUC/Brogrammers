@@ -121,7 +121,7 @@ console.log("abc")
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-     <Required name= 'name' field={'First Name'} type='text' callBack={this.handleInput}/>
+     <Required name= 'name' field={'Full Name'} type='text' callBack={this.handleInput}/>
      <Required name='email' field={'Email'} type='email' callBack={this.handleInput}/>
      <Required name= 'password' field={'Password'} type='password' callBack={this.handleInput}/>     
      <Required name = 'ssn' field={'Social Security Number'} type='text' callBack={this.handleInput}/>
