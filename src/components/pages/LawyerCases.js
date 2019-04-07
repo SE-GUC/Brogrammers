@@ -40,7 +40,11 @@ class LawyerCases extends Component{
     
     render(){
        console.log(this.state.lawyerCases)
+      
         
+
+
+
         return(
            <div>
     
