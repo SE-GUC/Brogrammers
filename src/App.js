@@ -64,7 +64,7 @@ setToken(t,a,type,id){
       <Router>
       <React.Fragment>
     <Navbar/>
-    <Route exact path="/home" render={props => (
+    <Route exact path="/signin" render={props => (
           <ComplexButton/>
     )} />
     <Route exact path="/register" render={props => (
@@ -107,8 +107,8 @@ setToken(t,a,type,id){
           />
           <Route
             exact
-            path="/investor/:id/MyRequests"
-            render={props => <InvestorRequests/>}
+            path="/investors/MyRequests"
+            render={props => <InvestorRequests token={sessionStorage.getItem('jwtToken')}/>}
           />
            <Route
             exact
