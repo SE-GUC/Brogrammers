@@ -73,7 +73,8 @@ console.log("abc")
         method: "POST",
         body: JSON.stringify(userData),
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-access-token': this.props.token
         },
       }).then(response => {
         response.json().then(data =>{
@@ -84,7 +85,7 @@ console.log("abc")
 }
   handleDate(v) {
     this.setState( prevState => ({ investor : 
-         {...prevState.investor, dob: v
+         {...prevState.investor, birth: v
          }
        }))
       
