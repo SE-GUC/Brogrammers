@@ -42,7 +42,7 @@ class TitlebarGridList extends React.Component {
                 </GridListTile>
                 {this.props.data.map((tile,i) => (
                   <GridListTile style={{maxWidth:300}}>
-                   <CaseCard title={tile.nameInEnglish} key={i} subheader={tile.status} nameAr={tile.nameInArabic} data={tile} />
+                   <CaseCard title={tile.nameInEnglish} key={i} id={tile._id} token= {this.props.token} subheader={tile.status} nameAr={tile.nameInArabic} data={tile} />
                   </GridListTile>
                 ))}
               </GridList>
