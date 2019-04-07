@@ -52,12 +52,12 @@ type:'',
 
 
  
-setToken(t,a,type){
- // this.setState({token:t , auth:a,type:type})
+setToken(t,a,type,id){
   sessionStorage.setItem('jwtToken', t);
   sessionStorage.setItem('auth', a);
   sessionStorage.setItem('type', type);
- // console.log(this.state.token+ " "+this.state.auth)
+  sessionStorage.setItem('id', id);
+  console.log(sessionStorage.getItem('id'));
 }
 
   

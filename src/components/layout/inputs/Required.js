@@ -40,6 +40,7 @@ class Required extends React.Component {
           variant="outlined"
           type={this.props.type}
           onChange={this.props.callBack}
+          
         />
         <br />
       </React.Fragment>
