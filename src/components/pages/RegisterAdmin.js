@@ -66,7 +66,7 @@ handleRegister(e){
     e.preventDefault();
     let userData = this.state.admin;
 console.log("abc")
-    fetch('http://localhost:3000/routes/api/admins/register',{
+    fetch('http://localhost:3000/routes/api/admins/registerNo',{
         method: "POST",
         body: JSON.stringify(userData),
         headers: {
@@ -75,13 +75,14 @@ console.log("abc")
       }).then(response => {
         response.json().then(data =>{
           console.log("Successful" + data);
-          this.props.callBack(data.token,data.auth,'a')
+          this.props.callBack(data.token,data.auth,'a',data.data._id)
         })
     }) 
 }
   handleDate(v) {
+    console.log('heeey')
     this.setState( prevState => ({ admin : 
-         {...prevState.admin, dob: v
+         {...prevState.admin, birthDate: v
          }
        }))
       
@@ -108,7 +109,7 @@ console.log("abc")
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous"></link>
       <CssBaseline />
       
-    <Paper className={classes.paper}>
+    <Paper className={classes.paper} elevation={16}>
 
      <Avatar className={classes.avatar}>
           <i class="fas fa-user-plus"></i>
@@ -116,7 +117,7 @@ console.log("abc")
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-     <Required name= 'name' field={'First Name'} type='text' callBack={this.handleInput}/>
+     <Required name= 'name' field={'Full Name'} type='text' callBack={this.handleInput}/>
      <Required name='email' field={'Email'} type='email' callBack={this.handleInput}/>
      <Required name= 'password' field={'Password'} type='password' callBack={this.handleInput}/>     
      <Required name= 'phone' field={'Phone'} type='text' callBack={this.handleInput}/>
