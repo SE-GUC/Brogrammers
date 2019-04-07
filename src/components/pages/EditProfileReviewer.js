@@ -43,13 +43,13 @@ class EditProfileReviewer extends Component {
         name: null,
         email: null,
         password: null,
-        telephone: null,
+        phone: null,
         address: null,
         ssn: null,
         yearsOfExperience: null,
         age: null,
         gender: null,
-        birthDate: null
+        birth: null
       }
     }
     this.handleSubmission = this.handleSubmission.bind(this);
@@ -57,9 +57,19 @@ class EditProfileReviewer extends Component {
     this.onChange = this.onChange.bind(this);
   }
 
+  clean = obj => {
+    for (var propName in obj) {
+      if (obj[propName] === "" || obj[propName] === undefined || obj[propName] === null) {
+        delete obj[propName];
+      }
+    }
+  };
+
   handleSubmission(e) {
-    let updatedData = this.state;
-    fetch("http://localhost:3000/api/lawyer/", {
+    let updatedData = this.state.reviewer;
+    this.clean(updatedData);
+    console.log("is this working " + updatedData);
+    fetch("http://localhost:3000/api/reviewer/", {
       method: "PUT",
       body: JSON.stringify(updatedData),
       headers: {
@@ -70,6 +80,7 @@ class EditProfileReviewer extends Component {
       console.log("Information updated successfully");
     });
   }
+
 
   onChange(e) {
     let value = e.target.value;
@@ -90,7 +101,7 @@ class EditProfileReviewer extends Component {
   handleDate(v) {
     console.log(v);
     this.setState( prevState => ({ lawyer : 
-         {...prevState.lawyer, birthDate: v
+         {...prevState.lawyer, birth: v
          }
        }))
       
@@ -108,16 +119,16 @@ class EditProfileReviewer extends Component {
           <NotRequired name={"name"} field={"Name"} type="text" callBack={this.onChange} />
           <NotRequired name={"email"} field={"Email"} type="email" callBack={this.onChange}/>
           <NotRequired name={"password"} field={"Password"} type="password" callBack={this.onChange}/>
-          <NotRequired name={"telephone"} field={"Telephone"} type="text" callBack={this.onChange}/>
+          <NotRequired name={"phone"} field={"Telephone"} type="text" callBack={this.onChange}/>
           <NotRequired name={"address"} field={"Address"} type="text" callBack={this.onChange}/>
           <NotRequired name={"ssn"} field={"Social Security Number"} type="text" callBack={this.onChange}/>
           <NotRequired name={"yearsOfExperience"} field={"Years Of Experience "} type="number" callBack={this.onChange}/>
           <NotRequired name={"age"} field={"Age"} type="number" callBack={this.onChange}/>
           <div className={classes.cluster}>
             <Gender name={"gender"} callBack={this.onChange}/>
-            <Date name={"birthDate"} field={"Birth Date"} callBack={this.handleDate}/>
+            <Date name={"birth"} field={"Birth Date"} callBack={this.handleDate}/>
           </div>
-          <SaveChangesButton />
+          <SaveChangesButton onClick={this.handleSubmission} />
         </Paper>
       </main>
     );

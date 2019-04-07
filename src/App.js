@@ -77,17 +77,18 @@ setToken(t,a,type,id){
            <Route
             exact
             path="/editprofile/investor"
-            render={props => <EditProfileInvestor token={this.state.token} />}
+            render={props => <EditProfileInvestor token={this.state.token} token={sessionStorage.getItem('jwtToken')} />}
+            component={() => sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='i'? <EditProfileInvestor token={sessionStorage.getItem('jwtToken')}/> : <SignIn/>}
           />
           <Route
             exact
             path="/editprofile/admin"
-            render={props => <EditProfileAdmin />}
+            component={() => sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='a'? <EditProfileAdmin token={sessionStorage.getItem('jwtToken')}/> : <AdminSignIn/>}
           />
           <Route
             exact
             path="/editprofile/lawyer"
-            render={props => <EditProfileLawyer />}
+            component={() => sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='l'? <EditProfileLawyer token={sessionStorage.getItem('jwtToken')}/> : <LawyerSignIn/>}
           />
           <Route
             exact
@@ -103,7 +104,7 @@ setToken(t,a,type,id){
           <Route
             exact
             path="/editprofile/reviewer"
-            render={props => <EditProfileReviewer />}
+            component={() => sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='r'? <EditProfileReviewer token={sessionStorage.getItem('jwtToken')}/> : <ReviewerSignIn/>}
           />
           <Route
             exact

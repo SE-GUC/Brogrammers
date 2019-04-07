@@ -40,7 +40,7 @@ class EditProfileAdmin extends Component {
       admin: {
         email: null,
         password: null,
-        telephone: null,
+        phone: null,
         gender: null
       }
     };
@@ -69,20 +69,28 @@ class EditProfileAdmin extends Component {
             callBack={this.onChange}
           />
           <NotRequired
-            name={"telephone"}
+            name={"phone"}
             field={"Telephone"}
             type="text"
             callBack={this.onChange}
           />
-          <Gender name="gender" />
+          <Gender name="gender" callBack={this.onChange} />
           <SaveChangesButton onClick={this.handleSubmission} />
         </Paper>
       </main>
     );
   }
+  clean = obj => {
+    for (var propName in obj) {
+      if (obj[propName] === "" || obj[propName] === undefined || obj[propName] === null) {
+        delete obj[propName];
+      }
+    }
+  };
 
   handleSubmission(e) {
-    let updatedData = this.state;
+    let updatedData = this.state.admin;
+    this.clean(updatedData);
     fetch("http://localhost:3000/routes/api/admins/", {
       method: "PUT",
       body: JSON.stringify(updatedData),
