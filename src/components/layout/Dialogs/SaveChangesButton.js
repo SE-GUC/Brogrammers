@@ -11,7 +11,7 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-class AlertDialogSlide extends React.Component {
+class SaveChangesButton extends React.Component {
   state = {
     open: false,
   };
@@ -24,17 +24,11 @@ class AlertDialogSlide extends React.Component {
     this.setState({ open: false });
   };
 
-  handleClose2 = e => {
-    this.setState({ open: false });
-    this.props.handleRegister(e);
-  };
-
-
   render() {
     return (
       <div>
         <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-          Submit
+          Save Changes
         </Button>
         <Dialog
           open={this.state.open}
@@ -57,7 +51,7 @@ class AlertDialogSlide extends React.Component {
             <Button onClick={this.handleClose} color="primary">
               Disagree
             </Button>
-            <Button onClick={this.handleClose2} color="primary">
+            <Button onClick={this.props.handleRegister} color="primary">
               Agree
             </Button>
           </DialogActions>
@@ -67,4 +61,4 @@ class AlertDialogSlide extends React.Component {
   }
 }
 
-export default AlertDialogSlide;
+export default SaveChangesButton;

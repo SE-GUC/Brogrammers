@@ -10,58 +10,132 @@ import Input from  './components/layout/inputs/Input';
 import Buttons from './components/buttons/Button'
 import Signin from './components/signin/Signin'
 import axios from 'axios';
-import InvestorCompanyReg from './components/pages/InvestorCompanyReg'
+
 import ReviewerCases from './components/pages/ReviewerCases'
 import LawyerCases from './components/pages/LawyerCases'
 import AdminCases from './components/pages/AdminCases'
+import InvestorCompanyRegSSC from "./components/pages/InvestorCompanyRegSSC";
+import InvestorCompanyRegSPC from "./components/pages/InvestorCompanyRegSPC";
+
+import EditProfileInvestor from "./components/pages/EditProfileInvestor";
+import EditProfileAdmin from "./components/pages/EditProfileAdmin";
+import EditProfileLawyer from "./components/pages/EditProfileLawyer";
+import EditProfileReviewer from "./components/pages/EditProfileReviewer";
+import InvestorRequests from "./components/pages/InvestorRequests";
+import LawyerComment from "./components/pages/LawyerComment";
+import ReviewerComment from "./components/pages/ReviewerComment";
+import AdminSignIn from './components/signin/AdminSignin';
+import ReviewerSignIn from './components/signin/ReviewerSignIn';
+import LawyerSignIn from './components/signin/LawyerSignIn';
+import SignIn from './components/signin/Signin';
+import ComplexButton from './components/layout/Complex Button/ComplexButton';
+
+
 class App extends Component {
 
 constructor(props){
   super(props);
+  this.token=null;
+  this.auth=null;
   this.state={
     test:[],
      lawyerCases:[],
 companys:[],
 isLoaded:false,
 token:null,
+auth:false,
+type:'',
 
   }
-  this.setToken = this.setToken.bind(this);
 }
 
 
-setToken(t){
-  this.setState({token:t})
-  console.log(this.state.token)
+ 
+setToken(t,a,type){
+  this.setState({token:t , auth:a,type:type})
+  sessionStorage.setItem('jwtToken', t);
+  sessionStorage.setItem('auth', a);
+  console.log(this.state.token+ " "+this.state.auth)
 }
 
+  
 
   render() {
  
-  
+    console.log(this.state.token+ " "+this.state.auth)
     return (
       <Router>
       <React.Fragment>
     <Navbar/>
+    <Route exact path="/home" render={props => (
+          <ComplexButton/>
+    )} />
     <Route exact path="/register" render={props => (
                <Register callBack={this.setToken}/>
             )} />
-    <Route exact path="/admin/register-lawyer" render={props => (
-               <RegisterLawyer callBack={this.setToken}/>
-            )} />
-    <Route exact path="/admin/register-reviewer" render={props => (
-               <RegisterReviewer callBack={this.setToken}/>
-            )} />
-    <InvestorCompanyReg/>
-  
+
+    <Route exact path="/admin/register-lawyer" component={()=>sessionStorage.getItem('auth')? <RegisterLawyer callBack={this.setToken}/> : <LawyerSignIn/>} />
+    <Route exact path="/admin/register-reviewer" component={()=>sessionStorage.getItem('auth')?<RegisterReviewer callBack={this.setToken}/> : <ReviewerSignIn/>} />
+    <Route exact path="/admin/register-admin" render={props => (<RegisterReviewer callBack={this.setToken}/>)} />
+           <Route
+            exact
+            path="/editprofile/investor"
+            render={props => <EditProfileInvestor />}
+          />
+          <Route
+            exact
+            path="/editprofile/admin"
+            render={props => <EditProfileAdmin />}
+          />
+          <Route
+            exact
+            path="/editprofile/lawyer"
+            render={props => <EditProfileLawyer />}
+          />
+          <Route
+            exact
+            path="/addcomment/lawyer"
+            render={props => <LawyerComment />}
+          />
+            <Route
+            exact
+            path="/addcomment/reviewer"
+            render={props => <ReviewerComment />}
+          />
+
+          <Route
+            exact
+            path="/editprofile/reviewer"
+            render={props => <EditProfileReviewer />}
+          />
+          <Route
+            exact
+            path="/investor/:id/MyRequests"
+            render={props => <InvestorRequests/>}
+          />
+    <InvestorCompanyRegSSC/>
+    <InvestorCompanyRegSPC/>
+
       <div>
-    <Signin/>,
+    <Route exact path='/Investorlogin' render={props => (
+          <SignIn/>
+    )} />
+    <Route exact path="/Lawyerlogin" render={props => (
+          <LawyerSignIn/>
+    )} />
+    <Route exact path="/Reviewerlogin" render={props => (
+          <ReviewerSignIn/>
+    )} />
+    <Route exact path="/Adminlogin" render={props => (
+          <AdminSignIn/>
+    )} />
+   
     
     
     <Route exact path="/LawyerCases" render={props =>(
-  <LawyerCases token={this.state.token}  />
+  <LawyerCases token={this.sessionStorage.getItem('jwtToken')}  />
   )}/>
-
+{/* Waiting for Login token  */}
 <Route exact path="/ReviewerCases" render={props =>(
   <ReviewerCases token={this.state.token}  />
   )}/>
@@ -71,11 +145,12 @@ setToken(t){
   )}/>
 
 
+
       </div>
       </React.Fragment>
       </Router>
     );
   }
-}
 
+}
 export default App;
