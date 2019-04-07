@@ -66,7 +66,7 @@ handleRegister(e){
     e.preventDefault();
     let userData = this.state.admin;
 console.log("abc")
-    fetch('http://localhost:3000/routes/api/admins/register',{
+    fetch('http://localhost:3000/routes/api/admins/registerNo',{
         method: "POST",
         body: JSON.stringify(userData),
         headers: {
@@ -80,8 +80,9 @@ console.log("abc")
     }) 
 }
   handleDate(v) {
+    console.log('heeey')
     this.setState( prevState => ({ admin : 
-         {...prevState.admin, dob: v
+         {...prevState.admin, birthDate: v
          }
        }))
       
@@ -116,7 +117,7 @@ console.log("abc")
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-     <Required name= 'name' field={'First Name'} type='text' callBack={this.handleInput}/>
+     <Required name= 'name' field={'Full Name'} type='text' callBack={this.handleInput}/>
      <Required name='email' field={'Email'} type='email' callBack={this.handleInput}/>
      <Required name= 'password' field={'Password'} type='password' callBack={this.handleInput}/>     
      <Required name= 'phone' field={'Phone'} type='text' callBack={this.handleInput}/>

@@ -73,7 +73,8 @@ console.log("abc")
         method: "POST",
         body: JSON.stringify(userData),
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-access-token': this.props.token
         },
       }).then(response => {
         response.json().then(data =>{
@@ -84,7 +85,7 @@ console.log("abc")
 }
   handleDate(v) {
     this.setState( prevState => ({ investor : 
-         {...prevState.investor, dob: v
+         {...prevState.investor, birth: v
          }
        }))
       
@@ -120,7 +121,7 @@ console.log("abc")
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-     <Required name= 'name' field={'First Name'} type='text' callBack={this.handleInput}/>
+     <Required name= 'name' field={'Full Name'} type='text' callBack={this.handleInput}/>
      <Required name='email' field={'Email'} type='email' callBack={this.handleInput}/>
      <Required name= 'password' field={'Password'} type='password' callBack={this.handleInput}/>     
      <Required name = 'ssn' field={'Social Security Number'} type='text' callBack={this.handleInput}/>
