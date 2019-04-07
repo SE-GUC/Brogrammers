@@ -52,12 +52,12 @@ type:'',
 
 
  
-setToken(t,a,type){
- // this.setState({token:t , auth:a,type:type})
+setToken(t,a,type,id){
   sessionStorage.setItem('jwtToken', t);
   sessionStorage.setItem('auth', a);
   sessionStorage.setItem('type', type);
- // console.log(this.state.token+ " "+this.state.auth)
+  sessionStorage.setItem('id', id);
+  console.log(sessionStorage.getItem('id'));
 }
 
   
@@ -140,15 +140,15 @@ setToken(t,a,type){
     
     
     <Route exact path="/LawyerCases" render={props =>(
-  <LawyerCases token={this.sessionStorage.getItem('jwtToken')}  />
+  <LawyerCases token={sessionStorage.getItem('jwtToken')}  />
   )}/>
 {/* Waiting for Login token  */}
 <Route exact path="/ReviewerCases" render={props =>(
-  <ReviewerCases token={this.sessionStorage.getItem('jwtToken')}  />
+  <ReviewerCases token={sessionStorage.getItem('jwtToken')}  />
   )}/>
 
 <Route exact path="/AdminCases" render={props =>(
-  <AdminCases token={this.sessionStorage.getItem('jwtToken')}  />
+  <AdminCases token={sessionStorage.getItem('jwtToken')}  />
   )}/>
 
 
