@@ -115,10 +115,13 @@ setToken(t,a,type){
             path="/investor/:id/MyRequests"
             render={props => <InvestorRequests/>}
           />
-        <InvestorCompanyRegSSC token={sessionStorage.getItem('jwtToken')}/>
-        <InvestorCompanyRegSPC token={sessionStorage.getItem('jwtToken')}/>
-        <Route exact path="/lawyer/view-lawyer-cases-by/:id" component = {ViewLawyerCasesbyID} />
-        <Route exact path="/reviewer/view-reviewer-cases-by/:id" component = {ViewReviewerCasesbyID} />
+
+    <InvestorCompanyRegSSC token={sessionStorage.getItem('jwtToken')}/>
+    <InvestorCompanyRegSPC token={sessionStorage.getItem('jwtToken')}/>
+
+          <Route exact path="/lawyer/view-lawyer-cases-by/:id" component = {ViewLawyerCasesbyID} />
+          <Route exact path="/reviewer/view-reviewer-cases-by/:id" component = {ViewReviewerCasesbyID} />
+
 
       <div>
     <Route exact path='/Investorlogin' render={props => (
