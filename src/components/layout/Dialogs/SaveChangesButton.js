@@ -24,6 +24,11 @@ class SaveChangesButton extends React.Component {
     this.setState({ open: false });
   };
 
+  handleClose2 = (e) => {
+    this.setState({ open: false });
+    this.props.onChange(e);
+  };
+
   render() {
     return (
       <div>
@@ -51,7 +56,7 @@ class SaveChangesButton extends React.Component {
             <Button onClick={this.handleClose} color="primary">
               Disagree
             </Button>
-            <Button onClick={this.props.handleSubmission} color="primary">
+            <Button onClick={this.handleClose2} color="primary">
               Agree
             </Button>
           </DialogActions>

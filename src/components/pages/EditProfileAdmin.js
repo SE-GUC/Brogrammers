@@ -25,7 +25,8 @@ const styles = theme => ({
     flexDirection: "column",
     alignItems: "center",
     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
-      .spacing.unit * 3}px`
+      .spacing.unit * 3}px`,
+    backgroundColor: "#f4f4f4"
   },
   avatar: {
     margin: theme.spacing.unit,
@@ -55,18 +56,25 @@ class EditProfileAdmin extends Component {
             add_circle
           </Icon>
           <h2>Edit Your Profile</h2>
-          <NotRequired field={"Email"} type="email" callBack={this.onChange} />
           <NotRequired
+            name={"email"}
+            field={"Email"}
+            type="email"
+            callBack={this.onChange}
+          />
+          <NotRequired
+            name={"password"}
             field={"Password"}
             type="password"
             callBack={this.onChange}
           />
           <NotRequired
+            name={"telephone"}
             field={"Telephone"}
             type="text"
             callBack={this.onChange}
           />
-          <Gender />
+          <Gender name="gender" />
           <SaveChangesButton onClick={this.handleSubmission} />
         </Paper>
       </main>
@@ -94,7 +102,7 @@ class EditProfileAdmin extends Component {
       prevState => {
         return {
           admin: {
-            ...prevState.investor,
+            ...prevState.admin,
             [name]: value
           }
         };
@@ -102,6 +110,7 @@ class EditProfileAdmin extends Component {
       () => console.log(value)
     );
   }
+  
 }
 
 export default withStyles(styles)(EditProfileAdmin);
