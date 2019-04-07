@@ -60,15 +60,15 @@ class InvestorCompanyReg extends React.Component {
     }
 
     handleRegister(event) {
+        console.log(this.props.token)
         event.preventDefault();
         fetch("http://localhost:3000/api/investors/createssccompany",
             {
                 method: "POST",
                 body: JSON.stringify(this.state.company),
-                mode: "no-cors",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Origin': 'http://localhost:3000'
+                    "Content-Type": "application/json",
+                    "x-access-token": this.props.token
                 }
             }).then(response => {
                 response.json().then(data => {

@@ -72,9 +72,11 @@ class FormDialogue extends React.Component {
             </DialogContentText>
 
             {this.handleInput(this.props).map((input, i) => (
+            input!=='status'&& input!=='_id' &&input !=='__v'?
               <Grid container direction="column" alignItems="center">
                 <NotRequired name="name" field={input} type="text" callBack={this.handleInputs} />
-              </Grid>
+              </Grid>:
+              console.log(input)
             ))}
           </DialogContent>
           <DialogActions>

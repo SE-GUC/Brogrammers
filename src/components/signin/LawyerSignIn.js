@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -44,48 +44,89 @@ const styles = theme => ({
   },
 });
 
-function SignIn(props) {
-  const { classes } = props;
+export class LawyerSignIn extends Component {
+    constructor(props){
+        super(props);
+        this.state= {
+           lawyer: {
+            email: '',
+            password: '',
+           },
+        }
+        this.handleInput = this.handleInput.bind(this);
+        this.handleRegister = this.handleRegister.bind(this);
+    }
 
-  return (
-    <main className={classes.main}>
-      <CssBaseline />
-      <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form}>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">Email</InputLabel>
-            <Input id="email" name="email" autoComplete="email" autoFocus />
-          </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="password">Password</InputLabel>
-            <Input name="password" type="password" id="password" autoComplete="current-password" />
-          </FormControl>
-          <FormControlLabel
-            control={<label/>}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
+    handleRegister(e){
+        e.preventDefault();
+        let data = this.state.lawyer;
+        fetch('http://localhost:3000/api/lawyer/login',{
+            method: "POST",
+            mode: "no-cors",
+            body: JSON.stringify(data),
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          }).then(response => {
+            response.json().then(data =>{
+              console.log("Successful" + data+ data.auth);
+              this.props.callBack(data.token,data.auth)
+            })
+        }) 
+    }
+
+    handleInput(e) {
+        let value = e.target.value;
+        let name = e.target.name;
+       // console.log(this.state.investor)
+        this.setState( prevState => {
+           return { 
+              lawyer : {
+                       ...prevState.lawyer, [name]: value
+                      }
+           }
+        }, () => console.log(this.state.lawyer)
+        )
+    }
+
+  render() {
+    const { classes } = this.props;
+    return (
+        <main className={classes.main}>
+        <CssBaseline />
+        <Paper className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
             Sign in
-          </Button>
-        </form>
-      </Paper>
-    </main>
-  );
+          </Typography>
+          <form className={classes.form}>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="email">Email</InputLabel>
+              <Input id="email" name="email" autoComplete="email" field={'Email'} type='email' callBack={this.handleInput} autoFocus />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="password">Password</InputLabel>
+              <Input name="password" type="password" id="password" autoComplete="current-password" field={'Password'} callBack={this.handleInput} />
+            </FormControl>
+            <FormControlLabel
+              control={<label/>}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Sign in
+            </Button>
+          </form>
+        </Paper>
+      </main>
+    )
+  }
 }
 
-SignIn.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(SignIn);
+export default withStyles(styles)(LawyerSignIn);

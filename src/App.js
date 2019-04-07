@@ -1,17 +1,22 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import "./App.css";
-import Navbar from "./components/layout/Navbar";
-import Register from "./components/pages/Register";
-import RegisterLawyer from "./components/pages/RegisterLawyer";
-import RegisterReviewer from "./components/pages/RegisterReviewer";
-import "typeface-roboto";
-import Input from "./components/layout/inputs/Input";
-import Buttons from "./components/buttons/Button";
-import axios from "axios";
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import './App.css';
+import Navbar from  './components/layout/Navbar';
+import Register from  './components/pages/Register';
+import RegisterLawyer from  './components/pages/RegisterLawyer';
+import RegisterReviewer from  './components/pages/RegisterReviewer';
+import 'typeface-roboto';
+import Input from  './components/layout/inputs/Input';
+import Buttons from './components/buttons/Button'
+import Signin from './components/signin/Signin'
+import axios from 'axios';
+
+import ReviewerCases from './components/pages/ReviewerCases'
+import LawyerCases from './components/pages/LawyerCases'
+import AdminCases from './components/pages/AdminCases'
 import InvestorCompanyRegSSC from "./components/pages/InvestorCompanyRegSSC";
 import InvestorCompanyRegSPC from "./components/pages/InvestorCompanyRegSPC";
-import CaseCard from "./components/cards/CaseCard";
+
 import EditProfileInvestor from "./components/pages/EditProfileInvestor";
 import EditProfileAdmin from "./components/pages/EditProfileAdmin";
 import EditProfileLawyer from "./components/pages/EditProfileLawyer";
@@ -24,6 +29,8 @@ import ReviewerSignIn from './components/signin/ReviewerSignIn';
 import LawyerSignIn from './components/signin/LawyerSignIn';
 import SignIn from './components/signin/Signin';
 import ComplexButton from './components/layout/Complex Button/ComplexButton';
+import ViewLawyerCasesbyID from './components/pages/ViewLawyerCasesbyID.js'
+import ViewReviewerCasesbyID from './components/pages/ViewReviewerCasesbyID'
 
 class App extends Component {
 
@@ -33,7 +40,7 @@ constructor(props){
   this.auth=null;
   this.state={
     test:[],
-    lawyerCases:[],
+     lawyerCases:[],
 companys:[],
 isLoaded:false,
 token:null,
@@ -44,19 +51,16 @@ type:'',
 }
 
 
-  //componentDidMount(){
-  //this.fetchCompanies()
-  //this.fetchLawyerCases()
-
-//}
+ 
 setToken(t,a,type){
-  this.setState({token:t , auth:a,type:type})
+ // this.setState({token:t , auth:a,type:type})
   sessionStorage.setItem('jwtToken', t);
   sessionStorage.setItem('auth', a);
-  console.log(this.state.token+ " "+this.state.auth)
+  sessionStorage.setItem('type', type);
+ // console.log(this.state.token+ " "+this.state.auth)
 }
 
-  //}
+  
 
   render() {
  
@@ -72,8 +76,8 @@ setToken(t,a,type){
                <Register callBack={this.setToken}/>
             )} />
 
-    <Route exact path="/admin/register-lawyer" component={()=>sessionStorage.getItem('auth')? <RegisterLawyer callBack={this.setToken}/> : <LawyerSignIn/>} />
-    <Route exact path="/admin/register-reviewer" component={()=>sessionStorage.getItem('auth')?<RegisterReviewer callBack={this.setToken}/> : <ReviewerSignIn/>} />
+    <Route exact path="/admin/register-lawyer" component={()=>sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='a'? <RegisterLawyer callBack={this.setToken}/> : <LawyerSignIn/>} />
+    <Route exact path="/admin/register-reviewer" component={()=>sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='a'?<RegisterReviewer callBack={this.setToken}/> : <ReviewerSignIn/>} />
     <Route exact path="/admin/register-admin" render={props => (<RegisterReviewer callBack={this.setToken}/>)} />
            <Route
             exact
@@ -108,11 +112,13 @@ setToken(t,a,type){
           />
           <Route
             exact
-            path="/investor/:id/MyRequests"
-            render={props => <InvestorRequests/>}
+            path="/investors/MyRequests"
+            render={props => <InvestorRequests token={sessionStorage.getItem('jwtToken')}/>}
           />
-    {/* <InvestorCompanyRegSSC/>
-    <InvestorCompanyRegSPC/> */}
+        <InvestorCompanyRegSSC token={sessionStorage.getItem('jwtToken')}/>
+        <InvestorCompanyRegSPC token={sessionStorage.getItem('jwtToken')}/>
+        <Route exact path="/lawyer/view-lawyer-cases-by/:id" component = {ViewLawyerCasesbyID} />
+        <Route exact path="/reviewer/view-reviewer-cases-by/:id" component = {ViewReviewerCasesbyID} />
 
       <div>
     <Route exact path='/Investorlogin' render={props => (
@@ -127,27 +133,25 @@ setToken(t,a,type){
     <Route exact path="/Adminlogin" render={props => (
           <AdminSignIn/>
     )} />
-    <Buttons ></Buttons>
-    
-
-
-
    
-    {/* <ul>
-          {this.state.companys.map(item1 => (
-            <li key={item1}>{item1}</li>
-          ))}
-        </ul> */}
-            <ul>
-              <li>
-                <p>hihihihhi</p>
-              </li>
-              <li>
-                <h1>Companies should be displayed here</h1>
-              </li>
-            </ul>
-          </div>
-        </React.Fragment>
+    
+    
+    <Route exact path="/LawyerCases" render={props =>(
+  <LawyerCases token={this.sessionStorage.getItem('jwtToken')}  />
+  )}/>
+{/* Waiting for Login token  */}
+<Route exact path="/ReviewerCases" render={props =>(
+  <ReviewerCases token={this.sessionStorage.getItem('jwtToken')}  />
+  )}/>
+
+<Route exact path="/AdminCases" render={props =>(
+  <AdminCases token={this.sessionStorage.getItem('jwtToken')}  />
+  )}/>
+
+
+
+      </div>
+      </React.Fragment>
       </Router>
     );
   }
