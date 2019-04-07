@@ -88,10 +88,6 @@ class InvestorsTest {
             this.getMyRequestsLoggedIn(),
             this.getMyRequestsLoggedOut(),
             this.getMyRequestsIncorrectToken(),
-            this.getMyRequestDetailsLoggedOut(),
-            this.getMyRequestDetailsLoggedIn(),
-            this.getMyRequestDetailsIncorrectToken(),
-            this.getMyRequestDetailsWrongRequest(),
             this.EditMyRequestLoggedOut(),
             this.EditMyRequestIncorrectToken(),
             this.EditMyRequestWrongCompany(),
@@ -1163,9 +1159,9 @@ class InvestorsTest {
   getMyRequestsLoggedIn() {
     test(`Fetching the data of a request as an investor while logged in,\t[=> GET\t\t${
       this.base_url
-    }/:id/MyRequests\t`, async () => {
+    }/MyRequests\t`, async () => {
       const response = await nfetch(
-        `${this.base_url}/${this.sharedState.id}/MyRequests`,
+        `${this.base_url}/MyRequests`,
         {
           method: "GET",
           headers: {
@@ -1194,9 +1190,9 @@ class InvestorsTest {
   getMyRequestsLoggedOut() {
     test(`Fetching the data of my requests as an investor while logged out,\t[=> GET\t\t${
       this.base_url
-    }/:id/MyRequests\t`, async () => {
+    }/MyRequests\t`, async () => {
       const response = await nfetch(
-        `${this.base_url}/${this.sharedState.id}/MyRequests`,
+        `${this.base_url}/MyRequests`,
         {
           method: "GET",
           headers: {
@@ -1217,7 +1213,7 @@ class InvestorsTest {
       this.base_url
     }/:id/MyRequests\t`, async () => {
       const response = await nfetch(
-        `${this.base_url}/${this.sharedState.id}/MyRequests`,
+        `${this.base_url}/MyRequests`,
         {
           method: "GET",
           headers: {
@@ -1234,118 +1230,7 @@ class InvestorsTest {
       });
     });
   }
-  getMyRequestDetailsLoggedIn() {
-    test(`Fetching the data of a request as an investor while logged in,\t[=> GET\t\t${
-      this.base_url
-    }/:id/MyRequests/:companyid\t`, async () => {
-      const response = await nfetch(
-        `${this.base_url}/${this.sharedState.id}/MyRequests/${
-          this.sharedStateCompany.id
-        }`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "x-access-token": this.sharedState.token
-          }
-        }
-      );
-      const jsonResponse = await response.json();
-      // check if the json response has data not error
-      expect(Object.keys(jsonResponse)).toEqual(["data"]);
-      expect(Object.keys(jsonResponse)).not.toEqual(["error"]);
-
-      const company = await Company.findById(this.sharedStateCompany.id).exec();
-
-      expect(company.status).toEqual(this.sharedStateCompany.status);
-      expect(company.regulationLaw).toEqual(
-        this.sharedStateCompany.regulationLaw
-      );
-      expect(company.legalCompanyForm).toEqual(
-        this.sharedStateCompany.legalCompanyForm
-      );
-      expect(company.nameInArabic).toEqual(
-        this.sharedStateCompany.nameInArabic
-      );
-      expect(company.nameInEnglish).toEqual(
-        this.sharedStateCompany.nameInEnglish
-      );
-
-      expect(company.investorIdentificationNumber).toEqual(
-        this.sharedStateCompany.investorIdentificationNumber
-      );
-      expect(company.lawyerComment).toEqual(
-        this.sharedStateCompany.lawyerComment
-      );
-    });
-  }
-  getMyRequestDetailsLoggedOut() {
-    test(`Fetching the data of a request as an investor while logged out,\t[=> GET\t\t${
-      this.base_url
-    }/:id/MyRequests/:companyid\t`, async () => {
-      const response = await nfetch(
-        `${this.base_url}/${this.sharedState.id}/MyRequests/${
-          this.sharedStateCompany.id
-        }`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }
-      );
-      console.log("Testing a logged out investor viewing a request details");
-      const jsonResponse = await response.json();
-      expect(jsonResponse).toEqual({
-        auth: false,
-        message: "Please login first."
-      });
-    });
-  }
-  getMyRequestDetailsIncorrectToken() {
-    test(`Fetching the data of a request as an investor,\t[=> GET\t\t${
-      this.base_url
-    }/:id/MyRequests/:companyid\t`, async () => {
-      const response = await nfetch(
-        `${this.base_url}/${this.sharedState.id}/MyRequests/${
-          this.sharedStateCompany.id
-        }`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "x-access-token": "wrongToken"
-          }
-        }
-      );
-      console.log("Testing a logged out investor viewing a request details");
-      const jsonResponse = await response.json();
-      expect(jsonResponse).toEqual({
-        auth: false,
-        message: "Failed to authenticate token."
-      });
-    });
-  }
-  getMyRequestDetailsWrongRequest() {
-    test(`Getting details of a wrong request,\t[=> GET\t\t${
-      this.base_url
-    }/:id/MyRequests/:companyid\t`, async () => {
-      const response = await nfetch(
-        `${this.base_url}/${this.sharedState.id}/MyRequests/${
-          this.sharedState.id
-        }`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "x-access-token": this.sharedState.token
-          }
-        }
-      );
-      const jsonResponse = await response.json();
-      expect(jsonResponse).toEqual({ error: "Company does not exist" });
-    });
-  }
+  
   //Lawyer must reject first
   EditMyRequestLoggedIn() {
     const requestBody = {
@@ -1355,9 +1240,9 @@ class InvestorsTest {
     };
     test(`Updating a company request form while logged in,\t[=> PUT\t\t${
       this.base_url
-    }/:id/MyRequests/:companyid\t`, async () => {
+    }/MyRequests/:companyid\t`, async () => {
       const response = await nfetch(
-        `${this.base_url}/${this.sharedState.id}/MyRequests/${
+        `${this.base_url}/MyRequests/${
           this.sharedStateCompany.id
         }`,
         {
@@ -1382,9 +1267,9 @@ class InvestorsTest {
   EditMyRequestLoggedOut() {
     test(`Updating a company request form while logged out,\t[=> PUT\t\t${
       this.base_url
-    }/:id/MyRequests/:companyid\t`, async () => {
+    }/MyRequests/:companyid\t`, async () => {
       const response = await nfetch(
-        `${this.base_url}/${this.sharedState.id}/MyRequests/${
+        `${this.base_url}/MyRequests/${
           this.sharedStateCompany.id
         }`,
         {
@@ -1405,9 +1290,9 @@ class InvestorsTest {
   EditMyRequestIncorrectToken() {
     test(`Updating a company request form with incorrect token,\t[=> PUT\t\t${
       this.base_url
-    }/:id/MyRequests/:companyid\t`, async () => {
+    }/MyRequests/:companyid\t`, async () => {
       const response = await nfetch(
-        `${this.base_url}/${this.sharedState.id}/MyRequests/${
+        `${this.base_url}/MyRequests/${
           this.sharedStateCompany.id
         }`,
         {
@@ -1434,9 +1319,9 @@ class InvestorsTest {
     };
     test(`Updating a company request form which is not rejected yet and commented on by a lawyer,\t[=> PUT\t\t${
       this.base_url
-    }/:id/MyRequests/:companyid\t`, async () => {
+    }/MyRequests/:companyid\t`, async () => {
       const response = await nfetch(
-        `${this.base_url}/${this.sharedState.id}/MyRequests/${
+        `${this.base_url}/MyRequests/${
           this.sharedState.id
         }`,
         {
@@ -1459,9 +1344,9 @@ class InvestorsTest {
     };
     test(`Updating a company request form with wrong fields,\t[=> PUT\t\t${
       this.base_url
-    }/:id/MyRequests/:companyid\t`, async () => {
+    }/MyRequests/:companyid\t`, async () => {
       const response = await nfetch(
-        `${this.base_url}/${this.sharedState.id}/MyRequests/${
+        `${this.base_url}/MyRequests/${
           this.sharedStateCompany.id
         }`,
         {

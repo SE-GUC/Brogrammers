@@ -59,6 +59,7 @@ router.get('/:id', async (req, res) => {
   res.json({ data: investor })
 })
 
+ 
 // Update Company after being rejected by lawyer
 router.put('/MyRequests/:companyid/', async (req, res) => {
   var stat = 0
