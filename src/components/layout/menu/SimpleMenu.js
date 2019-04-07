@@ -4,6 +4,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import IconButton from "@material-ui/core/IconButton";
 import FormDialogue from "../form/FormDialogue";
 import CustomizedDialogDemo from "../form/CustomizedDialogDemo";
+import CustomizedDialogFees from "../form/CustomizedDialogFees";
 
 class SimpleMenu extends React.Component {
   constructor(props) {
@@ -22,11 +23,15 @@ class SimpleMenu extends React.Component {
   };
   handleEdit = (props) => {
     
-    if (props.a === true) return <FormDialogue data={props.data}  />;
+    if (props.a === true) return <FormDialogue id= {props.id} token= {props.token} data={props.data}  />;
   };
   handledialog = props => {
     
     return <CustomizedDialogDemo data={props.data}/>;
+  };
+  handledialogFees = props => {
+    
+    return <CustomizedDialogFees data={props.data}/>;
   };
 
   render() {
@@ -47,6 +52,7 @@ class SimpleMenu extends React.Component {
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
         >
+          {this.handledialogFees(this.props)}
           {this.handledialog(this.props)}
           {this.handleEdit(this.props)}
         </Menu>

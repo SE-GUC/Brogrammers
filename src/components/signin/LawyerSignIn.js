@@ -71,7 +71,7 @@ export class LawyerSignIn extends Component {
           }).then(response => {
             response.json().then(data =>{
               console.log("Successful" + data+ data.auth);
-              this.props.callBack(data.token,data.auth,'x',data.data._id)
+              this.props.callBack(data.token,data.auth,'l','0')
             })
         }) 
     }

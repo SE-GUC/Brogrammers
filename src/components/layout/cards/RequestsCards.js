@@ -11,6 +11,7 @@ import red from "@material-ui/core/colors/red";
 import green from "@material-ui/core/colors/green";
 import yellow from "@material-ui/core/colors/yellow";
 import Done from "@material-ui/icons/Done";
+import DoneAll from "@material-ui/icons/DoneAll";
 import Error from "@material-ui/icons/Warning";
 import HourGlass from "@material-ui/icons/HourglassEmpty"
 
@@ -20,11 +21,7 @@ const styles = {
     maxWidth: 275,
     height: 160
   },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)"
-  },
+ 
   title: {
     fontSize: 14
   },
@@ -39,28 +36,35 @@ class SimpleCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = { expanded: false,
-    color:blue[500] };
+    color:blue[500] ,
+     
+  };
 
   }
   checkrejectedicon=props =>{
-    if (props.subheader === "accepted")
+    if (props.subheader === "Accepted")
+    return <DoneAll/>
+    if (props.subheader === "PendingReviewer")
     return <Done/>
-    if (props.subheader==='rejected')
+    if (props.subheader==='RejectedLawyer'||props.subheader==='RejectedReviewer')
     return <Error/>
-    else 
+    if (props.subheader === "PendingLawyer")
     return <HourGlass/>
   }
   checkrejs =props =>{
-    if (props.subheader === "rejected")
-    return yellow[500]
-    if (props.subheader === "accepted")
+    if (props.subheader === 'RejectedLawyer')
+    return red[500]
+    if (props.subheader === "Accepted")
     return green[500]
-    if (props.subheader === "pending")
+    if (props.subheader === "RejectedReviewer")
+    return yellow[500]
+    if (props.subheader === "PendingReviewer"||props.subheader === "PendingLawyer")
     return blue[500]
   }
 
   checkrej = props => {
-    if (props.subheader === "rejected") {
+    
+    if (props.subheader === 'RejectedLawyer') {
       return true
     } else return false;
   };
@@ -76,18 +80,19 @@ class SimpleCard extends React.Component {
             title: classes.title
           }}
           avatar={
-            <Avatar aria-label="Request" style={{backgroundColor:this.checkrejs(this.props)}} className={classes.avatar}>
+            <Avatar aria-label="Request" style={{backgroundColor:this.checkrejs(this.props)}} title={this.props.subheader} className={classes.avatar}>
              {this.checkrejectedicon(this.props)}
             </Avatar>
           }
           action={
-            <SimpleMenu a={this.checkrej(this.props)} data={this.props.data}/>
+            <SimpleMenu a={this.checkrej(this.props)} id={this.props.id} token={this.props.token} data={this.props.data}/>
           
           }
           title={this.props.title}
           subheader={this.props.nameAr}
         />
         <CardContent>
+          {this.props.lawyerComment}
         </CardContent>
       
       </Card>

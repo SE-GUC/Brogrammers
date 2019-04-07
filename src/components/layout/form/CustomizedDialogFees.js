@@ -9,7 +9,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
-import Grid from "@material-ui/core/Grid";
+import DialogContentText from "@material-ui/core/DialogContentText"
 
 const DialogTitle = withStyles(theme => ({
   root: {
@@ -57,7 +57,7 @@ const DialogActions = withStyles(theme => ({
   }
 }))(MuiDialogActions);
 
-class CustomizedDialogDemo extends React.Component {
+class CustomizedDialogFees extends React.Component {
   state = {
     open: false
   };
@@ -67,42 +67,41 @@ class CustomizedDialogDemo extends React.Component {
       open: true
     });
   };
-  handleInput = props => {
   
-    return Object.keys(props.data).map(key => [key, props.data[key]][0]);
-  };
-  handleInputVal = props => {
-    return Object.keys(props.data).map(key => [key, props.data[key]][1]);
-  };
   handleClose = () => {
     this.setState({ open: false });
   };
+  handleView(e){
+    e.preventDefault();
+    
+    fetch('http://localhost:3000/api/investors/'+this.props.id+this.props.company+'/viewFees',{
+        method: "GET",
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token':this.props.token
+        },
+      }).then(response => {
+        response.json().then(data =>{
+          console.log(data);
+        })
+    }) 
+}
 
   render() {
     return (
       <div>
-        <MenuItem onClick={this.handleClickOpen}>View Details</MenuItem>
+        <MenuItem onClick={this.handleClickOpen}>View Fees</MenuItem>
 
         <Dialog
           onClose={this.handleClose}
           aria-labelledby="customized-dialog-title"
           open={this.state.open}
         >
-          <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
-            {this.props.data.nameInEnglish}
-          </DialogTitle>
-
+        <DialogTitle id="alert-dialog-title">{"Expected Fees:"}</DialogTitle>
           <DialogContent>
-            
-              {this.handleInput(this.props).map((input, i) => (
-                input!=='managers'?
-                  <Grid container direction="column" alignItems="left">
-                    {input} : {this.handleInputVal(this.props)[i]}
-                    <br />
-                  </Grid>
-                :console.log
-              ))}
-           
+            <DialogContentText id="alert-dialog-description">
+              Company creation fees will be displayed here.
+            </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
@@ -115,4 +114,4 @@ class CustomizedDialogDemo extends React.Component {
   }
 }
 
-export default CustomizedDialogDemo;
+export default CustomizedDialogFees;
