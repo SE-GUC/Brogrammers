@@ -140,11 +140,11 @@ setToken(t,a,type){
   )}/>
 {/* Waiting for Login token  */}
 <Route exact path="/ReviewerCases" render={props =>(
-  <ReviewerCases token={this.sessionStorage.getItem('jwtToken')  />
+  <ReviewerCases token={this.sessionStorage.getItem('jwtToken')}  />
   )}/>
 
 <Route exact path="/AdminCases" render={props =>(
-  <AdminCases token={this.sessionStorage.getItem('jwtToken')  />
+  <AdminCases token={this.sessionStorage.getItem('jwtToken')}  />
   )}/>
 
 
