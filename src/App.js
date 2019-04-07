@@ -29,7 +29,8 @@ import ReviewerSignIn from './components/signin/ReviewerSignIn';
 import LawyerSignIn from './components/signin/LawyerSignIn';
 import SignIn from './components/signin/Signin';
 import ComplexButton from './components/layout/Complex Button/ComplexButton';
-
+import ViewLawyerCasesbyID from './components/pages/ViewLawyerCasesbyID.js'
+import ViewReviewerCasesbyID from './components/pages/ViewReviewerCasesbyID'
 
 class App extends Component {
 
@@ -113,6 +114,8 @@ setToken(t,a,type){
             path="/investor/:id/MyRequests"
             render={props => <InvestorRequests/>}
           />
+          <Route exact path="/lawyer/view-lawyer-cases-by/:id" component = {ViewLawyerCasesbyID} />
+          <Route exact path="/reviewer/view-reviewer-cases-by/:id" component = {ViewReviewerCasesbyID} />
     <InvestorCompanyRegSSC/>
     <InvestorCompanyRegSPC/>
 
