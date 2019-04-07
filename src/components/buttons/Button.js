@@ -1,30 +1,28 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import axios from 'axios';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
+import axios from 'axios'
 const styles = theme => ({
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   input: {
-    display: 'none',
-  },
-});
+    display: 'none'
+  }
+})
 
+function ContainedButtons (props) {
+  const { classes } = props
 
-
-function ContainedButtons(props) {
-  const { classes } = props;
-  
   return (
     <div>
-     
-      <Button variant="contained" color="secondary" className={classes.button}   onClick={() => { console.log('onClick'); }}  >
+
+      <Button variant='contained' color='secondary' className={classes.button} onClick={() => { console.log('onClick') }} >
         Take Task
-      
+
       </Button>
-    
+
       {/* <input
         accept="image/*"
         className={classes.input}
@@ -38,11 +36,11 @@ function ContainedButtons(props) {
         </Button>
       </label> */}
     </div>
-  );
+  )
 }
 
 ContainedButtons.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+  classes: PropTypes.object.isRequired
+}
 
-export default withStyles(styles)(ContainedButtons);
+export default withStyles(styles)(ContainedButtons)
