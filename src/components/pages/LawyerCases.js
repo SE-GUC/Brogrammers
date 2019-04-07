@@ -18,7 +18,7 @@ class LawyerCases extends Component{
         {
             fetch('http://localhost:3000/api/lawyer/getall/cases',{
               headers: new Headers({
-         //   'x-access-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjYTllN2VlN2E0MDNjMDc3YzM3ZGNkMSIsImlhdCI6MTU1NDYzODgzMCwiZXhwIjoxNTU0NzI1MjMwfQ.bEFsxvXTTktmM0JxCPxaiqxmPd3WpjIJRrOEFOfVI8M'
+         //  'x-access-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjYTllN2VlN2E0MDNjMDc3YzM3ZGNkMSIsImlhdCI6MTU1NDYzODgzMCwiZXhwIjoxNTU0NzI1MjMwfQ.bEFsxvXTTktmM0JxCPxaiqxmPd3WpjIJRrOEFOfVI8M'
             //if login setted token correctly this should work
             'x-access-token':this.props.token
             })

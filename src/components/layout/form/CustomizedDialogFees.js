@@ -9,6 +9,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
+import DialogContentText from "@material-ui/core/DialogContentText"
 
 const DialogTitle = withStyles(theme => ({
   root: {
