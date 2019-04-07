@@ -70,7 +70,7 @@ setToken(t,a,type,id){
       <Router>
       <React.Fragment>
     <Navbar/>
-    <Route exact path="/home" render={props => (
+    <Route exact path="/signin" render={props => (
           <ComplexButton/>
     )} />
     <Route exact path="/register" render={props => (
