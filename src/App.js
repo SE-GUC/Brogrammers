@@ -92,12 +92,12 @@ setToken(t,a,type,id){
           <Route
             exact
             path="/addcomment/lawyer"
-            render={props => <LawyerComment />}
+            render={props => <LawyerComment token={sessionStorage.getItem('jwtToken')}/>}
           />
             <Route
             exact
             path="/addcomment/reviewer"
-            render={props => <ReviewerComment />}
+            render={props => <ReviewerComment token={sessionStorage.getItem('jwtToken')}/>}
           />
 
           <Route
