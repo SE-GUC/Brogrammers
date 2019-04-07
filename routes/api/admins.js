@@ -345,5 +345,38 @@ router.post('/registerNo', async (req, res) => {
   res.json({ msg: 'Admin was created successfully', data: newAdmin })
   res.json({ msg: 'Admin created successfully', data: newAdmin })
 })
+//manga's shit
+router.put('/', async (req, res) => {
+  try {
+    var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first' })
+    }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+    const isValidated = validator.updateValidation(req.body)
+    if (isValidated.error) {
+      return res
+        .status(400)
+        .send({ error: isValidated.error.details[0].message })
+    }
+    const admin = await Admin.findById(stat)
+    if (admin) {
+      await Admin.findByIdAndUpdate(stat, req.body)
+      res.json({ msg: 'Information updated successfully' })
+    }
+  } catch (error) {
+    res.status(404).send({ msg: "Admin doesn't exist" })
+  }
+})
 
 module.exports = router

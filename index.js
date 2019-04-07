@@ -18,7 +18,7 @@ dotenv.config()
 // Connect to mongo
 //as
 mongoose
-  .connect(process.env.mongoURI)
+  .connect(db)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.log(err))
 

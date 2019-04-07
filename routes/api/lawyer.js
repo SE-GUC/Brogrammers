@@ -978,4 +978,39 @@ router.get('/mycases/:id', async (req, res) => {
     console.log(error)
   }
 })
+
+router.put('/', async (req, res) => {
+  try {
+    var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'No token provided.' })
+    }
+    jwt.verify(token, config.secret, function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+    const lawyer = await Lawyer.findById(stat)
+    if (!lawyer) {
+      return res.status(404).send({ error: 'lawyer does not exist' })
+    }
+    const isValidated = validator.updateValidation(req.body)
+    if (isValidated.error) {
+      return res
+        .status(400)
+        .send({ error: isValidated.error.details[0].message })
+    }
+      await Lawyer.findByIdAndUpdate(stat, req.body)
+      res.json({ msg: 'Lawyer updated successfully' })
+  } catch (error) {
+    // We will be handling the error later
+    console.log(error)
+  }
+})
 module.exports = router

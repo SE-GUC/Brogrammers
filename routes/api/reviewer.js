@@ -593,4 +593,42 @@ router.get("/mycases/:id", async (req, res) => {
   }
 });
 
+router.put("/", async (req, res) => {
+  try {
+    var stat = 0;
+    var token = req.headers["x-access-token"];
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: "Please login first." });
+    }
+    jwt.verify(token, config.secret, async function(err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: "Failed to authenticate token." });
+      }
+      stat = decoded.id;
+    });
+    const reviewers = await Reviewer.findById(stat);
+    if (!reviewers) {
+      return res.status(404).send({ error: "reviewer does not exist" });
+    }
+    const isValidated = validator.updateValidation(req.body);
+    if (isValidated.error) {
+      return res
+        .status(400)
+        .send({ error: isValidated.error.details[0].message });
+    }
+    const reviewer = Reviewer.findById(stat);
+    if (reviewer) {
+        await Reviewer.findByIdAndUpdate(stat, req.body);
+        res.json({ msg: "Reviewer updated successfully" });
+    }
+  } catch (error) {
+    // We will be handling the error later
+    console.log(error);
+  }
+});
+
 module.exports = router;
