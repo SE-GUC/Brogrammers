@@ -58,50 +58,9 @@ router.get('/:id', async (req, res) => {
   const investor = await Investor.findById(id)
   res.json({ data: investor })
 })
-// View Company Details
-router.get('/:id/MyRequests/:companyid/', async (req, res) => {
-  var stat = 0
-  var token = req.headers['x-access-token']
-  if (!token) {
-    return res
-      .status(401)
-      .send({ auth: false, message: 'Please login first.' })
-  }
-  jwt.verify(token, config.secret, async function (err, decoded) {
-    if (err) {
-      return res
-        .status(500)
-        .send({ auth: false, message: 'Failed to authenticate token.' })
-    }
-    stat = decoded.id
-  })
-  try {
-    const id = req.params.id
-    if (id !== stat) {
-      return res
-        .status(500)
-        .send({ auth: false, message: 'Failed to authenticate' })
-    }
-    const companyid = req.params.companyid
-    console.log(companyid)
-    const investor = await Investor.findById(id)
-    const inid = investor.idNumber
-    const query = {
-      $and: [{ investorIdentificationNumber: inid }, { _id: companyid }]
-    }
-    const company = await Company.findOne(query)
-    if (!company) {
-      return res.status(404).send({ error: 'Company does not exist' })
-    } else {
-      res.json({ data: company })
-    }
-  } catch (error) {
-    // We will be handling the error later
-    console.log(error)
-  }
-})
+
 // Update Company after being rejected by lawyer
-router.put('/:id/MyRequests/:companyid/', async (req, res) => {
+router.put('/MyRequests/:companyid/', async (req, res) => {
   var stat = 0
   var token = req.headers['x-access-token']
   if (!token) {
@@ -119,16 +78,11 @@ router.put('/:id/MyRequests/:companyid/', async (req, res) => {
   })
 
   try {
-    const id = req.params.id
-    if (id !== stat) {
-      return res
-        .status(500)
-        .send({ auth: false, message: 'Failed to authenticate' })
-    }
+   
     
     const companyid = req.params.companyid
     console.log(companyid)
-    const investor = await Investor.findById(id)
+    const investor = await Investor.findById(stat)
     const inid = investor.idNumber
     const query = {
       $and: [
@@ -159,7 +113,7 @@ router.put('/:id/MyRequests/:companyid/', async (req, res) => {
   }
 })
 // track all cases status
-router.get('/:id/MyRequests', async (req, res) => {
+router.get('/MyRequests/all', async (req, res) => {
   var stat = 0
   var token = req.headers['x-access-token']
   if (!token) {
@@ -176,13 +130,8 @@ router.get('/:id/MyRequests', async (req, res) => {
     stat = decoded.id
   })
 
-  const id = req.params.id
-  if (id !== stat) {
-    return res
-      .status(500)
-      .send({ auth: false, message: 'Failed to authenticate' })
-  }
-  const investor = await Investor.findById(id)
+  
+  const investor = await Investor.findById(stat)
   if (!investor) {
     return res
       .status(500)
@@ -193,12 +142,7 @@ router.get('/:id/MyRequests', async (req, res) => {
     investorIdentificationNumber: inid,
     status: { $ne: 'Accepted' }
   }
-  const company = await Company.find(query, {
-    _id: 0,
-    nameInArabic: 1,
-    lawyerComment: 1,
-    status: 1
-  })
+  const company = await Company.find(query)
   res.json({ data: company })
 })
 
