@@ -38,7 +38,6 @@ class TitlebarGridList extends React.Component {
             <div className={styles.root}>
               <GridList cellHeight={200} className={styles.gridList}>
                 <GridListTile key="Subheader" cols={2} style={{ height: '50px' }}>
-               
                 </GridListTile>
                 {this.props.data.map((tile,i) => (
                   <GridListTile style={{maxWidth:350}}>
