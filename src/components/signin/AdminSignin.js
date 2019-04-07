@@ -64,7 +64,6 @@ export class AdminSignIn extends Component {
         let Admindata = this.state.admin;
         fetch('http://localhost:3000/routes/api/admins/login',{
             method: "POST",
-            mode: "no-cors",
             body: JSON.stringify(Admindata),
             headers: {
               'Content-Type': 'application/json'

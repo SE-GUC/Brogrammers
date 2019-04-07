@@ -63,7 +63,6 @@ export class ReviewerSignIn extends Component {
         let reviewerData = this.state.reviewer;
         fetch('http://localhost:3000/api/reviewer/login',{
             method: "POST",
-            mode: "no-cors",
             body: JSON.stringify(reviewerData),
             headers: {
               'Content-Type': 'application/json'

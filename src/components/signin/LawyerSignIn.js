@@ -50,8 +50,8 @@ export class LawyerSignIn extends Component {
         super(props);
         this.state= {
            lawyer: {
-            email: "",
-            password: "",
+            email: '',
+            password: '',
            },
         }
         this.handleInput = this.handleInput.bind(this);
@@ -64,7 +64,6 @@ export class LawyerSignIn extends Component {
         console.log(this.state.lawyer.email)
         fetch('http://localhost:3000/api/lawyer/login',{
             method: "POST",
-            mode: "no-cors",
             body: JSON.stringify(lawyerData),
             headers: {
               'Content-Type': 'application/json'
@@ -107,12 +106,12 @@ export class LawyerSignIn extends Component {
             <FormControl margin="normal" required fullWidth>
               {/* <InputLabel htmlFor="email">Email</InputLabel> */}
               {/* <Input name="email" field={'Email'} type='email' callBack={this.handleInput} /> */}
-              <Required name= 'email' field={'email'} type='email' callBack={this.handleInput}/>           
+              <Required name= 'email' field={'Email'} type='email' callBack={this.handleInput}/>           
             </FormControl>
             <FormControl margin="normal" required fullWidth>
               {/* <InputLabel htmlFor="password">Password</InputLabel> */}
               {/* <Input name="password" type="password" field={'Password'} callBack={this.handleInput} /> */}
-              <Required name= 'password' field={'password'} type='password' callBack={this.handleInput}/>
+              <Required name= 'password' field={'Password'} type='password' callBack={this.handleInput}/>
             </FormControl>
             <FormControlLabel
               control={<label/>}
