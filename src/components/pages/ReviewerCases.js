@@ -13,7 +13,7 @@ class ReviewerCases extends React.Component {
 
   componentDidMount () {
     {
-      fetch('http://localhost:3000/api/reviewer/getall/cases', {
+      fetch('http://localhost:3000/api/reviewer/getAllTasks/view', {
         headers: new Headers({
           // 'x-access-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjYTkyZTlhM2I2M2Y1MTllYzZhN2EzNyIsImlhdCI6MTU1NDU5MTM4NiwiZXhwIjoxNTU0Njc3Nzg2fQ.yGPi0etbW68DNAJO7mjTFlmKIztxxV3rl7CD0036I7A'
         // if login is working and passing token correctly this will work
