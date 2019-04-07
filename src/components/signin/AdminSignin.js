@@ -11,6 +11,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Required from  '../layout/inputs/Required';
+
 
 const styles = theme => ({
   main: {
@@ -19,7 +21,7 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: 400,
+      width: 465,
       marginLeft: 'auto',
       marginRight: 'auto',
     },
@@ -59,18 +61,18 @@ export class AdminSignIn extends Component {
 
     handleRegister(e){
         e.preventDefault();
-        let data = this.state.admin;
+        let Admindata = this.state.admin;
         fetch('http://localhost:3000/routes/api/admins/login',{
             method: "POST",
             mode: "no-cors",
-            body: JSON.stringify(data),
+            body: JSON.stringify(Admindata),
             headers: {
               'Content-Type': 'application/json'
             },
           }).then(response => {
             response.json().then(data =>{
               console.log("Successful" + data+ data.auth);
-              this.props.callBack(data.token,data.auth)
+              this.props.callBack(data.token,data.auth,'x',data.data._id)
             })
         }) 
     }
@@ -103,12 +105,14 @@ export class AdminSignIn extends Component {
           </Typography>
           <form className={classes.form}>
             <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Email</InputLabel>
-              <Input id="email" name="email" autoComplete="email" field={'Email'} type='email' callBack={this.handleInput} autoFocus />
+              {/* <InputLabel htmlFor="email">Email</InputLabel> */}
+              {/* <Input id="email" name="email" autoComplete="email" field={'Email'} type='email' callBack={this.handleInput} autoFocus /> */}
+              <Required name= 'email' field={'email'} type='email' callBack={this.handleInput}/>                      
             </FormControl>
             <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input name="password" type="password" id="password" autoComplete="current-password" field={'Password'} callBack={this.handleInput} />
+              {/* <InputLabel htmlFor="password">Password</InputLabel> */}
+              {/* <Input name="password" type="password" id="password" autoComplete="current-password" field={'Password'} callBack={this.handleInput} /> */}
+              <Required name= 'password' field={'password'} type='password' callBack={this.handleInput}/>            
             </FormControl>
             <FormControlLabel
               control={<label/>}
@@ -119,6 +123,7 @@ export class AdminSignIn extends Component {
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick= {this.handleRegister}
             >
               Sign in
             </Button>

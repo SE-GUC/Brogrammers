@@ -5,6 +5,7 @@ import Navbar from  './components/layout/Navbar';
 import Register from  './components/pages/Register';
 import RegisterLawyer from  './components/pages/RegisterLawyer';
 import RegisterReviewer from  './components/pages/RegisterReviewer';
+import RegisterAdmin from  './components/pages/RegisterAdmin';
 import 'typeface-roboto';
 import Input from  './components/layout/inputs/Input';
 import Buttons from './components/buttons/Button'
@@ -52,12 +53,12 @@ type:'',
 
 
  
-setToken(t,a,type){
- // this.setState({token:t , auth:a,type:type})
+setToken(t,a,type,id){
   sessionStorage.setItem('jwtToken', t);
   sessionStorage.setItem('auth', a);
   sessionStorage.setItem('type', type);
- // console.log(this.state.token+ " "+this.state.auth)
+  sessionStorage.setItem('id', id);
+  console.log(sessionStorage.getItem('id'));
 }
 
   
@@ -76,9 +77,9 @@ setToken(t,a,type){
                <Register callBack={this.setToken}/>
             )} />
 
-    <Route exact path="/admin/register-lawyer" component={()=>sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='a'? <RegisterLawyer callBack={this.setToken}/> : <LawyerSignIn/>} />
-    <Route exact path="/admin/register-reviewer" component={()=>sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='a'?<RegisterReviewer callBack={this.setToken}/> : <ReviewerSignIn/>} />
-    <Route exact path="/admin/register-admin" render={props => (<RegisterReviewer callBack={this.setToken}/>)} />
+    <Route exact path="/admin/register-lawyer" component={()=>sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='a'? <RegisterLawyer callBack={this.setToken} token={sessionStorage.getItem('jwtToken')}/> : <LawyerSignIn/>} />
+    <Route exact path="/admin/register-reviewer" component={()=>sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='a'?<RegisterReviewer callBack={this.setToken} token={sessionStorage.getItem('jwtToken')}/> : <ReviewerSignIn/>} />
+    <Route exact path="/admin/register-admin" render={props => (<RegisterAdmin callBack={this.setToken}/>)} />
            <Route
             exact
             path="/editprofile/investor"
@@ -115,37 +116,40 @@ setToken(t,a,type){
             path="/investors/MyRequests"
             render={props => <InvestorRequests token={sessionStorage.getItem('jwtToken')}/>}
           />
-        <InvestorCompanyRegSSC token={sessionStorage.getItem('jwtToken')}/>
-        <InvestorCompanyRegSPC token={sessionStorage.getItem('jwtToken')}/>
-        <Route exact path="/lawyer/view-lawyer-cases-by/:id" component = {ViewLawyerCasesbyID} />
-        <Route exact path="/reviewer/view-reviewer-cases-by/:id" component = {ViewReviewerCasesbyID} />
+
+    <InvestorCompanyRegSSC token={sessionStorage.getItem('jwtToken')}/>
+    <InvestorCompanyRegSPC token={sessionStorage.getItem('jwtToken')}/>
+
+          <Route exact path="/lawyer/view-lawyer-cases-by/:id" component = {ViewLawyerCasesbyID} />
+          <Route exact path="/reviewer/view-reviewer-cases-by/:id" component = {ViewReviewerCasesbyID} />
+
 
       <div>
     <Route exact path='/Investorlogin' render={props => (
           <SignIn/>
     )} />
     <Route exact path="/Lawyerlogin" render={props => (
-          <LawyerSignIn/>
+          <LawyerSignIn callBack={this.setToken}/>
     )} />
     <Route exact path="/Reviewerlogin" render={props => (
-          <ReviewerSignIn/>
+          <ReviewerSignIn callBack={this.setToken}/>
     )} />
     <Route exact path="/Adminlogin" render={props => (
-          <AdminSignIn/>
+          <AdminSignIn callBack={this.setToken}/>
     )} />
    
     
     
     <Route exact path="/LawyerCases" render={props =>(
-  <LawyerCases token={this.sessionStorage.getItem('jwtToken')}  />
+  <LawyerCases token={sessionStorage.getItem('jwtToken')}  />
   )}/>
 {/* Waiting for Login token  */}
 <Route exact path="/ReviewerCases" render={props =>(
-  <ReviewerCases token={this.sessionStorage.getItem('jwtToken')}  />
+  <ReviewerCases token={sessionStorage.getItem('jwtToken')}  />
   )}/>
 
 <Route exact path="/AdminCases" render={props =>(
-  <AdminCases token={this.sessionStorage.getItem('jwtToken')}  />
+  <AdminCases token={sessionStorage.getItem('jwtToken')}  />
   )}/>
 
 
