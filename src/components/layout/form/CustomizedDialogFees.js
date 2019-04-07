@@ -67,13 +67,7 @@ class CustomizedDialogDemo extends React.Component {
       open: true
     });
   };
-  handleInput = props => {
   
-    return Object.keys(props.data).map(key => [key, props.data[key]][0]);
-  };
-  handleInputVal = props => {
-    return Object.keys(props.data).map(key => [key, props.data[key]][1]);
-  };
   handleClose = () => {
     this.setState({ open: false });
   };
@@ -81,7 +75,7 @@ class CustomizedDialogDemo extends React.Component {
   render() {
     return (
       <div>
-        <MenuItem onClick={this.handleClickOpen}>View Details</MenuItem>
+        <MenuItem onClick={this.handleClickOpen}>View Fees</MenuItem>
 
         <Dialog
           onClose={this.handleClose}
@@ -89,19 +83,12 @@ class CustomizedDialogDemo extends React.Component {
           open={this.state.open}
         >
           <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
-            {this.handleInputVal(this.props)[0]}
+          
           </DialogTitle>
 
           <DialogContent>
             
-              {this.handleInput(this.props).map((input, i) => (
-                
-                  <Grid container direction="column" alignItems="left">
-                    {input} : 
-                    <br />
-                  </Grid>
-                
-              ))}
+           
            
           </DialogContent>
           <DialogActions>
