@@ -29,7 +29,8 @@ import ReviewerSignIn from './components/signin/ReviewerSignIn';
 import LawyerSignIn from './components/signin/LawyerSignIn';
 import SignIn from './components/signin/Signin';
 import ComplexButton from './components/layout/Complex Button/ComplexButton';
-
+import ViewLawyerCasesbyID from './components/pages/ViewLawyerCasesbyID.js'
+import ViewReviewerCasesbyID from './components/pages/ViewReviewerCasesbyID'
 
 class App extends Component {
 
@@ -114,8 +115,10 @@ setToken(t,a,type){
             path="/investor/:id/MyRequests"
             render={props => <InvestorRequests/>}
           />
-    <InvestorCompanyRegSSC token={sessionStorage.getItem('jwtToken')}/>
-    <InvestorCompanyRegSPC token={sessionStorage.getItem('jwtToken')}/>
+        <InvestorCompanyRegSSC token={sessionStorage.getItem('jwtToken')}/>
+        <InvestorCompanyRegSPC token={sessionStorage.getItem('jwtToken')}/>
+        <Route exact path="/lawyer/view-lawyer-cases-by/:id" component = {ViewLawyerCasesbyID} />
+        <Route exact path="/reviewer/view-reviewer-cases-by/:id" component = {ViewReviewerCasesbyID} />
 
       <div>
     <Route exact path='/Investorlogin' render={props => (
@@ -138,11 +141,11 @@ setToken(t,a,type){
   )}/>
 {/* Waiting for Login token  */}
 <Route exact path="/ReviewerCases" render={props =>(
-  <ReviewerCases token={this.state.token}  />
+  <ReviewerCases token={this.sessionStorage.getItem('jwtToken')}  />
   )}/>
 
 <Route exact path="/AdminCases" render={props =>(
-  <AdminCases token={this.state.token}  />
+  <AdminCases token={this.sessionStorage.getItem('jwtToken')}  />
   )}/>
 
 
