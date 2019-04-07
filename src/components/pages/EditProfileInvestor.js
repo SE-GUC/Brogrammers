@@ -75,16 +75,6 @@ class EditProfileInvestor extends Component {
             add_circle
           </Icon>
           <h2>Edit Your Profile</h2>
-<<<<<<< HEAD
-          <NotRequired name={'fullname'} field={'Full Name'} type='text' callBack={this.onChange} />
-          <NotRequired name={'email'} field={'Email'} type='email' callBack={this.onChange} />
-          <NotRequired name={'password'} field={'Password'} type='password' callBack={this.onChange} />
-          <NotRequired name={'investorType'} field={'Investor Type'} type='text' callBack={this.onChange} />
-          <NotRequired name={'idNumber'} field={'ID Number'} type='text' callBack={this.onChange} />
-          <NotRequired name={'address'} field={'Address'} type='text' callBack={this.onChange} />
-          <NotRequired name={'telephone'} field={'Telephone'} type='text' callBack={this.onChange} />
-          <NotRequired name={'fax'} field={'Fax'} type='text' callBack={this.onChange} />
-=======
           <NotRequired name={"name"} field={"Full Name"} type="text" callBack={this.onChange} />
           <NotRequired name={"mail"} field={"Email"} type="email" callBack={this.onChange} />
           <NotRequired name={"password"} field={"Password"} type="password" callBack={this.onChange} />
@@ -93,37 +83,17 @@ class EditProfileInvestor extends Component {
           <NotRequired name= {"address"} field={"Address"} type="text" callBack={this.onChange} />
           <NotRequired name={"telephone"} field={"Telephone"} type="text" callBack={this.onChange} />
           <NotRequired name={"fax"} field={"Fax"} type="text" callBack={this.onChange} />
->>>>>>> 10c254536b878a939ea0d87b6e093ea55f8bdfad
           <div className={classes.checks}>
             <Gender name={'gender'} callBack={this.onChange} />
             <IDType name={'idType'} callBack={this.onChange} />
           </div>
-<<<<<<< HEAD
-          <Date name={'dateOfBirth'} callBack={this.handleDate} />
-          <Country name={'nationality'} callBack={this.onChange} callBack={this.onChange} />
-          <SaveChangesButton onClick={this.handleSubmission} callBack={this.handleSubmission} />
-=======
           <Date name={"dob"} callBack={this.handleDate}/> 
           <Country name={"nationality"} callBack={this.onChange}/>
           <SaveChangesButton onClick={this.handleSubmission}  />
->>>>>>> 10c254536b878a939ea0d87b6e093ea55f8bdfad
         </Paper>
       </main>
     )
   }
-<<<<<<< HEAD
-  handleDate (v) {
-    this.setState(prevState => ({ investor:
-         { ...prevState.investor, dateOfBirth: v
-         }
-    }))
-  }
-  handleSubmission (e) {
-    console.log('yeethandle')
-    let updatedData = this.state
-    fetch('http://localhost:3000/api/investors/', {
-      method: 'PUT',
-=======
   handleDate(v) {
     this.setState( prevState => ({ investor : 
          {...prevState.investor, dob: v
@@ -145,7 +115,6 @@ class EditProfileInvestor extends Component {
     this.clean(updatedData);
     fetch("http://localhost:3000/api/investors/", {
       method: "PUT",
->>>>>>> 10c254536b878a939ea0d87b6e093ea55f8bdfad
       body: JSON.stringify(updatedData),
       headers: {
         'Content-Type': 'application/json',

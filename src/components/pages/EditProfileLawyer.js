@@ -55,12 +55,6 @@ class EditProfileLawyer extends Component {
     this.handleDate = this.handleDate.bind(this)
   }
 
-<<<<<<< HEAD
-  handleSubmission (e) {
-    let updatedData = this.state
-    fetch('http://localhost:3000/api/lawyer/', {
-      method: 'PUT',
-=======
   clean = obj => {
     for (var propName in obj) {
       if (obj[propName] === "" || obj[propName] === undefined || obj[propName] === null) {
@@ -74,7 +68,6 @@ class EditProfileLawyer extends Component {
     this.clean(updatedData);
     fetch("http://localhost:3000/api/lawyer/", {
       method: "PUT",
->>>>>>> 10c254536b878a939ea0d87b6e093ea55f8bdfad
       body: JSON.stringify(updatedData),
       headers: {
         'Content-Type': 'application/json',
@@ -118,20 +111,6 @@ class EditProfileLawyer extends Component {
             add_circle
           </Icon>
           <h2>Edit Your Profile</h2>
-<<<<<<< HEAD
-          <NotRequired name={'firstName'} field={'First Name'} type='text' callBack={this.onChange} />
-          <NotRequired name={'middleName'} field={'Middle Name'} type='text' callBack={this.onChange} />
-          <NotRequired name={'lastName'} field={'Last Name'} type='text' callBack={this.onChange} />
-          <NotRequired name={'email'} field={'Email'} type='email' callBack={this.onChange} />
-          <NotRequired name={'password'} field={'Password'} type='password' callBack={this.onChange} />
-          <NotRequired name={'telephone'} field={'Telephone'} type='text' callBack={this.onChange} />
-          <NotRequired name={'ssn'} field={'Social Security Number'} type='text' callBack={this.onChange} />
-          <NotRequired name={'yearsOfExperience'} field={'Years Of Experience '} type='number' callBack={this.onChange} />
-          <NotRequired name={'gensalaryder'} field={'Salary'} type='number' callBack={this.onChange} />
-          <Date name={'birthDate'} field={'Birth Date'} callBack={this.handleDate} />
-          <Gender name={'gender'} callBack={this.onChange} />
-          <SaveChangesButton callBack={this.handleSubmission} />
-=======
           <NotRequired name={"firstName"} field={"First Name"} type="text" callBack={this.onChange}/>
           <NotRequired name={"middleName"} field={"Middle Name"} type="text" callBack={this.onChange} />
           <NotRequired name={"lastName"} field={"Last Name"} type="text" callBack={this.onChange} />
@@ -144,7 +123,6 @@ class EditProfileLawyer extends Component {
           <Date name={"birthDate"} field={"Birth Date"} callBack={this.handleDate}/>
           <Gender name={"gender"} callBack={this.onChange} />
           <SaveChangesButton onClick={this.handleSubmission}/>
->>>>>>> 10c254536b878a939ea0d87b6e093ea55f8bdfad
         </Paper>
       </main>
     )
