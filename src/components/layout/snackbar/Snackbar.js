@@ -127,7 +127,7 @@ class CustomizedSnackbars extends React.Component {
         >
           <MySnackbarContentWrapper
             onClose={this.handleClose}
-            variant="error"
+            variant={this.props.variant}
             message={this.props.message}
           />
         </Snackbar>
