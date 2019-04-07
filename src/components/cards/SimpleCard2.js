@@ -24,67 +24,60 @@ const styles = {
   },
 };
 
-class SimpleCard2 extends React.Component {
-  render(){
-    const { classes } = this.props;
-  //const bull = <span className={classes.bullet}>•</span>;
+function SimpleCard(props) {
+  const { classes } = props;
+  const bull = <span className={classes.bullet}>•</span>;
 
   return (
     <Card className={classes.card}>
-      <CardContent>
+      <CardContent >
         <Typography className={classes.title} color="textSecondary" gutterBottom>
-        {this.props.t2.map((item,key) => (
-            <p key={item._id}>Company Name: {item.nameInEnglish}
-            <li>Status: {item.status}</li>
-            <li>addressHQ: {item.addressHQ}</li>
-            <li>regulationLaw: {item.regulationLaw} </li>
-      <li>legalCompanyForm: {item.legalCompanyForm}</li>
-        <li>nameInArabic: {item.nameInArabic}</li>
-     <li> governerateHQ:{item.governerateHQ}</li>
-      <li>cityHQ: {item.cityHQ}</li>
-      
-      <li>telephoneHQ: {item.telephoneHQ}</li>
-      <li>faxHQ: {item.faxHQ}</li>
-      <li>capitalCurrency: {item.capitalCurrency}</li>
-      <li>capital: {item.capital}</li>
-      <ul>investorName:{item.investorName} </ul>
-      <li>investorSex:{item.investorSex} </li>
-      <li>investorNationality: {item.investorNationality}</li>
-      <li>investorIdentificationType: {item.investorIdentificationType}</li>
-      <li>investorIdentificationNumber: {item.investorIdentificationNumber}</li>
-      <li>investorBD: {item.investorBD}</li>
-      <li>investorAddress: {item.investorAddress}</li>
-      <li>investorTelephone: {item.investorTelephone}</li>
-      <li>investorFax: {item.investorFax}</li>
-      <li>investorEmail:{item.investorEmail}</li>
-     
-            
-            </p>
-            
-           
-          ))}
-        
-          
+          status: {props.status}
         </Typography>
-        <Typography variant="h5" component="h2" >
-  
+        <Typography variant="h5" component="h2">
+       {props.nameInEnglish}
         </Typography>
-       
+        <Typography className={classes.pos} color="textSecondary">
+          {props.addressHQ}
+        </Typography>
         <Typography component="p">
-        
-    
-       
+       <ul>
+  
+            <li>addressHQ: {props.addressHQ}</li>
+            <li>regulationLaw: {props.regulationLaw} </li>
+      <li>legalCompanyForm: {props.legalCompanyForm}</li>
+        <li>nameInArabic: {props.nameInArabic}</li>
+     <li> governerateHQ:{props.governerateHQ}</li>
+      <li>cityHQ: {props.cityHQ}</li>
+      
+      <li>telephoneHQ: {props.telephoneHQ}</li>
+      <li>faxHQ: {props.faxHQ}</li>
+      <li>capitalCurrency: {props.capitalCurrency}</li>
+      <li>capital: {props.capital}</li>
+      <ul>investorName:{props.investorName} </ul>
+      <li>investorSex:{props.investorSex} </li>
+      <li>investorNationality: {props.investorNationality}</li>
+      <li>investorIdentificationType: {props.investorIdentificationType}</li>
+      <li>investorIdentificationNumber: {props.investorIdentificationNumber}</li>
+      <li>investorBD: {props.investorBD}</li>
+      <li>investorAddress: {props.investorAddress}</li>
+      <li>investorTelephone: {props.investorTelephone}</li>
+      <li>investorFax: {props.investorFax}</li>
+      <li>investorEmail:{props.investorEmail}</li>
+       </ul>
+          <br />
+         
         </Typography>
       </CardContent>
       <CardActions>
-      
+        <Button size="small">Claim Task</Button>
       </CardActions>
     </Card>
   );
 }
-}
-// SimpleCard2.propTypes = {
-//   classes: PropTypes.object.isRequired,
-// };
 
-export default withStyles(styles)(SimpleCard2);
+SimpleCard.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(SimpleCard);

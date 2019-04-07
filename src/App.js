@@ -77,7 +77,7 @@ setToken(t,a,type,id){
            <Route
             exact
             path="/editprofile/investor"
-            render={props => <EditProfileInvestor />}
+            render={props => <EditProfileInvestor token={this.state.token} />}
           />
           <Route
             exact
@@ -140,6 +140,7 @@ setToken(t,a,type,id){
     <Route exact path="/LawyerCases" render={props =>(
   <LawyerCases token={sessionStorage.getItem('jwtToken')}  />
   )}/>
+  
 {/* Waiting for Login token  */}
 <Route exact path="/ReviewerCases" render={props =>(
   <ReviewerCases token={sessionStorage.getItem('jwtToken')}  />

@@ -33,6 +33,67 @@ const styles = theme => ({
   }
 });
 class EditProfileLawyer extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      lawyer: {
+        firstName: null,
+        middleName: null,
+        lastName: null,
+        email: null,
+        password: null,
+        telephone: null,
+        ssn: null,
+        yearsOfExperience: null,
+        salary: null,
+        birthDate: null,
+        gender: null
+      }
+    }
+    this.handleSubmission = this.handleSubmission.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.handleDate = this.handleDate.bind(this);
+  }
+
+  handleSubmission(e) {
+    let updatedData = this.state;
+    fetch("http://localhost:3000/api/lawyer/", {
+      method: "PUT",
+      body: JSON.stringify(updatedData),
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": this.props.token
+      }
+    }).then(response => {
+      console.log("Information updated successfully");
+    });
+  }
+
+  onChange(e) {
+    let value = e.target.value;
+    let name = e.target.name;
+    this.setState(
+      prevState => {
+        return {
+          admin: {
+            ...prevState.lawyer,
+            [name]: value
+          }
+        };
+      },
+      () => console.log(value)
+    );
+  }
+
+  handleDate(v) {
+    console.log(v);
+    this.setState( prevState => ({ lawyer : 
+         {...prevState.lawyer, birthDate: v
+         }
+       }))
+      
+   }
+
   render() {
     const { classes } = this.props;
     return (
@@ -42,19 +103,18 @@ class EditProfileLawyer extends Component {
             add_circle
           </Icon>
           <h2>Edit Your Profile</h2>
-          <NotRequired field={"First Name"} type="text" />
-          <NotRequired field={"Middle Name"} type="text" />
-          <NotRequired field={"Last Name"} type="text" />
-          <NotRequired field={"Email"} type="email" />
-          <NotRequired field={"Password"} type="password" />
-          <NotRequired field={"Telephone"} type="text" />
-          <NotRequired field={"Social Security Number"} type="text" />
-          <NotRequired field={"Years Of Experience "} type="number" />
-          <NotRequired field={"First Name"} type="text" />
-          <NotRequired field={"Salary"} type="number" />
-          <Date field={"Birth Date"}/>
-          <Gender />
-          <SaveChangesButton />
+          <NotRequired name={"firstName"} field={"First Name"} type="text" callBack={this.onChange}/>
+          <NotRequired name={"middleName"} field={"Middle Name"} type="text" callBack={this.onChange} />
+          <NotRequired name={"lastName"} field={"Last Name"} type="text" callBack={this.onChange} />
+          <NotRequired name={"email"} field={"Email"} type="email" callBack={this.onChange}/>
+          <NotRequired name={"password"} field={"Password"} type="password" callBack={this.onChange}/>
+          <NotRequired name={"telephone"} field={"Telephone"} type="text" callBack={this.onChange}/>
+          <NotRequired name={"ssn"} field={"Social Security Number"} type="text" callBack={this.onChange}/>
+          <NotRequired name={"yearsOfExperience"} field={"Years Of Experience "} type="number" callBack={this.onChange}/>
+          <NotRequired name={"gensalaryder"} field={"Salary"} type="number" callBack={this.onChange}/>
+          <Date name={"birthDate"} field={"Birth Date"} callBack={this.handleDate}/>
+          <Gender name={"gender"} callBack={this.onChange} />
+          <SaveChangesButton callBack={this.handleSubmission}/>
         </Paper>
       </main>
     );

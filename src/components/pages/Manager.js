@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core';
 import AlertDialogSlide from '../layout/Dialogs/SlideDialog';
-import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import green from '@material-ui/core/colors/green';
@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import Required from '../layout/inputs/Required';
 import NotRequired from '../layout/inputs/NotRequired';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import BlueButton from '../layout/Buttons/BlueButton';
 
 const styles = theme => ({
     main: {
@@ -37,43 +38,25 @@ const styles = theme => ({
     },
 });
 
-class InvestorCompanyReg extends React.Component {
+class Manager extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
-            company: {
-                legalCompanyForm: '',
-                nameInArabic: '',
-                nameInEnglish: '',
-                governerateHQ: '',
-                cityHQ: '',
-                addressHQ: '',
-                telephoneHQ: '',
-                faxHQ: '',
-                capitalCurrency: '',
-                capital: '',
-            },
+            manager: {
+                name: '',
+                type: '',
+                sex: '',
+                nationality: '',
+                identificationType: '',
+                identificationNumber: '',
+                birthDate: '',
+                address: '',
+                managerialPosition: ''
+            }
         }
-        this.handleRegister = this.handleRegister.bind(this);
         this.handleInput = this.handleInput.bind(this);
-    }
-
-    handleRegister(event) {
-        event.preventDefault();
-        fetch("http://localhost:3000/api/investors/createspccompany",
-            {
-                method: "POST",
-                body: JSON.stringify(this.state.company),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Origin': 'http://localhost:3000',
-                    'x-access-token':this.props.token,
-                }
-            }).then(response => {
-                response.json().then(data => {
-                    console.log("Successful" + data);
-                })
-            })
+        this.handle = this.handle.bind(this);
     }
 
     handleInput(event) {
@@ -81,18 +64,20 @@ class InvestorCompanyReg extends React.Component {
         let name = event.target.name
         this.setState(prevState => {
             return {
-                company: {
-                    ...prevState.company, [name]: value
+                manager: {
+                    ...prevState.manager, [name]: value
                 }
             }
-        }, () => console.log(this.state.company)
+        }, () => console.log(this.state.manager)
         );
     }
-
+    handle() {
+        this.props.callBack(this.state.manager)
+    }
     render() {
-        const { classes } = this.props
+        const { classes } = this.props;
         return (
-            <div className={classes.main}>
+            < div className={classes.main} >
                 <CssBaseline />
                 <Paper className={classes.paper} elevation={16} >
                     <Grid container spacing={0} justify="space-evenly">
@@ -103,52 +88,47 @@ class InvestorCompanyReg extends React.Component {
                         </Grid>
                         <Grid container direction="column" alignItems="center">
                             <Typography variant="h6" component="h3">
-                                Fill in your Company Form!
+                                Fill in your Manager's Info!
                     </Typography>
+                        </Grid >
+                        <Grid container direction="column" alignItems="center" >
+                            <Required field={'Manager Name'} type={'text'} callBack={this.handleInput} name={"name"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <Required field={'Law'} type={'text'} callBack={this.handleInput} name={"regulationLaw"} />
+                            <Required field={'Manager Type'} type={'text'} callBack={this.handleInput} name={"type"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <Required field={'Legal Company Form'} type={'text'} callBack={this.handleInput} name={"legalCompanyForm"} />
+                            <Required field={'Gender'} type={'text'} callBack={this.handleInput} name={"sex"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <Required field={'Name In Arabic'} type={'text'} callBack={this.handleInput} name={"nameInArabic"} />
+                            <Required field={'Manager Nationality'} type={'text'} callBack={this.handleInput} name={"nationality"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <NotRequired field={'Name In English'} type={'text'} callBack={this.handleInput} name={"nameInEnglish"} />
+                            <Required field={'identificationType'} type={'text'} callBack={this.handleInput} name={"identificationType"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <Required field={'Governemt HQ'} type={'text'} callBack={this.handleInput} name={"governerateHQ"} />
+                            <Required field={'identificationNumber'} type={'text'} callBack={this.handleInput} name={"identificationNumber"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <Required field={'City HQ'} type={'text'} callBack={this.handleInput} name={"cityHQ"} />
+                            <Required field={'birthDate'} type={'text'} callBack={this.handleInput} name={"birthDate"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <Required field={'Address HQ'} type={'text'} callBack={this.handleInput} name={"addressHQ"} />
+                            <Required field={'address'} type={'text'} callBack={this.handleInput} name={"address"} />
                         </Grid>
                         <Grid container direction="column" alignItems="center" >
-                            <Required field={'Telephone HQ'} type={'text'} callBack={this.handleInput} name={"telephoneHQ"} />
-                        </Grid>
-                        <Grid container direction="column" alignItems="center" >
-                            <Required field={'Fax HQ'} type={'text'} callBack={this.handleInput} name={"faxHQ"} />
-                        </Grid>
-                        <Grid container direction="column" alignItems="center" >
-                            <Required field={'Capital Currency'} type={'text'} callBack={this.handleInput} name={"capitalCurrency"} />
-                        </Grid>
-                        <Grid container direction="column" alignItems="center" >
-                            <Required field={'Capital'} type={'number'} callBack={this.handleInput} name={"capital"} />
-                        </Grid>
-                        <Grid>
-                            <br />
+                            <Required field={'managerialPosition'} type={'text'} callBack={this.handleInput} name={"managerialPosition"} />
                         </Grid>
                         <Grid container direction="column" alignItems="flex-end" >
-                            <AlertDialogSlide handleRegister={this.handleRegister}/>
+                            <button type="button" onClick= {this.handle}>
+                                Submit Manager Form
+                            </button>
                         </Grid>
+
                     </Grid>
                 </Paper>
-            </div>
+            </div >
+
         )
     }
 }
-export default withStyles(styles)(InvestorCompanyReg);
+export default withStyles(styles)(Manager);
