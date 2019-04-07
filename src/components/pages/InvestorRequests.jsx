@@ -56,7 +56,7 @@ class investorRequests extends Component {
         
             return (
                 <div style={{ display: 'flex', flexFlow: 'row wrap', justifyContent: 'space-around' }}>
-                    <TitleBarGridList data={this.state.requests} />
+                    <TitleBarGridList data={this.state.requests} token={this.props.token}/>
                 </div>
             );
             

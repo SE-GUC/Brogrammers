@@ -95,12 +95,12 @@ class CustomizedDialogDemo extends React.Component {
           <DialogContent>
             
               {this.handleInput(this.props).map((input, i) => (
-                
+                input!=='managers'?
                   <Grid container direction="column" alignItems="left">
-                    {input} : 
+                    {input} : {this.handleInputVal(this.props)[i]}
                     <br />
                   </Grid>
-                
+                :console.log
               ))}
            
           </DialogContent>

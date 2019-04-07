@@ -25,10 +25,66 @@ class FormDialogue extends React.Component {
     this.state = {
       open: false,
       width: "100%",
-      data: []
+      company: {
+        regulationLaw: "",
+        legalCompanyForm: "",
+        nameInArabic: "",
+        nameInEnglish: "",
+        governerateHQ: "",
+        cityHQ: "",
+        addressHQ: "",
+        telephoneHQ: "",
+        faxHQ: "",
+        capitalCurrency: "",
+        capital: "",
+        managers: [
+          {
+            _id: "",
+            name: "",
+            type: "",
+            sex: "",
+            nationality: "",
+            identificationType: "",
+            identificationNumber: "",
+            birthDate: "",
+            address: "",
+            managerialPosition: ""
+          }
+        ]
+      }
     };
+    this.handleInputs = this.handleInputs.bind(this);
+    this.handleSubmit= this.handleSubmit.bind(this);
+  
   }
-
+   clean=(obj) =>{
+    for (var propName in obj) { 
+      if (obj[propName] === '' || obj[propName] === undefined) {
+        delete obj[propName];
+      }
+    }
+  }
+  
+  
+  handleSubmit(e){
+    e.preventDefault();
+    let userData = this.state.company;
+   
+    this.clean(userData)
+   
+    fetch('http://localhost:3000/api/investors/MyRequests/'+this.props.id,{
+        method: "PUT",
+        body: JSON.stringify(userData),
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token':this.props.token
+        },
+      }).then(response => {
+        response.json().then(data =>{
+          console.log("Successfuly updated" + data);
+        })
+    }) 
+}
   handleClickOpen = () => {
     this.setState({ open: true });
   };
@@ -39,19 +95,25 @@ class FormDialogue extends React.Component {
   handleInput = props => {
     return Object.keys(props.data).map(key => [key, props.data[key]][0]);
   };
+  handleInputval = props => {
+    return Object.keys(props.data).map(key => [key, props.data[key]][1]);
+  };
   handleInputs(e) {
     let value = e.target.value;
     let name = e.target.name;
-   // console.log(this.state.investor)
-    this.setState( prevState => {
-       return { 
-          investor : {
-                   ...prevState.investor, [name]: value
-                  }
-       }
-    }, () => console.log(this.state.investor)
-    )
-}
+    // console.log(this.state.investor)
+    this.setState(
+      prevState => {
+        return {
+          company: {
+            ...prevState.company,
+            [name]: value
+          }
+        };
+      },
+      () => console.log(this.state.company)
+    );
+  }
   render() {
     return (
       <div>
@@ -71,19 +133,27 @@ class FormDialogue extends React.Component {
               edit the required fields to proceed.
             </DialogContentText>
 
-            {this.handleInput(this.props).map((input, i) => (
-            input!=='status'&& input!=='_id' &&input !=='__v'?
-              <Grid container direction="column" alignItems="center">
-                <NotRequired name="name" field={input} type="text" callBack={this.handleInputs} />
-              </Grid>:
-              console.log(input)
-            ))}
+            {this.handleInput(this.props).map((input, i) =>
+              input !== "status" && input !== "_id" && input !== "__v" ? (
+                <Grid container direction="column" alignItems="center">
+                  <NotRequired
+
+                    name={input}
+                    field={input}
+                    type="text"
+                    callBack={this.handleInputs}
+                  />
+                </Grid>
+              ) : (
+                console.log()
+              )
+            )}
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleClose} color="primary">
+            <Button onClick={(event) => { this.handleSubmit(); this.handleClose()}} color="primary">
               Submit
             </Button>
           </DialogActions>

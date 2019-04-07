@@ -64,7 +64,6 @@ export class AdminSignIn extends Component {
         let Admindata = this.state.admin;
         fetch('http://localhost:3000/routes/api/admins/login',{
             method: "POST",
-            mode: "no-cors",
             body: JSON.stringify(Admindata),
             headers: {
               'Content-Type': 'application/json'
@@ -72,7 +71,7 @@ export class AdminSignIn extends Component {
           }).then(response => {
             response.json().then(data =>{
               console.log("Successful" + data+ data.auth);
-              this.props.callBack(data.token,data.auth,'x',data.data._id)
+              this.props.callBack(data.token,data.auth,'a','0')
             })
         }) 
     }
