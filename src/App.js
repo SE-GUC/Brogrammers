@@ -105,11 +105,7 @@ setToken(t,a,type,id){
             path="/editprofile/reviewer"
             render={props => <EditProfileReviewer />}
           />
-          <Route
-            exact
-            path="/investors/MyRequests/all"
-            render={props => <InvestorRequests token={sessionStorage.getItem('jwtToken')}/>}
-          />
+         
            <Route
             exact
             path="/SSCForm"
@@ -120,12 +116,9 @@ setToken(t,a,type,id){
             path="/SPCForm"
             render={props =>  <InvestorCompanyRegSPC token={sessionStorage.getItem('jwtToken')}/>}
           />
-
-  
- 
-
           <Route exact path="/lawyer/view-lawyer-cases-by-id" component={()=>sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='l'? <ViewLawyerCasesbyID id={sessionStorage.getItem('id')} token={sessionStorage.getItem('jwtToken')}/> : <LawyerSignIn/>} />
           <Route exact path="/reviewer/view-reviewer-cases-by-id"component={()=>sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='r'? <ViewLawyerCasesbyID id={sessionStorage.getItem('id')} token={sessionStorage.getItem('jwtToken')}/> : <ReviewerSignIn/>}  />
+          <Route exact path="/investors/MyRequests/all" component={()=>sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='i'? <InvestorRequests id={sessionStorage.getItem('id')} token={sessionStorage.getItem('jwtToken')}/> : <SignIn/>} />
 
 
       <div>
