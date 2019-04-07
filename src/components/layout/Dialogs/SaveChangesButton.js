@@ -26,7 +26,7 @@ class SaveChangesButton extends React.Component {
 
   handleClose2 = (e) => {
     this.setState({ open: false });
-    this.props.onChange(e);
+    this.props.onClick(e);
   };
 
   render() {

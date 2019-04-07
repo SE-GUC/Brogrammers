@@ -1,16 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import withStyles from '@material-ui/core/styles/withStyles';
+import React from 'react'
+import PropTypes from 'prop-types'
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Input from '@material-ui/core/Input'
+import InputLabel from '@material-ui/core/InputLabel'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import Paper from '@material-ui/core/Paper'
+import Typography from '@material-ui/core/Typography'
+import withStyles from '@material-ui/core/styles/withStyles'
 
 const styles = theme => ({
   main: {
@@ -21,31 +21,31 @@ const styles = theme => ({
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
       width: 400,
       marginLeft: 'auto',
-      marginRight: 'auto',
-    },
+      marginRight: 'auto'
+    }
   },
   paper: {
     marginTop: theme.spacing.unit * 8,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`
   },
   avatar: {
     margin: theme.spacing.unit,
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.main
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing.unit
   },
   submit: {
-    marginTop: theme.spacing.unit * 3,
-  },
-});
+    marginTop: theme.spacing.unit * 3
+  }
+})
 
-function SignIn(props) {
-  const { classes } = props;
+function SignIn (props) {
+  const { classes } = props
 
   return (
     <main className={classes.main}>
@@ -54,26 +54,26 @@ function SignIn(props) {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component='h1' variant='h5'>
           Sign in
         </Typography>
         <form className={classes.form}>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">Email</InputLabel>
-            <Input id="email" name="email" autoComplete="email"  />
+          <FormControl margin='normal' required fullWidth>
+            <InputLabel htmlFor='email'>Email</InputLabel>
+            <Input id='email' name='email' autoComplete='email' />
           </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="password">Password</InputLabel>
-            <Input name="password" type="password" id="password" autoComplete="current-password" />
+          <FormControl margin='normal' required fullWidth>
+            <InputLabel htmlFor='password'>Password</InputLabel>
+            <Input name='password' type='password' id='password' autoComplete='current-password' />
           </FormControl>
           <FormControlLabel
-            control={<label/>}
+            control={<label />}
           />
           <Button
-            type="submit"
+            type='submit'
             fullWidth
-            variant="contained"
-            color="primary"
+            variant='contained'
+            color='primary'
             className={classes.submit}
           >
             Sign in
@@ -81,11 +81,11 @@ function SignIn(props) {
         </form>
       </Paper>
     </main>
-  );
+  )
 }
 
 SignIn.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+  classes: PropTypes.object.isRequired
+}
 
-export default withStyles(styles)(SignIn);
+export default withStyles(styles)(SignIn)
