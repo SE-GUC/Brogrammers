@@ -63,7 +63,6 @@ export class ReviewerSignIn extends Component {
         let reviewerData = this.state.reviewer;
         fetch('http://localhost:3000/api/reviewer/login',{
             method: "POST",
-            mode: "no-cors",
             body: JSON.stringify(reviewerData),
             headers: {
               'Content-Type': 'application/json'
@@ -71,7 +70,7 @@ export class ReviewerSignIn extends Component {
           }).then(response => {
             response.json().then(data =>{
               console.log("Successful" + data+ data.auth);
-              this.props.callBack(data.token,data.auth,'x',data.data._id)
+              this.props.callBack(data.token,data.auth,'r','0')
             })
         }) 
     }
@@ -106,12 +105,12 @@ export class ReviewerSignIn extends Component {
             <FormControl margin="normal" required fullWidth>
               {/* <InputLabel htmlFor="email">Email</InputLabel> */}
               {/* <Input id="email" name="email" autoComplete="email" field={'Email'} type='email' callBack={this.handleInput} autoFocus /> */}
-              <Required name= 'email' field={'email'} type='email' callBack={this.handleInput}/>                      
+              <Required name= 'email' field={'Email'} type='email' callBack={this.handleInput}/>                      
             </FormControl>
             <FormControl margin="normal" required fullWidth>
               {/* <InputLabel htmlFor="password">Password</InputLabel> */}
               {/* <Input name="password" type="password" id="password" autoComplete="current-password" field={'Password'} callBack={this.handleInput} /> */}
-              <Required name= 'password' field={'password'} type='password' callBack={this.handleInput}/>          
+              <Required name= 'password' field={'Password'} type='password' callBack={this.handleInput}/>          
             </FormControl>
             <FormControlLabel
               control={<label/>}

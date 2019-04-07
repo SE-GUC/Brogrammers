@@ -7,17 +7,11 @@ import RegisterLawyer from  './components/pages/RegisterLawyer';
 import RegisterReviewer from  './components/pages/RegisterReviewer';
 import RegisterAdmin from  './components/pages/RegisterAdmin';
 import 'typeface-roboto';
-import Input from  './components/layout/inputs/Input';
-import Buttons from './components/buttons/Button'
-import Signin from './components/signin/Signin'
-import axios from 'axios';
-
 import ReviewerCases from './components/pages/ReviewerCases'
 import LawyerCases from './components/pages/LawyerCases'
 import AdminCases from './components/pages/AdminCases'
 import InvestorCompanyRegSSC from "./components/pages/InvestorCompanyRegSSC";
 import InvestorCompanyRegSPC from "./components/pages/InvestorCompanyRegSPC";
-
 import EditProfileInvestor from "./components/pages/EditProfileInvestor";
 import EditProfileAdmin from "./components/pages/EditProfileAdmin";
 import EditProfileLawyer from "./components/pages/EditProfileLawyer";
@@ -70,7 +64,7 @@ setToken(t,a,type,id){
       <Router>
       <React.Fragment>
     <Navbar/>
-    <Route exact path="/home" render={props => (
+    <Route exact path="/signin" render={props => (
           <ComplexButton/>
     )} />
     <Route exact path="/register" render={props => (
@@ -116,9 +110,19 @@ setToken(t,a,type,id){
             path="/investors/MyRequests"
             render={props => <InvestorRequests token={sessionStorage.getItem('jwtToken')}/>}
           />
+           <Route
+            exact
+            path="/SSCForm"
+            render={props =>  <InvestorCompanyRegSSC token={sessionStorage.getItem('jwtToken')}/>}
+          />
+          <Route
+            exact
+            path="/SPCForm"
+            render={props =>  <InvestorCompanyRegSPC token={sessionStorage.getItem('jwtToken')}/>}
+          />
 
-    <InvestorCompanyRegSSC token={sessionStorage.getItem('jwtToken')}/>
-    <InvestorCompanyRegSPC token={sessionStorage.getItem('jwtToken')}/>
+  
+ 
 
           <Route exact path="/lawyer/view-lawyer-cases-by/:id" component = {ViewLawyerCasesbyID} />
           <Route exact path="/reviewer/view-reviewer-cases-by/:id" component = {ViewReviewerCasesbyID} />
