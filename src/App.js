@@ -77,7 +77,7 @@ class App extends Component {
           <Route
             exact
             path="/editprofile/investor"
-            render={props => <EditProfileInvestor />}
+            render={props => <EditProfileInvestor token={this.state.token} />}
           />
           <Route
             exact

@@ -51,7 +51,7 @@ class SaveChangesButton extends React.Component {
             <Button onClick={this.handleClose} color="primary">
               Disagree
             </Button>
-            <Button onClick={this.props.handleRegister} color="primary">
+            <Button onClick={this.props.handleSubmission} color="primary">
               Agree
             </Button>
           </DialogActions>

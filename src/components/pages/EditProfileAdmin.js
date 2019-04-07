@@ -5,6 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import { Icon, Button } from "@material-ui/core";
 import SaveChangesButton from "../layout/Dialogs/SaveChangesButton";
+import { blueGrey, blue } from "@material-ui/core/colors";
 
 const styles = theme => ({
   main: {
@@ -29,9 +30,22 @@ const styles = theme => ({
   avatar: {
     margin: theme.spacing.unit,
     backgroundColor: theme.palette.primary.main
-  },
+  }
 });
 class EditProfileAdmin extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      admin: {
+        email: null,
+        password: null,
+        telephone: null,
+        gender: null
+      }
+    };
+    this.handleSubmission = this.handleSubmission.bind(this);
+    this.onChange = this.onChange.bind(this);
+  }
   render() {
     const { classes } = this.props;
     return (
@@ -41,13 +55,51 @@ class EditProfileAdmin extends Component {
             add_circle
           </Icon>
           <h2>Edit Your Profile</h2>
-          <NotRequired field={"Email"} type="email" />
-          <NotRequired field={"Password"} type="password" />
-          <NotRequired field={"Telephone"} type="text" />
+          <NotRequired field={"Email"} type="email" callBack={this.onChange} />
+          <NotRequired
+            field={"Password"}
+            type="password"
+            callBack={this.onChange}
+          />
+          <NotRequired
+            field={"Telephone"}
+            type="text"
+            callBack={this.onChange}
+          />
           <Gender />
-          <SaveChangesButton />
+          <SaveChangesButton onClick={this.handleSubmission} />
         </Paper>
       </main>
+    );
+  }
+
+  handleSubmission(e) {
+    let updatedData = this.state;
+    fetch("http://localhost:3000/routes/api/admins/", {
+      method: "PUT",
+      body: JSON.stringify(updatedData),
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": this.props.token
+      }
+    }).then(response => {
+      console.log("Information updated successfully");
+    });
+  }
+
+  onChange(e) {
+    let value = e.target.value;
+    let name = e.target.name;
+    this.setState(
+      prevState => {
+        return {
+          admin: {
+            ...prevState.investor,
+            [name]: value
+          }
+        };
+      },
+      () => console.log(value)
     );
   }
 }
