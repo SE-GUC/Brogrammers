@@ -64,7 +64,6 @@ export class LawyerSignIn extends Component {
         console.log(this.state.lawyer.email)
         fetch('http://localhost:3000/api/lawyer/login',{
             method: "POST",
-            mode: "no-cors",
             body: JSON.stringify(lawyerData),
             headers: {
               'Content-Type': 'application/json'
@@ -72,7 +71,7 @@ export class LawyerSignIn extends Component {
           }).then(response => {
             response.json().then(data =>{
               console.log("Successful" + data+ data.auth);
-              this.props.callBack(data.token,data.auth,'x',data.data._id)
+              this.props.callBack(data.token,data.auth,'l','0')
             })
         }) 
     }
