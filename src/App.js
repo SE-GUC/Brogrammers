@@ -58,7 +58,7 @@ class App extends Component {
       <Router>
         <React.Fragment>
           <Navbar />
-          <Route exact path='/signin' render={props => (
+          <Route exact path='/' render={props => (
             <ComplexButton />
           )} />
           <Route exact path='/register' render={props => (
