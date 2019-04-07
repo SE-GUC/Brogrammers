@@ -138,13 +138,14 @@ setToken(t,a,type){
     <Route exact path="/LawyerCases" render={props =>(
   <LawyerCases token={this.sessionStorage.getItem('jwtToken')}  />
   )}/>
+  
 {/* Waiting for Login token  */}
 <Route exact path="/ReviewerCases" render={props =>(
-  <ReviewerCases token={this.sessionStorage.getItem('jwtToken')  />
+  <ReviewerCases  token={this.sessionStorage.getItem('jwtToken')}/>
   )}/>
 
 <Route exact path="/AdminCases" render={props =>(
-  <AdminCases token={this.sessionStorage.getItem('jwtToken')  />
+  <AdminCases token={this.sessionStorage.getItem('jwtToken')} />
   )}/>
 
 
@@ -156,4 +157,5 @@ setToken(t,a,type){
   }
 
 }
+  
 export default App;
