@@ -9,6 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import NotRequired from "../inputs/NotRequired";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
+import Snackbar from "../snackbar/Snackbar"
 
 const styles = theme => ({
   root: {
@@ -25,6 +26,7 @@ class FormDialogue extends React.Component {
     this.state = {
       open: false,
       width: "100%",
+      success:false,
       company: {
         regulationLaw: "",
         legalCompanyForm: "",
@@ -37,6 +39,10 @@ class FormDialogue extends React.Component {
         faxHQ: "",
         capitalCurrency: "",
         capital: "",
+        lawyer: "",
+        lawyerComment: "",
+        reviewer: "",
+        reviewerComment: "",
         managers: [
           {
             _id: "",
@@ -54,37 +60,36 @@ class FormDialogue extends React.Component {
       }
     };
     this.handleInputs = this.handleInputs.bind(this);
-    this.handleSubmit= this.handleSubmit.bind(this);
-  
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
-   clean=(obj) =>{
-    for (var propName in obj) { 
-      if (obj[propName] === '' || obj[propName] === undefined) {
+  clean = obj => {
+    for (var propName in obj) {
+      if (obj[propName] === "" || obj[propName] === undefined) {
         delete obj[propName];
       }
     }
-  }
-  
-  
-  handleSubmit(e){
+  };
+
+  handleSubmit(e) {
     e.preventDefault();
     let userData = this.state.company;
-   
-    this.clean(userData)
-   
-    fetch('http://localhost:3000/api/investors/MyRequests/'+this.props.id,{
-        method: "PUT",
-        body: JSON.stringify(userData),
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token':this.props.token
-        },
-      }).then(response => {
-        response.json().then(data =>{
-          console.log("Successfuly updated" + data);
-        })
-    }) 
-}
+
+    this.clean(userData);
+
+    fetch("http://localhost:3000/api/investors/MyRequests/" + this.props.id, {
+      method: "PUT",
+      body: JSON.stringify(userData),
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": this.props.token
+      }
+    }).then(response => {
+      response.json().then(data => {
+        console.log("Successfuly updated" + data);
+        this.setState({success:true})
+      });
+    });
+  }
   handleClickOpen = () => {
     this.setState({ open: true });
   };
@@ -115,6 +120,9 @@ class FormDialogue extends React.Component {
     );
   }
   render() {
+    if(this.state.success){
+      return <Snackbar variant='Success' message="Something went wrong!" />
+     }
     return (
       <div>
         <MenuItem onClick={this.handleClickOpen}>Edit</MenuItem>
@@ -134,10 +142,16 @@ class FormDialogue extends React.Component {
             </DialogContentText>
 
             {this.handleInput(this.props).map((input, i) =>
-              input !== "status" && input !== "_id" && input !== "__v" ? (
+              input !== "status" &&
+              input !== "_id" &&
+              input !== "__v" &&
+              input !== "lawyer" &&
+              input !== "lawyerComment" &&
+              input !== 'reviewer'&&
+              input !== 'reviewerComment'
+               ? (
                 <Grid container direction="column" alignItems="center">
                   <NotRequired
-
                     name={input}
                     field={input}
                     type="text"
@@ -153,9 +167,16 @@ class FormDialogue extends React.Component {
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={(event) => { this.handleSubmit(); this.handleClose()}} color="primary">
+            <Button
+              onClick={event => {
+                this.handleSubmit();
+                this.handleClose();
+              }}
+              color="primary"
+            >
               Submit
             </Button>
+           
           </DialogActions>
         </Dialog>
       </div>

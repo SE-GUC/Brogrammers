@@ -85,7 +85,7 @@ class SimpleCard extends React.Component {
             </Avatar>
           }
           action={
-            <SimpleMenu a={this.checkrej(this.props)} id ={this.props.id} token={this.props.token} data={this.props.data}/>
+            <SimpleMenu a={this.checkrej(this.props)} id={this.props.id} token={this.props.token} data={this.props.data}/>
           
           }
           title={this.props.title}

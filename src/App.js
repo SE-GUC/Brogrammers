@@ -107,7 +107,7 @@ setToken(t,a,type,id){
           />
           <Route
             exact
-            path="/investors/MyRequests"
+            path="/investors/MyRequests/all"
             render={props => <InvestorRequests token={sessionStorage.getItem('jwtToken')}/>}
           />
            <Route
@@ -124,8 +124,8 @@ setToken(t,a,type,id){
   
  
 
-          <Route exact path="/lawyer/view-lawyer-cases-by/:id" component = {ViewLawyerCasesbyID} />
-          <Route exact path="/reviewer/view-reviewer-cases-by/:id" component = {ViewReviewerCasesbyID} />
+          <Route exact path="/lawyer/view-lawyer-cases-by-id" component={()=>sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='l'? <ViewLawyerCasesbyID id={sessionStorage.getItem('id')} token={sessionStorage.getItem('jwtToken')}/> : <LawyerSignIn/>} />
+          <Route exact path="/reviewer/view-reviewer-cases-by-id"component={()=>sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='r'? <ViewLawyerCasesbyID id={sessionStorage.getItem('id')} token={sessionStorage.getItem('jwtToken')}/> : <ReviewerSignIn/>}  />
 
 
       <div>
