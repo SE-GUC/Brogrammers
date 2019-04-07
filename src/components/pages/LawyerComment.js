@@ -35,8 +35,8 @@ class LawyerComment extends Component {
     super(props);
     this.state={
       company:{
-        lawyercoment:'',
-        companyid:''
+        lawyercoment:null,
+        companyid:null
     }
   }
     this.handleSubmission = this.handleSubmission.bind(this)
