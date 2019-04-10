@@ -25,8 +25,8 @@ import LawyerSignIn from "./components/signin/LawyerSignIn"
 import SignIn from "./components/signin/Signin"
 import ComplexButton from "./components/layout/Complex Button/ComplexButton"
 import ViewLawyerCasesbyID from "./components/pages/ViewLawyerCasesbyID.js"
-import ViewReviewerCasesbyID from "./components/pages/ViewReviewerCasesbyID"
-import ViewApprovedCompanies from ".components/pages/ViewApprovedCompanies"
+//import ViewReviewerCasesbyID from "./components/pages/ViewReviewerCasesbyID"
+//import ViewApprovedCompanies from ".components/pages/ViewApprovedCompanies"
 
 class App extends Component {
   constructor(props) {
@@ -280,35 +280,32 @@ class App extends Component {
             <Route
               exact
               path="/LawyerCases"
-              render={props => (
+              render={() => sessionStorage.getItem("type") == "l"?(
                 <LawyerCases token={sessionStorage.getItem("jwtToken")} />
-              )}
+              ):(<SignIn/>)
+            }
             />
 
             {/* Waiting for Login token  */}
             <Route
               exact
               path="/ReviewerCases"
-              render={props => (
+              render={() => sessionStorage.getItem("type") == "r" ? (
                 <ReviewerCases token={sessionStorage.getItem("jwtToken")} />
-              )}
+              ):(<SignIn />)}
             />
 
             <Route
               exact
               path="/AdminCases"
-              render={props => (
+              render={() => sessionStorage.getItem("type")=="a" ? (
                 <AdminCases token={sessionStorage.getItem("jwtToken")} />
-              )}
+              ):(<SignIn/>)
+            
+            }
             />
 
-            <Route
-              exact
-              path="/AdminCases"
-              render={props => (
-                <AdminCases token={sessionStorage.getItem("jwtToken")} />
-              )}
-            />
+        
           </div>
         </React.Fragment>
       </Router>
