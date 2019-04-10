@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -11,6 +11,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import withStyles from '@material-ui/core/styles/withStyles'
+import Required from '../layout/inputs/Required'
 
 const styles = theme => ({
   main: {
@@ -19,7 +20,7 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: 400,
+      width: 465,
       marginLeft: 'auto',
       marginRight: 'auto'
     }
@@ -44,48 +45,91 @@ const styles = theme => ({
   }
 })
 
-function SignIn (props) {
-  const { classes } = props
+export class SignIn extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      investor: {
+        email: '',
+        password: ''
+      }
+    }
+    this.handleInput = this.handleInput.bind(this)
+    this.handleRegister = this.handleRegister.bind(this)
+  }
 
-  return (
-    <main className={classes.main}>
-      <CssBaseline />
-      <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component='h1' variant='h5'>
-          Sign in
-        </Typography>
-        <form className={classes.form}>
-          <FormControl margin='normal' required fullWidth>
-            <InputLabel htmlFor='email'>Email</InputLabel>
-            <Input id='email' name='email' autoComplete='email' />
-          </FormControl>
-          <FormControl margin='normal' required fullWidth>
-            <InputLabel htmlFor='password'>Password</InputLabel>
-            <Input name='password' type='password' id='password' autoComplete='current-password' />
-          </FormControl>
-          <FormControlLabel
-            control={<label />}
-          />
-          <Button
-            type='submit'
-            fullWidth
-            variant='contained'
-            color='primary'
-            className={classes.submit}
-          >
+  handleRegister (e) {
+    e.preventDefault()
+    let investorData = this.state.investor
+    fetch('http://localhost:3000/api/investors/login', {
+      method: 'POST',
+      body: JSON.stringify(investorData),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+      response.json().then(data => {
+        console.log('Successful' + data + data.auth)
+        this.props.callBack(data.token, data.auth, 'r', '0')
+      })
+    })
+  }
+
+  handleInput (e) {
+    let value = e.target.value
+    let name = e.target.name
+    // console.log(this.state.investor)
+    this.setState(prevState => {
+      return {
+        investor: {
+          ...prevState.investor, [name]: value
+        }
+      }
+    }, () => console.log(this.state.investor)
+    )
+  }
+
+  render () {
+    const { classes } = this.props
+    return (
+      <main className={classes.main}>
+        <CssBaseline />
+        <Paper className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component='h1' variant='h5'>
             Sign in
-          </Button>
-        </form>
-      </Paper>
-    </main>
-  )
-}
-
-SignIn.propTypes = {
-  classes: PropTypes.object.isRequired
+          </Typography>
+          <form className={classes.form}>
+            <FormControl margin='normal' required fullWidth>
+              {/* <InputLabel htmlFor="email">Email</InputLabel> */}
+              {/* <Input id="email" name="email" autoComplete="email" field={'Email'} type='email' callBack={this.handleInput} autoFocus /> */}
+              <Required name='email' field={'Email'} type='email' callBack={this.handleInput} />
+            </FormControl>
+            <FormControl margin='normal' required fullWidth>
+              {/* <InputLabel htmlFor="password">Password</InputLabel> */}
+              {/* <Input name="password" type="password" id="password" autoComplete="current-password" field={'Password'} callBack={this.handleInput} /> */}
+              <Required name='password' field={'Password'} type='password' callBack={this.handleInput} />
+            </FormControl>
+            <FormControlLabel
+              control={<label />}
+            />
+            <Button
+              type='submit'
+              fullWidth
+              variant='contained'
+              color='primary'
+              className={classes.submit}
+              onClick={this.handleRegister}
+            >
+              Sign in
+            </Button>
+          </form>
+        </Paper>
+      </main>
+    )
+  }
 }
 
 export default withStyles(styles)(SignIn)

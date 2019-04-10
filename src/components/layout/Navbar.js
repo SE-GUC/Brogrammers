@@ -164,7 +164,7 @@ class PrimarySearchAppBar extends React.Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+    <AppBar position="static">
           <Toolbar>
             <IconButton
               className={classes.menuButton}
@@ -186,7 +186,7 @@ class PrimarySearchAppBar extends React.Component {
                 <SearchIcon />
               </div>
               <InputBase
-                placeholder="What do you need?"
+                placeholder="What do you need?" autoFocus
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput
@@ -204,7 +204,7 @@ class PrimarySearchAppBar extends React.Component {
                 </Badge>
               </IconButton>
               <IconButton color="inherit">
-                <Badge badgeContent={17} color="secondary">
+                <Badge badgeContent={19} color="secondary">
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
