@@ -20,6 +20,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 const styles = theme => ({
   root: {
     width: '100%',
+    backgroundColor:'3f3f3f'
   },
   grow: {
     flexGrow: 1,
@@ -161,10 +162,10 @@ class PrimarySearchAppBar extends React.Component {
         </MenuItem>
       </Menu>
     );
-
+// style={{ background: '#aa1122' }}
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+    <AppBar position="static">
           <Toolbar>
             <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
               <MenuIcon />
@@ -177,7 +178,7 @@ class PrimarySearchAppBar extends React.Component {
                 <SearchIcon />
               </div>
               <InputBase
-                placeholder="What do you need?"
+                placeholder="What do you need?" autoFocus
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
@@ -192,7 +193,7 @@ class PrimarySearchAppBar extends React.Component {
                 </Badge>
               </IconButton>
               <IconButton color="inherit">
-                <Badge badgeContent={17} color="secondary">
+                <Badge badgeContent={19} color="secondary">
                   <NotificationsIcon />
                 </Badge>
               </IconButton>

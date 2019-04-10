@@ -9,6 +9,10 @@ const styles = theme => ({
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2
+  
+  },
+  title:{
+    fontSize: 30, color: "#3f3f3f", fontWeight: "bold" 
   }
 })
 
@@ -18,7 +22,7 @@ function PaperSheet (props) {
   return (
     <div>
       <Paper className={classes.root} elevation={1}>
-        <Typography variant='h5' component='h3'>
+        <Typography className={classes.title}>
 
         Your Requests
         </Typography>
