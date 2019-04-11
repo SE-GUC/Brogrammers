@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Required from '../layout/inputs/Required'
 
+
 const styles = theme => ({
   main: {
     width: 'auto',
@@ -70,7 +71,7 @@ export class AdminSignIn extends Component {
     }).then(response => {
       response.json().then(data => {
         console.log('Successful' + data + data.auth)
-        this.props.callBack(data.token, data.auth, 'a', '0')
+        this.props.callBack(data.token, data.auth, 'a', data.id)
       })
     })
   }
