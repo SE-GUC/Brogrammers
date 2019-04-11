@@ -145,7 +145,7 @@ router.get("/:id/getTasks", async (req, res) => {
 });
 
 // Reviewer Chooses one task at a time and assigns it to himself/herself
-router.put("/:id/assignFreeTask/:id2", async (req, res) => {
+router.put("/assignFreeTask/:id2", async (req, res) => {
   try {
     var stat = 0;
     var token = req.headers["x-access-token"];
@@ -163,12 +163,8 @@ router.put("/:id/assignFreeTask/:id2", async (req, res) => {
       stat = decoded.id;
     });
 
-    const id = req.params.id;
-    if (id !== stat) {
-      return res
-        .status(500)
-        .send({ auth: false, message: "Failed to authenticate" });
-    }
+    const id = stat;
+  
     let reviewerID = await Reviewer.findById(id);
     let reviewerSSN = await reviewerID.ssn;
     let companyID = req.params.id2;
