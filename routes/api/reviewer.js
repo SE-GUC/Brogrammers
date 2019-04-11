@@ -224,11 +224,40 @@ router.put("/:id/getTasks/approve/:id2", async (req, res) => {
       const isValidated = await companyvalidator.updateValidationSSC({
         status: "Accepted"
       });
+
       if (isValidated.error) {
         return res
           .status(400)
           .send({ error: isValidated.error.details[0].message });
       }
+      let transporter = nodemailer.createTransport({
+        service: "gmail",
+        port: 25,
+        secure: false, // true for 465, false for other ports
+        auth: {
+          user: 'gafiegcc@gmail.com', // generated ethereal user
+          pass: 'Gafi221263' // generated ethereal password
+        },
+        tls:{
+          rejectUnauthorized:false
+        }
+      });
+    
+      // send mail with defined transport object
+      let info ={
+        from: '"GAFI"', // sender address
+        to: company.investorEmail, // list of receivers
+        subject: "Company rejection", // Subject line
+        text: "Dear "+company.investorName + "\n The company you ware creating was accepted please check GAFIs online portal to view the fees and pay. \n Thank you", // plain text body
+        html: "<b>Dear "+company.investorName + "\n The company you ware creating was accepted by the lawyer please check GAFIs online portal to view the fees and pay. \n Thank you</b>" // html body
+      };
+    transporter.sendMail(info,(error,info)=>{
+      if(error){
+        console.log(error)
+      }
+      console.log(info)
+    })
+
       res.json({ msg: "Task approved successfully" });
     }
   } catch (error) {
@@ -541,7 +570,7 @@ router.post("/login", function(req, res) {
     var token = jwt.sign({ id: user._id }, config.secret, {
       expiresIn: 86400 // expires in 24 hours
     });
-    res.status(200).send({ auth: true, token: token });
+    res.status(200).send({ auth: true, token: token, id: user._id  });
   });
 });
 

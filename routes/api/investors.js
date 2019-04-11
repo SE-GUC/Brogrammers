@@ -8,6 +8,7 @@ var jwt = require('jsonwebtoken')
 var config = require('../../config/jwt')
 const Admin = require('../../models/Admin')
 const Company = require('../../models/Company')
+const nodemailer = require("nodemailer");
 
 // Logout Sprint2
 router.get('/logout', function (req, res) {
@@ -39,6 +40,7 @@ router.get('/', async (req, res) => {
   })
   const investors = await Investor.find()
   res.json({ data: investors })
+
 })
 
 // View an Investor
@@ -200,7 +202,35 @@ router.post('/register', async (req, res) => {
     msg: 'Investor was created successfully',
     data: newInvestor
   })
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    port: 25,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: 'gafiegcc@gmail.com', // generated ethereal user
+      pass: 'Gafi221263' // generated ethereal password
+    },
+    tls:{
+      rejectUnauthorized:false
+    }
+  });
+
+  // send mail with defined transport object
+  let info ={
+    from: '"GAFI"', // sender address
+    to: newInvestor.mail, // list of receivers
+    subject: "Your account was created succefully ✔", // Subject line
+    text: "Thank you for registering in GAFIs online portal", // plain text body
+    html: "<b>Thank you for registering in GAFIs online portal</b>" // html body
+  };
+transporter.sendMail(info,(error,info)=>{
+  if(error){
+    console.log(error)
+  }
+  console.log(info)
+})
   res.json({ msg: 'Investor was created successfully', data: newInvestor })
+ 
 })
 
 
@@ -577,7 +607,7 @@ router.post('/login', function (req, res) {
     var token = jwt.sign({ id: user._id }, config.secret, {
       expiresIn: 86400 // expires in 24 hours
     })
-    res.status(200).send({ auth: true, token: token })
+    res.status(200).send({ auth: true, token: token, id: user._id  })
   })
 })
 
