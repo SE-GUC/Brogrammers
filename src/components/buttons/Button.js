@@ -28,11 +28,9 @@ function ContainedButtons (props) {
 
       </Button>
 
-
     </div>
   )
 }
-
 
 ContainedButtons.propTypes = {
   classes: PropTypes.object.isRequired
