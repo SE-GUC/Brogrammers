@@ -2,11 +2,14 @@
   "name": "sumerge",
   "version": "1.0.0",
   "description": "Sumerge's Software engineering Project",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node index",
-    "dev": "nodemon index.js",
-    "test": "concurrently \"node index.js\" \"jest --detectOpenHandles test.js\""
+    "client-install": "npm install --prefix client",
+    "start": "node server",
+    "server": "nodemon server",
+    "test": "jest",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "waly",
   "license": "MIT",
@@ -22,6 +25,7 @@
     "mongoose": "^5.4.16",
     "node": "^11.10.0",
     "node-fetch": "^2.3.0",
+    "nodemailer": "^6.1.0",
     "nodemon": "^1.18.10",
     "opn": "^5.4.0",
     "passport": "^0.4.0",

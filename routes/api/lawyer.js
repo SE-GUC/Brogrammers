@@ -233,6 +233,34 @@ router.put('/:id/getTasks/disapprove/:id2', async (req, res) => {
           .status(400)
           .send({ error: isValidated.error.details[0].message })
       }
+      let transporter = nodemailer.createTransport({
+        service: "gmail",
+        port: 25,
+        secure: false, // true for 465, false for other ports
+        auth: {
+          user: 'gafiegcc@gmail.com', // generated ethereal user
+          pass: 'Gafi221263' // generated ethereal password
+        },
+        tls:{
+          rejectUnauthorized:false
+        }
+      });
+    
+      // send mail with defined transport object
+      let info ={
+        from: '"GAFI"', // sender address
+        to: currentCompany.investorEmail, // list of receivers
+        subject: "Company rejection", // Subject line
+        text: "Dear "+currentCompany.investorName + "\n The company you ware creating was rejected by the lawyer please check GAFIs online portal to view the comments left by the lawyer and update the form. \n Thank you", // plain text body
+        html: "<b>Dear "+currentCompany.investorName + "\n The company you ware creating was rejected by the lawyer please check GAFIs online portal to view the comments left by the lawyer and update the form. \n Thank you</b>" // html body
+      };
+    transporter.sendMail(info,(error,info)=>{
+      if(error){
+        console.log(error)
+      }
+      console.log(info)
+    })
+
       res.json({ msg: 'Task disapproved successfully' })
     }
   } catch (error) {
