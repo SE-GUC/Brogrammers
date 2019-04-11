@@ -775,13 +775,66 @@ router.get('/editForm/:id', async function (req, res) {
 
 })
 
+router.put('addcomment/id2',async(req,res)=>{
+  var companyId = req.params.id2
+    
+ try{ 
+  var stat = 0
+  var token = req.headers['x-access-token']
+  if (!token) {
+    return res.status(401).send({ auth: false, message: 'No token provided.' })
+  }
+  jwt.verify(token, config.secret, function (err, decoded) {
+    stat = decoded.id
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: 'Failed to authenticate token.' })
+    }
+  })
+  const id = stat
+  const lawyerID = id
+  const currentLawyer = await Lawyer.findById(lawyerID)
+   const lawyerSSN = await currentLawyer.socialSecurityNumber
+  
+  var query = {
+    $and: [
+      { status: 'RejectedLawyer' },
+      { lawyer: lawyerSSN },
+      { _id: companyId }
+    ]
+  }
+  const editableCompanies = await Company.find(query)
+ 
+  if (!editableCompanies) {
+    return res.status(404).send({ error: 'There are no Fourms to be edited' })
+  } else {
+    const isValidated = companyvalidator.updateValidationSSC(req.body)
+    if (isValidated.error) {
+      return res
+        .status(400)
+        .send({ error: isValidated.error.details[0].message })
+    }
+    await Company.findByIdAndUpdate(companyId, {
+      lawyerComment: req.body.lawyerComment
+    })
+    res.json({ msg: 'Comment added Successfully' })
+  }
+}catch(error){
+  res.json({ err:'error occured' })
+}
+})
+
 router.put('/addcomment/:id/:companyId', async function (req, res) {
   var lawyerId = req.params.id
   var companyId = req.params.companyId
+  const currentLawyer = await Lawyer.findById(lawyerID)
+   const lawyerSSN = await currentLawyer.socialSecurityNumber
+    
  try{ const query = {
     $and: [
       { status: 'RejectedLawyer' },
-      { lawyer: lawyerId },
+      { lawyer: lawyerSSN },
       { _id: companyId }
     ]
   }

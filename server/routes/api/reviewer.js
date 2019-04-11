@@ -503,51 +503,105 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.put("/addcomment/:id/:companyId", async function(req, res) {
-  var reviewerId = req.params.id;
-  var companyId = req.params.companyId;
-  try{
-    const query = {
-    $and: [
-      { status: "RejectedReviewer" },
-      { reviewer: reviewerId },
-      { _id: companyId }
-    ]
-  };
-  const editableCompanies = await Company.find(query);
-  var stat = 0;
-  var token = req.headers["x-access-token"];
+
+router.put('addcomment/id2',async(req,res)=>{
+  var companyId = req.params.id2
+    
+ try{ 
+  var stat = 0
+  var token = req.headers['x-access-token']
   if (!token) {
-    return res.status(401).send({ auth: false, message: "No token provided." });
+    return res.status(401).send({ auth: false, message: 'No token provided.' })
   }
-  jwt.verify(token, config.secret, function(err, decoded) {
+  jwt.verify(token, config.secret, function (err, decoded) {
+    stat = decoded.id
     if (err) {
       return res
         .status(500)
-        .send({ auth: false, message: "Failed to authenticate token." });
+        .send({ auth: false, message: 'Failed to authenticate token.' })
     }
-  });
-  if (reviewerId !== stat) {
-    return res.status(401).send({ message: "Token does not match reviewer" });
+  })
+  const id = stat
+  const reviewerID = id
+  const currentReviewer = await Reviewer.findById(reviewerID)
+   const reviewerSSN = await currentReviewer.socialSecurityNumber
+  
+  var query = {
+    $and: [
+      { status: 'RejectedReviewer' },
+      { reviewer: reviewerSSN },
+      { _id: companyId }
+    ]
   }
+  const editableCompanies = await Company.find(query)
+ 
   if (!editableCompanies) {
-    return res.status(404).send({ error: "There are no Fourms to be edited" });
+    return res.status(404).send({ error: 'There are no Fourms to be edited' })
   } else {
-    const isValidated = companyvalidator.updateValidationSSC(req.body);
+    const isValidated = companyvalidator.updateValidationSSC(req.body)
     if (isValidated.error) {
       return res
         .status(400)
-        .send({ error: isValidated.error.details[0].message });
+        .send({ error: isValidated.error.details[0].message })
     }
     await Company.findByIdAndUpdate(companyId, {
       reviewerComment: req.body.reviewerComment
-    });
-    res.json({ msg: "Comment added Successfully" });
+    })
+    res.json({ msg: 'Comment added Successfully' })
   }
 }catch(error){
-  res.json({ err: "error occured" });
+  res.json({ err:'error occured' })
 }
-});
+})
+
+
+
+router.put('/addcomment/:id/:companyId', async function (req, res) {
+  var reviewerId = req.params.id
+  var companyId = req.params.companyId
+  const currentReviewer = await Reviewer.findById(reviewerID)
+   const reviewerSSN = await currentReviewer.socialSecurityNumber
+    
+ try{ const query = {
+    $and: [
+      { status: 'RejectedReviewer' },
+      { reviewer: reviewerSSN },
+      { _id: companyId }
+    ]
+  }
+  const editableCompanies = await Company.find(query)
+  var stat = 0
+  var token = req.headers['x-access-token']
+  if (!token) {
+    return res.status(401).send({ auth: false, message: 'No token provided.' })
+  }
+  jwt.verify(token, config.secret, function (err, decoded) {
+    stat = decoded.id
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: 'Failed to authenticate token.' })
+    }
+  })
+  if (reviewerId !== stat) { return res.status(401).send({ message: 'Token does not match reviewer' }) }
+  if (!editableCompanies) {
+    return res.status(404).send({ error: 'There are no Fourms to be edited' })
+  } else {
+    const isValidated = companyvalidator.updateValidationSSC(req.body)
+    if (isValidated.error) {
+      return res
+        .status(400)
+        .send({ error: isValidated.error.details[0].message })
+    }
+    await Company.findByIdAndUpdate(companyId, {
+      reviewerComment: req.body.reviewerComment
+    })
+    res.json({ msg: 'Comment added Successfully' })
+  }
+}catch(error){
+  res.json({ err:'error occured' })
+}
+})
 
 // s2
 router.post("/login", function(req, res) {
