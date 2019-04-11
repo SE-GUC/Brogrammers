@@ -28,6 +28,7 @@ import ViewLawyerCasesbyID from "./components/pages/ViewLawyerCasesbyID.js";
 import ViewReviewerCasesbyID from "./components/pages/ViewReviewerCasesbyID";
 import ViewApprovedCompanies from "./components/pages/ViewApprovedCompanies";
 import ChooseCompanyType from "./components/pages/ChooseCompanyType";
+import ViewCompanies from '../src/components/pages/ViewCompanies';
 
 
 class App extends Component {
@@ -305,7 +306,11 @@ class App extends Component {
             
             }
             />
-         
+          <Route 
+          exact
+          path="/ViewCompanies"
+          render={() => sessionStorage.getItem("type") === 'i' ? (<ViewCompanies token={sessionStorage.getItem('jwtToken')}/>):(<SignIn/>)}
+          />
             
             
             {" "}
