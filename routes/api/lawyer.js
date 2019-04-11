@@ -1,3 +1,5 @@
+
+
 const express = require('express')
 const bcrypt = require('bcryptjs')
 var jwt = require('jsonwebtoken')
@@ -28,7 +30,7 @@ router.get('/', async (req, res) => {
 // Atef methods
 
 // returns specific tasks of a certain lawyer by his id
-router.get('/:id/getTasks', async (req, res) => {
+router.get('/getTasks', async (req, res) => {
   try {
     var stat = 0
     var token = req.headers['x-access-token']
@@ -43,23 +45,24 @@ router.get('/:id/getTasks', async (req, res) => {
           .status(500)
           .send({ auth: false, message: 'Failed to authenticate token.' })
       }
+
       stat = decoded.id
     })
-    const id = req.params.id
-    if (id !== stat) {
-      return res
-        .status(500)
-        .send({ auth: false, message: 'Failed to authenticate' })
-    }
+    const id = stat
+    
 
     const lawyerss = await Lawyer.findById(id)
     const lawyerssn = await lawyerss.socialSecurityNumber
 
-    var query = { lawyer: lawyerssn }
+    var query = { 
+      lawyer: lawyerssn , 
+      $or:[{status:"PendingLawyer"},{status:"RejectedLawyer"}]
+    }
+
     const comps = await Company.find(query)
 
-    res.json({ data: comps })
-  } catch (error) {
+    res.json({ data:comps})
+  } catch(error) {
     console.log(error)
   }
 })
@@ -134,7 +137,7 @@ router.put('/assignFreeTask/:id2', async (req, res) => {
 })
 
 // Approves the task and updates the company status
-router.put('/:id/getTasks/approve/:id2', async (req, res) => {
+router.put('/getTasks/approve/:id2', async (req, res) => {
   try {
     var stat = 0
     var token = req.headers['x-access-token']
@@ -151,13 +154,7 @@ router.put('/:id/getTasks/approve/:id2', async (req, res) => {
       }
       stat = decoded.id
     })
-    const id = req.params.id
-    if (id !== stat) {
-      return res
-        .status(500)
-        .send({ auth: false, message: 'Failed to authenticate' })
-    }
-
+    const id = stat
     const compid = req.params.id2
     const lawyerss = await Lawyer.findById(id)
     const lawyerssn = await lawyerss.socialSecurityNumber
@@ -187,7 +184,7 @@ router.put('/:id/getTasks/approve/:id2', async (req, res) => {
 })
 
 // Disapproves the task and updates company status
-router.put('/:id/getTasks/disapprove/:id2', async (req, res) => {
+router.put('/getTasks/disapprove/:id2', async (req, res) => {
   try {
     var stat = 0
     var token = req.headers['x-access-token']
@@ -204,13 +201,9 @@ router.put('/:id/getTasks/disapprove/:id2', async (req, res) => {
       }
       stat = decoded.id
     })
-    const id = req.params.id
-    if (id !== stat) {
-      return res
-        .status(500)
-        .send({ auth: false, message: 'Failed to authenticate' })
-    }
-    const lawyerID = req.params.id
+    const id = stat
+  
+    const lawyerID = id
     const currentLawyer = await Lawyer.findById(lawyerID)
     const lawyerSSN = await currentLawyer.socialSecurityNumber
     const companyID = req.params.id2
@@ -397,7 +390,7 @@ router.post('/login', function (req, res) {
     var token = jwt.sign({ id: user._id }, config.secret, {
       expiresIn: 86400 // expires in 24 hours
     })
-    res.status(200).send({ auth: true, token: token })
+    res.status(200).send({ auth: true, token: token, id: user._id, ssn: user.socialSecurityNumber  })
   })
 })
 
@@ -933,7 +926,7 @@ router.put('/resubmit/:id/:companyId', async function (req, res) {
       res.json({ msg: 'fourm not resubmitted' })
   }
 })
-router.get('/mycases/:id', async (req, res) => {
+router.get('/mycases', async (req, res) => {
   try {
     var stat = 0
     var token = req.headers['x-access-token']
@@ -950,59 +943,28 @@ router.get('/mycases/:id', async (req, res) => {
       }
       stat = decoded.id
     })
-    const lawyers = await Lawyer.findById(stat)
-    if (!lawyers) {
-      return res.status(400).send({ error: 'You are not a Lawyer' })
-    }
-    if (stat === req.params.id) {
-      const id = req.params.id
 
-      const lawyer = await Lawyer.findById(id)
-      const ssn = lawyer.socialSecurityNumber
-      var query = {
-        $and: [{ status: 'PendingLawyer' }, { lawyer: ssn }]
-      }
-      const company = await Company.find(query) // Because no Accepted companys... used 'PendingLawyer' as a test case
+    // let lawyers = await Lawyer.findById(stat)
+    // if (!lawyers) {
+    //   return res.status(400).send({ error: 'You are not a Lawyer' })
+    // }
+   
+     let id = stat
+
+      let lawyer = await Lawyer.findById(id)
+      let ssn = lawyer.socialSecurityNumber
+      let query = { status:'PendingLawyer',  lawyer:ssn  }
+      let company = await Company.find(query) // Because no Accepted companys... used 'PendingLawyer' as a test case
 
       res.json({ data: company })
-    } else return res.status(400).send({ error: 'Wrong ID' })
+    
   } catch (error) {
     console.log(error)
   }
+  
 })
 
-router.get('/mycases/:id', async (req, res) => {
-  try {
-    var stat = 0
-    var token = req.headers['x-access-token']
-    if (!token) {
-      return res
-        .status(401)
-        .send({ auth: false, message: 'Please login first.' })
-    }
-    jwt.verify(token, config.secret, async function (err, decoded) {
-      if (err) {
-        return res
-          .status(500)
-          .send({ auth: false, message: 'Failed to authenticate token.' })
-      }
-      stat = decoded.id
-    })
-    const lawyers = await Lawyer.findById(stat)
-    if (!lawyers) {
-      return res.status(400).send({ error: 'You are not a Lawyer' })
-    }
-    if (stat === req.params.id) {
-      const lawyer = await Lawyer.findById(req.params.id)
-      const company = await Company.find()
-      if (company.lawyer === lawyer.socialSecurityNumber) {
-        return res.json({ data: company })
-      }
-    } else return res.status(400).send({ error: 'Wrong ID' })
-  } catch (error) {
-    console.log(error)
-  }
-})
+
 
 router.put('/', async (req, res) => {
   try {
