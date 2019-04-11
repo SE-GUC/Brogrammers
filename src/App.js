@@ -28,6 +28,7 @@ import ViewLawyerCasesbyID from "./components/pages/ViewLawyerCasesbyID.js";
 import ViewReviewerCasesbyID from "./components/pages/ViewReviewerCasesbyID";
 import ViewApprovedCompanies from "./components/pages/ViewApprovedCompanies";
 import ChooseCompanyType from "./components/pages/ChooseCompanyType";
+import ViewLawyerEditableCases from "./components/pages/ViewLawyerEditableCases"
 
 
 class App extends Component {
@@ -290,6 +291,22 @@ class App extends Component {
               path="/Adminlogin"
               render={props => <AdminSignIn callBack={this.setToken} />}
             />
+           <Route
+            exact
+            path="/LawyerEditableCases"
+            component={() =>
+              sessionStorage.getItem("auth") &&
+              sessionStorage.getItem("type") == "l" ? (
+                <ViewLawyerEditableCases
+                  id={sessionStorage.getItem("id")}
+                  ssn={sessionStorage.getItem("ssn")}
+                  token={sessionStorage.getItem("jwtToken")}
+                />
+              ) : (
+                <SignIn />
+              )
+            }
+          />
             <Route
               exact
               path="/LawyerCases"
