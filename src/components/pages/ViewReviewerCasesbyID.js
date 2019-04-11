@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Postcard from '../cards/Postcard'
+import MyReviewerCasesCard from '../cards/MyReviewerCasesCard'
 
 class ViewReviewerCasesbyID extends Component {
   constructor (props) {
@@ -13,7 +13,7 @@ class ViewReviewerCasesbyID extends Component {
   }
 
   componentDidMount () {
-    fetch(`http://localhost:3000/api/reviewer/mycases/${this.props.id}`, {
+    fetch(`http://localhost:3000/api/reviewer/getTasks/Reviewer`, {
       headers: new Headers({
         'x-access-token': this.props.token
       }) })
@@ -24,24 +24,7 @@ class ViewReviewerCasesbyID extends Component {
       })
   }
 
-  // fetchUsers() {
-  //   // Where we're fetching data from
-  //   fetch('http://localhost:3000/api/lawyer/mycases/5ca8f1238d0a045048dde991')
-  //     // We get the API response and receive data in JSON format...
-  //     .then(response => response.json())
-  //     // ...then we update the users state
-  //     .then(data =>
-  //       this.setState({
-  //         companies: data,
-  //         isLoading: false,
-  //       })
-  //     )
-  //     // Catch any errors we hit and update the app
-  //     .catch(error => this.setState({ error, isLoading: false }));
-  // }
-  // componentDidMount() {
-  //   this.fetchUsers();
-  // }
+  
   render () {
     var { isLoadied, companies } = this.state
     if (!isLoadied) { return <div> Loading ...</div> } else {
@@ -49,8 +32,40 @@ class ViewReviewerCasesbyID extends Component {
 
         <div>
           <ul>
-            {companies.map((element, i) => (
-              <Postcard key={i} header={element.nameInEnglish}title={'helo'} info={element.investorName} func={'Assign tasks'} />
+            {this.state.companies.map((element, i) => (
+              <MyReviewerCasesCard key={i} title={'helo'} info={element.investorName} 
+              status={element.status}
+              compid={element._id}  
+              nameInEnglish={element.nameInEnglish}
+              token={this.props.token}
+              addressHQ={element.addressHQ}
+                Status={element.status}
+                addressHQ={element.addressHQ}
+                regulationLaw={element.regulationLaw}
+                legalCompanyForm={element.legalCompanyForm}
+                nameInArabic={element.nameInArabic}
+                governerateHQ={element.governerateHQ}
+                cityHQ={element.cityHQ}
+  
+                telephoneHQ={element.telephoneHQ}
+                faxHQ={element.faxHQ}
+                capitalCurrency={element.capitalCurrency}
+                capital={element.capital}
+                investorName={element.investorName}
+                investorSex={element.investorSex}
+                investorNationaty={element.investorNationaty}
+                investorIdentificationType={element.investorIdentificationType}
+                investorIdentificationNumber={element.investorIdentificationNumber}
+                investorBD={element.investorBD}
+                investorAddress={element.investorAddress}
+                investorTelephone={element.investorTelephone}
+                investorFax={element.investorFax}
+                investorEmail={element.investorEmail}
+              
+              
+              
+              
+              />
             ))}
 
           </ul>

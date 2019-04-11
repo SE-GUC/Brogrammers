@@ -7,9 +7,15 @@ class LawyerCases extends Component {
     super(props)
     this.state = {
       lawyerCases: []
+      
 
     }
   }
+
+
+
+
+  
 
   componentDidMount () {
     {
@@ -28,18 +34,25 @@ class LawyerCases extends Component {
           })
         })
     }
+
   }
 
+
   render () {
-    console.log(this.state.lawyerCases)
+ 
+    
+ 
 
     return (
       <div>
 
         <ul>
-          {this.state.lawyerCases.map((item) => (
-            <SimpleCard key={item._id} nameInEnglish={item.nameInEnglish} status={item.status}
-              addressHQ={item.addressHQ}
+          {this.state.lawyerCases.map((item,i) => (
+            <SimpleCard key={i} nameInEnglish={item.nameInEnglish} status={item.status}
+            compid={item._id}  
+            
+            token={this.props.token}
+            addressHQ={item.addressHQ}
               Status={item.status}
               addressHQ={item.addressHQ}
               regulationLaw={item.regulationLaw}
@@ -71,6 +84,7 @@ class LawyerCases extends Component {
       </div>
 
     )
+    
   }
 }
 

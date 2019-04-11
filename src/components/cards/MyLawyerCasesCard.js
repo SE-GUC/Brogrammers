@@ -4,9 +4,9 @@ import { withStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
-
 import Typography from '@material-ui/core/Typography'
-import Button2 from '../buttons/Button2'
+import LawyerApproveDisapprove from '../buttons/LawyerApproveDisapprove'
+
 const styles = {
   card: {
     minWidth: 275
@@ -27,10 +27,10 @@ const styles = {
  
 
 
-function SimpleCard (props) {
+function MyLawyerCasesCard (props) {
   const { classes } = props
   const bull = <span className={classes.bullet}>•</span>
-
+console.log(props.id)
 
 
 
@@ -75,14 +75,14 @@ function SimpleCard (props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button2  token={props.token} compid={props.compid}   variant='contained' size='medium' className={classes.button} color="primary">Claim Task</Button2>
+        <LawyerApproveDisapprove  token={props.token} compid={props.compid} ></LawyerApproveDisapprove>
       </CardActions>
     </Card>
   )
 }
 
-SimpleCard.propTypes = {
+MyLawyerCasesCard.propTypes = {
   classes: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(SimpleCard)
+export default withStyles(styles)(MyLawyerCasesCard)

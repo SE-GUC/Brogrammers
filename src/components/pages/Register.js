@@ -65,6 +65,7 @@ class Register extends React.Component {
     }
     this.handleInput = this.handleInput.bind(this)
     this.handleDate = this.handleDate.bind(this)
+    this.handleCountry = this.handleCountry.bind(this)
     this.handleRegister = this.handleRegister.bind(this)
   }
 
@@ -82,8 +83,10 @@ class Register extends React.Component {
       response.json().then(data => {
         console.log('Successful' + data + data.auth)
         this.props.callBack(data.token, data.auth, 'i', data.data._id)
+        document.location.href = "/investors/MyRequests/all";
       })
     })
+   
   }
   handleDate (v) {
     this.setState(prevState => ({ investor:
@@ -91,6 +94,15 @@ class Register extends React.Component {
          }
     }))
   }
+
+  handleCountry (v) {
+    this.setState(prevState => ({ investor:
+         { ...prevState.investor, nationality: v
+         }
+    }))
+    console.log("lol "+v)
+  }
+
   handleInput (e) {
     let value = e.target.value
     let name = e.target.name
@@ -134,7 +146,7 @@ class Register extends React.Component {
           <NotRequired name='fax' field={'Fax'} type='text' callBack={this.handleInput} />
           <Required name='nationality' field={'Country'} type='text' callBack={this.handleInput} />
 
-          {/* <Country callBack={this.handleInput}/> */}
+          {/* <Country callBack={this.handleCountry}/> */}
           <AlertDialogSlide handleRegister={this.handleRegister} />
         </Paper>
       </main>

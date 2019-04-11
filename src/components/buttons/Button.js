@@ -12,29 +12,22 @@ const styles = theme => ({
   }
 })
 
+
+
+
+
 function ContainedButtons (props) {
   const { classes } = props
+ 
 
   return (
     <div>
 
-      <Button variant='contained' color='secondary' className={classes.button} onClick={() => { console.log('onClick') }} >
+      <Button variant='contained' color='secondary' className={classes.button}  >
         Take Task
 
       </Button>
 
-      {/* <input
-        accept="image/*"
-        className={classes.input}
-        id="contained-button-file"
-        multiple
-        type="file"
-      />
-      <label htmlFor="contained-button-file">
-        <Button variant="contained" component="span" className={classes.button}>
-          Upload
-        </Button>
-      </label> */}
     </div>
   )
 }
