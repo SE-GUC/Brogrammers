@@ -31,7 +31,7 @@ class SimpleMenu extends React.Component {
   };
   handledialogFees = props => {
     
-    return <CustomizedDialogFees data={props.data}/>;
+    return <CustomizedDialogFees data={props.data} id= {props.id} token= {props.token}/>;
   };
 
   render() {
