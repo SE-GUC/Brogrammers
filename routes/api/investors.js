@@ -9,6 +9,7 @@ var config = require('../../config/jwt')
 const Admin = require('../../models/Admin')
 const Company = require('../../models/Company')
 const nodemailer = require("nodemailer");
+var stripe = require("stripe")("sk_test_Vv7YbqIhi1pfFmwt4dKAFUvb000Duiu0d8");
 
 // Logout Sprint2
 router.get('/logout', function (req, res) {
@@ -709,5 +710,33 @@ router.put('/', async (req, res) => {
     console.log(error)
   }
 })
+
+router.post('/stripe', function (req, res) {
+
+  const token = req.body.stripeToken; // Using Express
+
+stripe.charges.create({
+    amount: req.body.amount,
+    currency: 'egp',
+    description: 'Example charge',
+    source: token,
+  },function(err,charge){
+    console.log(charge);
+    if(err){
+      res.send({
+        sucess:false,
+        message:err
+      })
+    } else{
+      res.send({
+        sucess:true,
+        message:'nice'
+      })
+    }
+  });
+
+
+})
+
 
 module.exports = router
