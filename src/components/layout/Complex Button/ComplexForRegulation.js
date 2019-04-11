@@ -3,11 +3,10 @@ import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import ButtonBase from '@material-ui/core/ButtonBase'
 import Typography from '@material-ui/core/Typography'
-import InvestorImage from '../../Images/investorImage.jpg'
-import LawyerImage from '../../Images/lawyerImage.jpg'
-import ReviewerImage from '../../Images/reviewerImage.jpg'
-import AdminImage from '../../Images/adminImage.jpg'
+
+import lawRegulation from '../../Images/lawRegulation.jpg'
 import { withRouter , Redirect } from 'react-router-dom'
+
 
 const styles = theme => ({
   root: {
@@ -46,7 +45,9 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: theme.palette.common.white
+    color: theme.palette.common.white,
+    padding : "5 px"
+    
   },
   imageSrc: {
     position: 'absolute',
@@ -55,7 +56,8 @@ const styles = theme => ({
     top: 0,
     bottom: 0,
     backgroundSize: 'cover',
-    backgroundPosition: 'center 40%'
+    backgroundPosition: 'center 40%',
+    padding : "5px"
   },
   imageBackdrop: {
     position: 'absolute',
@@ -69,7 +71,8 @@ const styles = theme => ({
   },
   imageTitle: {
     position: 'relative',
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 4}px ${theme.spacing.unit + 6}px`
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 4}px ${theme.spacing.unit + 6}px`,
+
   },
   imageMarked: {
     height: 3,
@@ -77,37 +80,32 @@ const styles = theme => ({
     backgroundColor: theme.palette.common.white,
     position: 'absolute',
     bottom: -2,
-    left: 'calc(50% - 9px)',
+    left: 'calc(75% - 9px)',
     transition: theme.transitions.create('opacity')
   }
+  
 })
 
 const images = [
   {
-    url: InvestorImage,
-    title: 'Investor',
-    width: '25%',
-    path: '/Investorlogin'
+    url: lawRegulation,
+    title: 'Law 72',
+    width: '50%',
+    length: '75%',
+    Law: 'Law 72',
+    path: '/chooseType/law72'
   },
   {
-    url: LawyerImage,
-    title: 'Lawyer',
-    width: '25%',
-    path: '/Lawyerlogin'
+    url: lawRegulation,
+    title: 'Law 159',
+    width: '50%',
+    length: '75%',
+    Law: 'Law 159',
+    path: '/chooseType/law159'
   },
-  {
-    url: ReviewerImage,
-    title: 'Reviewer',
-    width: '25%',
-    path: '/Reviewerlogin'
-  },
-  {
-    url: AdminImage,
-    title: 'Admin',
-    width: '25%',
-    path: '/Adminlogin'
-  }
+ 
 ]
+
 
 function ButtonBases (props) {
   const { classes } = props
@@ -123,7 +121,8 @@ function ButtonBases (props) {
             width: image.width
           }}
          
-          onClick={() => { document.location.href = image.path }}
+          onClick={() =>{document.location.href = image.path} }
+
 
         >
           <span

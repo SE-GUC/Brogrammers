@@ -88,11 +88,14 @@ const styles = theme => ({
 })
 
 class PrimarySearchAppBar extends React.Component {
-  state = {
+  constructor(props)
+  {super(props)
+  this.state = {
     anchorEl: null,
-    mobileMoreAnchorEl: null
+    mobileMoreAnchorEl: null,
+    auth:props.auth
   }
-
+  }
   handleProfileMenuOpen = event => {
     this.setState({ anchorEl: event.currentTarget })
   }
@@ -107,16 +110,23 @@ class PrimarySearchAppBar extends React.Component {
   }
 
   handleMobileMenuClose = () => {
-    this.setState({ mobileMoreAnchorEl: null })
+    this.props.callBack(null, false,"", null)
+    this.setState({ mobileMoreAnchorEl: null ,
+    auth:this.props.auth})
+   
   }
+
 
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state
     const { classes } = this.props
     const isMenuOpen = Boolean(anchorEl)
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
-
-    const renderMenu = (
+    var renderMenu=""
+    var renderMobileMenu = ""
+    if(this.state.auth)
+    {
+     renderMenu = (
       <Menu
         anchorEl={anchorEl}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -126,10 +136,14 @@ class PrimarySearchAppBar extends React.Component {
       >
         <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
         <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
+        <MenuItem onClick={this.handleMenuClose}>Sign out </MenuItem>
       </Menu>
     )
+    
+   
+    
 
-    const renderMobileMenu = (
+     renderMobileMenu = (
       <Menu
         anchorEl={mobileMoreAnchorEl}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -162,6 +176,8 @@ class PrimarySearchAppBar extends React.Component {
       </Menu>
     )
 
+     }
+     const hide = this.state.auth? {}:{display:"none"}
     return (
       <div className={classes.root}>
     <AppBar position="static">
@@ -195,9 +211,9 @@ class PrimarySearchAppBar extends React.Component {
             </div>
             <button href="http://localhost:3001/company/approved">
               View Companies
-            </button>
+            </button >
             <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
+            <div className={classes.sectionDesktop} style = {hide} >
               <IconButton color="inherit">
                 <Badge badgeContent={69} color="secondary">
                   <MailIcon />
@@ -217,7 +233,8 @@ class PrimarySearchAppBar extends React.Component {
                 <AccountCircle />
               </IconButton>
             </div>
-            <div className={classes.sectionMobile}>
+            
+            <div className={classes.sectionMobile}  >
               <IconButton
                 aria-haspopup="true"
                 onClick={this.handleMobileMenuOpen}

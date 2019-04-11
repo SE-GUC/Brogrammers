@@ -27,6 +27,7 @@ import ComplexButton from "./components/layout/Complex Button/ComplexButton";
 import ViewLawyerCasesbyID from "./components/pages/ViewLawyerCasesbyID.js";
 import ViewReviewerCasesbyID from "./components/pages/ViewReviewerCasesbyID";
 import ViewApprovedCompanies from "./components/pages/ViewApprovedCompanies";
+import ChooseLawRegulation from './components/pages/ChooseLawRegulation'
 import ChooseCompanyType from "./components/pages/ChooseCompanyType";
 
 class App extends Component {
@@ -35,6 +36,7 @@ class App extends Component {
     this.token = null;
     this.auth = null;
     this.state = {
+      display:null,
       test: [],
       lawyerCases: [],
       companys: [],
@@ -50,16 +52,28 @@ class App extends Component {
     sessionStorage.setItem("auth", a);
     sessionStorage.setItem("type", type);
     sessionStorage.setItem("id", id);
+   
     console.log(sessionStorage.getItem("id"));
   }
-
+handleSignOut=()=>{  
+sessionStorage.getItem("auth")? this.setState({display:"none"}):console.log()
+}
+handletoken=()=>{  
+  this.setState({token:sessionStorage.getItem("auth")})
+  }
   render() {
-    console.log(this.state.token + " " + this.state.auth);
+
+    console.log(sessionStorage.getItem("auth"))
+ // in the Navbar for the logout try to pass the auth and then render 
     return (
       <Router>
         <React.Fragment>
+          
           <Navbar />
-          <Route exact path="/" render={props => <ComplexButton />} />{" "}
+          
+          <div style={this.state.display}>
+          <Route exact path="/" render={props => <ComplexButton  />} />{" "}
+          </div>
           <Route
             exact
             path="/register"
@@ -82,10 +96,17 @@ class App extends Component {
           />{" "}
           <Route
             exact
-            path="/chooseType"
+            path="/chooseType/:law"
             component={ChooseCompanyType}
            
           />{" "}
+            <Route
+            exact
+            path="/chooseLaw"
+            component={ChooseLawRegulation}
+           
+          />{" "}
+
           <Route
             exact
             path="/admin/register-reviewer"
@@ -263,7 +284,7 @@ class App extends Component {
             }
           />
           <div>
-            <Route exact path="/Investorlogin" render={props => <SignIn />} />{" "}
+            <Route exact path="/Investorlogin" render={props => <SignIn  callBack={this.setToken}/>} />{" "}
             <Route
               exact
               path="/Lawyerlogin"
