@@ -224,7 +224,7 @@ router.put("/getTasks/approve/:id2", async (req, res) => {
       const isValidated = await companyvalidator.updateValidationSSC({
         status: "Accepted"
       });
-      res.json({ msg: "Task approved successfully" });
+     
 
       if (isValidated.error) {
         return res
@@ -248,7 +248,7 @@ router.put("/getTasks/approve/:id2", async (req, res) => {
       let info ={
         from: '"GAFI"', // sender address
         to: company.investorEmail, // list of receivers
-        subject: "Company rejection", // Subject line
+        subject: "Company acceptance", // Subject line
         text: "Dear "+company.investorName + "\n The company you ware creating was accepted please check GAFIs online portal to view the fees and pay. \n Thank you", // plain text body
         html: "<b>Dear "+company.investorName + "\n The company you ware creating was accepted by the lawyer please check GAFIs online portal to view the fees and pay. \n Thank you</b>" // html body
       };
@@ -258,7 +258,7 @@ router.put("/getTasks/approve/:id2", async (req, res) => {
       }
       console.log(info)
     })
-
+    res.json({ msg: "Task approved successfully" });
       //hereeeee
     }
   } catch (error) {

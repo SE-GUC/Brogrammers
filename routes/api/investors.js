@@ -10,6 +10,7 @@ const Admin = require('../../models/Admin')
 const Company = require('../../models/Company')
 const nodemailer = require("nodemailer");
 var stripe = require("stripe")("sk_test_Vv7YbqIhi1pfFmwt4dKAFUvb000Duiu0d8");
+var PDFDocument = require('pdfkit');
 
 // Logout Sprint2
 router.get('/logout', function (req, res) {
@@ -472,6 +473,15 @@ router.post('/createspccompany', async (req, res) => {
       investorEmail
     })
     const company = await Company.create(newCompany)
+
+
+
+  
+
+
+
+
+
     res.json({ msg: 'SPC Company was created successfully', data: company })
   } catch (error) {
     console.log(error)
@@ -580,7 +590,46 @@ router.post('/createssccompany', async (req, res) => {
       investorEmail
     })
     const company = await Company.create(newCompany)
-    res.json({ msg: 'SSC Company was created successfully', data: company })
+
+
+    const doc = new PDFDocument;
+  
+    // pipe the document to a blob
+    const stream = doc.pipe(res);
+    doc.registerFont('Arabic1', 'mobily.ttf');
+    doc.font('Arabic1').fontSize(24).text('النظام الأساسي', {
+      width: 410,
+      align: 'center'
+    });
+    doc.font('Arabic1').fontSize(24).text(newCompany.nameInArabic+" "+newCompany.nameInEnglish, {
+      width: 410,
+      align: 'center'
+    });
+    
+    doc.font('Arabic1').fontSize(24).text("شركة شخص واحد", {
+      width: 410,
+      align: 'center'
+    });
+
+    // doc.font('Arabic1').fontSize(24).text("خاضعة لأحكام قانون شركات المساھمة وشركات التوصیة بالأسھم والشركات ذات المسئولیة المحدودة وشركات الشخص الواحد الصادر بالقانون رقم ١٥٩ لسنة ١٩٨", {
+    //   width: 410,
+    //   align: 'center'
+    // });
+
+    // doc.font('Arabic1').fontSize(24).text(" رقم العقد", {
+    //   width: 410,
+    //   align: 'center'
+    // });
+
+    // add your content to the document here, as usual
+    
+    // get a blob when you're done
+    doc.end();
+    res.setHeader('access-control-allow-origin', '*');
+    res.status(200);
+
+
+    //res.json({ msg: 'SSC Company was created successfully', data: company })
   } catch (error) {
     console.log(error)
   }
