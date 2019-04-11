@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 
-class Button2 extends Component{
+class ReviewerButton extends Component{
 constructor(props){
     super(props)
 }
@@ -11,7 +11,7 @@ constructor(props){
 
 claimTask()
 {
-  fetch(`http://localhost:3000/api/lawyer/assignFreeTask/${this.props.compid}`, {
+  fetch(`http://localhost:3000/api/reviewer/assignFreeTask/${this.props.compid}`, {
     method: "PUT",
    
     headers: {
@@ -25,10 +25,10 @@ claimTask()
   })
  }
 
+ 
 
 render(){
-// console.log(this.props.compid)
-//  console.log(this.props.token)
+
 
 
     return(
@@ -50,4 +50,4 @@ render(){
 
 
 }
-export default Button2
+export default ReviewerButton

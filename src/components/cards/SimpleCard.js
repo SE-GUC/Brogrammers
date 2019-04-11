@@ -55,7 +55,6 @@ function SimpleCard (props) {
             <li>nameInArabic: {props.nameInArabic}</li>
             <li> governerateHQ:{props.governerateHQ}</li>
             <li>cityHQ: {props.cityHQ}</li>
-
             <li>telephoneHQ: {props.telephoneHQ}</li>
             <li>faxHQ: {props.faxHQ}</li>
             <li>capitalCurrency: {props.capitalCurrency}</li>

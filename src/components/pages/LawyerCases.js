@@ -6,8 +6,8 @@ class LawyerCases extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      lawyerCases: [],
-      compid:null
+      lawyerCases: []
+      
 
     }
   }
@@ -39,8 +39,7 @@ class LawyerCases extends Component {
 
 
   render () {
-    console.log(this.state.lawyerCases)
-    console.log(this.props.token)
+ 
     
  
 
