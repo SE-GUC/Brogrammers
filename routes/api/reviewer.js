@@ -1,11 +1,11 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
+const router = express.Router();
 var config = require("../../config/jwt");
-const Reviewer = require("../../models/reviewer");
+const Reviewer = require("../../models/Reviewer");
 const Company = require("../../models/Company");
 const Admin = require("../../models/Admin");
-const router = express.Router();
 const validator = require("../../validations/reviewerValidations");
 const companyvalidator = require("../../validations/companyValidations");
 
@@ -108,41 +108,45 @@ router.get("/getAllTasks/view", async (req, res) => {
 });
 
 // returns specific tasks of a certain reviewer by his id
-router.get("/:id/getTasks", async (req, res) => {
+router.get('/getTasks/Reviewer', async (req, res) => {
   try {
-    var stat = 0;
-    var token = req.headers["x-access-token"];
+    var stat = 0
+    var token = req.headers['x-access-token'];
+   
     if (!token) {
       return res
         .status(401)
-        .send({ auth: false, message: "Please login first." });
+        .send({ auth: false, message: 'Please login first.'});
     }
     jwt.verify(token, config.secret, async function(err, decoded) {
       if (err) {
         return res
           .status(500)
-          .send({ auth: false, message: "Failed to authenticate token." });
+          .send({ auth: false, message: 'Failed to authenticate token.'});
       }
-      stat = decoded.id;
-    });
 
-    const id = req.params.id;
-    if (id !== stat) {
-      return res
-        .status(500)
-        .send({ auth: false, message: "Failed to authenticate" });
+      stat=decoded.id;
+    })
+
+    let id = stat;
+  
+    const rev = await Reviewer.findById(id);
+    const reviewerSSN = await rev.ssn;
+
+    var query = { 
+      reviewer: reviewerSSN , 
+      $or:[{status:"PendingReviewer"},{status:"RejectedReviewer"}]
     }
-    let rev = await Reviewer.findById(id);
-    let reviewerSSN = await rev.ssn;
 
-    var query = { reviewer: reviewerSSN };
     const comps = await Company.find(query);
 
-    res.json({ data: comps });
-  } catch (error) {
+    res.json({data:comps})
+
+  } catch(error) {
     console.log(error);
   }
-});
+
+})
 
 // Reviewer Chooses one task at a time and assigns it to himself/herself
 router.put("/assignFreeTask/:id2", async (req, res) => {
@@ -185,7 +189,7 @@ router.put("/assignFreeTask/:id2", async (req, res) => {
 });
 
 // Approves the task and updates the company status
-router.put("/:id/getTasks/approve/:id2", async (req, res) => {
+router.put("/getTasks/approve/:id2", async (req, res) => {
   try {
     var stat = 0;
     var token = req.headers["x-access-token"];
@@ -202,12 +206,8 @@ router.put("/:id/getTasks/approve/:id2", async (req, res) => {
       }
       stat = decoded.id;
     });
-    const id = req.params.id;
-    if (id !== stat) {
-      return res
-        .status(500)
-        .send({ auth: false, message: "Failed to authenticate" });
-    }
+    const id = stat;
+  
     let compid = req.params.id2;
     let rev = await Reviewer.findById(id);
     let reviewerSSN = await rev.ssn;
@@ -224,6 +224,7 @@ router.put("/:id/getTasks/approve/:id2", async (req, res) => {
       const isValidated = await companyvalidator.updateValidationSSC({
         status: "Accepted"
       });
+      res.json({ msg: "Task approved successfully" });
 
       if (isValidated.error) {
         return res
@@ -258,7 +259,7 @@ router.put("/:id/getTasks/approve/:id2", async (req, res) => {
       console.log(info)
     })
 
-      res.json({ msg: "Task approved successfully" });
+      //hereeeee
     }
   } catch (error) {
     console.log(error);
@@ -266,7 +267,7 @@ router.put("/:id/getTasks/approve/:id2", async (req, res) => {
 });
 
 // Disapproves the task and updates company status
-router.put("/:id/getTasks/disapprove/:id2", async (req, res) => {
+router.put("/getTasks/disapprove/:id2", async (req, res) => {
   try {
     var stat = 0;
     var token = req.headers["x-access-token"];
@@ -283,12 +284,8 @@ router.put("/:id/getTasks/disapprove/:id2", async (req, res) => {
       }
       stat = decoded.id;
     });
-    const id = req.params.id;
-    if (id !== stat) {
-      return res
-        .status(500)
-        .send({ auth: false, message: "Failed to authenticate" });
-    }
+    const id = stat;
+   
     let currentReviewer = await Reviewer.findById(id);
     let reviwerSSN = await currentReviewer.ssn;
     let companyID = req.params.id2;

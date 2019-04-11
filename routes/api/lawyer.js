@@ -45,6 +45,7 @@ router.get('/getTasks', async (req, res) => {
           .status(500)
           .send({ auth: false, message: 'Failed to authenticate token.' })
       }
+
       stat = decoded.id
     })
     const id = stat
@@ -60,8 +61,8 @@ router.get('/getTasks', async (req, res) => {
 
     const comps = await Company.find(query)
 
-    res.json({ data: comps })
-  } catch (error) {
+    res.json({ data:comps})
+  } catch(error) {
     console.log(error)
   }
 })
