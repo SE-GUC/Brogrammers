@@ -11,6 +11,10 @@ class  ChooseLawRegulation extends React.Component  {
         }
 
     }
+    handleLaws(law)
+    {
+        this.setState({regulationLaws : law})
+    }
    
     render(){
   return (
