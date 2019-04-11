@@ -1,28 +1,27 @@
-import React, { Component } from "react";
-import NotRequired from "../layout/inputs/NotRequired";
-import { withStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import { Icon, Button } from "@material-ui/core";
-import SaveChangesButton from "../layout/Dialogs/SaveChangesButton";
-
+import React, { Component } from 'react'
+import NotRequired from '../layout/inputs/NotRequired'
+import { withStyles } from '@material-ui/core/styles'
+import Paper from '@material-ui/core/Paper'
+import { Icon, Button } from '@material-ui/core'
+import SaveChangesButton from '../layout/Dialogs/SaveChangesButton'
 
 const styles = theme => ({
   main: {
-    width: "auto",
-    display: "block", // Fix IE 11 issue.
+    width: 'auto',
+    display: 'block',
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
       width: 700,
-      marginLeft: "auto",
-      marginRight: "auto"
+      marginLeft: 'auto',
+      marginRight: 'auto'
     }
   },
   paper: {
     marginTop: theme.spacing.unit * 8,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
       .spacing.unit * 3}px`
   },
@@ -30,25 +29,66 @@ const styles = theme => ({
     margin: theme.spacing.unit,
     backgroundColor: theme.palette.primary.main
   }
-});
+})
 class ReviewerComment extends Component {
-  render() {
-    const { classes } = this.props;
+  constructor(props){
+    super(props);
+    this.state={
+      company:{
+        reviewercoment:null,
+        companyid:null
+    }
+  }
+    this.handleSubmission = this.handleSubmission.bind(this)
+    this.onChange = this.onChange.bind(this)
+  }
+  handleSubmission (event) {
+    event.preventDefault()
+    let updatedData = this.state
+    fetch(`http://localhost:3000/api/reviewer/addcomment/${this.props.id}/${this.props.companyid}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(updatedData),
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': this.props.token
+        }
+      }).then(response => {
+      console.log('Your comment has been posted successfully')
+    })
+  }
+  onChange (e) {
+    let value = e.target.value
+    let name = e.target.name
+    this.setState(
+      prevState => {
+        return {
+          company: {
+            ...prevState.company,
+            [name]: value
+          }
+        }
+      },
+      () => console.log(value)
+    )
+  }
+  render () {
+    const { classes } = this.props
     return (
-      //<main className={classes.main}>
+      <main className={classes.main}>
         <Paper className={classes.paper}>
-          <Icon className={classes.icon} color="primary">
+          <Icon className={classes.icon} color='primary'>
             add_circle
           </Icon>
           <h2>Add Your Comment</h2>
-          <NotRequired field={"ReviewerComment"} type="text" />
-          <NotRequired field={"CompanyId"} type="text" />
+          <NotRequired field={'ReviewerComment'} type='text' callBack={this.onChange} name={'reviewercomment'} />
+          <NotRequired field={'CompanyId'} type='text' callBack={this.onChange} name={'companyid'} />
 
-          <SaveChangesButton />
+          <SaveChangesButton onClick={this.handleSubmission} />
         </Paper>
-     // </main>
-    );
+      </main>
+    )
   }
 }
 
-export default withStyles(styles)(ReviewerComment);
+export default withStyles(styles)(ReviewerComment)

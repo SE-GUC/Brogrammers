@@ -22,12 +22,12 @@ const DialogTitle = withStyles(theme => ({
     position: "absolute",
     right: theme.spacing.unit,
     top: theme.spacing.unit,
-    color: theme.palette.grey[500]
+    color: theme.palette.grey[0]
   }
 }))(props => {
   const { children, classes, onClose } = props;
   return (
-    <MuiDialogTitle disableTypography className={classes.root}>
+    <MuiDialogTitle disableTypography style={{backgroundColor:'rgba(150, 0, 0, 0.4)'}} className={classes.root}>
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
         <IconButton
@@ -88,7 +88,7 @@ class CustomizedDialogDemo extends React.Component {
           aria-labelledby="customized-dialog-title"
           open={this.state.open}
         >
-          <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
+          <DialogTitle  id="customized-dialog-title" onClose={this.handleClose}>
             {this.props.data.nameInEnglish}
           </DialogTitle>
 
@@ -96,8 +96,8 @@ class CustomizedDialogDemo extends React.Component {
             
               {this.handleInput(this.props).map((input, i) => (
                 input!=='managers'?
-                  <Grid container direction="column" alignItems="left">
-                    {input} : {this.handleInputVal(this.props)[i]}
+                  <Grid style={{marginTop:12}} container direction="column" alignItems="left">
+                   <h3>{input} :</h3>  {this.handleInputVal(this.props)[i]}
                     <br />
                   </Grid>
                 :console.log
@@ -106,7 +106,7 @@ class CustomizedDialogDemo extends React.Component {
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
-              Close
+              Done
             </Button>
           </DialogActions>
         </Dialog>
