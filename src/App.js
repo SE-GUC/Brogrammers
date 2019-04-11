@@ -6,6 +6,7 @@ import Register from "./components/pages/Register";
 import RegisterLawyer from "./components/pages/RegisterLawyer";
 import RegisterReviewer from "./components/pages/RegisterReviewer";
 import RegisterAdmin from "./components/pages/RegisterAdmin";
+import TakeMoney from "./components/pages/TakeMoney";
 import "typeface-roboto";
 import ReviewerCases from "./components/pages/ReviewerCases";
 import LawyerCases from "./components/pages/LawyerCases";
@@ -60,6 +61,7 @@ class App extends Component {
       <Router>
         <React.Fragment>
           <Navbar />
+          <Route exact path="/pay" render={props => <TakeMoney />} />{" "}
           <Route exact path="/" render={props => <ComplexButton />} />{" "}
           <Route
             exact
