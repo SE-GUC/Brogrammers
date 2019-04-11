@@ -12,13 +12,18 @@ const styles = theme => ({
   }
 })
 
+
+
+
+
 function ContainedButtons (props) {
   const { classes } = props
+ 
 
   return (
     <div>
 
-      <Button variant='contained' color='secondary' className={classes.button} onClick={() => { console.log('onClick') }} >
+      <Button variant='contained' color='secondary' className={classes.button}  >
         Take Task
 
       </Button>

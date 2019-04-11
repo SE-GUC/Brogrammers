@@ -8,19 +8,18 @@ import CaseCard from '../cards/RequestsCards'
 
 const styles = theme => ({
   root: {
-
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     overflow: 'hidden',
-    backgroundColor: theme.palette.background.paper
-
+    backgroundColor: '#555555',
   },
   gridList: {
-    maxWidth: 300
-  },
-  icon: {
-    color: 'rgba(255, 255, 255, 0.54)'
+    width: '80%',
+    height:'auto',
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 5,
+    paddingBottom: theme.spacing.unit 
   }
 })
 
@@ -32,14 +31,16 @@ class TitlebarGridList extends React.Component {
   }
   
     render() { 
+      const { classes } = this.props;
         return (
-            <div className={styles.root}>
-              <GridList cellHeight={200} className={styles.gridList}>
-                <GridListTile key="Subheader" cols={2} style={{ height: '50px' }}>
+            <div className={classes.root}>
+             <GridList cellHeight={250} className={classes.gridList}>
+        <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
                 </GridListTile>
                 {this.props.data.map((tile,i) => (
-                  <GridListTile style={{maxWidth:350}}>
-                   <CaseCard title={tile.nameInEnglish} key={i} id={tile._id} token= {this.props.token} subheader={tile.status} nameAr={tile.nameInArabic} data={tile} />
+                  <GridListTile style={{width: 300}}>
+                    
+                   <CaseCard title={tile.nameInEnglish} comment={tile.lawyerComment} lawyer={tile.lawyer} key={i} id={tile._id} token= {this.props.token} subheader={tile.status} nameAr={tile.nameInArabic} data={tile} />
                   </GridListTile>
                 ))}
               </GridList>

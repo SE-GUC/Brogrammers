@@ -4,9 +4,9 @@ import { withStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
 
+import Typography from '@material-ui/core/Typography'
+import Button2 from '../buttons/Button2'
 const styles = {
   card: {
     minWidth: 275
@@ -24,9 +24,15 @@ const styles = {
   }
 }
 
+ 
+
+
 function SimpleCard (props) {
   const { classes } = props
   const bull = <span className={classes.bullet}>•</span>
+
+
+
 
   return (
     <Card className={classes.card}>
@@ -42,7 +48,7 @@ function SimpleCard (props) {
         </Typography>
         <Typography component='p'>
           <ul>
-
+            <li>Company id: {props.compid}</li>
             <li>addressHQ: {props.addressHQ}</li>
             <li>regulationLaw: {props.regulationLaw} </li>
             <li>legalCompanyForm: {props.legalCompanyForm}</li>
@@ -70,7 +76,7 @@ function SimpleCard (props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size='small'>Claim Task</Button>
+        <Button2  token={props.token} compid={props.compid}   variant='contained' size='medium' className={classes.button} color="primary">Claim Task</Button2>
       </CardActions>
     </Card>
   )

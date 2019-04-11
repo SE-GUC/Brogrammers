@@ -6,10 +6,16 @@ class LawyerCases extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      lawyerCases: []
+      lawyerCases: [],
+      compid:null
 
     }
   }
+
+
+
+
+  
 
   componentDidMount () {
     {
@@ -28,18 +34,26 @@ class LawyerCases extends Component {
           })
         })
     }
+
   }
+
 
   render () {
     console.log(this.state.lawyerCases)
+    console.log(this.props.token)
+    
+ 
 
     return (
       <div>
 
         <ul>
-          {this.state.lawyerCases.map((item) => (
-            <SimpleCard key={item._id} nameInEnglish={item.nameInEnglish} status={item.status}
-              addressHQ={item.addressHQ}
+          {this.state.lawyerCases.map((item,i) => (
+            <SimpleCard key={i} nameInEnglish={item.nameInEnglish} status={item.status}
+            compid={item._id}  
+            
+            token={this.props.token}
+            addressHQ={item.addressHQ}
               Status={item.status}
               addressHQ={item.addressHQ}
               regulationLaw={item.regulationLaw}
@@ -71,6 +85,7 @@ class LawyerCases extends Component {
       </div>
 
     )
+    
   }
 }
 

@@ -50,7 +50,7 @@ class investorRequests extends Component {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
-                'x-access-token': this.props.token 
+                'x-access-token': this.props.token
             },
         }).then(response => {
 
@@ -60,7 +60,7 @@ class investorRequests extends Component {
             })
         }).catch(error =>
             this.setState({
-                error:"error",
+                error:{error}.message,
                 isLoading: false
             }))
     }
@@ -69,13 +69,13 @@ class investorRequests extends Component {
     }
     render() {
         console.log(this.state.requests)
-        const { requests } = this.state;
+      
 
         if (this.state.isLoading) {
             return <LinearDeterminate />
         }
         if (this.state.error) {
-            return <Snackbar variant='error' message="Something went wrong!" />
+            return <Snackbar variant='error' message={this.state.error} />
         } return (
             <div>
                 {this.handleReq()}
