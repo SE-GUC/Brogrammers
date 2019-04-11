@@ -46,17 +46,17 @@ const styles = theme => ({
 })
 
 export class LawyerSignIn extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      lawyer: {
-        email: '',
-        password: ''
-      }
+    constructor(props){
+        super(props);
+        this.state= {
+           lawyer: {
+            email: '',
+            password: '',
+           },
+        }
+        this.handleInput = this.handleInput.bind(this);
+        this.handleRegister = this.handleRegister.bind(this);
     }
-    this.handleInput = this.handleInput.bind(this)
-    this.handleRegister = this.handleRegister.bind(this)
-  }
 
   handleRegister (e) {
     e.preventDefault()
@@ -71,7 +71,7 @@ export class LawyerSignIn extends Component {
     }).then(response => {
       response.json().then(data => {
         console.log('Successful' + data + data.auth)
-        this.props.callBack(data.token, data.auth, 'l', '0')
+        this.props.callBack(data.token, data.auth, 'l',  data.id, data.ssn)
       })
     })
   }

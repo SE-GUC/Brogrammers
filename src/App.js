@@ -46,22 +46,32 @@ class App extends Component {
     };
   }
 
-  setToken(t, a, type, id) {
+  setToken(t, a, type, id,ssn) {
     sessionStorage.setItem("jwtToken", t);
     sessionStorage.setItem("auth", a);
     sessionStorage.setItem("type", type);
     sessionStorage.setItem("id", id);
-    console.log(sessionStorage.getItem("id"));
+    sessionStorage.setItem("ssn", ssn);
+    console.log(sessionStorage.getItem("ssn"));
   }
 
   render() {
     console.log(this.state.token + " " + this.state.auth);
     return (
       <Router>
-        <React.Fragment>
-          <Navbar />
-          <Route exact path="/" render={props => <ComplexButton />} />{" "}
-          <Route
+      <React.Fragment>
+    <Navbar/>
+    <Route exact path="/" render={props => (
+          <ComplexButton/>
+    )} />
+    <Route exact path="/register" render={props => (
+               <Register callBack={this.setToken}/>
+            )} />
+
+    <Route exact path="/admin/register-lawyer" component={()=>sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='a'? <RegisterLawyer callBack={this.setToken} token={sessionStorage.getItem('jwtToken')}/> : <LawyerSignIn/>} />
+    <Route exact path="/admin/register-reviewer" component={()=>sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='a'?<RegisterReviewer callBack={this.setToken} token={sessionStorage.getItem('jwtToken')}/> : <ReviewerSignIn/>} />
+    <Route exact path="/admin/register-admin" render={props => (<RegisterAdmin callBack={this.setToken}/>)} />
+           <Route
             exact
             path="/register"
             render={props => <Register callBack={this.setToken} />}

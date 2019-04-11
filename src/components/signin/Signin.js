@@ -70,7 +70,7 @@ export class SignIn extends Component {
     }).then(response => {
       response.json().then(data => {
         console.log('Successful' + data + data.auth)
-        this.props.callBack(data.token, data.auth, 'r', '0')
+        this.props.callBack(data.token, data.auth, 'i', data.id)
       })
     })
   }
