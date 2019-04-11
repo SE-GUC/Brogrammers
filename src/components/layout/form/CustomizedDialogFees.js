@@ -74,7 +74,7 @@ class CustomizedDialogFees extends React.Component {
   handleView(e){
     e.preventDefault();
     
-    fetch('http://localhost:3000/api/investors/'+this.props.id+this.props.company+'/viewFees',{
+    fetch('http://localhost:3000/api/investors/'+this.props.data.id+'/viewFees',{
         method: "GET",
         headers: {
           'Content-Type': 'application/json',
