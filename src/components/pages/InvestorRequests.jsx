@@ -25,7 +25,7 @@ class investorRequests extends Component {
         if(this.state.requests){
         return (<div>
             <Paper title={this.state.requests.investorName} elevation={1} />
-            <Grid style={{ backgroundColor: '#3f3f3f' }}>
+            <Grid >
                 <TitleBarGridList data={this.state.requests} token={this.props.token} />
             </Grid>
         </div>)}
