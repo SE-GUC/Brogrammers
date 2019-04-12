@@ -64,15 +64,16 @@ router.post("/submit-form", async (req, res) => {
       })
       .on("file",(name, file) => {
         let rawdata = fs.readFileSync(file.path);
-        let newSchema = JSON.parse(rawdata);
+        let uploadedSchema = JSON.parse(rawdata);
         let formName=file.name.substring(0,file.name.length-5);
         console.log("Uploaded file", name);
-        FormSchema.create(newSchema);
-        var newCompanySchema = new mongoose.Schema(generator.convert(newSchema));
+        var newform=FormSchema.create({legalCompanyForm:formName,formSchema:uploadedSchema});
+       
+        var newCompanySchema = new mongoose.Schema(generator.convert(uploadedSchema.properties));
         console.log(formName)
         var a = Company.discriminator(formName, newCompanySchema)
-        console.log('successfully created')
-        
+        console.log('successfully created',newCompanySchema)
+        res.json({ msg: "form uploaded successfully",data:newform });
       });
   } catch (error) {
     console.log(error.message);

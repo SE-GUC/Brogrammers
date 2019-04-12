@@ -3,8 +3,8 @@ const Schema = mongoose.Schema
 
 
 const FormSchema = new Schema({
-    companyType:String,
-    Schema:Object
+    legalCompanyForm:String,
+    formSchema:Object
 })
 
 module.exports = mongoose.model('formSchema', FormSchema)
