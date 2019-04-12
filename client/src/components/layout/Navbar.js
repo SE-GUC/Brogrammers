@@ -93,7 +93,7 @@ class PrimarySearchAppBar extends React.Component {
   this.state = {
     anchorEl: null,
     mobileMoreAnchorEl: null,
-    auth:props.auth
+    auth:false
   }
   }
   handleProfileMenuOpen = event => {
@@ -110,23 +110,40 @@ class PrimarySearchAppBar extends React.Component {
   }
 
   handleMobileMenuClose = () => {
-    this.props.callBack(null, false,"", null)
+ //   this.props.callBack(null, false,"", null)
     this.setState({ mobileMoreAnchorEl: null ,
     auth:this.props.auth})
    
   }
 
+  handleSignOut= () =>{
+    sessionStorage.setItem("auth",false)
+    sessionStorage.setItem("jwtToken",null)
+    sessionStorage.setItem("type",null)
+    console.log(sessionStorage.getItem("jwtToken") +"  heeere")
+    this.state.auth=false
+    this.forceUpdate()
+    this.handleMenuClose()
+    document.location.href = "/";
+    }
+
+    handleProfile = () =>{
+      document.location.href = "/profile";
+    }
+
 
   render() {
+   
     const { anchorEl, mobileMoreAnchorEl } = this.state
     const { classes } = this.props
     const isMenuOpen = Boolean(anchorEl)
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
     var renderMenu=""
     var renderMobileMenu = ""
-    if(this.state.auth)
+    if(sessionStorage.getItem("jwtToken")!=null)
     {
      renderMenu = (
+       
       <Menu
         anchorEl={anchorEl}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -134,9 +151,8 @@ class PrimarySearchAppBar extends React.Component {
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>Sign out </MenuItem>
+        <MenuItem onClick={this.handleProfile}>Profile</MenuItem>
+        <MenuItem onClick={this.handleSignOut}>Sign out </MenuItem>
       </Menu>
     )
     
@@ -177,7 +193,12 @@ class PrimarySearchAppBar extends React.Component {
     )
 
      }
-     const hide = this.state.auth? {}:{display:"none"}
+     else{
+       renderMenu=""
+       renderMobileMenu=""
+     }
+     console.log(sessionStorage.getItem("type") + "you see")
+     const hidei = sessionStorage.getItem("type")=="i"||sessionStorage.getItem("type")=="r"||sessionStorage.getItem("type")=="a"||sessionStorage.getItem("type")=="l"? {}:{display:"none"}
     return (
       <div className={classes.root}>
     <AppBar position="static">
@@ -213,7 +234,7 @@ class PrimarySearchAppBar extends React.Component {
               View Companies
             </button >
             <div className={classes.grow} />
-            <div className={classes.sectionDesktop} style = {hide} >
+            <div className={classes.sectionDesktop} style = {hidei} >
               <IconButton color="inherit">
                 <Badge badgeContent={69} color="secondary">
                   <MailIcon />

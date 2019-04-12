@@ -31,6 +31,7 @@ import ViewApprovedCompanies from "./components/pages/ViewApprovedCompanies";
 import ChooseLawRegulation from './components/pages/ChooseLawRegulation'
 import ChooseCompanyType from "./components/pages/ChooseCompanyType";
 import ViewLawyerEditableCases from "./components/pages/ViewLawyerEditableCases"
+import AdminProfile from "./components/pages/AdminProfile";
 
 
 class App extends Component {
@@ -350,7 +351,32 @@ handletoken=()=>{
             }
             />
          
-            
+         <Route exact path="/profile" component={() =>{
+           if(sessionStorage.getItem("auth") && sessionStorage.getItem("type") == "a") {
+                return <AdminProfile/>
+           }else{
+             if(sessionStorage.getItem("auth") && sessionStorage.getItem("type") == "i"){
+             return (<InvestorRequests
+              id={sessionStorage.getItem("id")}
+              token={sessionStorage.getItem("jwtToken")}
+            />)
+             } else{
+               if(sessionStorage.getItem("auth") && sessionStorage.getItem("type") == "r"){
+               return <ReviewerCases token={sessionStorage.getItem("jwtToken")} />
+               }
+               else{
+                 if(sessionStorage.getItem("auth") && sessionStorage.getItem("type") == "l"){
+                return  <LawyerCases token={sessionStorage.getItem("jwtToken")} />
+                 }
+                 else{
+                 return <SignIn/>
+                 }
+               }
+             }
+           }
+         }
+       }
+            />
             
             {" "}
           </div>{" "}
