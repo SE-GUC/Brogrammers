@@ -73,7 +73,7 @@ handletoken=()=>{
       <React.Fragment>
     <Navbar/>
     <div style={this.state.display}>
-    <Route exact path="/" render={props => <ComplexButton  />} />{" "}
+    {/* <Route exact path="/" render={props => <ComplexButton  />} />{" "} */}
     </div>
     <Route exact path="/pay" render={props => <TakeMoney />} />{" "}
     <Route exact path="/" render={props => (
@@ -320,7 +320,7 @@ handletoken=()=>{
                   token={sessionStorage.getItem("jwtToken")}
                 />
               ) : (
-                <SignIn />
+                <LawyerSignIn callBack={this.setToken} />
               )
             }
           />

@@ -71,6 +71,9 @@ export class SignIn extends Component {
       response.json().then(data => {
         console.log('Successful' + data + data.auth)
         this.props.callBack(data.token, data.auth, 'i', data.id)
+        if(data.auth){
+          document.location.href = "/"
+        }
       })
     })
   }

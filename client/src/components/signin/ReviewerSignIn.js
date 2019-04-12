@@ -71,6 +71,9 @@ export class ReviewerSignIn extends Component {
       response.json().then(data => {
         console.log('Successful' + data + data.auth)
         this.props.callBack(data.token, data.auth, 'r',  data.id)
+        if(data.auth){
+          document.location.href = "/"
+        }
       })
     })
   }

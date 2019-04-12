@@ -12,6 +12,7 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Required from '../layout/inputs/Required'
+import Snackbar from "../layout/snackbar/Snackbar"
 
 
 const styles = theme => ({
@@ -52,7 +53,8 @@ export class AdminSignIn extends Component {
     this.state = {
       admin: {
         email: '',
-        password: ''
+        password: '',
+        c: false
       }
     }
     this.handleInput = this.handleInput.bind(this)
@@ -72,6 +74,9 @@ export class AdminSignIn extends Component {
       response.json().then(data => {
         console.log('Successful' + data + data.auth)
         this.props.callBack(data.token, data.auth, 'a', data.id)
+        if(data.auth){
+          document.location.href = "/"
+        }
       })
     })
   }
