@@ -34,7 +34,7 @@ router.post('/spc', async (req, res) => {
 router.post('/create', async (req, res) => {
   try {
     
-    const newCompany = await Company.create({"legalCompanyForm":"SLC","year":12})
+    const newCompany = await Company.create({"legalCompanyForm":"SLC","year":13})
     res.json({ msg: 'Company was created successfully', data: newCompany })
   } catch (error) {
     // We will be handling the error later
