@@ -32,6 +32,9 @@ import ChooseLawRegulation from './components/pages/ChooseLawRegulation'
 import ChooseCompanyType from "./components/pages/ChooseCompanyType";
 import ViewLawyerEditableCases from "./components/pages/ViewLawyerEditableCases"
 import AdminProfile from "./components/pages/AdminProfile";
+import LawyerProfile from './components/pages/LawyerProfile'
+import ReviewerProfile from './components/pages/ReviewerProfile'
+import InvestorProfile from "./components/pages/InvestorProfile";
 
 
 class App extends Component {
@@ -77,9 +80,6 @@ handletoken=()=>{
     <Route exact path="/" render={props => <ComplexButton  />} />{" "}
     </div>
     <Route exact path="/pay" render={props => <TakeMoney />} />{" "}
-    <Route exact path="/" render={props => (
-          <ComplexButton/>
-    )} />
     <Route exact path="/register" render={props => (
                <Register callBack={this.setToken}/>
             )} />
@@ -321,7 +321,7 @@ handletoken=()=>{
                   token={sessionStorage.getItem("jwtToken")}
                 />
               ) : (
-                <SignIn />
+                <LawyerSignIn callBack={this.setToken} />
               )
             }
           />
@@ -356,17 +356,15 @@ handletoken=()=>{
                 return <AdminProfile/>
            }else{
              if(sessionStorage.getItem("auth") && sessionStorage.getItem("type") == "i"){
-             return (<InvestorRequests
-              id={sessionStorage.getItem("id")}
-              token={sessionStorage.getItem("jwtToken")}
+             return (<InvestorProfile
             />)
              } else{
                if(sessionStorage.getItem("auth") && sessionStorage.getItem("type") == "r"){
-               return <ReviewerCases token={sessionStorage.getItem("jwtToken")} />
+               return <ReviewerProfile  />
                }
                else{
                  if(sessionStorage.getItem("auth") && sessionStorage.getItem("type") == "l"){
-                return  <LawyerCases token={sessionStorage.getItem("jwtToken")} />
+                return  <LawyerProfile />
                  }
                  else{
                  return <SignIn/>

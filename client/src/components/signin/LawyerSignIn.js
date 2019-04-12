@@ -52,6 +52,7 @@ export class LawyerSignIn extends Component {
            lawyer: {
             email: '',
             password: '',
+            c: true
            },
         }
         this.handleInput = this.handleInput.bind(this);
@@ -71,7 +72,21 @@ export class LawyerSignIn extends Component {
     }).then(response => {
       response.json().then(data => {
         console.log('Successful' + data + data.auth)
-        this.props.callBack(data.token, data.auth, 'l',  data.id, data.ssn)
+        sessionStorage.setItem("jwtToken", data.token);
+        sessionStorage.setItem("auth", data.auth);
+        sessionStorage.setItem("type", 'l');
+        sessionStorage.setItem("id",  data.id);
+        sessionStorage.setItem("ssn", data.ssn);
+        if(data.auth){
+          document.location.href = "/profile"
+        }
+        else{
+          this.setState({
+            lawyer: {
+              c: false
+            }
+          }, () => console.log(this.state.lawyer.c));
+        }
       })
     })
   }
@@ -102,6 +117,9 @@ export class LawyerSignIn extends Component {
           <Typography component='h1' variant='h5'>
             Sign in
           </Typography>
+          <Typography component='body1' variant='body1'>
+          {this.state.lawyer.c? (""):("Wrong Email or Password")}
+          </Typography>
           <form className={classes.form}>
             <FormControl margin='normal' required fullWidth>
               {/* <InputLabel htmlFor="email">Email</InputLabel> */}
@@ -120,7 +138,7 @@ export class LawyerSignIn extends Component {
               type='submit'
               fullWidth
               variant='contained'
-              color='primary'
+              color={this.state.lawyer.c? ("primary"):("secondary")}
               className={classes.submit}
               onClick={this.handleRegister}
             >
