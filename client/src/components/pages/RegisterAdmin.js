@@ -62,7 +62,11 @@ class RegisterAdmin extends React.Component {
     e.preventDefault()
     let userData = this.state.admin
     console.log('abc')
+<<<<<<< HEAD
     fetch('http://localhost:3000/routes/api/admins/registerNo', {
+=======
+    fetch('http://localhost:3000/routes/api/admins/register', {
+>>>>>>> e9b960e1ba76d802bf8beb25384177ae1162c276
       method: 'POST',
       body: JSON.stringify(userData),
       headers: {
@@ -71,6 +75,7 @@ class RegisterAdmin extends React.Component {
       }
     }).then(response => {
       response.json().then(data => {
+<<<<<<< HEAD
         if(data.error){
           alert(data.error);
         }
@@ -78,6 +83,10 @@ class RegisterAdmin extends React.Component {
         console.log('Successful' + data)
        
         }
+=======
+        console.log('Successful' + data)
+        this.props.callBack(data.token, data.auth, 'a', data.data._id)
+>>>>>>> e9b960e1ba76d802bf8beb25384177ae1162c276
       })
     })
   }

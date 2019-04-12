@@ -74,6 +74,7 @@ class RegisterReviewer extends React.Component {
       }
     }).then(response => {
       response.json().then(data => {
+<<<<<<< HEAD
         if(data.error){
           alert(data.error);
         }
@@ -81,6 +82,10 @@ class RegisterReviewer extends React.Component {
         console.log('Successful' + data)
    
         }
+=======
+        console.log('Successful' + data)
+        this.props.callBack(data.token, data.auth, 'r', data.data._id)
+>>>>>>> e9b960e1ba76d802bf8beb25384177ae1162c276
       })
     })
   }

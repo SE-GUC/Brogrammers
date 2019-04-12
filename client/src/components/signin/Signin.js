@@ -73,7 +73,11 @@ export class SignIn extends Component {
         console.log('Successful' + data + data.auth)
         this.props.callBack(data.token, data.auth, 'i', data.id)
         if(data.auth){
+<<<<<<< HEAD
           document.location.href = "/investorprofile"
+=======
+          document.location.href = "/profile"
+>>>>>>> e9b960e1ba76d802bf8beb25384177ae1162c276
         }
         else{
           this.setState({

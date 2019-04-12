@@ -81,6 +81,7 @@ class Register extends React.Component {
       }
     }).then(response => {
       response.json().then(data => {
+<<<<<<< HEAD
         if(data.error){
           alert(data.error);
         }
@@ -89,6 +90,11 @@ class Register extends React.Component {
         this.props.callBack(data.token, data.auth, 'i', data.data._id)
         document.location.href = "/investors/MyRequests/all";
         }
+=======
+        console.log('Successful' + data + data.auth)
+        this.props.callBack(data.token, data.auth, 'i', data.data._id)
+        document.location.href = "/investors/MyRequests/all";
+>>>>>>> e9b960e1ba76d802bf8beb25384177ae1162c276
       })
     })
    
