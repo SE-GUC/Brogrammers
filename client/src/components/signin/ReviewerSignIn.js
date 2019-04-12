@@ -51,7 +51,8 @@ export class ReviewerSignIn extends Component {
     this.state = {
       reviewer: {
         email: '',
-        password: ''
+        password: '',
+        c: true
       }
     }
     this.handleInput = this.handleInput.bind(this)
@@ -73,6 +74,13 @@ export class ReviewerSignIn extends Component {
         this.props.callBack(data.token, data.auth, 'r',  data.id)
         if(data.auth){
           document.location.href = "/"
+        }
+        else{
+          this.setState({
+            reviewer: {
+              c: false
+            }
+          }, () => console.log(this.state.reviewer.c));
         }
       })
     })
@@ -105,6 +113,9 @@ export class ReviewerSignIn extends Component {
           <Typography component='h1' variant='h5'>
             Sign in
           </Typography>
+          <Typography component='body1' variant='body1'>
+          {this.state.reviewer.c? (""):("Wrong Email or Password")}
+          </Typography>
           <form className={classes.form}>
             <FormControl margin='normal' required fullWidth>
               {/* <InputLabel htmlFor="email">Email</InputLabel> */}
@@ -123,7 +134,7 @@ export class ReviewerSignIn extends Component {
               type='submit'
               fullWidth
               variant='contained'
-              color='primary'
+              color={this.state.reviewer.c? ("primary"):("secondary")}
               className={classes.submit}
               onClick={this.handleRegister}
             >

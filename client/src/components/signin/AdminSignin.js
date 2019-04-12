@@ -12,8 +12,6 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Required from '../layout/inputs/Required'
-import Snackbar from "../layout/snackbar/Snackbar"
-
 
 const styles = theme => ({
   main: {
@@ -54,7 +52,7 @@ export class AdminSignIn extends Component {
       admin: {
         email: '',
         password: '',
-        c: false
+        c: true
       }
     }
     this.handleInput = this.handleInput.bind(this)
@@ -77,10 +75,18 @@ export class AdminSignIn extends Component {
         if(data.auth){
           document.location.href = "/"
         }
+        else{
+          this.setState({
+            admin: {
+              c: false
+            }
+          }, () => console.log(this.state.admin.c));
+        }
       })
     })
   }
 
+ 
   handleInput (e) {
     let value = e.target.value
     let name = e.target.name
@@ -107,6 +113,9 @@ export class AdminSignIn extends Component {
           <Typography component='h1' variant='h5'>
             Sign in
           </Typography>
+          <Typography component='body1' variant='body1'>
+          {this.state.admin.c? (""):("Wrong Email or Password")}
+          </Typography>
           <form className={classes.form}>
             <FormControl margin='normal' required fullWidth>
               {/* <InputLabel htmlFor="email">Email</InputLabel> */}
@@ -119,13 +128,13 @@ export class AdminSignIn extends Component {
               <Required name='password' field={'Password'} type='password' callBack={this.handleInput} />
             </FormControl>
             <FormControlLabel
-              control={<label />}
+              control={<label  />}
             />
             <Button
               type='submit'
               fullWidth
               variant='contained'
-              color='primary'
+              color={this.state.admin.c? ("primary"):("secondary")}
               className={classes.submit}
               onClick={this.handleRegister}
             >
