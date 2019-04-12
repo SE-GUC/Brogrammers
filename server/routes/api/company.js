@@ -35,7 +35,7 @@ router.post('/create', async (req, res) => {
   try {
     
     const newCompany = await Company.create({"legalCompanyForm":"SLC","year":14})
-    res.json({ msg: 'Company was created successfully', data: newCompany })
+    res.json({ msg: 'Company was created successfully!!!', data: newCompany })
   } catch (error) {
     // We will be handling the error later
     console.log(error)
