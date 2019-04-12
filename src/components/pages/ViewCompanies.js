@@ -1,6 +1,19 @@
 import React, { Component } from "react";
-import { withStyles } from "@material-ui/core";
+import { withStyles, List, Paper } from "@material-ui/core";
 import InvestorCard from "../cards/InvestorCard";
+import GridList from "@material-ui/core/GridList";
+
+const styles = {
+  list: {
+    width: "auto",
+    height: "auto",
+    backgroundColor: "#eeeeee",
+    maxWidth: 900
+  },
+  sep: {
+    marginLeft: 400
+  }
+};
 
 class ViewCompanies extends Component {
   constructor(props) {
@@ -12,7 +25,7 @@ class ViewCompanies extends Component {
 
   componentDidMount() {
     fetch(`http://localhost:3000/api/investors/View/ViewCompanies`, {
-      method: 'GET',
+      method: "GET",
       headers: {
         "x-access-token": this.props.token
       }
@@ -24,15 +37,19 @@ class ViewCompanies extends Component {
   }
 
   render() {
+    const { classes } = this.props;
     return (
-        <ul>
-            {
-                this.state.investorCompanies.map((item, i) => (
-                    <InvestorCard key= {i} company={item}/>
-                ))
-            }
-        </ul>
-    )
+      <div className={classes.holder}>
+        <h1>Your Companies</h1>
+        <div className={classes.sep}>
+          <GridList className={classes.list}>
+            {this.state.investorCompanies.map((item, i) => (
+              <InvestorCard key={i} company={item} />
+            ))}
+          </GridList>
+        </div>
+      </div>
+    );
   }
 }
-export default (ViewCompanies)
+export default withStyles(styles)(ViewCompanies);

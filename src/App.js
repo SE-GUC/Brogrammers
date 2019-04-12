@@ -132,12 +132,6 @@ class App extends Component {
           <Route
             exact
             path="/editprofile/investor"
-            render={props => (
-              <EditProfileInvestor
-                token={this.state.token}
-                token={sessionStorage.getItem("jwtToken")}
-              />
-            )}
             component={() =>
               sessionStorage.getItem("auth") &&
               sessionStorage.getItem("type") == "i" ? (
@@ -275,7 +269,7 @@ class App extends Component {
             }
           />
           <div>
-            <Route exact path="/Investorlogin" render={props => <SignIn />} />{" "}
+            <Route exact path="/Investorlogin" render={props => <SignIn callBack={this.setToken} />} />{" "}
             <Route
               exact
               path="/Lawyerlogin"
@@ -296,7 +290,7 @@ class App extends Component {
               path="/LawyerCases"
               render={() => sessionStorage.getItem("type") == "l"?(
                 <LawyerCases token={sessionStorage.getItem("jwtToken")} />
-              ):(<SignIn/>)
+              ):(<SignIn />)
             }
             />
             {/* Waiting for Login token  */}{" "}

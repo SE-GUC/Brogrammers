@@ -14,7 +14,8 @@ const DialogTitle = withStyles(theme => ({
   root: {
     borderBottom: `1px solid ${theme.palette.divider}`,
     margin: 0,
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing.unit * 2,
+    backgroundColor: '#546e7a'
   },
   closeButton: {
     position: "absolute",
@@ -43,7 +44,8 @@ const DialogTitle = withStyles(theme => ({
 const DialogContent = withStyles(theme => ({
   root: {
     margin: 0,
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing.unit * 2,
+    width: 400
   }
 }))(MuiDialogContent);
 
@@ -55,7 +57,7 @@ const DialogActions = withStyles(theme => ({
   }
 }))(MuiDialogActions);
 
-class CustomDialogInvestor extends React.Component {
+class CustomizedDialogDemo extends React.Component {
   state = {
     open: false
   };
@@ -71,10 +73,13 @@ class CustomDialogInvestor extends React.Component {
   };
 
   handleInput = props => {
-    return Object.keys(props.data).map(key => [key, props.data[key]][0]);
+    return Object.keys(props.company).map(key => [key, props.company[key]][0]);
   };
   handleInputVal = props => {
-    return Object.keys(props.data).map(key => [key, props.data[key]][1]);
+    return Object.keys(props.company).map(key => [key, props.company[key]][1]);
+  };
+  handleClose = () => {
+    this.setState({ open: false });
   };
 
   render() {
@@ -82,10 +87,10 @@ class CustomDialogInvestor extends React.Component {
       <div>
         <Button
           variant="outlined"
-          color="secondary"
+          color="primary"
           onClick={this.handleClickOpen}
         >
-          Open dialog
+          View Details
         </Button>
         <Dialog
           onClose={this.handleClose}
@@ -93,18 +98,19 @@ class CustomDialogInvestor extends React.Component {
           open={this.state.open}
         >
           <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
-            Modal title
+            {this.props.company.nameInEnglish}
           </DialogTitle>
           <DialogContent>
             {this.handleInput(this.props).map((input, i) =>
-              input !== "managers" ? (
+              (input !== "managers" && input !== '_id') ? (
                 <Grid
+                  key={i}
                   style={{ marginTop: 12 }}
                   container
                   direction="column"
                   alignItems="left"
                 >
-                  <h3>{input} :</h3> {this.handleInputVal(this.props)[i]}
+                  <h3>- {input}:</h3> {this.handleInputVal(this.props)[i]}
                   <br />
                 </Grid>
               ) : (
@@ -114,7 +120,7 @@ class CustomDialogInvestor extends React.Component {
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
-              Save changes
+              Close
             </Button>
           </DialogActions>
         </Dialog>
@@ -123,4 +129,4 @@ class CustomDialogInvestor extends React.Component {
   }
 }
 
-export default CustomDialogInvestor;
+export default CustomizedDialogDemo;
