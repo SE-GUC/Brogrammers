@@ -27,12 +27,12 @@ class TitlebarGridList2 extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
+      companyId: null
     }
   }
   
     render() { 
       const { classes } = this.props;
-      console.log(this.props.id)
         return (
             <div className={classes.root}>
              <GridList cellHeight={250} className={classes.gridList}>
@@ -40,7 +40,8 @@ class TitlebarGridList2 extends React.Component {
                 </GridListTile>
                 {this.props.data.map((tile,i) => (
                   <GridListTile style={{width: 300}}>
-                    
+                    {this.state.companyId = tile._id}
+                    {console.log(this.state.companyId)}
                    <CaseCard title={tile.nameInEnglish} comment={tile.reviewerComment} lawyer={tile.lawyer} key={i} id={tile._id} token= {this.props.token} subheader={tile.status} nameAr={tile.nameInArabic} data={tile} />
                   </GridListTile>
                 ))}

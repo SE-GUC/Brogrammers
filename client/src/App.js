@@ -50,7 +50,7 @@ class App extends Component {
     }
   }
 
-  setToken(t, a, type, id, ssn) {
+  setToken(t, a, type, id, ssn, cid) {
     sessionStorage.setItem('jwtToken', t)
     sessionStorage.setItem('auth', a)
     sessionStorage.setItem('type', type)
