@@ -1,94 +1,78 @@
 import React, { Component } from 'react'
-import NotRequired from '../layout/inputs/NotRequired'
-import { withStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
-import { Icon, Button } from '@material-ui/core'
-import SaveChangesButton from '../layout/Dialogs/SaveChangesButton'
+import ReviewerCommentCard from '../cards/ReviewerCommentCard'
 
-const styles = theme => ({
-  main: {
-    width: 'auto',
-    display: 'block',
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
-    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: 700,
-      marginLeft: 'auto',
-      marginRight: 'auto'
-    }
-  },
-  paper: {
-    marginTop: theme.spacing.unit * 8,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
-      .spacing.unit * 3}px`
-  },
-  avatar: {
-    margin: theme.spacing.unit,
-    backgroundColor: theme.palette.primary.main
-  }
-})
 class ReviewerComment extends Component {
   constructor(props){
+ 
     super(props);
     this.state={
-      company:{
-        reviewercoment:null,
-        companyid:null
+      companies:[],
+       isLoaded:false
+      }
+   
     }
-  }
-    this.handleSubmission = this.handleSubmission.bind(this)
-    this.onChange = this.onChange.bind(this)
-  }
-  handleSubmission (event) {
-    event.preventDefault()
-    let updatedData = this.state
-    fetch(`http://localhost:3000/api/reviewer/addcomment/${this.props.id}/${this.props.companyid}`,
-      {
-        method: 'PUT',
-        body: JSON.stringify(updatedData),
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': this.props.token
-        }
-      }).then(response => {
-      console.log('Your comment has been posted successfully')
-    })
-  }
-  onChange (e) {
-    let value = e.target.value
-    let name = e.target.name
-    this.setState(
-      prevState => {
-        return {
-          company: {
-            ...prevState.company,
-            [name]: value
-          }
-        }
-      },
-      () => console.log(value)
-    )
-  }
-  render () {
-    const { classes } = this.props
-    return (
-      <main className={classes.main}>
-        <Paper className={classes.paper}>
-          <Icon className={classes.icon} color='primary'>
-            add_circle
-          </Icon>
-          <h2>Add Your Comment</h2>
-          <NotRequired field={'ReviewerComment'} type='text' callBack={this.onChange} name={'reviewercomment'} />
-          <NotRequired field={'CompanyId'} type='text' callBack={this.onChange} name={'companyid'} />
 
-          <SaveChangesButton onClick={this.handleSubmission} />
-        </Paper>
-      </main>
-    )
+    componentDidMount () {
+      fetch(`http://localhost:3000/api/reviewer/getRejectedTasks/Reviewer`, {
+        headers: new Headers({
+          'x-access-token': this.props.token
+        }) })
+        .then(response => response.json())
+        .then(json => {
+          this.setState({ isLoaded: true,
+            companies: json.data })
+        })
+    }
+  
+  render () {
+    var { isLoadied, companies } = this.state
+    if (!isLoadied) { return <div> Loading ...</div> } else {
+      return (
+
+        <div>
+          <ul>
+            {this.state.companies.map((element, i) => (
+              <ReviewerCommentCard key={i} title={'helo'} info={element.investorName} 
+              status={element.status}
+              compid={element._id}  
+              nameInEnglish={element.nameInEnglish}
+              token={this.props.token}
+              addressHQ={element.addressHQ}
+                Status={element.status}
+                addressHQ={element.addressHQ}
+                regulationLaw={element.regulationLaw}
+                legalCompanyForm={element.legalCompanyForm}
+                nameInArabic={element.nameInArabic}
+                governerateHQ={element.governerateHQ}
+                cityHQ={element.cityHQ}
+  
+                telephoneHQ={element.telephoneHQ}
+                faxHQ={element.faxHQ}
+                capitalCurrency={element.capitalCurrency}
+                capital={element.capital}
+                investorName={element.investorName}
+                investorSex={element.investorSex}
+                investorNationaty={element.investorNationaty}
+                investorIdentificationType={element.investorIdentificationType}
+                investorIdentificationNumber={element.investorIdentificationNumber}
+                investorBD={element.investorBD}
+                investorAddress={element.investorAddress}
+                investorTelephone={element.investorTelephone}
+                investorFax={element.investorFax}
+                investorEmail={element.investorEmail}
+              
+              
+              
+              
+              />
+            ))}
+
+          </ul>
+        </div>
+
+      )
   }
 }
+}
 
-export default withStyles(styles)(ReviewerComment)
+export default ReviewerComment

@@ -13,6 +13,7 @@ import { Icon, Button } from '@material-ui/core'
 import BlueButton from '../layout/Buttons/BlueButton'
 import SaveChangesButton from '../layout/Dialogs/SaveChangesButton'
 import Cancel from '../layout/Dialogs/Cancel'
+import {ReactComponent as UpdateIcon} from '../Icons/UpdateIcon.svg'
 
 const styles = theme => ({
   main: {
@@ -71,9 +72,7 @@ class EditProfileInvestor extends Component {
     return (
       <main className={classes.main}>
         <Paper className={classes.paper}>
-          <Icon className={classes.icon} color='primary'>
-            add_circle
-          </Icon>
+        <UpdateIcon />
           <h2>Edit Your Profile</h2>
           <NotRequired name={"name"} field={"Full Name"} type="text" callBack={this.onChange} />
           <NotRequired name={"mail"} field={"Email"} type="email" callBack={this.onChange} />
@@ -132,7 +131,7 @@ class EditProfileInvestor extends Component {
     this.setState(
       prevState => {
         return {
-          admin: {
+          investor: {
             ...prevState.investor,
             [name]: value
           }

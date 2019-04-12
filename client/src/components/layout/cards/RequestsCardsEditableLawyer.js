@@ -6,7 +6,9 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardHeader from "@material-ui/core/CardHeader";
 import Avatar from "@material-ui/core/Avatar";
-import SimpleMenu from "../menu/SimpleMenu";
+
+import SimpleMenu from "../menu/LawyerEditSimpleMenu";
+
 import blue from "@material-ui/core/colors/blue";
 import red from "@material-ui/core/colors/red";
 import green from "@material-ui/core/colors/green";
@@ -142,6 +144,7 @@ class SimpleCard2 extends React.Component {
         <CardMedia className={classes.cover}  >
           <Typography className={classes.comment}>
             {" "}
+
             {this.props.lawyer !== undefined
               ? '"' + this.props.comment + '"'
               :<h1 style={{textAlign:'center', fontSize:"20px"}}> No Comments yet</h1>}
@@ -149,6 +152,8 @@ class SimpleCard2 extends React.Component {
           <Typography className={classes.lawyer}>
             {this.props.lawyer !== undefined
               ? "- " + this.props.lawyer
+
+            
               : console.log}
           </Typography>
         </CardMedia>

@@ -1,36 +1,39 @@
-const express = require('express')
-const router = express.Router()
-const Admin = require('../../models/Admin.js')
-var config = require('../../config/jwt')
-const validator = require('../../validations/adminValidations')
-const bcrypt = require('bcryptjs')
-const Company = require('../../models/Company')
-var jwt = require('jsonwebtoken')
-
+const express = require("express");
+const mongoose=require('mongoose')
+const router = express.Router();
+const Admin = require("../../models/Admin.js");
+var config = require("../../config/jwt");
+const validator = require("../../validations/adminValidations");
+const bcrypt = require("bcryptjs");
+const Company = require("../../models/Company");
+const FormSchema = require("../../models/FormSchema");
+var jwt = require("jsonwebtoken");
+const formidable = require("formidable");
+var generator = require('mongoose-gen');
 // Logout Sprin2
-router.get('/logout', function (req, res) {
-  res.status(200).send({ auth: false, token: null })
-})
+router.get("/logout", function(req, res) {
+  res.status(200).send({ auth: false, token: null });
+});
 //changed by manga, IF YOU'RE NOT GOING TO CHANGE THIS ADMIN FILE PLEASE TAKE THIS FILE
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    var token = req.headers['x-access-token']
+    var token = req.headers["x-access-token"];
     if (!token) {
       return res
         .status(401)
-        .send({ auth: false, message: 'Please login first.' })
+        .send({ auth: false, message: "Please login first." });
     }
-    jwt.verify(token, config.secret, async function (err, decoded) {
+    jwt.verify(token, config.secret, async function(err, decoded) {
       if (err) {
         return res
           .status(500)
-          .send({ auth: false, message: 'Failed to authenticate token.' })
+          .send({ auth: false, message: "Failed to authenticate token." });
       }
-    })
-    const info = []
-    const arrayOfAdmins = await Admin.find()
+    });
+    const info = [];
+    const arrayOfAdmins = await Admin.find();
     for (var i = 0; i < arrayOfAdmins.length; i++) {
-      const admin = arrayOfAdmins[i]
+      const admin = arrayOfAdmins[i];
       var curr = {
         name: admin.name,
         id: admin.id,
@@ -39,32 +42,61 @@ router.get('/', async (req, res) => {
         joinDate: admin.joinDate,
         email: admin.email,
         phone: admin.phone
-      }
-      info.push(curr)
+      };
+      info.push(curr);
     }
-    res.send({data: info});
+    res.send({ data: info });
   } catch (error) {
-    res.status(404).send({ msg: "Admin doesn't exist" })
+    res.status(404).send({ msg: "Admin doesn't exist" });
   }
-})
+});
 
-router.get('/:id', async (req, res) => {
+//upload json files to be converted to a form
+router.post("/submit-form", async (req, res) => {
+  const fs = require("fs");
   try {
-    const adminId = req.params.id
-    var token = req.headers['x-access-token']
+    var form = new formidable.IncomingForm()
+      .parse(req)
+      .on("fileBegin", (name, file) => {
+        form.on("fileBegin", (name, file) => {
+          file.path ='forms/'+ file.name;
+        });
+      })
+      .on("file",(name, file) => {
+        let rawdata = fs.readFileSync(file.path);
+        let uploadedSchema = JSON.parse(rawdata);
+        let formName=file.name.substring(0,file.name.length-5);
+        console.log("Uploaded file", name);
+        var newform=FormSchema.create({legalCompanyForm:formName,formSchema:uploadedSchema});
+       
+        var newCompanySchema = new mongoose.Schema(generator.convert(uploadedSchema.properties));
+        console.log(formName)
+        var a = Company.discriminator(formName, newCompanySchema)
+        console.log('successfully created',newCompanySchema)
+        res.json({ msg: "form uploaded successfully",data:newform });
+      });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+router.get("/:id", async (req, res) => {
+  try {
+    const adminId = req.params.id;
+    var token = req.headers["x-access-token"];
     if (!token) {
       return res
         .status(401)
-        .send({ auth: false, message: 'Please login first.' })
+        .send({ auth: false, message: "Please login first." });
     }
-    jwt.verify(token, config.secret, async function (err, decoded) {
+    jwt.verify(token, config.secret, async function(err, decoded) {
       if (err) {
         return res
           .status(500)
-          .send({ auth: false, message: 'Failed to authenticate token.' })
+          .send({ auth: false, message: "Failed to authenticate token." });
       }
-    })
-    const admin = await Admin.findById(adminId)
+    });
+    const admin = await Admin.findById(adminId);
     var curr = {
       name: admin.name,
       id: admin.id,
@@ -73,72 +105,71 @@ router.get('/:id', async (req, res) => {
       joinDate: admin.joinDate,
       email: admin.email,
       phone: admin.phone
-    }
-    res.send(curr)
+    };
+    res.send(curr);
   } catch (error) {
-    res.status(404).send({ msg: "Admin doesn't exist" })
+    res.status(404).send({ msg: "Admin doesn't exist" });
   }
-})
+});
 
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
-    var stat = 0
-    var token = req.headers['x-access-token']
+    var stat = 0;
+    var token = req.headers["x-access-token"];
     if (!token) {
       return res
         .status(401)
-        .send({ auth: false, message: 'Please login first' })
+        .send({ auth: false, message: "Please login first" });
     }
-    jwt.verify(token, config.secret, async function (err, decoded) {
+    jwt.verify(token, config.secret, async function(err, decoded) {
       if (err) {
         return res
           .status(500)
-          .send({ auth: false, message: 'Failed to authenticate token.' })
+          .send({ auth: false, message: "Failed to authenticate token." });
       }
-      stat = decoded.id
-    })
-    const isValidated = validator.updateValidation(req.body)
+      stat = decoded.id;
+    });
+    const isValidated = validator.updateValidation(req.body);
     if (isValidated.error) {
       return res
         .status(400)
-        .send({ error: isValidated.error.details[0].message })
+        .send({ error: isValidated.error.details[0].message });
     }
-    const admin = await Admin.findById(stat)
-    if(req.params.id === stat)
-    {
+    const admin = await Admin.findById(stat);
+    if (req.params.id === stat) {
       if (admin) {
-        await Admin.findByIdAndUpdate(stat, req.body)
-    }
-      res.json({ msg: 'Information updated successfully' })
+        await Admin.findByIdAndUpdate(stat, req.body);
+      }
+      res.json({ msg: "Information updated successfully" });
     } else {
-      return res.json({ msg: "You don't have the authorization" })
+      return res.json({ msg: "You don't have the authorization" });
     }
   } catch (error) {
-    res.status(404).send({ msg: "Admin doesn't exist" })
+    res.status(404).send({ msg: "Admin doesn't exist" });
   }
-})
+});
 
 // Register admin by another admin
-router.post('/register', async (req, res) => {
-  var stat = 0
+router.post("/register", async (req, res) => {
+  var stat = 0;
   try {
-    var token = req.headers['x-access-token']
+    var token = req.headers["x-access-token"];
     if (!token) {
       return res
         .status(401)
-        .send({ auth: false, message: 'Please login first.' })
+        .send({ auth: false, message: "Please login first." });
     }
-    jwt.verify(token, config.secret, async function (err, decoded) {
+    jwt.verify(token, config.secret, async function(err, decoded) {
       if (err) {
         return res
           .status(500)
-          .send({ auth: false, message: 'Failed to authenticate token.' })
+          .send({ auth: false, message: "Failed to authenticate token." });
       }
-      stat = decoded.id
-    })
-    const admin2 = await Admin.findById(stat)
+      stat = decoded.id;
+    });
+    const admin2 = await Admin.findById(stat);
     if (!admin2) {
-      return res.status(400).json({ error: 'You are not an admin' })
+      return res.status(400).json({ error: "You are not an admin" });
     }
     const {
       name,
@@ -148,17 +179,17 @@ router.post('/register', async (req, res) => {
       gender,
       birthDate,
       joinDate
-    } = req.body
-    const isValidated = validator.createValidation(req.body)
-    const admin = await Admin.findOne({ email })
-    if (admin) return res.status(400).json({ error: 'Email already exists' })
+    } = req.body;
+    const isValidated = validator.createValidation(req.body);
+    const admin = await Admin.findOne({ email });
+    if (admin) return res.status(400).json({ error: "Email already exists" });
     if (isValidated.error) {
       return res
         .status(400)
-        .send({ error: isValidated.error.details[0].message })
+        .send({ error: isValidated.error.details[0].message });
     }
-    const salt = bcrypt.genSaltSync(10)
-    const hashedPassword = bcrypt.hashSync(password, salt)
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(password, salt);
     const newAdmin = new Admin({
       name,
       email,
@@ -167,143 +198,139 @@ router.post('/register', async (req, res) => {
       gender,
       birthDate,
       joinDate
-    })
-    var newAd = await Admin.create(newAdmin)
+    });
+    var newAd = await Admin.create(newAdmin);
     token = jwt.sign({ id: newAd._id }, config.secret, {
       expiresIn: 86400 // expires in 24 hours
-    })
+    });
     res.status(200).send({
       auth: true,
       token: token,
-      msg: 'Admin was created successfully',
+      msg: "Admin was created successfully",
       data: newAdmin
-    })
-    res.json({ msg: 'Admin was created successfully', data: newAdmin })
-    res.json({ msg: 'Admin created successfully', data: newAdmin })
+    });
+    res.json({ msg: "Admin was created successfully", data: newAdmin });
+    res.json({ msg: "Admin created successfully", data: newAdmin });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-})
+});
 
 // Sprint Two
-router.post('/login', function (req, res) {
-  Admin.findOne({ email: req.body.email }, function (err, user) {
+router.post("/login", function(req, res) {
+  Admin.findOne({ email: req.body.email }, function(err, user) {
     if (err) {
-      return res
-        .status(401)
-        .send({ auth: false, message: 'Server error.' })
+      return res.status(401).send({ auth: false, message: "Server error." });
     }
     if (!user) {
-      return res
-        .status(401)
-        .send({ auth: false, message: 'No user found.' })
+      return res.status(401).send({ auth: false, message: "No user found." });
     }
-    const loginPassword = req.body.password
-    const userPassword = user.password
-    const match = bcrypt.compareSync(loginPassword, userPassword)
-    if (!match) return res.status(401).send({ auth: false, token: null })
+    const loginPassword = req.body.password;
+    const userPassword = user.password;
+    const match = bcrypt.compareSync(loginPassword, userPassword);
+    if (!match) return res.status(401).send({ auth: false, token: null });
     var token = jwt.sign({ id: user._id }, config.secret, {
       expiresIn: 86400 // expires in 24 hours
-    })
-    res.status(200).send({ auth: true, token: token, id: user._id  })
-  })
-})
+    });
+    res.status(200).send({ auth: true, token: token, id: user._id });
+  });
+});
 
-router.delete('/', async (req, res) => {
+router.delete("/", async (req, res) => {
   try {
-    var stat = 0
-    var token = req.headers['x-access-token']
+    var stat = 0;
+    var token = req.headers["x-access-token"];
     if (!token) {
       return res
         .status(401)
-        .send({ auth: false, message: 'Please login first' })
+        .send({ auth: false, message: "Please login first" });
     }
-    jwt.verify(token, config.secret, async function (err, decoded) {
+    jwt.verify(token, config.secret, async function(err, decoded) {
       if (err) {
         return res
           .status(500)
-          .send({ auth: false, message: 'Failed to authenticate token.' })
+          .send({ auth: false, message: "Failed to authenticate token." });
       }
-      stat = decoded.id
-    })
-    const currUser = await Admin.findById(stat)
+      stat = decoded.id;
+    });
+    const currUser = await Admin.findById(stat);
     if (currUser) {
-      await Admin.findByIdAndRemove(stat)
-      res.json({ msg: 'Admin deleted successfully' })
+      await Admin.findByIdAndRemove(stat);
+      res.json({ msg: "Admin deleted successfully" });
     } else {
-      return res.json({ msg: "You don't have the authorization" })
+      return res.json({ msg: "You don't have the authorization" });
     }
   } catch (error) {
-    res.status(404).send({ msg: "Admin doesn't exist" })
+    res.status(404).send({ msg: "Admin doesn't exist" });
   }
-})
+});
 
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
-    var stat = 0
-    var token = req.headers['x-access-token']
+    var stat = 0;
+    var token = req.headers["x-access-token"];
     if (!token) {
       return res
         .status(401)
-        .send({ auth: false, message: 'Please login first' })
+        .send({ auth: false, message: "Please login first" });
     }
-    jwt.verify(token, config.secret, async function (err, decoded) {
+    jwt.verify(token, config.secret, async function(err, decoded) {
       if (err) {
         return res
           .status(500)
-          .send({ auth: false, message: 'Failed to authenticate token.' })
+          .send({ auth: false, message: "Failed to authenticate token." });
       }
-      stat = decoded.id
-    })
-    const id = req.params.id
-    const currUser = await Admin.findById(stat)
-    const delUser = await Admin.findById(id)
+      stat = decoded.id;
+    });
+    const id = req.params.id;
+    const currUser = await Admin.findById(stat);
+    const delUser = await Admin.findById(id);
     if (currUser) {
       if (delUser) {
-        await Admin.findByIdAndRemove(id)
-        res.json({ msg: 'Admin deleted successfully' })
+        await Admin.findByIdAndRemove(id);
+        res.json({ msg: "Admin deleted successfully" });
       } else {
-        return res.json({ msg: 'Admin does not exist' })
+        return res.json({ msg: "Admin does not exist" });
       }
     } else {
-      return res.json({ msg: "You don't have the authorization" })
+      return res.json({ msg: "You don't have the authorization" });
     }
   } catch (error) {
-    res.status(404).send({ msg: "Admin doesn't exist" })
+    res.status(404).send({ msg: "Admin doesn't exist" });
   }
-})
+});
 // alaa
-router.get('/getall/cases', async (req, res) => {
-  var stat = 0
+router.get("/getall/cases", async (req, res) => {
+  var stat = 0;
   try {
-    var token = req.headers['x-access-token']
+    var token = req.headers["x-access-token"];
     if (!token) {
       return res
         .status(401)
-        .send({ auth: false, message: 'Please login first.' })
+        .send({ auth: false, message: "Please login first." });
     }
-    jwt.verify(token, config.secret, async function (err, decoded) {
+    jwt.verify(token, config.secret, async function(err, decoded) {
       if (err) {
         return res
           .status(500)
-          .send({ auth: false, message: 'Failed to authenticate token.' })
+          .send({ auth: false, message: "Failed to authenticate token." });
       }
-      stat = decoded.id
-    })
-    const admin = await Admin.findById(stat)
+      stat = decoded.id;
+    });
+    const admin = await Admin.findById(stat);
     if (!admin) {
-      return res.status(400).send({ error: 'You are not an admin' })
+      return res.status(400).send({ error: "You are not an admin" });
     }
-    const company = await Company.find()
-    console.log(company)
-    res.json({ data: company })
+    const company = await Company.find();
+    console.log(company);
+    res.json({ data: company });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-})
+});
 
 // Register admin by another admin
-router.post('/registerNo', async (req, res) => {
+router.post("/registerNo", async (req, res) => {
   const {
     name,
     email,
@@ -312,17 +339,17 @@ router.post('/registerNo', async (req, res) => {
     gender,
     birthDate,
     joinDate
-  } = req.body
-  const isValidated = validator.createValidation(req.body)
-  const admin = await Admin.findOne({ email })
-  if (admin) return res.status(400).json({ error: 'Email already exists' })
+  } = req.body;
+  const isValidated = validator.createValidation(req.body);
+  const admin = await Admin.findOne({ email });
+  if (admin) return res.status(400).json({ error: "Email already exists" });
   if (isValidated.error) {
     return res
       .status(400)
-      .send({ error: isValidated.error.details[0].message })
+      .send({ error: isValidated.error.details[0].message });
   }
-  const salt = bcrypt.genSaltSync(10)
-  const hashedPassword = bcrypt.hashSync(password, salt)
+  const salt = bcrypt.genSaltSync(10);
+  const hashedPassword = bcrypt.hashSync(password, salt);
   const newAdmin = new Admin({
     name,
     email,
@@ -331,52 +358,52 @@ router.post('/registerNo', async (req, res) => {
     gender,
     birthDate,
     joinDate
-  })
-  var newAd = await Admin.create(newAdmin)
+  });
+  var newAd = await Admin.create(newAdmin);
   token = jwt.sign({ id: newAd._id }, config.secret, {
     expiresIn: 86400 // expires in 24 hours
-  })
+  });
   res.status(200).send({
     auth: true,
     token: token,
-    msg: 'Admin was created successfully',
+    msg: "Admin was created successfully",
     data: newAdmin
-  })
-  res.json({ msg: 'Admin was created successfully', data: newAdmin })
-  res.json({ msg: 'Admin created successfully', data: newAdmin })
-})
+  });
+  res.json({ msg: "Admin was created successfully", data: newAdmin });
+  res.json({ msg: "Admin created successfully", data: newAdmin });
+});
 //manga's shit
-router.put('/', async (req, res) => {
+router.put("/", async (req, res) => {
   try {
-    var stat = 0
-    var token = req.headers['x-access-token']
+    var stat = 0;
+    var token = req.headers["x-access-token"];
     if (!token) {
       return res
         .status(401)
-        .send({ auth: false, message: 'Please login first' })
+        .send({ auth: false, message: "Please login first" });
     }
-    jwt.verify(token, config.secret, async function (err, decoded) {
+    jwt.verify(token, config.secret, async function(err, decoded) {
       if (err) {
         return res
           .status(500)
-          .send({ auth: false, message: 'Failed to authenticate token.' })
+          .send({ auth: false, message: "Failed to authenticate token." });
       }
-      stat = decoded.id
-    })
-    const isValidated = validator.updateValidation(req.body)
+      stat = decoded.id;
+    });
+    const isValidated = validator.updateValidation(req.body);
     if (isValidated.error) {
       return res
         .status(400)
-        .send({ error: isValidated.error.details[0].message })
+        .send({ error: isValidated.error.details[0].message });
     }
-    const admin = await Admin.findById(stat)
+    const admin = await Admin.findById(stat);
     if (admin) {
-      await Admin.findByIdAndUpdate(stat, req.body)
-      res.json({ msg: 'Information updated successfully' })
+      await Admin.findByIdAndUpdate(stat, req.body);
+      res.json({ msg: "Information updated successfully" });
     }
   } catch (error) {
-    res.status(404).send({ msg: "Admin doesn't exist" })
+    res.status(404).send({ msg: "Admin doesn't exist" });
   }
-})
+});
 
-module.exports = router
+module.exports = router;

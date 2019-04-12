@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper'
 import { Icon, Button } from '@material-ui/core'
 import SaveChangesButton from '../layout/Dialogs/SaveChangesButton'
 import { blueGrey, blue } from '@material-ui/core/colors'
+import {ReactComponent as UpdateIcon} from '../Icons/UpdateIcon.svg'
 
 const styles = theme => ({
   main: {
@@ -52,9 +53,7 @@ class EditProfileAdmin extends Component {
     return (
       <main className={classes.main}>
         <Paper className={classes.paper}>
-          <Icon className={classes.icon} color='primary'>
-            add_circle
-          </Icon>
+        <UpdateIcon/>
           <h2>Edit Your Profile</h2>
           <NotRequired
             name={'email'}
