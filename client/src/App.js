@@ -34,6 +34,7 @@ import ViewLawyerEditableCases from "./components/pages/ViewLawyerEditableCases"
 import AdminProfile from "./components/pages/AdminProfile";
 import LawyerProfile from './components/pages/LawyerProfile'
 import ReviewerProfile from './components/pages/ReviewerProfile'
+import InvestorProftile from './components/pages/InvestorProfile'
 
 
 class App extends Component {
@@ -83,7 +84,8 @@ handletoken=()=>{
                <Register callBack={this.setToken}/>
             )} />
 
-
+    <Route exact path="/admin/register-lawyer" component={()=>sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='a'? <RegisterLawyer callBack={this.setToken} token={sessionStorage.getItem('jwtToken')}/> : <LawyerSignIn/>} />
+    <Route exact path="/admin/register-reviewer" component={()=>sessionStorage.getItem('auth')&&sessionStorage.getItem('type')=='a'?<RegisterReviewer callBack={this.setToken} token={sessionStorage.getItem('jwtToken')}/> : <ReviewerSignIn/>} />
     <Route exact path="/admin/register-admin" render={props => (<RegisterAdmin callBack={this.setToken}/>)} />
          
           <Route
@@ -319,7 +321,7 @@ handletoken=()=>{
                   token={sessionStorage.getItem("jwtToken")}
                 />
               ) : (
-                <SignIn />
+                <LawyerSignIn callBack={this.setToken} />
               )
             }
           />
@@ -349,27 +351,20 @@ handletoken=()=>{
             }
             />
          
-            
-            
-            {" "}
-          </div>{" "}
-          <Route exact path="/profile" component={() =>{
+         <Route exact path="/profile" component={() =>{
            if(sessionStorage.getItem("auth") && sessionStorage.getItem("type") == "a") {
-                return <AdminProfile  callBack={this.setToken} 
-                />
+                return <AdminProfile/>
            }else{
              if(sessionStorage.getItem("auth") && sessionStorage.getItem("type") == "i"){
-             return (<InvestorRequests
-              id={sessionStorage.getItem("id")}
-              token={sessionStorage.getItem("jwtToken")}
+             return (<InvestorProfile
             />)
              } else{
                if(sessionStorage.getItem("auth") && sessionStorage.getItem("type") == "r"){
-               return <ReviewerCases token={sessionStorage.getItem("jwtToken")} />
+               return <ReviewerProfile  />
                }
                else{
                  if(sessionStorage.getItem("auth") && sessionStorage.getItem("type") == "l"){
-                return  <LawyerCases token={sessionStorage.getItem("jwtToken")} />
+                return  <LawyerProfile />
                  }
                  else{
                  return <SignIn/>
@@ -380,60 +375,9 @@ handletoken=()=>{
          }
        }
             />
-
-<Route exact path="/lawyerprofile" component={() =>{
-           if(sessionStorage.getItem("auth") && sessionStorage.getItem("type") == "l") {
-                return <LawyerProfile/>
-           }else{
-             if(sessionStorage.getItem("auth") && sessionStorage.getItem("type") == "i"){
-             return (<InvestorRequests
-              id={sessionStorage.getItem("id")}
-              token={sessionStorage.getItem("jwtToken")}
-            />)
-             } else{
-               if(sessionStorage.getItem("auth") && sessionStorage.getItem("type") == "r"){
-               return <ReviewerCases token={sessionStorage.getItem("jwtToken")} />
-               }
-               else{
-                 if(sessionStorage.getItem("auth") && sessionStorage.getItem("type") == "a"){
-                return  <AdminCases token={sessionStorage.getItem("jwtToken")} />
-                 }
-                 else{
-                 return <SignIn/>
-                 }
-               }
-             }
-           }
-         }
-       }/>
-
-<Route exact path="/reviewerprofile" component={() =>{
-           if(sessionStorage.getItem("auth") && sessionStorage.getItem("type") == "r") {
-                return <ReviewerProfile/>
-           }else{
-             if(sessionStorage.getItem("auth") && sessionStorage.getItem("type") == "i"){
-             return (<InvestorRequests
-              id={sessionStorage.getItem("id")}
-              token={sessionStorage.getItem("jwtToken")}
-            />)
-             } else{
-               if(sessionStorage.getItem("auth") && sessionStorage.getItem("type") == "l"){
-               return <LawyerCases token={sessionStorage.getItem("jwtToken")} />
-               }
-               else{
-                 if(sessionStorage.getItem("auth") && sessionStorage.getItem("type") == "a"){
-                return  <AdminCases token={sessionStorage.getItem("jwtToken")} />
-                 }
-                 else{
-                 return <SignIn/>
-                 }
-               }
-             }
-           }
-         }
-       }/>
-
-
+            
+            {" "}
+          </div>{" "}
         </React.Fragment>{" "}
       </Router>
     );

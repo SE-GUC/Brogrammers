@@ -51,7 +51,8 @@ export class SignIn extends Component {
     this.state = {
       investor: {
         email: '',
-        password: ''
+        password: '',
+        c: true
       }
     }
     this.handleInput = this.handleInput.bind(this)
@@ -71,6 +72,16 @@ export class SignIn extends Component {
       response.json().then(data => {
         console.log('Successful' + data + data.auth)
         this.props.callBack(data.token, data.auth, 'i', data.id)
+        if(data.auth){
+          document.location.href = "/investorprofile"
+        }
+        else{
+          this.setState({
+            investor: {
+              c: false
+            }
+          }, () => console.log(this.state.investor.c));
+        }
       })
     })
   }
@@ -101,6 +112,9 @@ export class SignIn extends Component {
           <Typography component='h1' variant='h5'>
             Sign in
           </Typography>
+          <Typography component='body1' variant='body1'>
+          {this.state.investor.c? (""):("Wrong Email or Password")}
+          </Typography>
           <form className={classes.form}>
             <FormControl margin='normal' required fullWidth>
               {/* <InputLabel htmlFor="email">Email</InputLabel> */}
@@ -119,7 +133,7 @@ export class SignIn extends Component {
               type='submit'
               fullWidth
               variant='contained'
-              color='primary'
+              color={this.state.investor.c? ("primary"):("secondary")}
               className={classes.submit}
               onClick={this.handleRegister}
             >

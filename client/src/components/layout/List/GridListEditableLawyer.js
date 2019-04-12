@@ -27,6 +27,7 @@ class TitlebarGridList2 extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
+      companyId: null
     }
   }
   
@@ -39,8 +40,9 @@ class TitlebarGridList2 extends React.Component {
                 </GridListTile>
                 {this.props.data.map((tile,i) => (
                   <GridListTile style={{width: 300}}>
-                    
-                   <CaseCard title={tile.nameInEnglish} comment={tile.lawyerComment} lawyer={tile.lawyer} key={i} id={tile._id} token= {this.props.token} subheader={tile.status} nameAr={tile.nameInArabic} data={tile} />
+                    {this.state.companyId = tile._id}
+                    {console.log(this.state.companyId)}
+                   <CaseCard title={tile.nameInEnglish} comment={tile.reviewerComment} lawyer={tile.lawyer} key={i} id={tile._id} token= {this.props.token} subheader={tile.status} nameAr={tile.nameInArabic} data={tile} />
                   </GridListTile>
                 ))}
               </GridList>

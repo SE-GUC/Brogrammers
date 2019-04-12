@@ -123,7 +123,7 @@ handleAdmin = () => {
                   </Drawer>
                   <main className={classes.content}>
                     <div className={classes.toolbar} />
-                        <RegisterAdmin  callBack={this.callBack}
+                        <RegisterAdmin  
                   token={sessionStorage.getItem("jwtToken")}/>
                 
                   </main>
@@ -247,7 +247,7 @@ handleAdmin = () => {
                   </Drawer>
                   <main className={classes.content}>
                     <div className={classes.toolbar} />
-                        <RegisterReviewer callBack={this.callBack}
+                        <RegisterReviewer 
                   token={sessionStorage.getItem("jwtToken")}/>
                 
                   </main>

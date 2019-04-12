@@ -76,7 +76,7 @@ class RegisterAdmin extends React.Component {
         }
         else{
         console.log('Successful' + data)
-        this.props.callBack(data.token, data.auth, 'a', data.data._id)
+       
         }
       })
     })

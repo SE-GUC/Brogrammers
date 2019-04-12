@@ -502,7 +502,48 @@ router.delete("/:id", async (req, res) => {
     console.log(error);
   }
 });
+<<<<<<< HEAD
 
+=======
+router.get('/getRejectedTasks/Reviewer', async (req, res) => {
+  try {
+    var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first.' })
+    }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+
+      stat = decoded.id
+    })
+    const id = stat
+    
+
+    const reviewerss = await Reviewer.findById(id)
+    const reviewerssn = await reviewerss.socialSecurityNumber
+
+   
+  var query = {
+    $and: [
+      { status: 'RejectedReviewer' },
+      { reviewer: reviewerssn },
+    ]
+  }
+    const comps = await Company.find(query)
+
+    res.json({ data:comps})
+  } catch(error) {
+    console.log(error)
+  }
+})
+>>>>>>> 5a369dfa803b4e2c37a72a5c8e74a6dff3cfea97
 
 router.put('addcomment/id2',async(req,res)=>{
   var companyId = req.params.id2

@@ -128,7 +128,7 @@ class PrimarySearchAppBar extends React.Component {
     }
 
     handleProfile = () =>{
-      document.location.href = "/";
+      document.location.href = "/profile";
     }
 
 
@@ -198,7 +198,7 @@ class PrimarySearchAppBar extends React.Component {
        renderMobileMenu=""
      }
      console.log(sessionStorage.getItem("type") + "you see")
-     const hidei = sessionStorage.getItem("type")=="i"? {}:{display:"none"}
+     const hidei = sessionStorage.getItem("type")=="i"||sessionStorage.getItem("type")=="r"||sessionStorage.getItem("type")=="a"||sessionStorage.getItem("type")=="l"? {}:{display:"none"}
     return (
       <div className={classes.root}>
     <AppBar position="static">
