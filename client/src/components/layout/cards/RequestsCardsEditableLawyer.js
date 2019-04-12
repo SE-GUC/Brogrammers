@@ -142,13 +142,13 @@ class SimpleCard2 extends React.Component {
         <CardMedia className={classes.cover}  >
           <Typography className={classes.comment}>
             {" "}
-            {this.props.lawyer !== undefined
+            {this.props.reviewer !== undefined
               ? '"' + this.props.comment + '"'
               :<h1 style={{textAlign:'center', fontSize:"20px"}}> No Comments yet</h1>}
           </Typography>
-          <Typography className={classes.lawyer}>
-            {this.props.lawyer !== undefined
-              ? "- " + this.props.lawyer
+          <Typography className={classes.reviewer}>
+            {this.props.reviewer !== undefined
+              ? "- " + this.props.reviewer
               : console.log}
           </Typography>
         </CardMedia>

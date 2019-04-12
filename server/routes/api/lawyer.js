@@ -744,7 +744,7 @@ router.get('/editForm/:id', async function (req, res) {
   const query = {
     $and: [{ status: 'RejectedReviewer' }, { lawyer: lawyerId }]
   }
-  const editableCompanies = await Company.find(query, { _id: 0 })
+  const editableCompanies = await Company.find(query)
   var token = req.headers['x-access-token']
   if (!token) {
     return res.status(401).send({ auth: false, message: 'No token provided.' })
