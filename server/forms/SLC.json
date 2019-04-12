@@ -1,0 +1,7 @@
+{
+    "Invaders": {"type":"String" , "trim": true, "required": true},
+    "Defenders": {"type":"String" , "trim": true, "required": true},
+    "year": {"type": "Number", "max": 2012,"required":true}
+        
+    
+}
