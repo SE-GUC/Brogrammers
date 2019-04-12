@@ -74,7 +74,7 @@ export class LawyerSignIn extends Component {
         console.log('Successful' + data + data.auth)
         this.props.callBack(data.token, data.auth, 'l',  data.id, data.ssn)
         if(data.auth){
-          document.location.href = "/"
+          document.location.href = "/profile"
         }
         else{
           this.setState({
