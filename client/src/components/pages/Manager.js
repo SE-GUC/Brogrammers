@@ -109,7 +109,8 @@ class Manager extends React.Component {
               <Required field={'identificationNumber'} type={'text'} callBack={this.handleInput} name={'identificationNumber'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required field={'birthDate'} type={'text'} callBack={this.handleInput} name={'birthDate'} />
+              <NotRequired field={'birthDate'} type={'text'} callBack={this.handleInput} name={'birthDate'} />
+
             </Grid>
             <Grid container direction='column' alignItems='center' >
               <Required field={'address'} type={'text'} callBack={this.handleInput} name={'address'} />

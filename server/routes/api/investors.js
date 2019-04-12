@@ -758,6 +758,7 @@ router.put('/', async (req, res) => {
         .status(400)
         .send({ error: isValidated.error.details[0].message })
     }
+    console.log(stat);
       await Investor.findByIdAndUpdate(stat, req.body)
       res.json({ msg: 'Investor updated successfully' })
   } catch (error) {
