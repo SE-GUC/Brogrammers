@@ -1,0 +1,9 @@
+{
+
+"type": "object",
+"required": ["title"],
+"properties": {
+  "title": {"type": "string", "title": "Title"},
+  "done": {"type": "boolean", "title": "Done?"}
+}
+}
