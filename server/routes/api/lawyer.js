@@ -744,7 +744,7 @@ router.get('/editForm/:id', async function (req, res) {
   const query = {
     $and: [{ status: 'RejectedReviewer' }, { lawyer: lawyerId }]
   }
-  const editableCompanies = await Company.find(query, { _id: 0 })
+  const editableCompanies = await Company.find(query)
   var token = req.headers['x-access-token']
   if (!token) {
     return res.status(401).send({ auth: false, message: 'No token provided.' })
@@ -774,6 +774,45 @@ router.get('/editForm/:id', async function (req, res) {
     }
 
 })
+router.get('/getRejectedTasks/Lawyer', async (req, res) => {
+  try {
+    var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first.' })
+    }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+
+      stat = decoded.id
+    })
+    const id = stat
+    
+
+    const lawyerss = await Lawyer.findById(id)
+    const lawyerssn = await lawyerss.socialSecurityNumber
+
+   
+  var query = {
+    $and: [
+      { status: 'RejectedLawyer' },
+      { lawyer: lawyerssn },
+    ]
+  }
+    const comps = await Company.find(query)
+
+    res.json({ data:comps})
+  } catch(error) {
+    console.log(error)
+  }
+})
+
 
 router.get('/getRejectedTasks/Lawyer', async (req, res) => {
   try {

@@ -626,16 +626,12 @@ router.post('/createssccompany', async (req, res) => {
       width: 410,
       align: 'center'
     });
-
-    // add your content to the document here, as usual
-    
-    // get a blob when you're done
     doc.end();
     res.setHeader('access-control-allow-origin', '*');
     res.status(200);
 
 
-    //res.json({ msg: 'SSC Company was created successfully', data: company })
+    res.json({ msg: 'SSC Company was created successfully', data: company })
   } catch (error) {
     console.log(error)
   }
