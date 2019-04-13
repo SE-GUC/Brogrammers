@@ -17,7 +17,8 @@ const styles = {
   header: {
     textAlign: "center",
     fontFamily: "Trebuchet MS",
-    color:'white'
+    color:'white',
+    paddingBottom: 10
   }
 };
 

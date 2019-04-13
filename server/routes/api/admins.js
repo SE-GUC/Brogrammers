@@ -16,7 +16,7 @@ var cors = require("cors");
 router.use(cors());
 var storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, "server/uploads");
+    cb(null, "uploads");
   },
   filename: function(req, file, cb) {
     cb(null, file.originalname);
@@ -28,12 +28,16 @@ var upload = multer({ storage: storage });
 router.post("/uploadfile", upload.single("myFile"), (req, res, next) => {
   const file = req.file;
   console.log(file);
+  const fs = require("fs");
+ // let filename=req.file.originalname
+    let rawdata = fs.readFileSync(req.file.path);
+    let jsonData = JSON.parse(rawdata);
   if (!file) {
     const error = new Error("Please upload a file");
     error.httpStatusCode = 400;
     return next(error);
   }
-  res.send(file);
+  res.send({file,data:jsonData});
 });
 
 // Logout Sprin2
@@ -100,17 +104,17 @@ router.post("/submit-form", upload.single("myFile"), async (req, res, next) => {
         legalCompanyForm: formName,
         formSchema: uploadedSchema
       });
-      res.send({msg:"successfully created",data:newSchema});
       var newCompanySchema = new mongoose.Schema(
         generator.convert(uploadedSchema.properties)
-      );
-      console.log(formName);
-      Company.discriminator(formName, newCompanySchema);
-      console.log("successfully created");
-      console.log(Object.keys(Company.discriminators));
+        );
+        console.log(formName);
+        Company.discriminator(formName, newCompanySchema);
+        console.log("successfully created");
+        console.log(Object.keys(Company.discriminators));
+        res.send({msg:"successfully created"});
     }
   } catch (error) {
-    console.log(error.message);
+    res.status(500).send({ msg: error.message });
   }
 });
 

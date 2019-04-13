@@ -58,7 +58,7 @@ const DialogActions = withStyles(theme => ({
   }
 }))(MuiDialogActions);
 
-class CustomizedDialogFees extends React.Component {
+class CustomizedDialogFees1 extends React.Component {
   state = {
     open: false,
     fees:0,
@@ -77,7 +77,7 @@ class CustomizedDialogFees extends React.Component {
   
   handleViewFees=()=>{
     let x =0 ;
-    fetch('http://localhost:3000/api/investors/'+this.props.id+'/viewFees',{
+    fetch('http://localhost:3000/api/lawyer/'+this.props.id+'/viewFees',{
         method: "GET",
         headers: {
           'Content-Type': 'application/json',
@@ -124,4 +124,4 @@ class CustomizedDialogFees extends React.Component {
   }
 }
 
-export default CustomizedDialogFees;
+export default CustomizedDialogFees1;
