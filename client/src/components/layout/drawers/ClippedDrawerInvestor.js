@@ -65,6 +65,10 @@ constructor(props){
     this.setState({ clicked: "profile" })
 
   }
+  handleRequests = () => {
+    this.setState({ clicked: "requests" })
+
+  }
     render(){
         const {classes}=this.props;
         if(this.state.clicked=='i'){
@@ -106,6 +110,10 @@ constructor(props){
                           <ListItemIcon><InboxIcon /></ListItemIcon>
                           <ListItemText primary="View My Companies" />
                         </ListItem>
+                        <ListItem button key={"View My Requests"} onClick={this.handleRequests}>
+                          <ListItemIcon><InboxIcon /></ListItemIcon>
+                          <ListItemText primary="View My Requests" />
+                        </ListItem>
                         <ListItem button key={"Create Companies"} onClick={this.handleCreate}>
                           <ListItemIcon><InboxIcon /></ListItemIcon>
                           <ListItemText primary="Create Companies" />
@@ -120,6 +128,70 @@ constructor(props){
                         <div className={classes.toolbar} />
                             
                      
+                
+                  </main>
+                </div>
+            )}
+        if(this.state.clicked=='requests'){
+            return (
+                <div className={classes.root}>
+                  <CssBaseline />
+                  <AppBar position="fixed" className={classes.appBar}>
+                    <Toolbar>
+                      <Typography variant="h6" color="inherit" noWrap>
+                        Investor profile
+                      </Typography>
+                    </Toolbar>
+                  </AppBar>
+
+                  <Drawer
+                    className={classes.drawer}
+                    variant="permanent"
+                    classes={{
+                      paper: classes.drawerPaper,
+                    }}
+                  >
+                    <div className={classes.toolbar} />
+                   
+                    <List>
+                    <ListItem button key={"Home"} onClick={this.handleHome}>
+                          <ListItemIcon><InboxIcon /></ListItemIcon>
+                          <ListItemText primary="Home" />
+                        </ListItem>
+                        <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
+                          <ListItemIcon><InboxIcon /></ListItemIcon>
+                          <ListItemText primary="Edit Your Profile" />
+                        </ListItem>
+                      
+                    </List>
+                    <Divider />
+                    <List>
+                      
+                        <ListItem button key={"View My Companies"} onClick={this.handleCases2}>
+                          <ListItemIcon><InboxIcon /></ListItemIcon>
+                          <ListItemText primary="View My Companies" />
+                        </ListItem>
+                        <ListItem button key={"View My Requests"} onClick={this.handleRequests}>
+                          <ListItemIcon><InboxIcon /></ListItemIcon>
+                          <ListItemText primary="View My Requests" />
+                        </ListItem>
+                        <ListItem button key={"Create Companies"} onClick={this.handleCreate}>
+                          <ListItemIcon><InboxIcon /></ListItemIcon>
+                          <ListItemText primary="Create Companies" />
+                        </ListItem>
+                  
+                
+              
+                    </List>
+                   
+                    </Drawer>
+                      <main className={classes.content}>
+                        <div className={classes.toolbar} />
+                            
+                        <InvestorRequests
+                  id={sessionStorage.getItem("id")}
+                  token={sessionStorage.getItem("jwtToken")}
+                />
                 
                   </main>
                 </div>
@@ -164,6 +236,10 @@ constructor(props){
                       <ListItemIcon><InboxIcon /></ListItemIcon>
                       <ListItemText primary="View My Companies" />
                     </ListItem>
+                    <ListItem button key={"View My Requests"} onClick={this.handleRequests}>
+                          <ListItemIcon><InboxIcon /></ListItemIcon>
+                          <ListItemText primary="View My Requests" />
+                        </ListItem>
                     <ListItem button key={"Create Companies"} onClick={this.handleCreate}>
                           <ListItemIcon><InboxIcon /></ListItemIcon>
                           <ListItemText primary="Create Companies" />
@@ -173,7 +249,10 @@ constructor(props){
                   </Drawer>
                   <main className={classes.content}>
                     <div className={classes.toolbar} />
-                    <InvestorRequests/>
+                    <InvestorRequests
+                  id={sessionStorage.getItem("id")}
+                  token={sessionStorage.getItem("jwtToken")}
+                />
                    </main>
                 </div>
             
@@ -220,6 +299,10 @@ constructor(props){
                                   <ListItemIcon><InboxIcon /></ListItemIcon>
                                   <ListItemText primary="View My Companies" />
                                 </ListItem>
+                                <ListItem button key={"View My Requests"} onClick={this.handleRequests}>
+                          <ListItemIcon><InboxIcon /></ListItemIcon>
+                          <ListItemText primary="View My Requests" />
+                        </ListItem>
                                 <ListItem button key={"Create Companies"} onClick={this.handleCreate}>
                           <ListItemIcon><InboxIcon /></ListItemIcon>
                           <ListItemText primary="Create Companies" />
@@ -275,6 +358,10 @@ constructor(props){
                                   <ListItemIcon><InboxIcon /></ListItemIcon>
                                   <ListItemText primary="View My Companies" />
                                 </ListItem>
+                                <ListItem button key={"View My Requests"} onClick={this.handleRequests}>
+                          <ListItemIcon><InboxIcon /></ListItemIcon>
+                          <ListItemText primary="View My Requests" />
+                        </ListItem>
                                 <ListItem button key={"Create Companies"} onClick={this.handleCreate}>
                           <ListItemIcon><InboxIcon /></ListItemIcon>
                           <ListItemText primary="Create Companies" />
