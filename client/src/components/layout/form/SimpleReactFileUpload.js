@@ -1,6 +1,5 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-import "filepond/dist/filepond.min.css";
 
 import axios from 'axios';
 

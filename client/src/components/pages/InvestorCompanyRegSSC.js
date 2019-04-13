@@ -167,7 +167,7 @@ class InvestorCompanyReg extends React.Component {
             <Grid container direction='column' alignItems='center' >
               <Required field={'Capital'} type={'number'} callBack={this.handleInput} name={'capital'} />
             </Grid>
-            <Grid container direction='column' alignItems='center' >
+            <Grid >
               <Manager callBack={this.handleOnClick} />
             </Grid>
             <Grid>
