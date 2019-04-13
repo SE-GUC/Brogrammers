@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper'
 import { Icon, Button } from '@material-ui/core'
 import SaveChangesButton from '../layout/Dialogs/SaveChangesButton'
 import Date from '../layout/inputs/Date'
+import {ReactComponent as UpdateIcon} from '../Icons/UpdateIcon.svg'
 
 const styles = theme => ({
   main: {
@@ -88,7 +89,7 @@ class EditProfileReviewer extends Component {
     this.setState(
       prevState => {
         return {
-          admin: {
+          reviewer: {
             ...prevState.lawyer,
             [name]: value
           }
@@ -111,9 +112,7 @@ class EditProfileReviewer extends Component {
     return (
       <main className={classes.main}>
         <Paper className={classes.paper}>
-          <Icon className={classes.icon} color='primary'>
-            add_circle
-          </Icon>
+        <UpdateIcon />
           <h2>Edit Your Profile</h2>
           <NotRequired name={"name"} field={"Name"} type="text" callBack={this.onChange} />
           <NotRequired name={"email"} field={"Email"} type="email" callBack={this.onChange}/>

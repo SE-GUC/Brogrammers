@@ -51,50 +51,50 @@ const styles = theme => ({
   },
   searchIcon: {
     width: theme.spacing.unit * 9,
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   inputRoot: {
-    color: "inherit",
-    width: "100%"
+    color: 'inherit',
+    width: '100%'
   },
   inputInput: {
     paddingTop: theme.spacing.unit,
     paddingRight: theme.spacing.unit,
     paddingBottom: theme.spacing.unit,
     paddingLeft: theme.spacing.unit * 10,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
       width: 200
     }
   },
   sectionDesktop: {
-    display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "flex"
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex'
     }
   },
   sectionMobile: {
-    display: "flex",
-    [theme.breakpoints.up("md")]: {
-      display: "none"
+    display: 'flex',
+    [theme.breakpoints.up('md')]: {
+      display: 'none'
     }
   }
 })
 
 class PrimarySearchAppBar extends React.Component {
-  constructor(props)
-  {super(props)
-  this.state = {
-    anchorEl: null,
-    mobileMoreAnchorEl: null,
-    auth:false
-  }
+  constructor(props) {
+    super(props)
+    this.state = {
+      anchorEl: null,
+      mobileMoreAnchorEl: null,
+      auth: false
+    }
   }
   handleProfileMenuOpen = event => {
     this.setState({ anchorEl: event.currentTarget })
@@ -110,98 +110,93 @@ class PrimarySearchAppBar extends React.Component {
   }
 
   handleMobileMenuClose = () => {
- //   this.props.callBack(null, false,"", null)
-    this.setState({ mobileMoreAnchorEl: null ,
-    auth:this.props.auth})
-   
+    //   this.props.callBack(null, false,"", null)
+    this.setState({ mobileMoreAnchorEl: null, auth: this.props.auth })
   }
 
-  handleSignOut= () =>{
-    sessionStorage.setItem("auth",false)
-    sessionStorage.setItem("jwtToken",null)
-    sessionStorage.setItem("type",null)
-    console.log(sessionStorage.getItem("jwtToken") +"  heeere")
-    this.state.auth=false
+  handleSignOut = () => {
+    sessionStorage.setItem('auth', false)
+    sessionStorage.setItem('jwtToken', null)
+    sessionStorage.setItem('type', null)
+    console.log(sessionStorage.getItem('jwtToken') + '  heeere')
+    this.state.auth = false
     this.forceUpdate()
     this.handleMenuClose()
-    document.location.href = "/";
-    }
+    document.location.href = '/'
+  }
 
-    handleProfile = () =>{
-      document.location.href = "/profile";
-    }
-
+  handleProfile = () => {
+    document.location.href = '/profile'
+  }
 
   render() {
-   
     const { anchorEl, mobileMoreAnchorEl } = this.state
     const { classes } = this.props
     const isMenuOpen = Boolean(anchorEl)
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
-    var renderMenu=""
-    var renderMobileMenu = ""
-    if(sessionStorage.getItem("jwtToken")!=null)
-    {
-     renderMenu = (
-       
-      <Menu
-        anchorEl={anchorEl}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-        open={isMenuOpen}
-        onClose={this.handleMenuClose}
-      >
-        <MenuItem onClick={this.handleProfile}>Profile</MenuItem>
-        <MenuItem onClick={this.handleSignOut}>Sign out </MenuItem>
-      </Menu>
-    )
-    
-   
-    
+    var renderMenu = ''
+    var renderMobileMenu = ''
+    if (sessionStorage.getItem('jwtToken') != null) {
+      renderMenu = (
+        <Menu
+          anchorEl={anchorEl}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          open={isMenuOpen}
+          onClose={this.handleMenuClose}
+        >
+          <MenuItem onClick={this.handleProfile}>Profile</MenuItem>
+          <MenuItem onClick={this.handleSignOut}>Sign out </MenuItem>
+        </Menu>
+      )
 
-     renderMobileMenu = (
-      <Menu
-        anchorEl={mobileMoreAnchorEl}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-        open={isMobileMenuOpen}
-        onClose={this.handleMenuClose}
-      >
-        <MenuItem onClick={this.handleMobileMenuClose}>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <MailIcon />
-            </Badge>
-          </IconButton>
-          <p>Messages</p>
-        </MenuItem>
-        <MenuItem onClick={this.handleMobileMenuClose}>
-          <IconButton color="inherit">
-            <Badge badgeContent={11} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <p>Notifications</p>
-        </MenuItem>
-        <MenuItem onClick={this.handleProfileMenuOpen}>
-          <IconButton color="inherit">
-            <AccountCircle />
-          </IconButton>
-          <p>Profile</p>
-        </MenuItem>
-      </Menu>
-    )
-
-     }
-     else{
-       renderMenu=""
-       renderMobileMenu=""
-     }
-     console.log(sessionStorage.getItem("type") + "you see")
-     const hidei = sessionStorage.getItem("type")=="i"||sessionStorage.getItem("type")=="r"||sessionStorage.getItem("type")=="a"||sessionStorage.getItem("type")=="l"? {}:{display:"none"}
+      renderMobileMenu = (
+        <Menu
+          anchorEl={mobileMoreAnchorEl}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          open={isMobileMenuOpen}
+          onClose={this.handleMenuClose}
+        >
+          <MenuItem onClick={this.handleMobileMenuClose}>
+            <IconButton color="inherit">
+              <Badge badgeContent={4} color="secondary">
+                <MailIcon />
+              </Badge>
+            </IconButton>
+            <p>Messages</p>
+          </MenuItem>
+          <MenuItem onClick={this.handleMobileMenuClose}>
+            <IconButton color="inherit">
+              <Badge badgeContent={11} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+            <p>Notifications</p>
+          </MenuItem>
+          <MenuItem onClick={this.handleProfileMenuOpen}>
+            <IconButton color="inherit">
+              <AccountCircle />
+            </IconButton>
+            <p>Profile</p>
+          </MenuItem>
+        </Menu>
+      )
+    } else {
+      renderMenu = ''
+      renderMobileMenu = ''
+    }
+    console.log(sessionStorage.getItem('type') + 'you see')
+    const hidei =
+      sessionStorage.getItem('type') == 'i' ||
+      sessionStorage.getItem('type') == 'r' ||
+      sessionStorage.getItem('type') == 'a' ||
+      sessionStorage.getItem('type') == 'l'
+        ? {}
+        : { display: 'none' }
     return (
       <div className={classes.root}>
-    <AppBar position="static">
+        <AppBar position="static">
           <Toolbar>
             <IconButton
               className={classes.menuButton}
@@ -223,18 +218,16 @@ class PrimarySearchAppBar extends React.Component {
                 <SearchIcon />
               </div>
               <InputBase
-                placeholder="What do you need?" autoFocus
+                placeholder="What do you need?"
+                autoFocus
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput
                 }}
               />
             </div>
-            <button href="http://localhost:3001/company/approved">
-              View Companies
-            </button >
             <div className={classes.grow} />
-            <div className={classes.sectionDesktop} style = {hidei} >
+            <div className={classes.sectionDesktop} style={hidei}>
               <IconButton color="inherit">
                 <Badge badgeContent={69} color="secondary">
                   <MailIcon />
@@ -246,7 +239,7 @@ class PrimarySearchAppBar extends React.Component {
                 </Badge>
               </IconButton>
               <IconButton
-                aria-owns={isMenuOpen ? "material-appbar" : undefined}
+                aria-owns={isMenuOpen ? 'material-appbar' : undefined}
                 aria-haspopup="true"
                 onClick={this.handleProfileMenuOpen}
                 color="inherit"
@@ -254,8 +247,8 @@ class PrimarySearchAppBar extends React.Component {
                 <AccountCircle />
               </IconButton>
             </div>
-            
-            <div className={classes.sectionMobile}  >
+
+            <div className={classes.sectionMobile}>
               <IconButton
                 aria-haspopup="true"
                 onClick={this.handleMobileMenuOpen}

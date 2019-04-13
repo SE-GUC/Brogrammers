@@ -24,13 +24,31 @@ class ViewReviewerCasesbyID extends Component {
       })
   }
 
+
+  sortById(e){
+    var { isLoadied, companies } = this.state
+    if (!isLoadied) { return <div> Loading ...</div> } else {
+      let sortedCompanies=this.state.companies.sort((a,b)=>{
+        return b._id-a._id;
+      });
+      this.state.companies=sortedCompanies;
+      console.log(sortedCompanies);
+    } 
+  }
+
+
   
+
   render () {
     var { isLoadied, companies } = this.state
     if (!isLoadied) { return <div> Loading ...</div> } else {
       return (
 
         <div>
+                  <button type='button' onClick={this.sortById}>
+                Sort by id
+                </button>
+        
           <ul>
             {this.state.companies.map((element, i) => (
               <MyReviewerCasesCard key={i} title={'helo'} info={element.investorName} 

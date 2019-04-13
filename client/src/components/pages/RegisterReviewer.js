@@ -74,8 +74,13 @@ class RegisterReviewer extends React.Component {
       }
     }).then(response => {
       response.json().then(data => {
+        if(data.error){
+          alert(data.error);
+        }
+        else{
         console.log('Successful' + data)
-        this.props.callBack(data.token, data.auth, 'r', data.data._id)
+   
+        }
       })
     })
   }

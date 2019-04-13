@@ -1,43 +1,51 @@
-import React, { Component } from "react"
-import ReactDOM from "react-dom"
+import React, { Component } from 'react'
+import { withStyles, List, Paper } from '@material-ui/core'
+import GridList from '@material-ui/core/GridList'
+import CompanyCard from '../cards/CompanyCard'
+
+const styles = {
+  list: {
+    width: 'auto',
+    height: 'auto',
+    maxWidth: 900
+  },
+  sep: {
+    marginLeft: 400
+  }
+}
 
 class ViewApprovedCompanies extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      companies: [],
-      isLoaded: false
+      approvedCompanies: []
     }
   }
 
   componentDidMount() {
-    fetch(`http://localhost:3000/api/company/approved`)
-      .then(response => response.json())
+    fetch(`http://localhost:3000/api/company/approved`, {
+      method: 'GET'
+    })
+      .then(res => res.json())
       .then(json => {
-        this.setState({ isLoaded: true, companies: json.data })
+        this.setState({ approvedCompanies: json.data })
       })
   }
 
   render() {
-    var { isLoaded, companies } = this.state
-    if (!isLoaded) return <div> Loading Page</div>
-    else {
-      return (
-        <div>
-          <h1>Approved Companies</h1>
-          <li>
-            {companies.map(function(companies, index) {
-              return (
-                <div>
-                  <h2>Company name: {companies.nameInEnglish}</h2>
-                  <h2>Location: {companies.governerateHQ}</h2>
-                </div>
-              )
-            })}
-          </li>
+    const { classes } = this.props
+    return (
+      <div className={classes.holder}>
+        <h1>Approved Companies</h1>
+        <div className={classes.sep}>
+          <GridList className={classes.list}>
+            {this.state.approvedCompanies.map((item, i) => (
+              <CompanyCard key={i} company={item} />
+            ))}
+          </GridList>
         </div>
-      )
-    }
+      </div>
+    )
   }
 }
-export default ViewApprovedCompanies
+export default withStyles(styles)(ViewApprovedCompanies)

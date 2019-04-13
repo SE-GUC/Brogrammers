@@ -39,7 +39,7 @@ class Gender extends React.Component {
           <FormLabel component="legend">Gender</FormLabel>
           <RadioGroup
             aria-label="Gender"
-            name="gender"
+            name={this.props.name}
             className={classes.group}
             value={this.state.value}
             onChange={this.handleChange} 
