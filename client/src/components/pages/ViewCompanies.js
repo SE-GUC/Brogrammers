@@ -8,11 +8,12 @@ const styles = {
     width: "auto",
     height: "auto",
     backgroundColor: "#eeeeee",
-    maxWidth: 900
+    maxWidth: 1200
   },
   sep: {
     marginLeft: 400
-  }
+  },
+  
 };
 
 class ViewCompanies extends Component {

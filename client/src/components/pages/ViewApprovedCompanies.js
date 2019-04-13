@@ -2,17 +2,19 @@ import React, { Component } from 'react'
 import { withStyles, List, Paper } from '@material-ui/core'
 import GridList from '@material-ui/core/GridList'
 import CompanyCard from '../cards/CompanyCard'
+import InvestorCard from '../cards/InvestorCard';
 
 const styles = {
   list: {
-    width: 'auto',
-    height: 'auto',
+    width: "auto",
+    height: "auto",
+    backgroundColor: "#eeeeee",
     maxWidth: 900
   },
   sep: {
     marginLeft: 400
   }
-}
+};
 
 class ViewApprovedCompanies extends Component {
   constructor(props) {
@@ -40,7 +42,7 @@ class ViewApprovedCompanies extends Component {
         <div className={classes.sep}>
           <GridList className={classes.list}>
             {this.state.approvedCompanies.map((item, i) => (
-              <CompanyCard key={i} company={item} />
+              <InvestorCard key={i} company={item} />
             ))}
           </GridList>
         </div>
