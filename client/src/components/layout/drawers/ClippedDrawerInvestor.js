@@ -16,6 +16,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import InvestorCompanyRegSPC from '../../pages/InvestorCompanyRegSPC'
 import EditProfileInvestor from '../../pages/EditProfileInvestor'
 import InvestorRequests from '../../pages/InvestorRequests'
+import ViewCompanies from '../../pages/ViewCompanies';
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -249,10 +250,8 @@ constructor(props){
                   </Drawer>
                   <main className={classes.content}>
                     <div className={classes.toolbar} />
-                    <InvestorRequests
-                  id={sessionStorage.getItem("id")}
-                  token={sessionStorage.getItem("jwtToken")}
-                />
+                    <ViewCompanies token={sessionStorage.getItem("jwtToken")} />
+
                    </main>
                 </div>
             

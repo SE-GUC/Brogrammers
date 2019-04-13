@@ -9,10 +9,10 @@ const styles = {
     width: "auto",
     height: "auto",
     backgroundColor: "rgba(200,200,200,0.4)",
-    maxWidth: "70.5%"
+    maxWidth: "85%"
   },
   sep: {
-    marginLeft: 400
+    marginLeft: 110
   },
   header: {
     textAlign: "center",

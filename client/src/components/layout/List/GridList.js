@@ -13,7 +13,8 @@ const styles = theme => ({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     overflow: 'hidden',
-    backgroundColor: '#eeeeee',
+    backgroundColor: "rgba(200,200,200,0.4)",
+
   },
   gridList: {
     width: '80%',
