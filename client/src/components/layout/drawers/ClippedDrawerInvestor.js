@@ -173,7 +173,7 @@ constructor(props){
                   </Drawer>
                   <main className={classes.content}>
                     <div className={classes.toolbar} />
-                    <InvestorRequests/>
+                    <investorRequests/>
                    </main>
                 </div>
             
