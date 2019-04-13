@@ -81,9 +81,14 @@ class Register extends React.Component {
       }
     }).then(response => {
       response.json().then(data => {
+        if(data.error){
+          alert(data.error);
+        }
+        else{
         console.log('Successful' + data + data.auth)
         this.props.callBack(data.token, data.auth, 'i', data.data._id)
-        document.location.href = "/investors/MyRequests/all";
+        document.location.href = "/profile";
+        }
       })
     })
    

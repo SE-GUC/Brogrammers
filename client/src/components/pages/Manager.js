@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core'
-import AlertDialogSlide from '../layout/Dialogs/SlideDialog'
-import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import green from '@material-ui/core/colors/green'
 import { Avatar } from '@material-ui/core'
 import AssignmemtIcon from '@material-ui/icons/Assignment'
 import Grid from '@material-ui/core/Grid'
 import Required from '../layout/inputs/Required'
-import NotRequired from '../layout/inputs/NotRequired'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import BlueButton from '../layout/Buttons/BlueButton'
 
@@ -39,7 +36,7 @@ const styles = theme => ({
 })
 
 class Manager extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       manager: {
@@ -58,7 +55,7 @@ class Manager extends React.Component {
     this.handle = this.handle.bind(this)
   }
 
-  handleInput (event) {
+  handleInput(event) {
     let value = event.target.value
     let name = event.target.name
     this.setState(prevState => {
@@ -70,64 +67,58 @@ class Manager extends React.Component {
     }, () => console.log(this.state.manager)
     )
   }
-  handle () {
+  handle() {
     this.props.callBack(this.state.manager)
   }
-  render () {
+
+  render() {
     const { classes } = this.props
     return (
       <div className={classes.main} >
         <CssBaseline />
-        <Paper className={classes.paper} elevation={16} >
-          <Grid container spacing={0} justify='space-evenly'>
-            <Grid container direction='column' alignItems='center'>
-              <Avatar className={classes.greenAvatar}>
-                <AssignmemtIcon />
-              </Avatar>
-            </Grid>
-            <Grid container direction='column' alignItems='center'>
-              <Typography variant='h6' component='h3'>
-                                Fill in your Manager's Info!
-              </Typography>
-            </Grid >
-            <Grid container direction='column' alignItems='center' >
-              <Required field={'Manager Name'} type={'text'} callBack={this.handleInput} name={'name'} />
-            </Grid>
-            <Grid container direction='column' alignItems='center' >
-              <Required field={'Manager Type'} type={'text'} callBack={this.handleInput} name={'type'} />
-            </Grid>
-            <Grid container direction='column' alignItems='center' >
-              <Required field={'Gender'} type={'text'} callBack={this.handleInput} name={'sex'} />
-            </Grid>
-            <Grid container direction='column' alignItems='center' >
-              <Required field={'Manager Nationality'} type={'text'} callBack={this.handleInput} name={'nationality'} />
-            </Grid>
-            <Grid container direction='column' alignItems='center' >
-              <Required field={'identificationType'} type={'text'} callBack={this.handleInput} name={'identificationType'} />
-            </Grid>
-            <Grid container direction='column' alignItems='center' >
-              <Required field={'identificationNumber'} type={'text'} callBack={this.handleInput} name={'identificationNumber'} />
-            </Grid>
-            <Grid container direction='column' alignItems='center' >
-              <NotRequired field={'birthDate'} type={'text'} callBack={this.handleInput} name={'birthDate'} />
-
-            </Grid>
-            <Grid container direction='column' alignItems='center' >
-              <Required field={'address'} type={'text'} callBack={this.handleInput} name={'address'} />
-            </Grid>
-            <Grid container direction='column' alignItems='center' >
-              <Required field={'managerialPosition'} type={'text'} callBack={this.handleInput} name={'managerialPosition'} />
-            </Grid>
-            <Grid container direction='column' alignItems='flex-end' >
-              <button type='button' onClick={this.handle}>
-                                Submit Manager Form
-              </button>
-            </Grid>
-
+        <Grid container spacing={0} justify='space-evenly'>
+          <Grid container direction='column' alignItems='center'>
+            <Avatar className={classes.greenAvatar}>
+              <AssignmemtIcon />
+            </Avatar>
           </Grid>
-        </Paper>
+          <Grid container direction='column' alignItems='center'>
+            <Typography variant='h6' component='h3'>
+              Fill in your Manager's Info!
+              </Typography>
+          </Grid >
+          <Grid container direction='column' alignItems='center' >
+            <Required field={'Manager Name'} type={'text'} callBack={this.handleInput} name={'name'} />
+          </Grid>
+          <Grid container direction='column' alignItems='center' >
+            <Required field={'Manager Type'} type={'text'} callBack={this.handleInput} name={'type'} />
+          </Grid>
+          <Grid container direction='column' alignItems='center' >
+            <Required field={'Gender'} type={'text'} callBack={this.handleInput} name={'sex'} />
+          </Grid>
+          <Grid container direction='column' alignItems='center' >
+            <Required field={'Manager Nationality'} type={'text'} callBack={this.handleInput} name={'nationality'} />
+          </Grid>
+          <Grid container direction='column' alignItems='center' >
+            <Required field={'identificationType'} type={'text'} callBack={this.handleInput} name={'identificationType'} />
+          </Grid>
+          <Grid container direction='column' alignItems='center' >
+            <Required field={'identificationNumber'} type={'text'} callBack={this.handleInput} name={'identificationNumber'} />
+          </Grid>
+          <Grid container direction='column' alignItems='center' >
+            <Required field={'birthDate'} type={'text'} callBack={this.handleInput} name={'birthDate'} />
+          </Grid>
+          <Grid container direction='column' alignItems='center' >
+            <Required field={'address'} type={'text'} callBack={this.handleInput} name={'address'} />
+          </Grid>
+          <Grid container direction='column' alignItems='center' >
+            <Required field={'managerialPosition'} type={'text'} callBack={this.handleInput} name={'managerialPosition'} />
+          </Grid>
+          <Grid container direction='column' alignItems='flex-end' >
+            <BlueButton type='button' callBack={this.handle}/>
+          </Grid>
+        </Grid>
       </div >
-
     )
   }
 }
