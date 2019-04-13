@@ -70,7 +70,7 @@ class RegisterLawyer extends React.Component {
       body: JSON.stringify(userData),
       headers: {
         'Content-Type': 'application/json',
-        'x-access-token': this.props.token
+        'x-access-token': sessionStorage.getItem("jwtToken")
       }
     }).then(response => {
       response.json().then(data => {
