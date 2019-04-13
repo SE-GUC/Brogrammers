@@ -430,7 +430,7 @@ class App extends Component {
                 }
               }}
             />{' '}
-            <ViewApprovedCompanies />
+         
           </div>{' '}
         </React.Fragment>{' '}
       </Router>

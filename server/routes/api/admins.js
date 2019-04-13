@@ -1,6 +1,6 @@
 const express = require("express");
-const mongoose=require('mongoose')
-const router = express.Router();
+const mongoose = require("mongoose");
+const router = express();
 const Admin = require("../../models/Admin.js");
 var config = require("../../config/jwt");
 const validator = require("../../validations/adminValidations");
@@ -9,7 +9,33 @@ const Company = require("../../models/Company");
 const FormSchema = require("../../models/FormSchema");
 var jwt = require("jsonwebtoken");
 const formidable = require("formidable");
-var generator = require('mongoose-gen');
+var generator = require("mongoose-gen");
+var multer = require("multer");
+var cors = require("cors");
+
+router.use(cors());
+var storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, "server/uploads");
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+
+var upload = multer({ storage: storage });
+
+router.post("/uploadfile", upload.single("myFile"), (req, res, next) => {
+  const file = req.file;
+  console.log(file);
+  if (!file) {
+    const error = new Error("Please upload a file");
+    error.httpStatusCode = 400;
+    return next(error);
+  }
+  res.send(file);
+});
+
 // Logout Sprin2
 router.get("/logout", function(req, res) {
   res.status(200).send({ auth: false, token: null });
@@ -52,29 +78,37 @@ router.get("/", async (req, res) => {
 });
 
 //upload json files to be converted to a form
-router.post("/submit-form", async (req, res) => {
+
+router.post("/submit-form", upload.single("myFile"), async (req, res, next) => {
   const fs = require("fs");
   try {
-    var form = new formidable.IncomingForm()
-      .parse(req)
-      .on("fileBegin", (name, file) => {
-        form.on("fileBegin", (name, file) => {
-          file.path ='forms/'+ file.name;
-        });
-      })
-      .on("file",(name, file) => {
-        let rawdata = fs.readFileSync(file.path);
-        let uploadedSchema = JSON.parse(rawdata);
-        let formName=file.name.substring(0,file.name.length-5);
-        console.log("Uploaded file", name);
-        var newform=FormSchema.create({legalCompanyForm:formName,formSchema:uploadedSchema});
-       
-        var newCompanySchema = new mongoose.Schema(generator.convert(uploadedSchema.properties));
-        console.log(formName)
-        var a = Company.discriminator(formName, newCompanySchema)
-        console.log('successfully created',newCompanySchema)
-        res.json({ msg: "form uploaded successfully",data:newform });
+    let filename=req.file.originalname
+    let rawdata = fs.readFileSync(req.file.path);
+    let jsonData = JSON.parse(rawdata);
+    console.log(jsonData);
+    if (!rawdata) {
+      const error = new Error("Please upload a file");
+      error.httpStatusCode = 400;
+      return next(error);
+    } else {
+      let uploadedSchema = jsonData;
+      console.log("b");
+      let formName = filename.substring(0, filename.length - 5);
+      console.log("C");
+      console.log("Uploaded file", formName);
+      const newSchema= await FormSchema.create({
+        legalCompanyForm: formName,
+        formSchema: uploadedSchema
       });
+      res.send({msg:"successfully created",data:newSchema});
+      var newCompanySchema = new mongoose.Schema(
+        generator.convert(uploadedSchema.properties)
+      );
+      console.log(formName);
+      Company.discriminator(formName, newCompanySchema);
+      console.log("successfully created");
+      console.log(Object.keys(Company.discriminators));
+    }
   } catch (error) {
     console.log(error.message);
   }
