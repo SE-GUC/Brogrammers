@@ -276,10 +276,10 @@ constructor(props){
                       <main className={classes.content}>
                         <div className={classes.toolbar} />
                         <ViewLawyerEditableCases
-                  id={sessionStorage.getItem("id")}
-         
-                  token={sessionStorage.getItem("jwtToken")}
-                />
+                    id={sessionStorage.getItem("id")}
+                    ssn={sessionStorage.getItem("ssn")}
+                    token={sessionStorage.getItem("jwtToken")}
+                  />
                     
                       </main>
                     </div>
