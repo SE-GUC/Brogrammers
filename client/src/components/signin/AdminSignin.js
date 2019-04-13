@@ -71,7 +71,10 @@ export class AdminSignIn extends Component {
     }).then(response => {
       response.json().then(data => {
         console.log('Successful' + data + data.auth)
-        this.props.callBack(data.token, data.auth, 'a', data.id)
+        sessionStorage.setItem("jwtToken", data.token);
+        sessionStorage.setItem("auth", data.auth);
+        sessionStorage.setItem("type", 'a');
+        sessionStorage.setItem("id",  data.id);
         if(data.auth){
           document.location.href = "/profile"
         }

@@ -18,6 +18,7 @@ import RegisterReviewer from '../../pages/RegisterReviewer';
 import RegisterLawyer from '../../pages/RegisterLawyer';
 import AdminCases from '../../pages/AdminCases';
 import SimpleReactFileUpload from '../../layout/form/SimpleReactFileUpload'
+import EditProfileAdmin from '../../pages/EditProfileAdmin'
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -96,6 +97,10 @@ handleAdmin = () => {
                           <ListItemIcon><InboxIcon /></ListItemIcon>
                           <ListItemText primary="Home" />
                         </ListItem>
+                        <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
+                          <ListItemIcon><InboxIcon /></ListItemIcon>
+                          <ListItemText primary="Edit Your Profile" />
+                        </ListItem>
                         <ListItem button key={"View All Cases"} onClick={this.handleCases}>
                           <ListItemIcon><InboxIcon /></ListItemIcon>
                           <ListItemText primary="View All Cases" />
@@ -126,7 +131,8 @@ handleAdmin = () => {
                   </Drawer>
                   <main className={classes.content}>
                     <div className={classes.toolbar} />
-                        <RegisterAdmin/>
+                        <RegisterAdmin  
+                  token={sessionStorage.getItem("jwtToken")}/>
                 
                   </main>
                 </div>
@@ -157,6 +163,10 @@ handleAdmin = () => {
                           <ListItemIcon><InboxIcon /></ListItemIcon>
                           <ListItemText primary="Home" />
                         </ListItem>
+                        <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
+                          <ListItemIcon><InboxIcon /></ListItemIcon>
+                          <ListItemText primary="Edit Your Profile" />
+                        </ListItem>
                         <ListItem button key={"View All Cases"} onClick={this.handleCases}>
                           <ListItemIcon><InboxIcon /></ListItemIcon>
                           <ListItemText primary="View All Cases" />
@@ -187,7 +197,8 @@ handleAdmin = () => {
                   </Drawer>
                   <main className={classes.content}>
                     <div className={classes.toolbar} />
-                        <RegisterLawyer/>
+                        <RegisterLawyer callBack={this.callBack}
+                  token={sessionStorage.getItem("jwtToken")}/>
                 
                   </main>
                 </div>
@@ -218,6 +229,10 @@ handleAdmin = () => {
                           <ListItemIcon><InboxIcon /></ListItemIcon>
                           <ListItemText primary="Home" />
                         </ListItem>
+                        <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
+                          <ListItemIcon><InboxIcon /></ListItemIcon>
+                          <ListItemText primary="Edit Your Profile" />
+                        </ListItem>
                         <ListItem button key={"View All Cases"} onClick={this.handleCases}>
                           <ListItemIcon><InboxIcon /></ListItemIcon>
                           <ListItemText primary="View All Cases" />
@@ -248,7 +263,8 @@ handleAdmin = () => {
                   </Drawer>
                   <main className={classes.content}>
                     <div className={classes.toolbar} />
-                        <RegisterReviewer/>
+                        <RegisterReviewer 
+                  token={sessionStorage.getItem("jwtToken")}/>
                 
                   </main>
                 </div>
@@ -279,6 +295,10 @@ handleAdmin = () => {
                               <ListItemIcon><InboxIcon /></ListItemIcon>
                               <ListItemText primary="Home" />
                             </ListItem>
+                            <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
+                          <ListItemIcon><InboxIcon /></ListItemIcon>
+                          <ListItemText primary="Edit Your Profile" />
+                        </ListItem>
                             <ListItem button key={"View All Cases"} onClick={this.handleCases}>
                               <ListItemIcon><InboxIcon /></ListItemIcon>
                               <ListItemText primary="View All Cases" />
@@ -376,6 +396,70 @@ handleAdmin = () => {
                       </div>
                   )}
       
+                if(this.state.clicked =="profile")
+                {return(
+
+                  <div className={classes.root}>
+                      <CssBaseline />
+                      <AppBar position="fixed" className={classes.appBar}>
+                        <Toolbar>
+                          <Typography variant="h6" color="inherit" noWrap>
+                            Admin profile
+                          </Typography>
+                        </Toolbar>
+                      </AppBar>
+    
+                      <Drawer
+                        className={classes.drawer}
+                        variant="permanent"
+                        classes={{
+                          paper: classes.drawerPaper,
+                        }}
+                      >
+                        <div className={classes.toolbar} />
+                       
+                        <List>
+                        <ListItem button key={"Home"} onClick={this.handleHome}>
+                              <ListItemIcon><InboxIcon /></ListItemIcon>
+                              <ListItemText primary="Home" />
+                            </ListItem>
+                            <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
+                          <ListItemIcon><InboxIcon /></ListItemIcon>
+                          <ListItemText primary="Edit Your Profile" />
+                        </ListItem>
+                            <ListItem button key={"View All Cases"} onClick={this.handleCases}>
+                              <ListItemIcon><InboxIcon /></ListItemIcon>
+                              <ListItemText primary="View All Cases" />
+                            </ListItem>
+                        </List>
+                        <Divider />
+                        <List>
+                          
+                            <ListItem button key={"Create Admin"} onClick={this.handleAdmin}>
+                              <ListItemIcon><InboxIcon /></ListItemIcon>
+                              <ListItemText primary="Create Admin" />
+                            </ListItem>
+                            <ListItem button key={"Create Reviewer"} onClick={this.handleReviewer}>
+                              <ListItemIcon><InboxIcon /></ListItemIcon>
+                              <ListItemText primary="Create Reviewer" />
+                            </ListItem>
+                            <ListItem button key={"Create Lawyer"} onClick={this.handleLawyer}>
+                              <ListItemIcon><InboxIcon /></ListItemIcon>
+                              <ListItemText primary="Create Lawyer" />
+                            </ListItem>
+                  
+                        </List>
+                       
+                      </Drawer>
+                      <main className={classes.content}>
+                        <div className={classes.toolbar} />
+                            <EditProfileAdmin token={sessionStorage.getItem("jwtToken")}/>
+                    
+                      </main>
+                    </div>
+                )
+
+                }
             }
     }
   

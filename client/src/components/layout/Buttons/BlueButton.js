@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import classNames from 'classnames'
 import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import purple from '@material-ui/core/colors/purple'
@@ -68,8 +67,8 @@ function CustomizedButtons (props) {
   return (
     <div>
       <MuiThemeProvider theme={theme}>
-        <Button variant='contained' color='primary' className={classes.margin}>
-          Submit
+        <Button variant='contained' color='primary' className={classes.margin} onClick={() => {props.callBack()}}>
+          Submit a Manager
         </Button>
       </MuiThemeProvider>
     </div>

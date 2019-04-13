@@ -502,6 +502,7 @@ router.delete("/:id", async (req, res) => {
     console.log(error);
   }
 });
+
 router.get('/getRejectedTasks/Reviewer', async (req, res) => {
   try {
     var stat = 0
@@ -540,6 +541,7 @@ router.get('/getRejectedTasks/Reviewer', async (req, res) => {
     console.log(error)
   }
 })
+
 
 router.get('/getRejectedTasks/Reviewer', async (req, res) => {
   try {

@@ -72,7 +72,11 @@ export class LawyerSignIn extends Component {
     }).then(response => {
       response.json().then(data => {
         console.log('Successful' + data + data.auth)
-        this.props.callBack(data.token, data.auth, 'l',  data.id, data.ssn)
+        sessionStorage.setItem("jwtToken", data.token);
+        sessionStorage.setItem("auth", data.auth);
+        sessionStorage.setItem("type", 'l');
+        sessionStorage.setItem("id",  data.id);
+        sessionStorage.setItem("ssn", data.ssn);
         if(data.auth){
           document.location.href = "/profile"
         }

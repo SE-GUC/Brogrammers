@@ -626,12 +626,16 @@ router.post('/createssccompany', async (req, res) => {
       width: 410,
       align: 'center'
     });
+
     doc.end();
     res.setHeader('access-control-allow-origin', '*');
     res.status(200);
 
 
+
+
     res.json({ msg: 'SSC Company was created successfully', data: company })
+
   } catch (error) {
     console.log(error)
   }
@@ -754,6 +758,7 @@ router.put('/', async (req, res) => {
         .status(400)
         .send({ error: isValidated.error.details[0].message })
     }
+    console.log(stat);
       await Investor.findByIdAndUpdate(stat, req.body)
       res.json({ msg: 'Investor updated successfully' })
   } catch (error) {
