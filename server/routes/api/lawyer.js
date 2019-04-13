@@ -447,6 +447,7 @@ router.put('/editForm/:id/:companyId', async function (req, res) {
             .send({ error: isValidated.error.details[0].message })
         }
         await Company.findByIdAndUpdate(companyId, req.body)
+        await Company.findByIdAndUpdate(companyId,{status: 'PendingReviewer'})
         res.json({ msg: 'fourm updated successfully' })
       }
     }

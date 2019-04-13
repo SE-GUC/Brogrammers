@@ -40,7 +40,7 @@ const styles = theme => ({
 })
 
 class InvestorCompanyReg extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       company: {
@@ -57,24 +57,13 @@ class InvestorCompanyReg extends React.Component {
         capital: '',
         managers: new Array()
       }
-      // manager:{
-      //     name:'',
-      //     type:'',
-      //     sex:'',
-      //     nationality:'',
-      //     identificationType:'',
-      //     identificationNumber:'',
-      //     birthDate:'',
-      //     address:'',
-      //     managerialPosition:''
-      // }
     }
     this.handleRegister = this.handleRegister.bind(this)
     this.handleInput = this.handleInput.bind(this)
     this.handleOnClick = this.handleOnClick.bind(this)
   }
 
-  handleRegister (event) {
+  handleRegister(event) {
     console.log(this.props.token)
     event.preventDefault()
     fetch('http://localhost:3000/api/investors/createssccompany',
@@ -83,16 +72,16 @@ class InvestorCompanyReg extends React.Component {
         body: JSON.stringify(this.state.company),
         headers: {
           'Content-Type': 'application/json',
-          'x-access-token': this.props.token
+          'x-access-token': sessionStorage.getItem("jwtToken")
         }
       }).then(response => {
-      response.json().then(data => {
-        console.log('Successful' + data)
+        response.json().then(data => {
+          console.log('Successful' + data)
+        })
       })
-    })
   }
 
-  handleOnClick (js) {
+  handleOnClick(js) {
     this.state.company.managers.push(js)
     this.setState(prevState => {
       return {
@@ -104,7 +93,7 @@ class InvestorCompanyReg extends React.Component {
     )
   }
 
-  handleInput (event) {
+  handleInput(event) {
     let value = event.target.value
     let name = event.target.name
     this.setState(prevState => {
@@ -117,7 +106,7 @@ class InvestorCompanyReg extends React.Component {
     )
   }
 
-  render () {
+  render() {
     const { classes } = this.props
     return (
       <div className={classes.main}>
@@ -131,7 +120,7 @@ class InvestorCompanyReg extends React.Component {
             </Grid>
             <Grid container direction='column' alignItems='center'>
               <Typography variant='h6' component='h3'>
-                                Fill in your Company Form!
+                Fill in your Company Form!
               </Typography>
             </Grid>
             <Grid container direction='column' alignItems='center' >
