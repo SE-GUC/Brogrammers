@@ -88,13 +88,6 @@ class InvestorCard extends React.Component {
             subheader={this.reformatStatus(this.props)}
           />
           <CardContent>
-            <Typography>
-              {this.props.company.fees === undefined
-                ? "Fees will be displayed here."
-                : `${this.props.company.fees} ${
-                    this.props.company.capitalCurrency
-                  }`}
-            </Typography>
           </CardContent>
           <CardActions className={classes.actions} disableActionSpacing>
             <IconButton aria-label="View_Details">
