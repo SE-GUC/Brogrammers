@@ -16,6 +16,19 @@ import AccountCircle from "@material-ui/icons/AccountCircle"
 import MailIcon from "@material-ui/icons/Mail"
 import NotificationsIcon from "@material-ui/icons/Notifications"
 import MoreIcon from "@material-ui/icons/MoreVert"
+import Tab from '@material-ui/core/Tab';
+import red from '@material-ui/core/colors/red';
+import blue from '@material-ui/core/colors/blue';
+import SvgIcon from '@material-ui/core/SvgIcon';
+
+function HomeIcon(props) {
+  return (
+    <SvgIcon {...props}>
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+    </SvgIcon>
+  );
+}
+
 
 const styles = theme => ({
   root: {
@@ -129,6 +142,18 @@ class PrimarySearchAppBar extends React.Component {
     document.location.href = '/profile'
   }
 
+  handleSignUp=() =>{
+    document.location.href = '/register'
+  }
+
+  handleSignIn=() =>{
+    document.location.href = '/signin'
+  }
+
+  handleHome=() =>{
+    document.location.href = '/'
+  }
+
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state
     const { classes } = this.props
@@ -194,6 +219,14 @@ class PrimarySearchAppBar extends React.Component {
       sessionStorage.getItem('type') == 'l'
         ? {}
         : { display: 'none' }
+
+        const hiden =
+        sessionStorage.getItem('type') == 'i' ||
+        sessionStorage.getItem('type') == 'r' ||
+        sessionStorage.getItem('type') == 'a' ||
+        sessionStorage.getItem('type') == 'l'
+          ? { display: 'none' }
+          : {}
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -213,19 +246,10 @@ class PrimarySearchAppBar extends React.Component {
             >
               GAFI
             </Typography>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="What do you need?"
-                autoFocus
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput
-                }}
-              />
-            </div>
+
+           
+            <Tab label="Sign in" onClick={this.handleSignIn} style={hiden}/>
+            <Tab label="Sign up" onClick={this.handleSignUp} style={hiden}/>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop} style={hidei}>
               <IconButton color="inherit">
@@ -248,6 +272,23 @@ class PrimarySearchAppBar extends React.Component {
               </IconButton>
             </div>
 
+            <HomeIcon
+            onClick={this.handleHome}
+        className={classes.icon}
+        color="primary"
+        fontSize="large"
+        component={svgProps => (
+          <svg {...svgProps}>
+            <defs>
+              <linearGradient id="gradient1">
+                <stop offset="30%" stopColor={blue[400]} />
+                <stop offset="70%" stopColor={red[400]} />
+              </linearGradient>
+            </defs>
+            {React.cloneElement(svgProps.children[0], { fill: 'url(#gradient1)' })}
+          </svg>
+        )}
+      />
             <div className={classes.sectionMobile}>
               <IconButton
                 aria-haspopup="true"
@@ -256,6 +297,7 @@ class PrimarySearchAppBar extends React.Component {
               >
                 <MoreIcon />
               </IconButton>
+              
             </div>
           </Toolbar>
         </AppBar>

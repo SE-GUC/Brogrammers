@@ -73,9 +73,9 @@ export class AdminSignIn extends Component {
         console.log('Successful' + data + data.auth)
         sessionStorage.setItem("jwtToken", data.token);
         sessionStorage.setItem("auth", data.auth);
-        sessionStorage.setItem("type", 'a');
         sessionStorage.setItem("id",  data.id);
         if(data.auth){
+          sessionStorage.setItem("type", 'a');
           document.location.href = "/profile"
         }
         else{

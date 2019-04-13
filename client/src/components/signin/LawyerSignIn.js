@@ -74,10 +74,10 @@ export class LawyerSignIn extends Component {
         console.log('Successful' + data + data.auth)
         sessionStorage.setItem("jwtToken", data.token);
         sessionStorage.setItem("auth", data.auth);
-        sessionStorage.setItem("type", 'l');
         sessionStorage.setItem("id",  data.id);
         sessionStorage.setItem("ssn", data.ssn);
         if(data.auth){
+          sessionStorage.setItem("type", 'l');
           document.location.href = "/profile"
         }
         else{

@@ -73,9 +73,9 @@ export class ReviewerSignIn extends Component {
         console.log('Successful' + data + data.auth)
         sessionStorage.setItem("jwtToken", data.token);
         sessionStorage.setItem("auth", data.auth);
-        sessionStorage.setItem("type", 'r');
         sessionStorage.setItem("id",  data.id);
         if(data.auth){
+          sessionStorage.setItem("type", 'r');
           document.location.href = "/profile"
         }
         else{

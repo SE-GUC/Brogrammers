@@ -74,9 +74,9 @@ export class SignIn extends Component {
 
         sessionStorage.setItem("jwtToken", data.token);
         sessionStorage.setItem("auth", data.auth);
-        sessionStorage.setItem("type", 'i');
         sessionStorage.setItem("id",  data.id);
         if(data.auth){
+          sessionStorage.setItem("type", 'i');
           document.location.href = "/profile"
         }
         else{
