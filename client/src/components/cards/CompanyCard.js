@@ -37,14 +37,14 @@ function CompanyCard(props) {
         </Typography>
         <Typography component="p">
           <ul>
-            <li>addressHQ: {props.addressHQ}</li>
-            <li>regulationLaw: {props.regulationLaw} </li>
-            <li>legalCompanyForm: {props.legalCompanyForm}</li>
-            <li>nameInArabic: {props.nameInArabic}</li>
-            <li> governerateHQ:{props.governerateHQ}</li>
-            <li>cityHQ: {props.cityHQ}</li>
-            <li>telephoneHQ: {props.telephoneHQ}</li>
-            <li>faxHQ: {props.faxHQ}</li>
+            <li>HQ Address: {props.addressHQ}</li>
+            <li>Regulation Law: {props.regulationLaw} </li>
+            <li>Legal Company Form: {props.legalCompanyForm}</li>
+            <li>Name In Arabic: {props.nameInArabic}</li>
+            <li>Governerate HQ:{props.governerateHQ}</li>
+            <li>City HQ: {props.cityHQ}</li>
+            <li>Telephone Number: {props.telephoneHQ}</li>
+            <li>Fax Number: {props.faxHQ}</li>
           </ul>
           <br />
         </Typography>
