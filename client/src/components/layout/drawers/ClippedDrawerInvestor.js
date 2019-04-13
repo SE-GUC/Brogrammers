@@ -15,7 +15,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import InvestorCompanyRegSPC from '../../pages/InvestorCompanyRegSPC'
 import EditProfileInvestor from '../../pages/EditProfileInvestor'
-import investorRequests from '../../pages/InvestorRequests';
+import InvestorRequests from '../../pages/InvestorRequests'
 const drawerWidth = 240;
 
 const styles = theme => ({
