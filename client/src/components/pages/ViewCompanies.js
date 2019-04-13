@@ -8,10 +8,15 @@ const styles = {
     width: "auto",
     height: "auto",
     backgroundColor: "#eeeeee",
-    maxWidth: 900
+    maxWidth: "70.5%"
   },
   sep: {
     marginLeft: 400
+  },
+  header: {
+    textAlign: "center",
+    fontFamily: "Baufra",
+    textDecoration: "underline"
   }
 };
 
@@ -40,7 +45,7 @@ class ViewCompanies extends Component {
     const { classes } = this.props;
     return (
       <div className={classes.holder}>
-        <h1>Your Companies</h1>
+        <h1 className={classes.header}>Your Companies</h1>
         <div className={classes.sep}>
           <GridList className={classes.list}>
             {this.state.investorCompanies.map((item, i) => (
