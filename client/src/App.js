@@ -39,6 +39,7 @@ import LawyerCompanyRegSSC from "./components/pages/LawyerCompanyRegSSC";
 import LawyerCompanyRegSPC from "./components/pages/LawyerCompanyRegSPC";
 import ViewCompanies from "./components/pages/ViewCompanies";
 
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -55,6 +56,8 @@ class App extends Component {
       type: ""
     };
   }
+
+  
 
   setToken(t, a, type, id, ssn) {
     sessionStorage.setItem("jwtToken", t);
@@ -79,13 +82,25 @@ class App extends Component {
       <Router>
         <React.Fragment>
           <Navbar />
+
+          <Route
+              exact
+              path="/signin"
+              render={props => (
+                <div>
+                       <ComplexButton />{' '}
+                </div>
+              )}
+            />
+     
+
           <div style={this.state.display}>
             <Route
               exact
               path="/"
               render={props => (
                 <div>
-                  <ComplexButton /> <ViewApprovedCompanies />{" "}
+                   <ViewApprovedCompanies />{' '}
                 </div>
               )}
             />{" "}
