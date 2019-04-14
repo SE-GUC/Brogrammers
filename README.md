@@ -1,11 +1,6 @@
 
-# Heroku Link
+# Endpoints
 
-
-   - deployment on heroku link: https://clientbrogrammer.herokuapp.com/
-   
-  # End Points
-  
 - /api/investors/register
     - POST `//=> investor register (creating an account)`
         - !name: string().min(3)
@@ -380,4 +375,4 @@
 	- GET `//=> Registered on Unregistered Users view all the 'Accepted' companies`
 	
 	
-
+   - deployment on heroku link: https://mysterious-dusk-61508.herokuapp.com/
