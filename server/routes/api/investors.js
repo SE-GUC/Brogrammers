@@ -487,6 +487,58 @@ router.post('/createspccompany', async (req, res) => {
     console.log(error)
   }
 })
+router.post('/create/company', async (req, res) => {
+  var stat = 0
+  try {
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'Please login first.' })
+    }
+    jwt.verify(token, config.secret, async function (err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
+      stat = decoded.id
+    })
+    const currInvestor = await Investor.findById(stat)
+    if (!currInvestor) {
+      return res.status(404).send({ error: 'Investor does not exist' })
+    }
+    const info=req.body
+    const investorName = currInvestor.name
+    const investorSex = currInvestor.gender
+    const investorNationality = currInvestor.nationality
+    const investorIdentificationType = currInvestor.idType
+    const investorIdentificationNumber = currInvestor.idNumber
+    const investorBD = currInvestor.dob
+    const investorAddress = currInvestor.address
+    const investorTelephone = currInvestor.telephone
+    const investorFax = currInvestor.fax
+    const investorEmail = currInvestor.mail
+    
+    const newCompany = new Company({
+     info,
+     status:"PendingLawyer"
+    })
+    const company = await Company.create(newCompany)
+
+
+
+  
+
+
+
+
+
+    res.json({ msg: 'SPC Company was created successfully', data: company })
+  } catch (error) {
+    console.log(error)
+  }
+})
 // alaa
 router.post('/createssccompany', async (req, res) => {
   var stat = 0

@@ -118,6 +118,7 @@ router.post("/submit-form", upload.single("myFile"), async (req, res, next) => {
     res.status(500).send({ msg: error.message });
   }
 });
+
 router.get("/company/types", async (req, res) => {
   try {
     const companytypes = Object.keys(Company.discriminators);

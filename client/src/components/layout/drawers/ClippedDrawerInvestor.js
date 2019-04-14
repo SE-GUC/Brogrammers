@@ -471,7 +471,8 @@ class ClippedDrawerInvestor extends React.Component {
             <div className={classes.toolbar} />
             <Paper>
               {" "}
-              <Stepper />
+              <Stepper   id={sessionStorage.getItem("id")}
+              token={sessionStorage.getItem("jwtToken")}/>
             </Paper>
           </main>
         </div>
