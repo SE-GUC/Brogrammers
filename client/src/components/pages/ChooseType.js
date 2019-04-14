@@ -26,7 +26,8 @@ class CreateCompany extends React.Component {
       })
         .then(response => {
           response.json().then(data => {
-            this.setState({ companytypes: data.data });
+      
+            this.setState({ companytypes:  Object.keys(data.data).map(key => [key, data.data[key]][1].legalCompanyForm)});
           });
         })
         .catch(error => console.log(error.message));

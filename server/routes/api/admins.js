@@ -121,9 +121,10 @@ router.post("/submit-form", upload.single("myFile"), async (req, res, next) => {
 
 router.get("/company/types", async (req, res) => {
   try {
-    const companytypes = Object.keys(Company.discriminators);
+    const companytypes = await FormSchema.find({},{legalCompanyForm:1,_id:0})
     console.log(companytypes);
-    if (companytypes) res.send({ data: companytypes });
+    if (companytypes) 
+    res.send({ data: companytypes });
   } catch (error) {
     res.status(500).send(error.message);
   }
