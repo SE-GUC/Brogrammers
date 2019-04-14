@@ -5,7 +5,7 @@ import Form from "react-jsonschema-form";
 import axios from "axios";
 
 import TextField from '@material-ui/core/TextField';
-import { Input } from "@material-ui/core";
+import { Input, Paper } from "@material-ui/core";
 
 class SimpleReactFileUpload extends React.Component {
   constructor(props) {
@@ -91,11 +91,12 @@ class SimpleReactFileUpload extends React.Component {
 
   render() {
     return (
-      <>
-        <input type="file" name="myfile" onChange={this.onChangeHandler} />
+      <><Paper style={{height:1000}}>        <input type="file" name="myfile" onChange={this.onChangeHandler} />
         <Button onClick={this.onClickHandler}>Upload</Button>
         {this.handleDisplay(this.state)}
         {this.handleFile(this.state)}
+        </Paper>
+
       </>
     );
   }

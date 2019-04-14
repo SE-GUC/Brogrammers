@@ -29,15 +29,15 @@ router.post("/uploadfile", upload.single("myFile"), (req, res, next) => {
   const file = req.file;
   console.log(file);
   const fs = require("fs");
- // let filename=req.file.originalname
-    let rawdata = fs.readFileSync(req.file.path);
-    let jsonData = JSON.parse(rawdata);
+  // let filename=req.file.originalname
+  let rawdata = fs.readFileSync(req.file.path);
+  let jsonData = JSON.parse(rawdata);
   if (!file) {
     const error = new Error("Please upload a file");
     error.httpStatusCode = 400;
     return next(error);
   }
-  res.send({file,data:jsonData});
+  res.send({ file, data: jsonData });
 });
 
 // Logout Sprin2
@@ -86,7 +86,7 @@ router.get("/", async (req, res) => {
 router.post("/submit-form", upload.single("myFile"), async (req, res, next) => {
   const fs = require("fs");
   try {
-    let filename=req.file.originalname
+    let filename = req.file.originalname;
     let rawdata = fs.readFileSync(req.file.path);
     let jsonData = JSON.parse(rawdata);
     console.log(jsonData);
@@ -96,28 +96,49 @@ router.post("/submit-form", upload.single("myFile"), async (req, res, next) => {
       return next(error);
     } else {
       let uploadedSchema = jsonData;
-      console.log("b");
       let formName = filename.substring(0, filename.length - 5);
-      console.log("C");
       console.log("Uploaded file", formName);
-      const newSchema= await FormSchema.create({
-        legalCompanyForm: formName,
-        formSchema: uploadedSchema
-      });
+      const found = await FormSchema.findOne({ legalCompanyForm: formName });
+      if (!found) {
+        await FormSchema.create({
+          legalCompanyForm: formName,
+          formSchema: uploadedSchema
+        });
+      }
       var newCompanySchema = new mongoose.Schema(
         generator.convert(uploadedSchema.properties)
-        );
-        console.log(formName);
-        Company.discriminator(formName, newCompanySchema);
-        console.log("successfully created");
-        console.log(Object.keys(Company.discriminators));
-        res.send({msg:"successfully created"});
+      );
+      console.log(formName);
+      Company.discriminator(formName, newCompanySchema);
+      console.log("successfully created");
+      console.log(Object.keys(Company.discriminators));
+      res.send({ msg: "successfully created" });
     }
   } catch (error) {
     res.status(500).send({ msg: error.message });
   }
 });
-
+router.get("/company/types", async (req, res) => {
+  try {
+    const companytypes = Object.keys(Company.discriminators);
+    console.log(companytypes);
+    if (companytypes) res.send({ data: companytypes });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+router.get("/schema/:companytype", async (req, res) => {
+  const companytype = req.params.companytype;
+  try {
+    const companyschema = await FormSchema.findOne({
+      legalCompanyForm: companytype
+    });
+    console.log(companyschema);
+    if (companyschema) res.send({ data: companyschema.formSchema });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
 router.get("/:id", async (req, res) => {
   try {
     const adminId = req.params.id;

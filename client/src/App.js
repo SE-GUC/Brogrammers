@@ -38,6 +38,7 @@ import InvestorProfile from "./components/pages/InvestorProfile";
 import LawyerCompanyRegSSC from "./components/pages/LawyerCompanyRegSSC";
 import LawyerCompanyRegSPC from "./components/pages/LawyerCompanyRegSPC";
 import ViewCompanies from "./components/pages/ViewCompanies";
+import LinearDeterminate from "./components/layout/loading/LinearDeterminate";
 
 
 class App extends Component {
@@ -53,7 +54,8 @@ class App extends Component {
       isLoaded: false,
       token: null,
       auth: false,
-      type: ""
+      type: "",
+      loading:false
     };
   }
 
@@ -75,6 +77,11 @@ class App extends Component {
   handletoken = () => {
     this.setState({ token: sessionStorage.getItem("auth") });
   };
+  handleLoading=(state)=>{
+if (state.loading){
+  return <LinearDeterminate/>
+}
+  }
   render() {
     console.log(sessionStorage.getItem("auth"));
     // in the Navbar for the logout try to pass the auth and then render
@@ -82,7 +89,7 @@ class App extends Component {
       <Router>
         <React.Fragment>
           <Navbar />
-
+{this.handleLoading(this.state)}
           <Route
               exact
               path="/signin"
