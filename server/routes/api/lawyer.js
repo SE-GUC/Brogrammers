@@ -10,6 +10,7 @@ const validator = require('../../validations/LawyerValidation')
 var config = require('../../config/jwt')
 const Lawyer = require('../../models/Lawyer')
 const Company = require('../../models/Company')
+const nodemailer = require("nodemailer");
 
 router.get('/', async (req, res) => {
   var token = req.headers['x-access-token']
