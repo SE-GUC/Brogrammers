@@ -23,22 +23,22 @@ const styles = theme => ({
   },
 });
 
-function getSteps() {
-  return ['Select a company type', 'Fill The Required Fields'];
-}
 
-function getStepContent(stepIndex) {
-  switch (stepIndex) {
-    case 0:
-      return <ChooseType/>;
-    case 1:
-      return <PostForm type={"SLP"}/>;
-    default:
-      return 'Unknown stepIndex';
-  }
-}
 
 class HorizontalLabelPositionBelowStepper extends React.Component {
+  getSteps=() =>{
+   return ['Select a company type', 'Fill The Required Fields'];
+  }
+  getStepContent=(stepIndex) =>{
+    switch (stepIndex) {
+      case 0:
+        return <ChooseType/>;
+      case 1:
+        return <PostForm token={this.props.token} type={sessionStorage.getItem("type")}/>;
+      default:
+        return 'Unknown stepIndex';
+    }
+  }
   state = {
     activeStep: 0,
   };
@@ -63,7 +63,7 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const steps = getSteps();
+    const steps = this.getSteps();
     const { activeStep } = this.state;
 
     return (
@@ -83,7 +83,7 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
             </div>
           ) : (
             <div>
-              <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+              <Typography className={classes.instructions}>{this.getStepContent(activeStep)}</Typography>
               <div>
                 <Button
                   disabled={activeStep === 0}

@@ -156,6 +156,10 @@ class ClippedDrawerInvestor extends React.Component {
                 <ListItemIcon><InboxIcon /></ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
+              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
+                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemText primary="Create using existent dynamic form" />
+              </ListItem>
             </List>
           </Drawer>
           <main className={classes.content}>
@@ -242,6 +246,10 @@ class ClippedDrawerInvestor extends React.Component {
               <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
                 <ListItemIcon><InboxIcon /></ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
+              </ListItem>
+              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
+                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemText primary="Create using existent dynamic form" />
               </ListItem>
             </List>
           </Drawer>
@@ -336,6 +344,10 @@ class ClippedDrawerInvestor extends React.Component {
                 <ListItemIcon><InboxIcon /></ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
+              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
+                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemText primary="Create using existent dynamic form" />
+              </ListItem>
             </List>
           </Drawer>
           <main className={classes.content}>
@@ -425,6 +437,10 @@ class ClippedDrawerInvestor extends React.Component {
                 <ListItemIcon><InboxIcon /></ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
+              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
+                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemText primary="Create using existent dynamic form" />
+              </ListItem>
             </List>
           </Drawer>
           <main className={classes.content}>
@@ -483,6 +499,10 @@ class ClippedDrawerInvestor extends React.Component {
               <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
                 <ListItemIcon><InboxIcon /></ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
+              </ListItem>
+              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
+                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemText primary="Create using existent dynamic form" />
               </ListItem>
             </List>
           </Drawer>
@@ -550,6 +570,10 @@ class ClippedDrawerInvestor extends React.Component {
                 <ListItemIcon><InboxIcon /></ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
+              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
+                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemText primary="Create using existent dynamic form" />
+              </ListItem>
             </List>
           </Drawer>
           <main className={classes.content}>
@@ -560,7 +584,78 @@ class ClippedDrawerInvestor extends React.Component {
               ssn={sessionStorage.getItem("ssn")}
               token={sessionStorage.getItem("jwtToken")}
             />
+          
+          </main>
+        </div>
 
+      )
+    }
+    
+    if (this.state.clicked == "create") {
+      return (
+
+
+        <div className={classes.root}>
+          <CssBaseline />
+          <AppBar position="fixed" className={classes.appBar}>
+            <Toolbar>
+              <Typography variant="h6" color="inherit" noWrap>
+                Investor profile
+                              </Typography>
+            </Toolbar>
+          </AppBar>
+
+          <Drawer
+            className={classes.drawer}
+            variant="permanent"
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+          >
+            <div className={classes.toolbar} />
+
+            <List>
+              <ListItem button key={"Home"} onClick={this.handleHome}>
+                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemText primary="Home" />
+              </ListItem>
+              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
+                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemText primary="Edit Your Profile" />
+              </ListItem>
+
+            </List>
+            <Divider />
+            <List>
+
+              <ListItem button key={"View My Companies"} onClick={this.handleCases2}>
+                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemText primary="View My Companies" />
+              </ListItem>
+              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
+                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemText primary="Create SSC Company" />
+              </ListItem>
+              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
+                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemText primary="Create SPC Company" />
+              </ListItem>
+              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
+                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemText primary="Create using existent dynamic form" />
+              </ListItem>
+            </List>
+          </Drawer>
+          <main className={classes.content}>
+            <div className={classes.toolbar} />
+
+        
+
+            <Paper>
+              {" "}
+              <Stepper   id={sessionStorage.getItem("id")}
+              token={sessionStorage.getItem("jwtToken")}/>
+            </Paper>
           </main>
         </div>
 
