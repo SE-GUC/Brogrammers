@@ -12,40 +12,44 @@ const properties = {
 }
 
 const eachSlide = {
-  margin: '40px'
+  marginTop: '15px',
+  marginLeft: '21%',
+  alignItems: 'center'
 }
 
-const center = {
-  display: 'block',
-  marginLeft: 'auto',
-  marginRight: 'auto'
+const slideShowBackground = {
+  backgroundColor: '#eeeeee',
+  paddingBottom: '10px',
+  background: 'linear-gradient(to bottom, #000000, #DCDCDC)'
 }
 
 const Slideshow = () => {
   return (
-    <Slide>
-      <div style={eachSlide}>
-        <div>
-          <span>
-            <img src={img1} width={875} height={500} class="center" />
-          </span>
+    <div style={slideShowBackground}>
+      <Slide>
+        <div style={eachSlide}>
+          <div>
+            <span>
+              <img src={img1} width={875} height={500} mode="fill" />
+            </span>
+          </div>
         </div>
-      </div>
-      <div style={eachSlide}>
-        <div>
-          <span>
-            <img src={img2} width={875} height={500} mode="cover" />
-          </span>
+        <div style={eachSlide}>
+          <div>
+            <span>
+              <img src={img2} width={875} height={500} mode="cover" />
+            </span>
+          </div>
         </div>
-      </div>
-      <div style={eachSlide}>
-        <div>
-          <span>
-            <img src={img3} width={875} height={500} mode="cover" />
-          </span>
+        <div style={eachSlide}>
+          <div>
+            <span>
+              <img src={img3} width={875} height={500} mode="cover" />
+            </span>
+          </div>
         </div>
-      </div>
-    </Slide>
+      </Slide>
+    </div>
   )
 }
 
