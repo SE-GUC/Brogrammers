@@ -4,24 +4,21 @@ import img1 from '../../components/Images/Pyramids.jpg'
 import img2 from '../../components/Images/investorImage.jpg'
 import img3 from '../../components/Images/lawyerImage.jpg'
 
-const slideImages = [
-  '../../components/Images/Pyramids.jpg',
-  './components/Images/investorImage.jpg',
-  './components/Images/lawyerImage.jpg'
-]
-
 const properties = {
   duration: 5000,
-  transitionDuration: 500,
+  transitionDuration: 300,
   infinite: true,
-  indicators: true,
   arrows: true
 }
 
 const eachSlide = {
-  margin: '40px',
-  width: '1080',
-  height: '720'
+  margin: '40px'
+}
+
+const center = {
+  display: 'block',
+  marginLeft: 'auto',
+  marginRight: 'auto'
 }
 
 const Slideshow = () => {
@@ -30,21 +27,21 @@ const Slideshow = () => {
       <div style={eachSlide}>
         <div>
           <span>
-            <img src={img1} width={500} height={500} mode="fit" />
+            <img src={img1} width={875} height={500} class="center" />
           </span>
         </div>
       </div>
       <div style={eachSlide}>
         <div>
           <span>
-            <img src={img2} width={500} height={500} mode="fit" />
+            <img src={img2} width={875} height={500} mode="cover" />
           </span>
         </div>
       </div>
       <div style={eachSlide}>
         <div>
           <span>
-            <img src={img3} width={500} height={500} mode="fit" />
+            <img src={img3} width={875} height={500} mode="cover" />
           </span>
         </div>
       </div>
