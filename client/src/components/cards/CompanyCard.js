@@ -17,7 +17,7 @@ const styles = {
     fontSize: 14
   },
   pos: {
-    marginBottom: 12
+    padding: 3
   }
 }
 
