@@ -31,7 +31,10 @@ function HomeIcon(props) {
 
 const styles = theme => ({
   root: {
-    width: '100%'
+    width: '100%',
+    top: 0,
+    position: 'fixed',
+    zIndex: 2
   },
   grow: {
     flexGrow: 1
