@@ -14,7 +14,7 @@ const styles = {
     marginLeft: '25%'
   },
   companiesBackground: {
-    background: 'linear-gradient(to top, #3D0000, #000000, #000000, #DCDCDC)',
+    background: 'linear-gradient(to top, #000000, #DCDCDC)',
     borderStyle: 'solid',
     borderColor: 'black'
   }
@@ -49,7 +49,7 @@ class ViewApprovedCompanies extends Component {
           <GridList className={classes.list} style={styles.companiesBackground}>
             <h1 style={{ paddingLeft: '5%' }}> Approved Companies</h1>
             {this.state.approvedCompanies.map((item, i) => (
-              <InvestorCard key={i} company={item} />
+              <CompanyCard key={i} company={item} />
             ))}
           </GridList>
         </div>
