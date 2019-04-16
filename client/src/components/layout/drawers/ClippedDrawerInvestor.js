@@ -1,29 +1,29 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import AppBar from "@material-ui/core/AppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import EditProfileInvestor from "../../pages/EditProfileInvestor";
-import InvestorRequests from "../../pages/InvestorRequests";
-import ViewCompanies from "../../pages/ViewCompanies";
+import React from 'react'
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import Drawer from '@material-ui/core/Drawer'
+import AppBar from '@material-ui/core/AppBar'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import Toolbar from '@material-ui/core/Toolbar'
+import List from '@material-ui/core/List'
+import Typography from '@material-ui/core/Typography'
+import Divider from '@material-ui/core/Divider'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import InboxIcon from '@material-ui/icons/MoveToInbox'
+import EditProfileInvestor from '../../pages/EditProfileInvestor'
+import InvestorRequests from '../../pages/InvestorRequests'
+import ViewCompanies from '../../pages/ViewCompanies'
 import InvestorCompanyRegSPC from '../../pages/InvestorCompanyRegSPC'
 import InvestorCompanyRegSSC from '../../pages/InvestorCompanyRegSSC'
-import Stepper from "../../steppers/stepper";
-import { Paper } from "@material-ui/core";
-const drawerWidth = 240;
+import Stepper from '../../steppers/stepper'
+import { Paper } from '@material-ui/core'
+const drawerWidth = 240
 
 const styles = theme => ({
   root: {
-    display: "flex"
+    display: 'flex'
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1
@@ -40,48 +40,52 @@ const styles = theme => ({
     padding: theme.spacing.unit * 3
   },
   toolbar: theme.mixins.toolbar
-});
+})
 
 class ClippedDrawerInvestor extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      clicked: "i"
-    };
+      clicked: 'i'
+    }
   }
 
   handleHome = () => {
-    document.location.href = "/";
-  };
+    document.location.href = '/'
+  }
 
   handleCases2 = () => {
-    this.setState({ clicked: "companies" });
-  };
+    this.setState({ clicked: 'companies' })
+  }
 
   handleCreate = () => {
-    this.setState({ clicked: "create" });
-  };
+    this.setState({ clicked: 'create' })
+  }
 
   handleProfile = () => {
-    this.setState({ clicked: "profile" });
-  };
+    this.setState({ clicked: 'profile' })
+  }
   handleRequests = () => {
-    this.setState({ clicked: "requests" });
-  };
+    this.setState({ clicked: 'requests' })
+  }
 
   handleCompanySSC = () => {
-    this.setState({ clicked: "createssc" })
+    this.setState({ clicked: 'createssc' })
   }
   handleCompanySPC = () => {
-    this.setState({ clicked: "createspc" })
+    this.setState({ clicked: 'createspc' })
   }
   render() {
-    const { classes } = this.props;
-    if (this.state.clicked == "i") {
+    const { classes } = this.props
+    if (this.state.clicked == 'i') {
       return (
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
+          <AppBar
+            position="fixed"
+            className={classes.appBar}
+            style={{ backgroundColor: 'black' }}
+          >
             <Toolbar>
               <Typography variant="h6" color="inherit" noWrap>
                 Investor profile
@@ -99,7 +103,7 @@ class ClippedDrawerInvestor extends React.Component {
             <div className={classes.toolbar} />
 
             <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
+              <ListItem button key={'Home'} onClick={this.handleHome}>
                 <ListItemIcon>
                   <InboxIcon />
                 </ListItemIcon>
@@ -107,7 +111,7 @@ class ClippedDrawerInvestor extends React.Component {
               </ListItem>
               <ListItem
                 button
-                key={"Edit Your Profile"}
+                key={'Edit Your Profile'}
                 onClick={this.handleProfile}
               >
                 <ListItemIcon>
@@ -120,7 +124,7 @@ class ClippedDrawerInvestor extends React.Component {
             <List>
               <ListItem
                 button
-                key={"View My Companies"}
+                key={'View My Companies'}
                 onClick={this.handleCases2}
               >
                 <ListItemIcon>
@@ -130,7 +134,7 @@ class ClippedDrawerInvestor extends React.Component {
               </ListItem>
               <ListItem
                 button
-                key={"View My Requests"}
+                key={'View My Requests'}
                 onClick={this.handleRequests}
               >
                 <ListItemIcon>
@@ -140,7 +144,7 @@ class ClippedDrawerInvestor extends React.Component {
               </ListItem>
               <ListItem
                 button
-                key={"Create Companies"}
+                key={'Create Companies'}
                 onClick={this.handleCreate}
               >
                 <ListItemIcon>
@@ -148,16 +152,34 @@ class ClippedDrawerInvestor extends React.Component {
                 </ListItemIcon>
                 <ListItemText primary="Create Companies" />
               </ListItem>
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create SSC Company'}
+                onClick={this.handleCompanySSC}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create SPC Company'}
+                onClick={this.handleCompanySPC}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
-              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create using existent dynamic form'}
+                onClick={this.handleCreate}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create using existent dynamic form" />
               </ListItem>
             </List>
@@ -166,9 +188,9 @@ class ClippedDrawerInvestor extends React.Component {
             <div className={classes.toolbar} />
           </main>
         </div>
-      );
+      )
     }
-    if (this.state.clicked == "requests") {
+    if (this.state.clicked == 'requests') {
       return (
         <div className={classes.root}>
           <CssBaseline />
@@ -190,7 +212,7 @@ class ClippedDrawerInvestor extends React.Component {
             <div className={classes.toolbar} />
 
             <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
+              <ListItem button key={'Home'} onClick={this.handleHome}>
                 <ListItemIcon>
                   <InboxIcon />
                 </ListItemIcon>
@@ -198,7 +220,7 @@ class ClippedDrawerInvestor extends React.Component {
               </ListItem>
               <ListItem
                 button
-                key={"Edit Your Profile"}
+                key={'Edit Your Profile'}
                 onClick={this.handleProfile}
               >
                 <ListItemIcon>
@@ -211,7 +233,7 @@ class ClippedDrawerInvestor extends React.Component {
             <List>
               <ListItem
                 button
-                key={"View My Companies"}
+                key={'View My Companies'}
                 onClick={this.handleCases2}
               >
                 <ListItemIcon>
@@ -221,7 +243,7 @@ class ClippedDrawerInvestor extends React.Component {
               </ListItem>
               <ListItem
                 button
-                key={"View My Requests"}
+                key={'View My Requests'}
                 onClick={this.handleRequests}
               >
                 <ListItemIcon>
@@ -231,7 +253,7 @@ class ClippedDrawerInvestor extends React.Component {
               </ListItem>
               <ListItem
                 button
-                key={"Create Companies"}
+                key={'Create Companies'}
                 onClick={this.handleCreate}
               >
                 <ListItemIcon>
@@ -239,16 +261,34 @@ class ClippedDrawerInvestor extends React.Component {
                 </ListItemIcon>
                 <ListItemText primary="Create Companies" />
               </ListItem>
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create SSC Company'}
+                onClick={this.handleCompanySSC}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create SPC Company'}
+                onClick={this.handleCompanySPC}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
-              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create using existent dynamic form'}
+                onClick={this.handleCreate}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create using existent dynamic form" />
               </ListItem>
             </List>
@@ -257,15 +297,15 @@ class ClippedDrawerInvestor extends React.Component {
             <div className={classes.toolbar} />
 
             <InvestorRequests
-              id={sessionStorage.getItem("id")}
-              token={sessionStorage.getItem("jwtToken")}
+              id={sessionStorage.getItem('id')}
+              token={sessionStorage.getItem('jwtToken')}
             />
           </main>
         </div>
-      );
+      )
     }
 
-    if (this.state.clicked == "companies") {
+    if (this.state.clicked == 'companies') {
       return (
         <div className={classes.root}>
           <CssBaseline />
@@ -287,7 +327,7 @@ class ClippedDrawerInvestor extends React.Component {
             <div className={classes.toolbar} />
 
             <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
+              <ListItem button key={'Home'} onClick={this.handleHome}>
                 <ListItemIcon>
                   <InboxIcon />
                 </ListItemIcon>
@@ -295,7 +335,7 @@ class ClippedDrawerInvestor extends React.Component {
               </ListItem>
               <ListItem
                 button
-                key={"Edit Your Profile"}
+                key={'Edit Your Profile'}
                 onClick={this.handleProfile}
               >
                 <ListItemIcon>
@@ -308,7 +348,7 @@ class ClippedDrawerInvestor extends React.Component {
             <List>
               <ListItem
                 button
-                key={"View My Companies"}
+                key={'View My Companies'}
                 onClick={this.handleCases2}
               >
                 <ListItemIcon>
@@ -318,7 +358,7 @@ class ClippedDrawerInvestor extends React.Component {
               </ListItem>
               <ListItem
                 button
-                key={"View My Requests"}
+                key={'View My Requests'}
                 onClick={this.handleRequests}
               >
                 <ListItemIcon>
@@ -328,7 +368,7 @@ class ClippedDrawerInvestor extends React.Component {
               </ListItem>
               <ListItem
                 button
-                key={"Create Companies"}
+                key={'Create Companies'}
                 onClick={this.handleCreate}
               >
                 <ListItemIcon>
@@ -336,29 +376,47 @@ class ClippedDrawerInvestor extends React.Component {
                 </ListItemIcon>
                 <ListItemText primary="Create Companies" />
               </ListItem>
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create SSC Company'}
+                onClick={this.handleCompanySSC}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create SPC Company'}
+                onClick={this.handleCompanySPC}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
-              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create using existent dynamic form'}
+                onClick={this.handleCreate}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create using existent dynamic form" />
               </ListItem>
             </List>
           </Drawer>
           <main className={classes.content}>
             <div className={classes.toolbar} />
-            <ViewCompanies token={sessionStorage.getItem("jwtToken")} />
+            <ViewCompanies token={sessionStorage.getItem('jwtToken')} />
           </main>
         </div>
-      );
+      )
     }
 
-    if (this.state.clicked == "profile") {
+    if (this.state.clicked == 'profile') {
       return (
         <div className={classes.root}>
           <CssBaseline />
@@ -380,7 +438,7 @@ class ClippedDrawerInvestor extends React.Component {
             <div className={classes.toolbar} />
 
             <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
+              <ListItem button key={'Home'} onClick={this.handleHome}>
                 <ListItemIcon>
                   <InboxIcon />
                 </ListItemIcon>
@@ -388,7 +446,7 @@ class ClippedDrawerInvestor extends React.Component {
               </ListItem>
               <ListItem
                 button
-                key={"Edit Your Profile"}
+                key={'Edit Your Profile'}
                 onClick={this.handleProfile}
               >
                 <ListItemIcon>
@@ -401,7 +459,7 @@ class ClippedDrawerInvestor extends React.Component {
             <List>
               <ListItem
                 button
-                key={"View My Companies"}
+                key={'View My Companies'}
                 onClick={this.handleCases2}
               >
                 <ListItemIcon>
@@ -411,7 +469,7 @@ class ClippedDrawerInvestor extends React.Component {
               </ListItem>
               <ListItem
                 button
-                key={"View My Requests"}
+                key={'View My Requests'}
                 onClick={this.handleRequests}
               >
                 <ListItemIcon>
@@ -421,7 +479,7 @@ class ClippedDrawerInvestor extends React.Component {
               </ListItem>
               <ListItem
                 button
-                key={"Create Companies"}
+                key={'Create Companies'}
                 onClick={this.handleCreate}
               >
                 <ListItemIcon>
@@ -429,39 +487,55 @@ class ClippedDrawerInvestor extends React.Component {
                 </ListItemIcon>
                 <ListItemText primary="Create Companies" />
               </ListItem>
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create SSC Company'}
+                onClick={this.handleCompanySSC}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create SPC Company'}
+                onClick={this.handleCompanySPC}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
-              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create using existent dynamic form'}
+                onClick={this.handleCreate}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create using existent dynamic form" />
               </ListItem>
             </List>
           </Drawer>
           <main className={classes.content}>
             <div className={classes.toolbar} />
-            <EditProfileInvestor token={sessionStorage.getItem("jwtToken")} />
+            <EditProfileInvestor token={sessionStorage.getItem('jwtToken')} />
           </main>
         </div>
-      );
+      )
     }
 
-    if (this.state.clicked == "createssc") {
+    if (this.state.clicked == 'createssc') {
       return (
-
-
         <div className={classes.root}>
           <CssBaseline />
           <AppBar position="fixed" className={classes.appBar}>
             <Toolbar>
               <Typography variant="h6" color="inherit" noWrap>
                 Investor profile
-                              </Typography>
+              </Typography>
             </Toolbar>
           </AppBar>
 
@@ -469,39 +543,69 @@ class ClippedDrawerInvestor extends React.Component {
             className={classes.drawer}
             variant="permanent"
             classes={{
-              paper: classes.drawerPaper,
+              paper: classes.drawerPaper
             }}
           >
             <div className={classes.toolbar} />
 
             <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem button key={'Home'} onClick={this.handleHome}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Edit Your Profile'}
+                onClick={this.handleProfile}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Edit Your Profile" />
               </ListItem>
-
             </List>
             <Divider />
             <List>
-
-              <ListItem button key={"View My Companies"} onClick={this.handleCases2}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'View My Companies'}
+                onClick={this.handleCases2}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="View My Companies" />
               </ListItem>
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create SSC Company'}
+                onClick={this.handleCompanySSC}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create SPC Company'}
+                onClick={this.handleCompanySPC}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
-              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create using existent dynamic form'}
+                onClick={this.handleCreate}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create using existent dynamic form" />
               </ListItem>
             </List>
@@ -510,28 +614,24 @@ class ClippedDrawerInvestor extends React.Component {
             <div className={classes.toolbar} />
 
             <InvestorCompanyRegSSC
-              id={sessionStorage.getItem("id")}
-              ssn={sessionStorage.getItem("ssn")}
-              token={sessionStorage.getItem("jwtToken")}
+              id={sessionStorage.getItem('id')}
+              ssn={sessionStorage.getItem('ssn')}
+              token={sessionStorage.getItem('jwtToken')}
             />
-
           </main>
         </div>
-
       )
     }
 
-    if (this.state.clicked == "createspc") {
+    if (this.state.clicked == 'createspc') {
       return (
-
-
         <div className={classes.root}>
           <CssBaseline />
           <AppBar position="fixed" className={classes.appBar}>
             <Toolbar>
               <Typography variant="h6" color="inherit" noWrap>
                 Investor profile
-                              </Typography>
+              </Typography>
             </Toolbar>
           </AppBar>
 
@@ -539,39 +639,69 @@ class ClippedDrawerInvestor extends React.Component {
             className={classes.drawer}
             variant="permanent"
             classes={{
-              paper: classes.drawerPaper,
+              paper: classes.drawerPaper
             }}
           >
             <div className={classes.toolbar} />
 
             <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem button key={'Home'} onClick={this.handleHome}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Edit Your Profile'}
+                onClick={this.handleProfile}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Edit Your Profile" />
               </ListItem>
-
             </List>
             <Divider />
             <List>
-
-              <ListItem button key={"View My Companies"} onClick={this.handleCases2}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'View My Companies'}
+                onClick={this.handleCases2}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="View My Companies" />
               </ListItem>
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create SSC Company'}
+                onClick={this.handleCompanySSC}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create SPC Company'}
+                onClick={this.handleCompanySPC}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
-              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create using existent dynamic form'}
+                onClick={this.handleCreate}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create using existent dynamic form" />
               </ListItem>
             </List>
@@ -580,28 +710,24 @@ class ClippedDrawerInvestor extends React.Component {
             <div className={classes.toolbar} />
 
             <InvestorCompanyRegSPC
-              id={sessionStorage.getItem("id")}
-              ssn={sessionStorage.getItem("ssn")}
-              token={sessionStorage.getItem("jwtToken")}
+              id={sessionStorage.getItem('id')}
+              ssn={sessionStorage.getItem('ssn')}
+              token={sessionStorage.getItem('jwtToken')}
             />
-          
           </main>
         </div>
-
       )
     }
-    
-    if (this.state.clicked == "create") {
+
+    if (this.state.clicked == 'create') {
       return (
-
-
         <div className={classes.root}>
           <CssBaseline />
           <AppBar position="fixed" className={classes.appBar}>
             <Toolbar>
               <Typography variant="h6" color="inherit" noWrap>
                 Investor profile
-                              </Typography>
+              </Typography>
             </Toolbar>
           </AppBar>
 
@@ -609,39 +735,69 @@ class ClippedDrawerInvestor extends React.Component {
             className={classes.drawer}
             variant="permanent"
             classes={{
-              paper: classes.drawerPaper,
+              paper: classes.drawerPaper
             }}
           >
             <div className={classes.toolbar} />
 
             <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem button key={'Home'} onClick={this.handleHome}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Edit Your Profile'}
+                onClick={this.handleProfile}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Edit Your Profile" />
               </ListItem>
-
             </List>
             <Divider />
             <List>
-
-              <ListItem button key={"View My Companies"} onClick={this.handleCases2}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'View My Companies'}
+                onClick={this.handleCases2}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="View My Companies" />
               </ListItem>
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create SSC Company'}
+                onClick={this.handleCompanySSC}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create SPC Company'}
+                onClick={this.handleCompanySPC}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
-              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItem
+                button
+                key={'Create using existent dynamic form'}
+                onClick={this.handleCreate}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
                 <ListItemText primary="Create using existent dynamic form" />
               </ListItem>
             </List>
@@ -649,16 +805,15 @@ class ClippedDrawerInvestor extends React.Component {
           <main className={classes.content}>
             <div className={classes.toolbar} />
 
-        
-
             <Paper>
-              {" "}
-              <Stepper   id={sessionStorage.getItem("id")}
-              token={sessionStorage.getItem("jwtToken")}/>
+              {' '}
+              <Stepper
+                id={sessionStorage.getItem('id')}
+                token={sessionStorage.getItem('jwtToken')}
+              />
             </Paper>
           </main>
         </div>
-
       )
     }
   }
@@ -666,6 +821,6 @@ class ClippedDrawerInvestor extends React.Component {
 
 ClippedDrawerInvestor.propTypes = {
   classes: PropTypes.object.isRequired
-};
+}
 
-export default withStyles(styles)(ClippedDrawerInvestor);
+export default withStyles(styles)(ClippedDrawerInvestor)
