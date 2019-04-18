@@ -2,16 +2,23 @@ import React, { Component } from "react";
 import { withStyles, List, Paper } from "@material-ui/core";
 import InvestorCard from "../cards/InvestorCard";
 import GridList from "@material-ui/core/GridList";
+import Grow from "@material-ui/core/Grow";
 
 const styles = {
   list: {
     width: "auto",
     height: "auto",
-    backgroundColor: "#eeeeee",
-    maxWidth: 900
+    backgroundColor: "rgba(200,200,200,0.4)",
+    maxWidth: "85%"
   },
   sep: {
-    marginLeft: 400
+    marginLeft: 110
+  },
+  header: {
+    textAlign: "center",
+    fontFamily: "Trebuchet MS",
+    color:'white',
+    paddingBottom: 10
   }
 };
 
@@ -40,11 +47,13 @@ class ViewCompanies extends Component {
     const { classes } = this.props;
     return (
       <div className={classes.holder}>
-        <h1>Your Companies</h1>
+        <h1 className={classes.header}>Your Companies</h1>
         <div className={classes.sep}>
           <GridList className={classes.list}>
             {this.state.investorCompanies.map((item, i) => (
-              <InvestorCard key={i} company={item} />
+              <Grow in="true">
+                <InvestorCard key={i} company={item} />
+              </Grow>
             ))}
           </GridList>
         </div>

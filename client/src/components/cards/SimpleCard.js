@@ -70,7 +70,7 @@ function SimpleCard (props) {
             <li>investorFax: {props.investorFax}</li>
             <li>investorEmail:{props.investorEmail}</li>
           </ul>
-          <br />
+          
 
         </Typography>
       </CardContent>

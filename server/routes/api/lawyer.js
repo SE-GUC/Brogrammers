@@ -10,6 +10,7 @@ const validator = require('../../validations/LawyerValidation')
 var config = require('../../config/jwt')
 const Lawyer = require('../../models/Lawyer')
 const Company = require('../../models/Company')
+const nodemailer = require("nodemailer");
 
 router.get('/', async (req, res) => {
   var token = req.headers['x-access-token']
@@ -1755,7 +1756,7 @@ router.put('/addcomment/:id/:companyId', async function (req, res) {
 }
 })
 
-router.get('/:id/:companyID/viewFees', async (req, res) => {
+router.get('/:companyID/viewFees', async (req, res) => {
   var stat = 0
   var token = req.headers['x-access-token']
   if (!token) {
@@ -1771,13 +1772,7 @@ router.get('/:id/:companyID/viewFees', async (req, res) => {
     }
     stat = decoded.id
   })
-  const id = req.params.id
-  if (id !== stat) {
-    return res
-      .status(500)
-      .send({ auth: false, message: 'Failed to authenticate' })
-  }
-  const lawyer = await Lawyer.findById(id)
+  const lawyer = await Lawyer.findById(stat)
   if (!lawyer) {
     return res.status(400).send({ error: 'You are not an lawyer' })
   }
@@ -1813,7 +1808,7 @@ router.get('/:id/:companyID/viewFees', async (req, res) => {
     }
   }
 
-  res.json({ EstimatedFees: fees })
+  res.json({ EstimatedFees: fees , Currency: c.capitalCurrency })
 })
 
 router.put('/resubmit/:id/:companyId', async function (req, res) {

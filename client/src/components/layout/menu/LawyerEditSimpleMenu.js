@@ -4,7 +4,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import IconButton from "@material-ui/core/IconButton";
 import FormDialogue from "../form/LawyerEditForm";
 import CustomizedDialogDemo from "../form/CustomizedDialogDemo";
-import CustomizedDialogFees from "../form/CustomizedDialogFees";
+import CustomizedDialogFees from "../form/CustomizedDialogFees1";
 
 class SimpleMenu2 extends React.Component {
   constructor(props) {

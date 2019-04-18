@@ -40,6 +40,7 @@ const ManagerSchema = new Schema({
 });
 
 const CompanySchema = new Schema(
+<<<<<<< HEAD
   {
     regulationLaw: {
       type: String,
@@ -126,6 +127,9 @@ const CompanySchema = new Schema(
     investorEmail: {
       type: String
     },
+=======
+ {
+>>>>>>> 742008452aa90aadcf7bc1e27e4e6e15fac046a0
     managers: {
       type: [ManagerSchema]
     },
@@ -137,7 +141,10 @@ const CompanySchema = new Schema(
         "PendingReviewer",
         "RejectedLawyer",
         "RejectedReviewer",
+<<<<<<< HEAD
         "AcceptedReviewer",
+=======
+>>>>>>> 742008452aa90aadcf7bc1e27e4e6e15fac046a0
         "Accepted"
       ]
     },
@@ -156,7 +163,12 @@ const CompanySchema = new Schema(
       type: String
     }
   },
+<<<<<<< HEAD
   { discriminatorKey: "legalCompanyForm" }
+=======
+  { strict:false }
+
+>>>>>>> 742008452aa90aadcf7bc1e27e4e6e15fac046a0
 );
 
 module.exports = mongoose.model('companys',CompanySchema);

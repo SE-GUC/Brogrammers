@@ -83,7 +83,7 @@ class LawyerCompanyReg extends React.Component {
                 headers: {
                     'Content-Type': 'application/json',
                     'Origin': 'http://localhost:3000',
-                    'x-access-token': this.props.token
+                    'x-access-token': sessionStorage.getItem("jwtToken")
                 }
             }).then(response => {
                 response.json().then(data => {

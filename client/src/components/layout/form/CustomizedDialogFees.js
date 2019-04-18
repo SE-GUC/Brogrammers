@@ -10,6 +10,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
 import DialogContentText from "@material-ui/core/DialogContentText"
+import TakeMoney from "../../pages/TakeMoney"
 
 const DialogTitle = withStyles(theme => ({
   root: {
@@ -59,7 +60,9 @@ const DialogActions = withStyles(theme => ({
 
 class CustomizedDialogFees extends React.Component {
   state = {
-    open: false
+    open: false,
+    fees:0,
+    curr:''
   };
 
   handleClickOpen = () => {
@@ -71,23 +74,27 @@ class CustomizedDialogFees extends React.Component {
   handleClose = () => {
     this.setState({ open: false });
   };
-  handleView(e){
-    e.preventDefault();
-    
-    fetch('http://localhost:3000/api/investors/'+this.props.data.id+'/viewFees',{
+  
+  handleViewFees=()=>{
+    let x =0 ;
+    fetch('http://localhost:3000/api/investors/'+this.props.id+'/viewFees',{
         method: "GET",
         headers: {
           'Content-Type': 'application/json',
           'x-access-token':this.props.token
-        },
+        }
       }).then(response => {
         response.json().then(data =>{
-          console.log(data);
-        })
+          this.setState({
+            fees:data.EstimatedFees,
+            curr:data.Currency
+          })
+      }) 
     }) 
 }
 
   render() {
+    this.handleViewFees()
     return (
       <div>
         <MenuItem onClick={this.handleClickOpen}>View Fees</MenuItem>
@@ -100,10 +107,13 @@ class CustomizedDialogFees extends React.Component {
         <DialogTitle id="alert-dialog-title">{"Expected Fees:"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Company creation fees will be displayed here.
+              <p>
+                {this.state.fees} {this.state.curr}
+              </p>
             </DialogContentText>
           </DialogContent>
           <DialogActions>
+            <TakeMoney />
             <Button onClick={this.handleClose} color="primary">
               Close
             </Button>

@@ -8,6 +8,7 @@ const Company = require("../../models/Company");
 const Admin = require("../../models/Admin");
 const validator = require("../../validations/reviewerValidations");
 const companyvalidator = require("../../validations/companyValidations");
+const nodemailer = require("nodemailer");
 
 router.get("/", async (req, res) => {
   var token = req.headers["x-access-token"];
@@ -208,7 +209,6 @@ router.put("/assignFreeTask/:id2", async (req, res) => {
 });
 
 // Approves the task and updates the company status
-// taghere
 router.put("/getTasks/approve/:id2", async (req, res) => {
   try {
     var stat = 0;
