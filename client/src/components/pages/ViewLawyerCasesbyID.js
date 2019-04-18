@@ -43,6 +43,46 @@ class ViewLawyerCasesbyID extends Component {
   render () {
     var { isLoadied, companies } = this.state
     if (!isLoadied) { return <div> Loading ...</div> } else {
+      const listItems=
+      this.state.companies.map((element, i) => (
+        <div>
+        <MyLawyerCasesCard key={i} title={'helo'} info={element.investorName} 
+        status={element.status}
+        compid={element._id}  
+        nameInEnglish={element.nameInEnglish}
+        token={this.props.token}
+        addressHQ={element.addressHQ}
+          Status={element.status}
+          addressHQ={element.addressHQ}
+          regulationLaw={element.regulationLaw}
+          legalCompanyForm={element.legalCompanyForm}
+          nameInArabic={element.nameInArabic}
+          governerateHQ={element.governerateHQ}
+          cityHQ={element.cityHQ}
+
+          telephoneHQ={element.telephoneHQ}
+          faxHQ={element.faxHQ}
+          capitalCurrency={element.capitalCurrency}
+          capital={element.capital}
+          investorName={element.investorName}
+          investorSex={element.investorSex}
+          investorNationaty={element.investorNationaty}
+          investorIdentificationType={element.investorIdentificationType}
+          investorIdentificationNumber={element.investorIdentificationNumber}
+          investorBD={element.investorBD}
+          investorAddress={element.investorAddress}
+          investorTelephone={element.investorTelephone}
+          investorFax={element.investorFax}
+          investorEmail={element.investorEmail}
+        
+        
+        
+        
+        />
+        <br></br>
+        </div>
+      ))
+
       return (
 
         <div>
@@ -50,44 +90,9 @@ class ViewLawyerCasesbyID extends Component {
                 Sort By Id
                 </button>
         
-          <ul>
-            {this.state.companies.map((element, i) => (
-              <MyLawyerCasesCard key={i} title={'helo'} info={element.investorName} 
-              status={element.status}
-              compid={element._id}  
-              nameInEnglish={element.nameInEnglish}
-              token={this.props.token}
-              addressHQ={element.addressHQ}
-                Status={element.status}
-                addressHQ={element.addressHQ}
-                regulationLaw={element.regulationLaw}
-                legalCompanyForm={element.legalCompanyForm}
-                nameInArabic={element.nameInArabic}
-                governerateHQ={element.governerateHQ}
-                cityHQ={element.cityHQ}
-  
-                telephoneHQ={element.telephoneHQ}
-                faxHQ={element.faxHQ}
-                capitalCurrency={element.capitalCurrency}
-                capital={element.capital}
-                investorName={element.investorName}
-                investorSex={element.investorSex}
-                investorNationaty={element.investorNationaty}
-                investorIdentificationType={element.investorIdentificationType}
-                investorIdentificationNumber={element.investorIdentificationNumber}
-                investorBD={element.investorBD}
-                investorAddress={element.investorAddress}
-                investorTelephone={element.investorTelephone}
-                investorFax={element.investorFax}
-                investorEmail={element.investorEmail}
-              
-              
-              
-              
-              />
-            ))}
-
-          </ul>
+          
+{listItems}
+          
         </div>
 
       )

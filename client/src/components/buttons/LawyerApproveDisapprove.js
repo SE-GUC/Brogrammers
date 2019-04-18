@@ -51,7 +51,6 @@ render(){
     return(
         <div>
 <Button variant='contained' color='primary' size="medium" onClick={this.approveTask.bind(this)} >Accept Company</Button>
-
 <Button variant='contained' color='secondary' size="medium" onClick={this.disapproveTask.bind(this)}>Reject Company</Button>
 
 
