@@ -110,6 +110,7 @@ router.post("/submit-form", upload.single("myFile"), async (req, res, next) => {
       );
       console.log(formName);
       Company.discriminator(formName, newCompanySchema);
+      
       console.log("successfully created");
       console.log(Object.keys(Company.discriminators));
       res.send({ msg: "successfully created" });
@@ -122,7 +123,7 @@ router.post("/submit-form", upload.single("myFile"), async (req, res, next) => {
 router.get("/company/types", async (req, res) => {
   try {
     const companytypes = await FormSchema.find({},{legalCompanyForm:1,_id:0})
-    console.log(companytypes);
+    console.log(companytypes.legalCompanyForm);
     if (companytypes) 
     res.send({ data: companytypes });
   } catch (error) {
