@@ -40,96 +40,7 @@ const ManagerSchema = new Schema({
 });
 
 const CompanySchema = new Schema(
-<<<<<<< HEAD
-  {
-    regulationLaw: {
-      type: String,
-      required: true,
-      enum: ["Law 159", "Law 72"]
-    },
-    legalCompanyForm: {
-      type: String,
-      required: true
-    },
-    nameInArabic: {
-      type: String,
-      required: true
-    },
-    nameInEnglish: {
-      type: String,
-      required: false
-    },
-    governerateHQ: {
-      type: String,
-      required: true
-    },
-    cityHQ: {
-      type: String,
-      required: true
-    },
-    addressHQ: {
-      type: String,
-      required: true
-    },
-    telephoneHQ: {
-      type: Number
-    },
-    faxHQ: {
-      type: Number
-    },
-    capitalCurrency: {
-      type: String,
-      required: true
-    },
-    capital: {
-      type: Number,
-      required: true,
-      min: 50000
-    },
-    investorName: {
-      type: String,
-      required: true
-    },
-    investorType: {
-      type: String,
-      required: false
-    },
-    investorSex: {
-      type: String,
-      required: true
-    },
-    investorNationality: {
-      type: String,
-      required: true
-    },
-    investorIdentificationType: {
-      type: String,
-      required: true
-    },
-    investorIdentificationNumber: {
-      type: String,
-      required: true
-    },
-    investorBD: {
-      type: Date,
-      required: true
-    },
-    investorAddress: {
-      type: String,
-      required: true
-    },
-    investorTelephone: {
-      type: String
-    },
-    investorFax: {
-      type: String
-    },
-    investorEmail: {
-      type: String
-    },
-=======
  {
->>>>>>> 742008452aa90aadcf7bc1e27e4e6e15fac046a0
     managers: {
       type: [ManagerSchema]
     },
@@ -141,10 +52,6 @@ const CompanySchema = new Schema(
         "PendingReviewer",
         "RejectedLawyer",
         "RejectedReviewer",
-<<<<<<< HEAD
-        "AcceptedReviewer",
-=======
->>>>>>> 742008452aa90aadcf7bc1e27e4e6e15fac046a0
         "Accepted"
       ]
     },
@@ -163,12 +70,8 @@ const CompanySchema = new Schema(
       type: String
     }
   },
-<<<<<<< HEAD
-  { discriminatorKey: "legalCompanyForm" }
-=======
   { strict:false }
 
->>>>>>> 742008452aa90aadcf7bc1e27e4e6e15fac046a0
 );
 
 module.exports = mongoose.model('companys',CompanySchema);

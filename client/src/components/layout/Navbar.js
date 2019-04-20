@@ -20,6 +20,7 @@ import Tab from '@material-ui/core/Tab'
 import red from '@material-ui/core/colors/red'
 import blue from '@material-ui/core/colors/blue'
 import SvgIcon from '@material-ui/core/SvgIcon'
+import searchCases from '../pages/searchCases';
 
 function HomeIcon(props) {
   return (
@@ -108,7 +109,8 @@ class PrimarySearchAppBar extends React.Component {
     this.state = {
       anchorEl: null,
       mobileMoreAnchorEl: null,
-      auth: false
+      auth: false,
+      searchText:""
     }
   }
   handleProfileMenuOpen = event => {
@@ -137,7 +139,7 @@ class PrimarySearchAppBar extends React.Component {
     this.state.auth = false
     this.forceUpdate()
     this.handleMenuClose()
-    document.location.href = '/'
+    
   }
 
   handleProfile = () => {
@@ -154,6 +156,12 @@ class PrimarySearchAppBar extends React.Component {
 
   handleHome = () => {
     document.location.href = '/'
+  }
+  handleInput =(e) =>{
+    this.setState({searchText: e.target.value})
+  }
+  handleSearch = () => {
+    document.location.href = `/searchCases/${this.state.searchText}`
   }
 
   render() {
@@ -248,11 +256,30 @@ class PrimarySearchAppBar extends React.Component {
             >
               GAFI
             </Typography>
+            
+
+            <Tab label="Search" onClick={this.handleSearch}  />
+            
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                onChange = {this.handleInput}
+              />
+            </div>
+
 
             <Tab label="Sign in" onClick={this.handleSignIn} style={hiden} />
             <Tab label="Sign up" onClick={this.handleSignUp} style={hiden} />
             <div className={classes.grow} />
             <div className={classes.sectionDesktop} style={hidei}>
+            
               <IconButton color="inherit">
                 <Badge badgeContent={69} color="secondary">
                   <MailIcon />

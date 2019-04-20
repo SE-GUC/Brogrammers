@@ -11,7 +11,7 @@ const Company = require("../../models/Company");
 const nodemailer = require("nodemailer");
 var stripe = require("stripe")("sk_test_Vv7YbqIhi1pfFmwt4dKAFUvb000Duiu0d8");
 var PDFDocument = require("pdfkit");
-
+var SearchTag = require("../../models/SearchTag")
 // Logout Sprint2
 router.get("/logout", function(req, res) {
   res.status(200).send({ auth: false, token: null });
@@ -1423,14 +1423,14 @@ router.post("/searchCases",async function(req , res) {
 
 var search = req.body.tag
 //var collection = await SearchTag.find({ tag: ("/^" + search +"/") })
-var collection = await SearchTag.find({ tag: new RegExp(search)})
+var collection = await SearchTag.find({tag: new RegExp(search)})
 
 var data = []
 for(var i = 0 ; i<collection.length ; i++)
 { console.log("I am in")
   for(var k = 0 ; k<collection[i].location.length ; k++ )
   {
-    var company = await Company.findOne({_id :collection[i].location[k]})
+    var company = await Company.findById({_id :collection[i].location[k]})
     data.push(company)
   }
 }
