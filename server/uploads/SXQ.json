@@ -1,0 +1,46 @@
+{
+  "title": "SXQ Company",
+  "type": "object",
+  "properties": {
+    "regulationLaw": {"title":"Regulation Law","type": "string","enum": ["Law 159","Law 72"]},
+	"nameInArabic":{"title":"Name in Arabic","type": "string"},
+	"nameInEnglish":{"title":"Name in English","type":"string"},
+	"governerateHQ": { "title":"Governerate HQ", "type": "string"  },
+	"cityHQ": {"title":"City HQ","type": "string" },
+	"addressHQ": {"title":"Address HQ","type": "string"},
+	"telephoneHQ": { "title":"Telephone HQ","type": "number"},"faxHQ": {"title":"Fax HQ","type": "number"},
+	"capitalCurrency": {"enum":["USD","EGP","EUR","GBP"],"type": "string" },
+	"capital": {"type": "number","min": "50000"},
+    "investorName": {"type": "string"},"investorType": { "type": "string"},
+    "investorSex": {"type": "string","enum":["Male","Female"]     },
+    "investorNationality": { "type": "string"},
+    "investorIdentificationType": {
+      "type": "string",
+	  "enum":["Passport","National ID"]    
+      
+    },
+    "investorIdentificationNumber": {
+      "type": "string"
+      
+    },
+    "investorBD": {
+      "type": "string"
+      
+    },
+    "investorAddress": {
+      "type": "string"
+      
+    },
+    "investorTelephone": {
+      "type": "string"
+    },
+    "investorFax": {
+      "type": "string"
+    },
+    "investorEmail": {
+      "type": "string"
+    }
+  }
+  
+    }
+  
