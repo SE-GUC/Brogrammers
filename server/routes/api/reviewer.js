@@ -9,6 +9,7 @@ const Admin = require("../../models/Admin");
 const validator = require("../../validations/reviewerValidations");
 const companyvalidator = require("../../validations/companyValidations");
 const nodemailer = require("nodemailer");
+const SearchTag = require('../../models/SearchTag')
 
 router.get("/", async (req, res) => {
   var token = req.headers["x-access-token"];
