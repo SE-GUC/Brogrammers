@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import MyLawyerCasesCard from '../cards/MyLawyerCasesCard'
-
+import Button from '@material-ui/core/Button'
 
 class ViewLawyerCasesbyID extends Component {
   constructor (props) {
@@ -12,6 +12,9 @@ class ViewLawyerCasesbyID extends Component {
           isLoadied: false
 
         }
+        this.sortById=this.sortById.bind(this);
+        this.sortByCreationDate=this.sortByCreationDate.bind(this);
+
   }
 
   componentDidMount () {
@@ -27,14 +30,37 @@ class ViewLawyerCasesbyID extends Component {
   }
   
   sortById(e){
-    var { isLoadied, companies } = this.state
-    if (!isLoadied) { return <div> Loading ...</div> } else {
-      let sortedCompanies=this.state.companies.sort((a,b)=>{
-        return b._id-a._id;
-      });
-      this.state.companies=sortedCompanies;
-      console.log(sortedCompanies);
-    } 
+    const myData = [].concat(this.state.companies)
+    .sort((a, b) => a._id > b._id)
+    this.setState(
+      prevState=>{
+        return{
+          myData
+
+          }
+        },
+        ()=>console.log(myData)
+      
+     )
+     
+    
+  }
+
+  sortByCreationDate(e){
+    const myData = [].concat(this.state.companies)
+    .sort((a, b) => a.creationDate > b.creationDate)
+    this.setState(
+      prevState=>{
+        return{
+          myData
+
+          }
+        },
+        ()=>console.log(myData)
+      
+     )
+     
+    
   }
 
 
@@ -86,10 +112,9 @@ class ViewLawyerCasesbyID extends Component {
       return (
 
         <div>
-                  <button type='button' onClick={this.sortById}>
-                Sort By Id
-                </button>
-        
+              <Button variant="outlined" color="dark" onClick={this.sortById}> Sort By Id</Button> >
+               <Button variant="outlined" color="dark" onClick={this.sortByCreationDate}> Sort By creation Date</Button> >
+          
           
 {listItems}
           
