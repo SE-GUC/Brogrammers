@@ -20,7 +20,7 @@ claimTask()
     }
   }).then(response => {
    console.log(response)
-    alert("Task Claimed!!!")
+    alert(sessionStorage.getItem('lang')==='en'? 'Task claimed': 'استلام المهمه ')
     window.location.reload();
   })
  }
