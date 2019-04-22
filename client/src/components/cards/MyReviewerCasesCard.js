@@ -38,7 +38,7 @@ console.log(props.id)
     <Card className={classes.card}>
       <CardContent >
         <Typography className={classes.title} color='textSecondary' gutterBottom>
-          status: {props.status}
+        {sessionStorage.getItem('lang')==='en'? 'Status': 'خاله الشركه '}: {props.status}
         </Typography>
         <Typography variant='h5' component='h2'>
           {props.nameInEnglish}
