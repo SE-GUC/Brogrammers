@@ -17,6 +17,7 @@
     "react-joi-validation": "^1.7.0",
     "react-jsonschema-form": "^1.4.0",
     "react-material-ui-form-validator": "^2.0.7",
+    "react-native-hyperlink": "0.0.14",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "react-slideshow-image": "^1.1.5",

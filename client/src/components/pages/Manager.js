@@ -8,6 +8,8 @@ import Grid from '@material-ui/core/Grid'
 import Required from '../layout/inputs/Required'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import BlueButton from '../layout/Buttons/BlueButton'
+import Gender from '../layout/inputs/Gender';
+import Date from '../layout/DatePickers/Date'
 
 const styles = theme => ({
   main: {
@@ -84,38 +86,40 @@ class Manager extends React.Component {
           </Grid>
           <Grid container direction='column' alignItems='center'>
             <Typography variant='h6' component='h3'>
-              Fill in your Manager's Info!
-              </Typography>
+              <p>
+                {sessionStorage.getItem('lang') === 'en' ? 'Fill in your Managers Info!' : 'املئ بينات مدير الشركة'}
+              </p>
+            </Typography>
           </Grid >
           <Grid container direction='column' alignItems='center' >
-            <Required field={'Manager Name'} type={'text'} callBack={this.handleInput} name={'name'} />
+            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Manager Name' : '‫الاسم‬ المدير'} type={'text'} callBack={this.handleInput} name={'name'} />
           </Grid>
           <Grid container direction='column' alignItems='center' >
-            <Required field={'Manager Type'} type={'text'} callBack={this.handleInput} name={'type'} />
+            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Manager Type' : 'نوع المدير'} type={'text'} callBack={this.handleInput} name={'type'} />
           </Grid>
           <Grid container direction='column' alignItems='center' >
-            <Required field={'Gender'} type={'text'} callBack={this.handleInput} name={'sex'} />
+            <Gender field={sessionStorage.getItem('lang') === 'en' ? 'Manager Gender' : 'جنس المدير'} />
           </Grid>
           <Grid container direction='column' alignItems='center' >
-            <Required field={'Manager Nationality'} type={'text'} callBack={this.handleInput} name={'nationality'} />
+            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Manager Nationality' : 'جنسیة‬ المدير'} type={'text'} callBack={this.handleInput} name={'nationality'} />
           </Grid>
           <Grid container direction='column' alignItems='center' >
-            <Required field={'identificationType'} type={'text'} callBack={this.handleInput} name={'identificationType'} />
+            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Identification Type' : 'نوع اثبات الشخصية'} type={'text'} callBack={this.handleInput} name={'identificationType'} />
           </Grid>
           <Grid container direction='column' alignItems='center' >
-            <Required field={'identificationNumber'} type={'text'} callBack={this.handleInput} name={'identificationNumber'} />
+            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Identification Number' : 'رقم اثبات الشخصية'} type={'text'} callBack={this.handleInput} name={'identificationNumber'} />
           </Grid>
           <Grid container direction='column' alignItems='center' >
-            <Required field={'birthDate'} type={'text'} callBack={this.handleInput} name={'birthDate'} />
+            <Date callBack={this.handleInput} name={'birthDate'} />
           </Grid>
           <Grid container direction='column' alignItems='center' >
-            <Required field={'address'} type={'text'} callBack={this.handleInput} name={'address'} />
+            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Address' : 'عنوان الاقامة'} type={'text'} callBack={this.handleInput} name={'address'} />
           </Grid>
           <Grid container direction='column' alignItems='center' >
-            <Required field={'managerialPosition'} type={'text'} callBack={this.handleInput} name={'managerialPosition'} />
+            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Managerial Position' : 'صفة الشخص في مجلس المدرين'} type={'text'} callBack={this.handleInput} name={'managerialPosition'} />
           </Grid>
           <Grid container direction='column' alignItems='flex-end' >
-            <BlueButton type='button' callBack={this.handle}/>
+            <BlueButton type='button' callBack={this.handle} />
           </Grid>
         </Grid>
       </div >

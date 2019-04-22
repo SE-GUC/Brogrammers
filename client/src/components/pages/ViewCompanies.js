@@ -17,7 +17,7 @@ const styles = {
   header: {
     textAlign: "center",
     fontFamily: "Trebuchet MS",
-    color:'white',
+    color: 'white',
     paddingBottom: 10
   }
 };
@@ -45,20 +45,25 @@ class ViewCompanies extends Component {
 
   render() {
     const { classes } = this.props;
-    return (
-      <div className={classes.holder}>
-        <h1 className={classes.header}>Your Companies</h1>
-        <div className={classes.sep}>
-          <GridList className={classes.list}>
-            {this.state.investorCompanies.map((item, i) => (
-              <Grow in="true">
-                <InvestorCard key={i} company={item} />
-              </Grow>
-            ))}
-          </GridList>
+    if (!this.state.investorCompanies) {
+      return (<h10>{sessionStorage.getItem('lang') === 'en' ? 'You have no companies' : 'لا يوجد لديك شريكات'}</h10>)
+    }
+    else {
+      return (
+        <div className={classes.holder}>
+          <h1 className={classes.header}>{sessionStorage.getItem('lang') === 'en' ? 'Your Companies' : ' شريكاتك'}</h1>
+          <div className={classes.sep}>
+            <GridList className={classes.list}>
+              {this.state.investorCompanies.map((item, i) => (
+                <Grow in="true">
+                  <InvestorCard key={i} company={item} />
+                </Grow>
+              ))}
+            </GridList>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 export default withStyles(styles)(ViewCompanies);
