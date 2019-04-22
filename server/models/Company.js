@@ -58,6 +58,9 @@ const CompanySchema = new Schema(
         "Accepted"
       ]
     },
+    legalCompanyForm:{
+      type: String
+    },
     lawyer: {
       type: String
       // Lawyer SSN
