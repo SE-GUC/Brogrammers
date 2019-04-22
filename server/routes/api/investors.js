@@ -821,6 +821,9 @@ router.post("/createspccompany", async (req, res) => {
     const company = await Company.create(newCompany)
     // Insert Tags into the searchTag code in creating the company from code line 479 till 635
     //governerate tag
+    var d = new Date();
+    d.setTime(d.getTime());
+    company.creationDate=d
     const government = await SearchTag.findOne({tag:company.governerateHQ})
     if(!government)
     {
@@ -1107,7 +1110,9 @@ router.post('/createssccompany', async (req, res) => {
     const company = await Company.create(newCompany)
 
 
-
+    var d = new Date();
+    d.setTime(d.getTime());
+    company.creationDate=d
      //governerate tag
      const government = await SearchTag.findOne({tag:company.governerateHQ})
      if(!government)
