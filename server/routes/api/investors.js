@@ -1435,7 +1435,7 @@ stripe.charges.create({
         sucess:true,
         message:'nice'
       })
-       var company = await Company.findByIdAndUpdate(id,{status:"Accepted"})
+       const company = await Company.findByIdAndUpdate(id,{status:"Accepted"})
        
       var regulationLaw = company.regulationLaw
       var legalCompanyForm = company.legalCompanyForm

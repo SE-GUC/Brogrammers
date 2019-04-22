@@ -39,6 +39,7 @@ import ViewCompanies from './components/pages/ViewCompanies'
 import LinearDeterminate from './components/layout/loading/LinearDeterminate'
 import Slideshow from './components/slideshow/Slideshow'
 import SearchCases from './components/pages/searchCases'
+import UploadImage from './components/pages/uploadImage'
 
 class App extends Component {
   constructor(props) {
@@ -276,6 +277,19 @@ class App extends Component {
               ) : (
                 <ReviewerSignIn />
               )
+            }
+          />{' '}
+            <Route
+            exact
+            path="/uploadImage"
+            component={() =>
+             // sessionStorage.getItem('auth') &&
+             // sessionStorage.getItem('type') == 'a' ? (
+                <UploadImage
+                />
+             // ) : (
+             //   <AdminSignIn />
+             // )
             }
           />{' '}
           <Route

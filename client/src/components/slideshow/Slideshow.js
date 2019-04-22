@@ -40,6 +40,7 @@ const Slideshow = () => {
               <img src={img2} width={875} height={500} mode="cover" />
             </span>
           </div>
+          
         </div>
         <div style={eachSlide}>
           <div>
