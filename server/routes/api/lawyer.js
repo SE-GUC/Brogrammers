@@ -528,6 +528,7 @@ router.put('/editForm/:id/:companyId', async function (req, res) {
             .send({ error: isValidated.error.details[0].message })
         }
         await Company.findByIdAndUpdate(companyId, req.body)
+        await Company.findOneAndUpdate(query, { status: 'PendingReviewer' })
         const updatedcompstatus = await Company.findById(companyId) 
 
               
