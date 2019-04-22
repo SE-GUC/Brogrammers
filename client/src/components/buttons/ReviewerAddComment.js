@@ -30,7 +30,7 @@ addComment()
   }).then(response => {
     console.log(response)
      alert("Your comment has been added successfully !!")
-     window.location.reload();
+     this.forceUpdate()
    }) 
 }
 clean = obj => {
