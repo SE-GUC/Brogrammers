@@ -28,8 +28,6 @@ import ComplexButton from './components/layout/Complex Button/ComplexButton'
 import ViewLawyerCasesbyID from './components/pages/ViewLawyerCasesbyID.js'
 import ViewReviewerCasesbyID from './components/pages/ViewReviewerCasesbyID'
 import ViewApprovedCompanies from './components/pages/ViewApprovedCompanies'
-import ChooseLawRegulation from './components/pages/ChooseLawRegulation'
-import ChooseCompanyType from './components/pages/ChooseCompanyType'
 import ViewLawyerEditableCases from './components/pages/ViewLawyerEditableCases'
 import AdminProfile from './components/pages/AdminProfile'
 import LawyerProfile from './components/pages/LawyerProfile'
@@ -166,8 +164,7 @@ class App extends Component {
               )
             }
           />{' '}
-          <Route exact path="/chooseType/:law" component={ChooseCompanyType} />{' '}
-          <Route exact path="/chooseLaw" component={ChooseLawRegulation} />{' '}
+          
           <Route
             exact
             path="/admin/register-reviewer"

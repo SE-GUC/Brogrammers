@@ -39,7 +39,7 @@ const ManagerSchema = new Schema({
   }
 })
 
-const CompanySchema = new Schema({
+const CompanyFinalSchema = new Schema({
   regulationLaw: {
     type: String,
     required: true,
@@ -127,27 +127,7 @@ const CompanySchema = new Schema({
   },
   managers: {
     type: [ManagerSchema]
-  },
-  status: {
-    type: String,
-    default: 'PendingLawyer',
-    enum: ['PendingLawyer', 'PendingReviewer', 'RejectedLawyer', 'RejectedReviewer','AccpetedReviewer', 'Accepted']
-  },
-  lawyer: {
-    type: String
-    // Lawyer SSN
-  },
-  lawyerComment: {
-    type: String
-
-  },
-  reviewer: {
-    type: String
-    // should be type reviewer
-  },
-  reviewerComment: {
-    type: String
   }
 })
 
-module.exports = mongoose.model('companys', CompanySchema)
+module.exports = mongoose.model('companyFinal', CompanyFinalSchema)

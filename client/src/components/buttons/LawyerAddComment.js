@@ -29,7 +29,8 @@ addComment()
     }
   }).then(response => {
     console.log(response)
-     alert("Your comment has been added successfully !!")
+     alert( sessionStorage.getItem('lang')==='en'? 'Your Comment has been added successfully': 'تم اضافه تعليقك بنجاح'
+     )
      window.location.reload();
    }) 
 }
@@ -48,14 +49,16 @@ render(){
 
       <NotRequired
             name={"lawyerComment"}
-            field={"lawyerComment"}
+            field={ sessionStorage.getItem('lang')==='en'? 'lawyerComment': 'تعليق المحامى'
+          }
             type="text"
             callBack={this.onChange}
           />
             <Button variant='contained'
             color='primary' 
             size="medium" 
-            onClick={this.addComment.bind(this)} >Add Comment</Button>
+            onClick={this.addComment.bind(this)} >{ sessionStorage.getItem('lang')==='en'? 'Add comment': 'اضافه التعليق'
+          }</Button>
         </div>
     )
 }

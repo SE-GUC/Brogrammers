@@ -17,7 +17,6 @@ import EditProfileLawyer from '../../pages/EditProfileLawyer'
 import LawyerCases from '../../pages/LawyerCases';
 import ViewLawyerCasesbyID from '../../pages/ViewLawyerCasesbyID'
 import ViewLawyerEditableCases from '../../pages/ViewLawyerEditableCases'
-import ChooseCompanyType from '../../pages/ChooseCompanyType'
 import LawyerComment from '../../pages/LawyerComment'
 import LawyerCompanyRegSSC from '../../pages/LawyerCompanyRegSSC'
 import LawyerCompanyRegSPC from '../../pages/LawyerCompanyRegSPC'
