@@ -122,28 +122,52 @@ router.post("/submit-form", upload.single("myFile"), async (req, res, next) => {
           legalCompanyForm: formName,
           formSchema: uploadedSchema
         });
+      } else {
+        await FormSchema.updateOne(
+          {
+            legalCompanyForm: formName
+          },
+          { formSchema: uploadedSchema }
+        );
       }
       var newCompanySchema = new mongoose.Schema(
         generator.convert(uploadedSchema.properties)
       );
       console.log(formName);
-      Company.discriminator(formName, newCompanySchema);
-      
+
       console.log("successfully created");
-      console.log(Object.keys(Company.discriminators));
       res.send({ msg: "successfully created" });
     }
   } catch (error) {
     res.status(500).send({ msg: error.message });
   }
 });
+router.delete("/delete-form", async (req, res) => {
+  var formName = req.body.formName;
+  console.log(req)
+  try {
+    const found = await FormSchema.findOne({ legalCompanyForm: formName });
+
+    if (!found) {
+      res.send({ msg: "invalid company" });
+    } else {
+      await FormSchema.deleteOne({ legalCompanyForm: formName }).then(
+        res.send({ msg: "successfully deleted" })
+      );
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
 
 router.get("/company/types", async (req, res) => {
   try {
-    const companytypes = await FormSchema.find({},{legalCompanyForm:1,_id:0})
+    const companytypes = await FormSchema.find(
+      {},
+      { legalCompanyForm: 1, _id: 0 }
+    );
     console.log(companytypes.legalCompanyForm);
-    if (companytypes) 
-    res.send({ data: companytypes });
+    if (companytypes) res.send({ data: companytypes });
   } catch (error) {
     res.status(500).send(error.message);
   }

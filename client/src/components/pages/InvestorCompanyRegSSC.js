@@ -14,7 +14,14 @@ import BlueButton from '../layout/Buttons/BlueButton'
 import Manager from './Manager'
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
+import firebase from '../../firebase';
+import img3 from '../../components/Images/capture.png'
 window.html2canvas=html2canvas
+
+
+
+
+const storage = firebase.storage();
 
 const styles = theme => ({
   main: {
@@ -47,17 +54,17 @@ class InvestorCompanyReg extends React.Component {
     super(props)
     this.state = {
       company: {
-        regulationLaw: 'Law 159',
-        legalCompanyForm: 'lol',
-        nameInArabic: 'الفشاخ',
-        nameInEnglish: 'The Fosha5',
-        governerateHQ: 'kaula lambor',
-        cityHQ: 'cairo',
-        addressHQ: 'hnak',
-        telephoneHQ: '696969696',
-        faxHQ: '696969696',
-        capitalCurrency: 'egp',
-        capital: '69696969696',
+        regulationLaw: '',
+        legalCompanyForm: '',
+        nameInArabic: '',
+        nameInEnglish: '',
+        governerateHQ: '',
+        cityHQ: '',
+        addressHQ: '',
+        telephoneHQ: '',
+        faxHQ: '',
+        capitalCurrency: '',
+        capital: '',
         managers: new Array()
       },
       id:'',
@@ -85,36 +92,73 @@ class InvestorCompanyReg extends React.Component {
     })
     e.preventDefault();
 
-console.log("pdf will be shown")
-var source = document.getElementById('com');
-var source2 = document.getElementById('com2');
-var source3 = document.getElementById('com3');
-    html2canvas(source,{
-      dpi: 144
-    }).then(function(canvas) {
-      var img = canvas.toDataURL('image/png');
-      var doc = new jsPDF();
-      doc.addImage(img, 'JPEG', 0, 30);
-      doc.addPage();
-      html2canvas(source2,{
-        dpi: 144
-      }).then(function(canvas) {
-        img = canvas.toDataURL('image2/png');
-        doc.addImage(img, 'JPEG', 0, 30);
-        doc.addPage()
-        html2canvas(source3,{
-          dpi: 144
+    var source = document.getElementById('com');
+    var source2 = document.getElementById('com2');
+    var source3 = document.getElementById('com3');
+    var doc=''
+    var blob=''
+    var id=this.state.id
+        html2canvas(source,{
+          dpi: 144,
+          scale:0.9
         }).then(function(canvas) {
-          img = canvas.toDataURL('image3/png');
-          doc.addImage(img, 'JPEG', 0, 30);
-          doc.save('test.pdf');
-          document.location.href = '/profile'
-        })
-       
+          var img = canvas.toDataURL('image/png');
+          var doc = new jsPDF();
+          var myImage = new Image(100, 200);
+          doc.addImage(img, 'JPEG', 17, 10);
+          doc.addPage();
+          html2canvas(source2,{
+            dpi: 144,
+            scale:0.9
+          }).then(function(canvas) {
+            img = canvas.toDataURL('image2/png');
+            doc.addImage(img, 'JPEG', 17, 10);
+            doc.addPage()
+            html2canvas(source3,{
+              dpi: 144,
+              scale:0.9
+            }).then(function(canvas) {
+              img = canvas.toDataURL('image3/png');
+              doc.addImage(img, 'JPEG', 17, 10);
+               var image= doc.output('blob')
+             // document.location.href = '/profile';
+             const uploadTask = storage.ref(`${id}/pdf`).put(image);
+             uploadTask.on('state_changed', 
+             (snapshot) => {
+               // progrss function ....
+               const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+             }, 
+             (error) => {
+                  // error function ....
+               console.log(error);
+             }, 
+           () => {
+               // complete function ....
+               storage.ref(id).child('pdf').getDownloadURL().then(url => {
+                   console.log(url);
+                   window.open(url,'_blank');
+                   fetch('http://localhost:3000/api/investors/pdf/'+id,
+                   {
+                     method: 'POST',
+                     body: JSON.stringify({pdf:url}),
+                     headers: {
+                       'Content-Type': 'application/json',
+                       'Origin': 'http://localhost:3000',
+                       'x-access-token': sessionStorage.getItem("jwtToken")
+                     }
+                   }).then(response => {
+                      console.log(response)
+                   })
+               })
+           });
+            })
+    
+           
+          })
+          
       })
+     
       
-  });
-
 
   };
 
@@ -259,15 +303,17 @@ var source3 = document.getElementById('com3');
             </Grid>
           </Grid>
         </Paper>
-<div style={{  display: this.state.vis }}>
-        <div id="com" dir="rtl" lang='ar' >
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+        <div style={{  display: this.state.vis }}>
+
+<div id="com" dir="rtl" lang='ar'  >
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+<img src={img3} width={160} height={133} mode="fill" />
 <h4 align='center' styles={{}}>النظام الأساسي</h4>
 <h4 align='center'>  لشركة {this.state.company.nameInArabic} {this.state.company.nameInEnglish}</h4>
 <h4 align='center'>شركة شخص واحد</h4>
 <h4 align='center'>خاضعة لأحكام قانون شركات المساھمة وشركات التوصیة بالأسھم والشركات ذات المسئولیة المحدودة وشركات
 الشخص الواحد الصادر بالقانون رقم ١٥٩ لسنة ١٩٨١</h4>
-<h4 align='center'> رقم العقد {this.state.id} </h4>
+<h4 align='center'>  رقم العقد  {this.state.id}  </h4>
 <p> إنه في یوم الثلاثاء الموافق ٢٠١٩/٠٥/٠ تم إقرار ھذا النظام الأساسي وفقا للمواد الآتیة </p>
 <h4 align='center'><u><b>تمهيد</b></u></h4>
 <p> في اطار أحكام القانون المصري وافق الموقع على هذا النظام الأساسي على تأسيس شركة شخص واحد تحت اسم   {this.state.company.nameInArabic} وتأسيساً على ذلك تقدم بهذا النظام الأساسي إلى الهيئة العامة للاستثمار والمناطق الحرة ، حيث قامت بإجراء المراجعة اللازمة له. </p>
@@ -277,49 +323,50 @@ var source3 = document.getElementById('com3');
 <h4 align='center'style={{textDecoration:'underline'}}> الماده ( ١ )</h4>
 <p>اسم الشركة: {this.state.company.nameInEnglish} {this.state.company.nameInArabic} شركة شخص واحد ذات مسئولية محدودة</p>
 
+<h4 align='center'style={{textDecoration:'underline'}}> الماده ( ٢ )</h4>
+<p>بیانات مؤسس الشركة</p>
+<table align='center' style={{border: '1px solid black',width:"85%"}}>
+<tr style={{border: '1px solid black'}}>
+<th style={{border: '1px solid black'}}>
+الاسم
+</th>
+<th style={{border: '1px solid black'}}>
+الجنسیة
+</th>
+<th style={{border: '1px solid black'}}>
+تاریخ المیلاد
+</th>
+<th style={{border: '1px solid black'}}>
+إثبات الشخصیة
+</th>
+<th style={{border: '1px solid black'}}>
+الإقامة
+</th>
+</tr>
+<tr style={{border: '1px solid black',width:"70%"}}>
+<td style={{border: '1px solid black'}}>
+{this.state.investorName}
+</td>
+<td style={{border: '1px solid black'}}>
+{this.state.investorNationality}
+</td>
+<td style={{border: '1px solid black'}}>
+{this.state.investorBD}    </td>
+<td style={{border: '1px solid black'}}>
+{this.state.investorIdentificationType} {this.state.investorIdentificationNumber}   </td>
+<td style={{border: '1px solid black'}}>
+{this.state.investorAddress}
+</td>
+
+</tr>
+</table>
 
 
 </div>
 
 <div id="com2" dir="rtl" lang='ar' >
+<img src={img3} width={160} height={133} mode="fill" />
 
-<h4 align='center'style={{textDecoration:'underline'}}> الماده ( ٢ )</h4>
-<p>بیانات مؤسس الشركة</p>
-<table align='center' style={{border: '1px solid black',width:"85%"}}>
-  <tr style={{border: '1px solid black'}}>
-    <th style={{border: '1px solid black'}}>
-    الاسم
-    </th>
-    <th style={{border: '1px solid black'}}>
-    الجنسیة
-    </th>
-    <th style={{border: '1px solid black'}}>
-    تاریخ المیلاد
-    </th>
-    <th style={{border: '1px solid black'}}>
-    إثبات الشخصیة
-    </th>
-    <th style={{border: '1px solid black'}}>
-    الإقامة
-    </th>
-  </tr>
-  <tr style={{border: '1px solid black',width:"70%"}}>
-  <td style={{border: '1px solid black'}}>
-    {this.state.investorName}
-    </td>
-    <td style={{border: '1px solid black'}}>
-    {this.state.investorNationality}
-    </td>
-    <td style={{border: '1px solid black'}}>
-{this.state.investorBD}    </td>
-    <td style={{border: '1px solid black'}}>
-{this.state.investorIdentificationType} {this.state.investorIdentificationNumber}   </td>
-    <td style={{border: '1px solid black'}}>
-    {this.state.investorAddress}
-    </td>
-
-  </tr>
-</table>
 <h4 align='center'style={{textDecoration:'underline'}}> الماده ( ٣ )</h4>
 <p>یكون المركز الرئیسى لإدارة الشركة ومحلھا القانوني في العنوان الآتى  :{this.state.company.addressHQ} </p>
 <p>مع مراعاة القانون رقم ١٤ لسنة ٢٠١٢ بشأن التنمیة المتكاملة في شبھ جزیرة سیناء ، لمدیر الشركة إنشاء فروع أو وكالات لھا داخل
@@ -339,23 +386,18 @@ var source3 = document.getElementById('com3');
 <h4 align='center'style={{textDecoration:'underline'}}> الماده ( ٦ )</h4>
 
 
-    <p >
-      لمؤسس أو مالك الشركة أن يقرر تخفيض رأس مال الشركة لأي سبب ، سواء عن طريق إنقاص عدد الحصص أو تخفيض القيمة الاسمية لكل منها ، وفقاً لأحكام قانون الشركات ولائحته التنفيذية .
-    </p>
-    <p id="egp">
-      ولا يجوز تخفيض رأس المال إلى أقل من خمسين ألف جنيه .
-    </p>
+<p >
+لمؤسس أو مالك الشركة أن يقرر تخفيض رأس مال الشركة لأي سبب ، سواء عن طريق إنقاص عدد الحصص أو تخفيض القيمة الاسمية لكل منها ، وفقاً لأحكام قانون الشركات ولائحته التنفيذية .
+</p>
+<p id="egp">
+ولا يجوز تخفيض رأس المال إلى أقل من خمسين ألف جنيه .
+</p>
 
-    <p id="negp">
-    ولا يجوز تخفيض رأس المال إلى أقل من ما يعادل خمسين ألف جنيه .    </p>
-
-
+<p id="negp">
+ولا يجوز تخفيض رأس المال إلى أقل من ما يعادل خمسين ألف جنيه .    </p>
 
 
- 
-</div>
 
-<div id="com3" dir="rtl" lang='ar'>
 
 <h4 align='center'style={{textDecoration:'underline'}}> الماده ( ٧ )</h4>
 
@@ -363,39 +405,39 @@ var source3 = document.getElementById('com3');
 
 
 <table align='center' style={{border: '1px solid black',width:"85%"}}>
- <tr style={{border: '1px solid black'}}>
-   <th style={{border: '1px solid black'}}>
-   الاسم
-   </th>
-   <th style={{border: '1px solid black'}}>
-   الجنسیة
-   </th>
-   <th style={{border: '1px solid black'}}>
-   تاریخ المیلاد
-   </th>
-   <th style={{border: '1px solid black'}}>
-   إثبات الشخصیة
-   </th>
-   <th style={{border: '1px solid black'}}>
-   الإقامة
-   </th>
- </tr>
- <tr style={{border: '1px solid black',width:"70%"}}>
- <td style={{border: '1px solid black'}}>
-   {this.state.investorName}
-   </td>
-   <td style={{border: '1px solid black'}}>
-   {this.state.investorNationality}
-   </td>
-   <td style={{border: '1px solid black'}}>
+<tr style={{border: '1px solid black'}}>
+<th style={{border: '1px solid black'}}>
+الاسم
+</th>
+<th style={{border: '1px solid black'}}>
+الجنسیة
+</th>
+<th style={{border: '1px solid black'}}>
+تاریخ المیلاد
+</th>
+<th style={{border: '1px solid black'}}>
+إثبات الشخصیة
+</th>
+<th style={{border: '1px solid black'}}>
+الإقامة
+</th>
+</tr>
+<tr style={{border: '1px solid black',width:"70%"}}>
+<td style={{border: '1px solid black'}}>
+{this.state.investorName}
+</td>
+<td style={{border: '1px solid black'}}>
+{this.state.investorNationality}
+</td>
+<td style={{border: '1px solid black'}}>
 {this.state.investorBD}    </td>
-   <td style={{border: '1px solid black'}}>
+<td style={{border: '1px solid black'}}>
 {this.state.investorIdentificationType} {this.state.investorIdentificationNumber}   </td>
-   <td style={{border: '1px solid black'}}>
-   {this.state.investorAddress}
-   </td>
+<td style={{border: '1px solid black'}}>
+{this.state.investorAddress}
+</td>
 
- </tr>
+</tr>
 </table>
 <p>
 و يباشر المديرون وظائفهم لمدة غير محددة
@@ -406,6 +448,12 @@ var source3 = document.getElementById('com3');
 <p>
 ولا يجوز للمدير أن يتولى إدارة شركة أخرى أياً كان نوعها إذا كانت تعمل في ذات النشاط الذي تزاوله الشركة أو أحد فروعها ، كما لا يجوز له أن يتعاقد مع الشركة التي يتولى إدارتها لحسابه أو لحساب غيره ، أو يمارس لحساب الغير نشاطاً من نوع النشاط الذى تزاوله الشركة .
 </p>
+
+</div>
+
+<div id="com3" dir="rtl" lang='ar' >
+<img src={img3} width={160} height={133} mode="fill" />
+
 <h4 align='center'style={{textDecoration:'underline'}}> الماده ( ٨ )</h4>
 <p>تسري على الشركة أحكام قانون الشركات ولائحته التنفيذية فيما لم يرد بشأنه نص خاص في هذا النظام .</p>
 
@@ -417,8 +465,8 @@ var source3 = document.getElementById('com3');
 <p>قام مؤسس الشركة بشخصه باتخاذ كافة الإجراءات اللازمة في هذا الشأن .</p>
 <p>وتلتزم الشركة بأداء المصروفات والنفقات والأجور والتكاليف التي تم انفاقها بسبب تأسيس الشركة ، وذلك خصماً من حساب المصروفات العامة.</p>
 </div>
-</div>
 
+</div>
       </div>
     )
   }

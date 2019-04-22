@@ -50,7 +50,7 @@ return (
 <div>
 <br/>
 <div className="col-sm-12">
-<h1>Image Uploader</h1><hr/>
+<h1>{sessionStorage.getItem('lang')==='en'? 'Image uploader': 'تحميل الصوره'}</h1><hr/>
 <div className="col-sm-4">
 <input className="form-control " type="file" 
 onChange={this.selectImages} multiple/>
@@ -59,7 +59,7 @@ onChange={this.selectImages} multiple/>
 <br/><br/><br/>
 <div className="col-sm-4">
 <button className="btn btn-primary" value="Submit" 
-onClick={this.uploadImages}>Submit</button>
+onClick={this.uploadImages}>{sessionStorage.getItem('lang')==='en'? 'Submit': 'تم'}</button>
 </div>
 </div>
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><hr/><br/>
