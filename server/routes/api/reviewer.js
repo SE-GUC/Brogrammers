@@ -619,6 +619,7 @@ router.get('/getRejectedTasks/Reviewer', async (req, res) => {
       $and: [
         { status: 'RejectedReviewer' },
         { reviewer: reviewerssn },
+        {reviewerComment : null},
       ]
     }
       const comps = await Company.find(query)
