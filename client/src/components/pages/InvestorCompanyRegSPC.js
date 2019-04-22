@@ -11,11 +11,15 @@ import Required from '../layout/inputs/Required'
 import NotRequired from '../layout/inputs/NotRequired'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import jsPDF from 'jspdf'
+import FileUploader from "react-firebase-file-uploader";
 import html2canvas from 'html2canvas'
 import img3 from '../../components/Images/capture.png'
+import firebase from '../../firebase';
 window.html2canvas=html2canvas
 //import * as rasterizeHTML from 'rasterizehtml';
 
+
+const storage = firebase.storage();
 
 const styles = theme => ({
   main: {
@@ -79,7 +83,7 @@ class InvestorCompanyReg extends React.Component {
       investorNationality:'',
       egp:'none',
       negp:'block',
-      vis:'none'
+      vis:'none',
     }
     this.handleRegister = this.handleRegister.bind(this)
     this.handleInput = this.handleInput.bind(this)
@@ -87,6 +91,8 @@ class InvestorCompanyReg extends React.Component {
   }
 
   
+
+
   createPdf(e){
     this.setState({
       vis:"block"
@@ -96,6 +102,9 @@ class InvestorCompanyReg extends React.Component {
     var source = document.getElementById('com');
     var source2 = document.getElementById('com2');
     var source3 = document.getElementById('com3');
+    var doc=''
+    var blob=''
+    var id=this.state.id
         html2canvas(source,{
           dpi: 144,
           scale:0.9
@@ -118,14 +127,45 @@ class InvestorCompanyReg extends React.Component {
             }).then(function(canvas) {
               img = canvas.toDataURL('image3/png');
               doc.addImage(img, 'JPEG', 17, 10);
-              doc.save('test.pdf');
-              document.location.href = '/profile';
+               var image= doc.output('blob')
+             // document.location.href = '/profile';
+             const uploadTask = storage.ref(`${id}/pdf`).put(image);
+             uploadTask.on('state_changed', 
+             (snapshot) => {
+               // progrss function ....
+               const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+             }, 
+             (error) => {
+                  // error function ....
+               console.log(error);
+             }, 
+           () => {
+               // complete function ....
+               storage.ref(id).child('pdf').getDownloadURL().then(url => {
+                   console.log(url);
+                   window.open(url,'_blank');
+                   fetch('http://localhost:3000/api/investors/pdf/'+id,
+                   {
+                     method: 'POST',
+                     body: JSON.stringify({pdf:url}),
+                     headers: {
+                       'Content-Type': 'application/json',
+                       'Origin': 'http://localhost:3000',
+                       'x-access-token': sessionStorage.getItem("jwtToken")
+                     }
+                   }).then(response => {
+                      console.log(response)
+                   })
+               })
+           });
             })
     
            
           })
           
-      });
+      })
+     
+      
 
   };
 
@@ -243,7 +283,15 @@ if(data.data.capitalCurrency=='egp'){
             </Grid>
           </Grid>
         </Paper>
-
+    <FileUploader
+     // hidden
+      accept="image/*"
+      storageRef={firebase.storage().ref('images')}
+      onUploadStart={this.handleUploadStart}
+      onUploadError={this.handleUploadError}
+      onUploadSuccess={this.handleUploadSuccess}
+      onProgress={this.handleProgress}
+    />
 
         <div style={{  display: this.state.vis }}>
 

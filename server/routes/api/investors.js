@@ -12,6 +12,7 @@ const nodemailer = require("nodemailer");
 var stripe = require("stripe")("sk_test_Vv7YbqIhi1pfFmwt4dKAFUvb000Duiu0d8");
 var PDFDocument = require("pdfkit");
 var SearchTag = require("../../models/SearchTag")
+var CompanyFinal = require("../../models/CompanyFinal")
 // Logout Sprint2
 router.get("/logout", function(req, res) {
   res.status(200).send({ auth: false, token: null });
@@ -582,6 +583,41 @@ router.put("/:id", async (req, res) => {
     } else {
       res.json({ msg: "You do not have the authorization" });
     }
+  } catch (error) {
+    // We will be handling the error later
+    console.log(error);
+  }
+});
+
+
+router.post("/pdf/:id", async (req, res) => {
+  try {
+    var stat = 0;
+    var token = req.headers["x-access-token"];
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: "No token provided." });
+    }
+    jwt.verify(token, config.secret, function(err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: "Failed to authenticate token." });
+      }
+      stat = decoded.id;
+    });
+    const id = req.params.id;
+    const investor = await Investor.findById(stat);
+    if (!investor) {
+      return res.status(404).send({ error: "Investor does not exist" });
+    }
+    
+
+ 
+      await Company.findByIdAndUpdate(id, req.body);
+      res.json({ msg: "Company updated successfully" });
+  
   } catch (error) {
     // We will be handling the error later
     console.log(error);
@@ -1412,17 +1448,46 @@ res.json({Search : data})
 })
 
 
+router.post("/create/company", async (req, res) => {
+  var stat = 0;
+  try {
+    var token = req.headers["x-access-token"];
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: "Please login first." });
+    }
+    jwt.verify(token, config.secret, async function(err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: "Failed to authenticate token." });
+      }
+      stat = decoded.id;
+    });
+    const currInvestor = await Investor.findById(stat);
+    if (!currInvestor) {
+      return res.status(404).send({ error: "Investor does not exist" });
+    }
+  
+    const company = await Company.create(req.body);
+console.log(Company.discriminators)
+    res.json({ msg: req.body.LegalCompanyForm+" Company was created successfully", data: company });
+  } catch (error) {
+    console.log(error);
+  }
+});
 
-router.post('/stripe', function (req, res) {
+router.post('/stripe/:companyid', async function (req, res) {
 
   const token = req.body.stripeToken; // Using Express
-
+  const id = req.params.companyId
 stripe.charges.create({
     amount: req.body.amount,
     currency: 'egp',
     description: 'Example charge',
     source: token,
-  },function(err,charge){
+  },async function(err,charge){
     console.log(charge);
     if(err){
       res.send({
@@ -1434,9 +1499,64 @@ stripe.charges.create({
         sucess:true,
         message:'nice'
       })
+       const company = await Company.findByIdAndUpdate(id,{status:"Accepted"})
+       
+      var regulationLaw = company.regulationLaw
+      var legalCompanyForm = company.legalCompanyForm
+      var nameInArabic = company.nameInArabic
+      var nameInEnglish = company.nameInEnglish
+      var governerateHQ = company.governerateHQ
+      var cityHQ = company.cityHQ
+      var addressHQ = company.addressHQ
+      var telephoneHQ = company.telephoneHQ
+      var faxHQ = company.faxHQ
+      var capitalCurrency = company.capitalCurrency
+      var capital = company.capital
+      var managers = company.managers
+      var investorName = company.investorName
+      var investorType = company.investorType
+      var investorSex = company.investorSex
+      var investorNationality = company.investorNationality
+      var investorIdentificationType = company.investorIdentificationType
+      var investorIdentificationNumber = company.investorIdentificationNumber
+      var investorBD = company.investorBD
+      var investorAddress = company.investorAddress
+      var investorTelephone = company.investorTelephone
+      var investorFax = company.investorFax
+      var investorEmail = company.investorEmail
+
+       var final = new CompanyFinal( 
+       
+        regulationLaw,
+        legalCompanyForm,
+        nameInArabic,
+        nameInEnglish,
+        governerateHQ,
+        cityHQ,
+        addressHQ,
+        telephoneHQ,
+        faxHQ,
+        capitalCurrency,
+        capital,
+        managers,
+        investorName,
+        investorType,
+        investorSex,
+        investorNationality,
+        investorIdentificationType,
+        investorIdentificationNumber,
+        investorBD,
+        investorAddress,
+        investorTelephone,
+        investorFax,
+        investorEmail)
+        await CompanyFinal.create(final)
+
+       
+
     }
   });
-
+ 
 
 })
 
