@@ -1414,7 +1414,7 @@ res.json({Search : data})
 
 
 
-router.post('/stripe/:companyid', function (req, res) {
+router.post('/stripe/:companyid', async function (req, res) {
 
   const token = req.body.stripeToken; // Using Express
   const id = req.params.companyId
