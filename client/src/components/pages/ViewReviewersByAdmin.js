@@ -33,7 +33,7 @@ class ViewReviewersByAdmin extends React.Component {
   }
 
   render () {
-    console.log(this.state.reviewersOnSystem)
+   
 
 const listItems=  this.state.reviewersOnSystem.map((item,i) => (
            <div>   
