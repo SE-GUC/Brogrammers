@@ -40,7 +40,7 @@ class DeleteLawyerButton extends React.Component {
     }
   }).then(response => {
    console.log(response)
-    alert("Lawyer Deleted!!")
+    alert( sessionStorage.getItem('lang')==='en'? 'Lawyer Deleted': ' تم مسح المحامى بنجاح')
     window.location.reload();
   })
  }
@@ -50,7 +50,7 @@ class DeleteLawyerButton extends React.Component {
     return (
       <div>
         <Button variant="contained" color="secondary" onClick={this.handleClickOpen}>
-          Delete Lawyer
+        {sessionStorage.getItem('lang')==='en'? 'Delete Lawyer': 'الغاء بيانات المحامى '},
         </Button>
         <Dialog
           open={this.state.open}
@@ -61,20 +61,20 @@ class DeleteLawyerButton extends React.Component {
           aria-describedby="alert-dialog-slide-description"
         >
           <DialogTitle id="alert-dialog-slide-title">
-            {"Delete this Lawyer?"}
+             {sessionStorage.getItem('lang')==='en'? 'Delete this lawyer': 'هل تريد حقا الغاء بيانات المحامى'},
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
-              Are you sure you want to proceed?
+            {sessionStorage.getItem('lang')==='en'? 'Are you sure you want to procees': 'هل انت متاكد من الاستمرار فى العمليه'},
 
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
-              Disagree
+            {sessionStorage.getItem('lang')==='en'? 'Disagree': 'غير موافق'},
             </Button>
             <Button onClick={this.handleClose2}  color="primary">
-              Agree
+            {sessionStorage.getItem('lang')==='en'? 'Agree': 'موافق '},
             </Button>
           </DialogActions>
         </Dialog>

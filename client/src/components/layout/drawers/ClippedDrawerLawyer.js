@@ -12,16 +12,20 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
+import Home from '@material-ui/icons/Home'
+import EditProfile from '@material-ui/icons/BorderColor'
 import MailIcon from '@material-ui/icons/Mail';
 import EditProfileLawyer from '../../pages/EditProfileLawyer'
 import LawyerCases from '../../pages/LawyerCases';
 import ViewLawyerCasesbyID from '../../pages/ViewLawyerCasesbyID'
 import ViewLawyerEditableCases from '../../pages/ViewLawyerEditableCases'
-import ChooseCompanyType from '../../pages/ChooseCompanyType'
 import LawyerComment from '../../pages/LawyerComment'
 import LawyerCompanyRegSSC from '../../pages/LawyerCompanyRegSSC'
 import LawyerCompanyRegSPC from '../../pages/LawyerCompanyRegSPC'
-
+import NavBar from '../../../components/layout/Navbar'
+import Note from '@material-ui/icons/NoteAdd'
+import ViewList from '@material-ui/icons/ViewList'
+import CreateCompany from '@material-ui/icons/CreateNewFolder'
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -85,14 +89,7 @@ class ClippedDrawerLawyer extends React.Component {
       return (
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Lawyer profile
-                      </Typography>
-            </Toolbar>
-          </AppBar>
-
+    
           <Drawer
             className={classes.drawer}
             variant="permanent"
@@ -100,47 +97,55 @@ class ClippedDrawerLawyer extends React.Component {
               paper: classes.drawerPaper,
             }}
           >
+
+          
+            
+            
+            <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
               <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Home /></ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
+              
+              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
+                <ListItemIcon><ViewList /></ListItemIcon>
+                <ListItemText primary="View My Cases" />
               </ListItem>
+             
               <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><ViewList /></ListItemIcon>
                 <ListItemText primary="View All Cases" />
               </ListItem>
             </List>
             <Divider />
             <List>
 
-              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="View My Cases" />
-              </ListItem>
               <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Note /></ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
               <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Note /></ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
+              <Divider />
               <ListItem button key={"Edit Company"} onClick={this.handleEdit}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><EditProfile /></ListItemIcon>
                 <ListItemText primary="Edit Company" />
               </ListItem>
+           
+              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
+                <ListItemIcon><EditProfile /></ListItemIcon>
+                <ListItemText primary="Edit Your Profile" />
+              </ListItem>
+              
               <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><EditProfile /></ListItemIcon>
                 <ListItemText primary="Write Comment" />
               </ListItem>
-
-
             </List>
 
           </Drawer>
@@ -157,68 +162,77 @@ class ClippedDrawerLawyer extends React.Component {
 
     if (this.state.clicked == 'myCases') {
       return (
+       
         <div className={classes.root}>
+       
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Lawyer profile
-                  </Typography>
-            </Toolbar>
-          </AppBar>
-
-          <Drawer
+      
+          {/* <NavBar> */}
+      
+       
+         {/* </NavBar> */}
+         
+       
+         <Drawer
             className={classes.drawer}
             variant="permanent"
             classes={{
               paper: classes.drawerPaper,
             }}
           >
+
+          
+            
+            
+            <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
               <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Home /></ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
+              
+              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
+                <ListItemIcon><ViewList /></ListItemIcon>
+                <ListItemText primary="View My Cases" />
               </ListItem>
+             
               <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><ViewList /></ListItemIcon>
                 <ListItemText primary="View All Cases" />
               </ListItem>
             </List>
             <Divider />
             <List>
 
-              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="View My Cases" />
-              </ListItem>
               <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Note /></ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
               <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Note /></ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
+              <Divider />
               <ListItem button key={"Edit Company"} onClick={this.handleEdit}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><EditProfile /></ListItemIcon>
                 <ListItemText primary="Edit Company" />
               </ListItem>
+           
+              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
+                <ListItemIcon><EditProfile /></ListItemIcon>
+                <ListItemText primary="Edit Your Profile" />
+              </ListItem>
+              
               <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><EditProfile /></ListItemIcon>
                 <ListItemText primary="Write Comment" />
               </ListItem>
-
-
             </List>
 
-
           </Drawer>
+          
           <main className={classes.content}>
             <div className={classes.toolbar} />
 
@@ -232,13 +246,7 @@ class ClippedDrawerLawyer extends React.Component {
       return (
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Lawyer profile
-                      </Typography>
-            </Toolbar>
-          </AppBar>
+        
 
           <Drawer
             className={classes.drawer}
@@ -247,49 +255,56 @@ class ClippedDrawerLawyer extends React.Component {
               paper: classes.drawerPaper,
             }}
           >
+
+          
+            
+            
+            <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
               <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Home /></ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
+              
+              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
+                <ListItemIcon><ViewList /></ListItemIcon>
+                <ListItemText primary="View My Cases" />
               </ListItem>
+             
               <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><ViewList /></ListItemIcon>
                 <ListItemText primary="View All Cases" />
               </ListItem>
             </List>
             <Divider />
             <List>
 
-              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="View My Cases" />
-              </ListItem>
               <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Note /></ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
               <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Note /></ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
+              <Divider />
               <ListItem button key={"Edit Company"} onClick={this.handleEdit}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><EditProfile /></ListItemIcon>
                 <ListItemText primary="Edit Company" />
               </ListItem>
+           
+              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
+                <ListItemIcon><EditProfile /></ListItemIcon>
+                <ListItemText primary="Edit Your Profile" />
+              </ListItem>
+              
               <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><EditProfile /></ListItemIcon>
                 <ListItemText primary="Write Comment" />
               </ListItem>
-
-
             </List>
-
 
           </Drawer>
           <main className={classes.content}>
@@ -311,13 +326,7 @@ class ClippedDrawerLawyer extends React.Component {
       return (
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Lawyer profile
-                          </Typography>
-            </Toolbar>
-          </AppBar>
+         
 
           <Drawer
             className={classes.drawer}
@@ -326,47 +335,55 @@ class ClippedDrawerLawyer extends React.Component {
               paper: classes.drawerPaper,
             }}
           >
+
+          
+            
+            
+            <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
               <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Home /></ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
+              
+              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
+                <ListItemIcon><ViewList /></ListItemIcon>
+                <ListItemText primary="View My Cases" />
               </ListItem>
+             
               <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><ViewList /></ListItemIcon>
                 <ListItemText primary="View All Cases" />
               </ListItem>
             </List>
             <Divider />
             <List>
 
-              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="View My Cases" />
-              </ListItem>
               <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Note /></ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
               <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Note /></ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
+              <Divider />
               <ListItem button key={"Edit Company"} onClick={this.handleEdit}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><EditProfile /></ListItemIcon>
                 <ListItemText primary="Edit Company" />
               </ListItem>
+           
+              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
+                <ListItemIcon><EditProfile /></ListItemIcon>
+                <ListItemText primary="Edit Your Profile" />
+              </ListItem>
+              
               <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><EditProfile /></ListItemIcon>
                 <ListItemText primary="Write Comment" />
               </ListItem>
-
-
             </List>
 
           </Drawer>
@@ -387,13 +404,7 @@ class ClippedDrawerLawyer extends React.Component {
       return (
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Lawyer profile
-                            </Typography>
-            </Toolbar>
-          </AppBar>
+          
 
           <Drawer
             className={classes.drawer}
@@ -402,47 +413,55 @@ class ClippedDrawerLawyer extends React.Component {
               paper: classes.drawerPaper,
             }}
           >
+
+          
+            
+            
+            <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
               <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Home /></ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
+              
+              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
+                <ListItemIcon><ViewList /></ListItemIcon>
+                <ListItemText primary="View My Cases" />
               </ListItem>
+             
               <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><ViewList /></ListItemIcon>
                 <ListItemText primary="View All Cases" />
               </ListItem>
             </List>
             <Divider />
             <List>
 
-              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="View My Cases" />
-              </ListItem>
               <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Note /></ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
               <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Note /></ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
+              <Divider />
               <ListItem button key={"Edit Company"} onClick={this.handleEdit}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><EditProfile /></ListItemIcon>
                 <ListItemText primary="Edit Company" />
               </ListItem>
+           
+              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
+                <ListItemIcon><EditProfile /></ListItemIcon>
+                <ListItemText primary="Edit Your Profile" />
+              </ListItem>
+              
               <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><EditProfile /></ListItemIcon>
                 <ListItemText primary="Write Comment" />
               </ListItem>
-
-
             </List>
 
           </Drawer>
@@ -463,13 +482,7 @@ class ClippedDrawerLawyer extends React.Component {
       return (
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Lawyer profile
-                                </Typography>
-            </Toolbar>
-          </AppBar>
+       
 
           <Drawer
             className={classes.drawer}
@@ -478,49 +491,57 @@ class ClippedDrawerLawyer extends React.Component {
               paper: classes.drawerPaper,
             }}
           >
+
+          
+            
+            
+            <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
               <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Home /></ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
+              
+              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
+                <ListItemIcon><ViewList /></ListItemIcon>
+                <ListItemText primary="View My Cases" />
               </ListItem>
+             
               <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><ViewList /></ListItemIcon>
                 <ListItemText primary="View All Cases" />
               </ListItem>
             </List>
             <Divider />
             <List>
 
-              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="View My Cases" />
-              </ListItem>
               <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Note /></ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
               <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Note /></ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
+              <Divider />
               <ListItem button key={"Edit Company"} onClick={this.handleEdit}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><EditProfile /></ListItemIcon>
                 <ListItemText primary="Edit Company" />
               </ListItem>
-
+           
+              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
+                <ListItemIcon><EditProfile /></ListItemIcon>
+                <ListItemText primary="Edit Your Profile" />
+              </ListItem>
+              
               <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><EditProfile /></ListItemIcon>
                 <ListItemText primary="Write Comment" />
               </ListItem>
-
-
             </List>
+
           </Drawer>
           <main className={classes.content}>
             <div className={classes.toolbar} />
@@ -537,13 +558,7 @@ class ClippedDrawerLawyer extends React.Component {
       return (
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Lawyer profile
-                              </Typography>
-            </Toolbar>
-          </AppBar>
+        
 
           <Drawer
             className={classes.drawer}
@@ -552,49 +567,57 @@ class ClippedDrawerLawyer extends React.Component {
               paper: classes.drawerPaper,
             }}
           >
+
+          
+            
+            
+            <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
               <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Home /></ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
+              
+              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
+                <ListItemIcon><ViewList /></ListItemIcon>
+                <ListItemText primary="View My Cases" />
               </ListItem>
+             
               <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><ViewList /></ListItemIcon>
                 <ListItemText primary="View All Cases" />
               </ListItem>
             </List>
             <Divider />
             <List>
 
-              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="View My Cases" />
-              </ListItem>
               <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Note /></ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
               <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Note /></ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
+              <Divider />
               <ListItem button key={"Edit Company"} onClick={this.handleEdit}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><EditProfile /></ListItemIcon>
                 <ListItemText primary="Edit Company" />
               </ListItem>
-
+           
+              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
+                <ListItemIcon><EditProfile /></ListItemIcon>
+                <ListItemText primary="Edit Your Profile" />
+              </ListItem>
+              
               <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><EditProfile /></ListItemIcon>
                 <ListItemText primary="Write Comment" />
               </ListItem>
-
-
             </List>
+
           </Drawer>
           <main className={classes.content}>
             <div className={classes.toolbar} />
@@ -614,13 +637,7 @@ class ClippedDrawerLawyer extends React.Component {
 
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Lawyer profile
-                                </Typography>
-            </Toolbar>
-          </AppBar>
+       
 
           <Drawer
             className={classes.drawer}
@@ -629,49 +646,58 @@ class ClippedDrawerLawyer extends React.Component {
               paper: classes.drawerPaper,
             }}
           >
+
+          
+            
+            
+            <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
               <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Home /></ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
+              
+              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
+                <ListItemIcon><ViewList /></ListItemIcon>
+                <ListItemText primary="View My Cases" />
               </ListItem>
+             
               <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><ViewList /></ListItemIcon>
                 <ListItemText primary="View All Cases" />
               </ListItem>
             </List>
             <Divider />
             <List>
 
-              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="View My Cases" />
-              </ListItem>
+
               <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Note /></ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
               <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><Note /></ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
+              <Divider />
               <ListItem button key={"Edit Company"} onClick={this.handleEdit}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><EditProfile /></ListItemIcon>
                 <ListItemText primary="Edit Company" />
               </ListItem>
-
+           
+              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
+                <ListItemIcon><EditProfile /></ListItemIcon>
+                <ListItemText primary="Edit Your Profile" />
+              </ListItem>
+              
               <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemIcon><EditProfile /></ListItemIcon>
                 <ListItemText primary="Write Comment" />
               </ListItem>
-
-
             </List>
+
           </Drawer>
           <main className={classes.content}>
             <div className={classes.toolbar} />

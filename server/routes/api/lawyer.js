@@ -991,15 +991,14 @@ router.post('/lawyerinvestor/createspccompany', async (req, res) => {
 
 
     // investorEmail tag
-
-    const investmail = await SearchTag.findOne({ tag: company.investorEmail })
-    if (!investmail) {
-      const newSearchTag = new SearchTag({
-        tag: company.investorEmail,
-        location: [company._id]
-      })
-      var tag = await SearchTag.create(newSearchTag)
-      console.log("tag investorEmail  successfully")
+   
+    const investmail = await SearchTag.findOne({tag:company.investorEmail})
+    if(!investmail)
+    {
+      const newSearchTag = new SearchTag({ tag: company.investorEmail,
+        location :[company._id]})
+        var tag = await SearchTag.create(newSearchTag)
+        console.log("tag investorEmail  successfully")
     }
     else {
       investmail.location.push(company._id)

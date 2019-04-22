@@ -7,6 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import Grid from "@material-ui/core/Grid";
 
 
+
+
 class ViewLawyerEditableCases extends Component {
     constructor(props) {
         super(props);
@@ -46,7 +48,7 @@ class ViewLawyerEditableCases extends Component {
         console.log(this.props.token)
         this.setState({ isLoading: true })
 
-        fetch(`http://localhost:3000/api/lawyer/editForm/${this.props.ssn}`, {
+        fetch(`http://localhost:3000/api/lawyer/editForm/${sessionStorage.getItem("ssn")}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',

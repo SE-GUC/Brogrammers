@@ -62,7 +62,7 @@ class RegisterAdmin extends React.Component {
     e.preventDefault()
     let userData = this.state.admin
     console.log('abc')
-    fetch('http://localhost:3000/routes/api/admins/registerNo', {
+    fetch('http://localhost:3000/routes/api/admins/register', {
       method: 'POST',
       body: JSON.stringify(userData),
       headers: {
@@ -117,10 +117,10 @@ class RegisterAdmin extends React.Component {
           <Typography component='h1' variant='h5'>
           Sign up
           </Typography>
-          <Required name='name' field={'Full Name'} type='text' callBack={this.handleInput} />
-          <Required name='email' field={'Email'} type='email' callBack={this.handleInput} />
-          <Required name='password' field={'Password'} type='password' callBack={this.handleInput} />
-          <Required name='phone' field={'Phone'} type='text' callBack={this.handleInput} />
+          <Required name='name' field={sessionStorage.getItem('lang')==='en'? 'Full Name': 'الاسم كامل '} type='text' callBack={this.handleInput} />
+          <Required name='email' field={sessionStorage.getItem('lang')==='en'? 'Email': 'البريد '} type='email' callBack={this.handleInput} />
+          <Required name='password' field={sessionStorage.getItem('lang')==='en'? 'Password': 'الرقم السرى '} type='password' callBack={this.handleInput} />
+          <Required name='phone' field={sessionStorage.getItem('lang')==='en'? 'phone': 'رقم الهاتف '} type='text' callBack={this.handleInput} />
           <Date name='birthDate' callBack={this.handleDate} />
           <Gender name='gender' callBack={this.handleInput} />
           <AlertDialogSlide handleRegister={this.handleRegister} />

@@ -241,9 +241,9 @@ router.put("/getTasks/approve/:id2", async (req, res) => {
     if (!company) {
       return res.status(404).send({ error: "You have no due tasks" });
     } else {
-      await Company.findByIdAndUpdate(compid, { status: "Accepted" });
+      await Company.findByIdAndUpdate(compid, { status: "AcceptedReviewer" });
       const isValidated = await companyvalidator.updateValidationSSC({
-        status: "Accepted"
+        status: "AcceptedReviewer"
       });
      
 

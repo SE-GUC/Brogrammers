@@ -12,6 +12,7 @@ const nodemailer = require("nodemailer");
 var stripe = require("stripe")("sk_test_Vv7YbqIhi1pfFmwt4dKAFUvb000Duiu0d8");
 var PDFDocument = require("pdfkit");
 var SearchTag = require("../../models/SearchTag")
+var CompanyFinal = require("../../models/CompanyFinal")
 // Logout Sprint2
 router.get("/logout", function(req, res) {
   res.status(200).send({ auth: false, token: null });
@@ -588,6 +589,41 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+
+router.post("/pdf/:id", async (req, res) => {
+  try {
+    var stat = 0;
+    var token = req.headers["x-access-token"];
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: "No token provided." });
+    }
+    jwt.verify(token, config.secret, function(err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: "Failed to authenticate token." });
+      }
+      stat = decoded.id;
+    });
+    const id = req.params.id;
+    const investor = await Investor.findById(stat);
+    if (!investor) {
+      return res.status(404).send({ error: "Investor does not exist" });
+    }
+    
+
+ 
+      await Company.findByIdAndUpdate(id, req.body);
+      res.json({ msg: "Company updated successfully" });
+  
+  } catch (error) {
+    // We will be handling the error later
+    console.log(error);
+  }
+});
+
 router.get("/View/ViewCompanies", async (req, res) => {
   var stat = 0;
   try {
@@ -785,6 +821,9 @@ router.post("/createspccompany", async (req, res) => {
     const company = await Company.create(newCompany)
     // Insert Tags into the searchTag code in creating the company from code line 479 till 635
     //governerate tag
+    var d = new Date();
+    d.setTime(d.getTime());
+    company.creationDate=d
     const government = await SearchTag.findOne({tag:company.governerateHQ})
     if(!government)
     {
@@ -1071,7 +1110,9 @@ router.post('/createssccompany', async (req, res) => {
     const company = await Company.create(newCompany)
 
 
-
+    var d = new Date();
+    d.setTime(d.getTime());
+    company.creationDate=d
      //governerate tag
      const government = await SearchTag.findOne({tag:company.governerateHQ})
      if(!government)
@@ -1242,45 +1283,6 @@ router.post('/createssccompany', async (req, res) => {
 
 
 
-    const doc = new PDFDocument;
-  
-    // pipe the document to a blob
-    const stream = doc.pipe(res);
-    doc.registerFont('Arabic1', 'arabtype.ttf');
-    doc.font('Arabic1').fontSize(24).text('الأساسي النظام ', {
-      width: 410,
-      align:'center'
-    });
-    doc.font('Arabic1').fontSize(24).text(newCompany.nameInArabic+" "+newCompany.nameInEnglish, {
-      width: 410,
-      align: 'center'
-    });
-    
-    doc.font('Arabic1').fontSize(24).text("واحد شخص شركة  ", {
-      width: 410,
-      align: 'center'
-    });
-    doc.font('Arabic1').fontSize(22).text("ذات والشركات بالأسھم التوصیة وشركات المساھمة شركات قانون لأحكام خاضع", {
-      width: 410,
-      align: 'right'
-    });
-    doc.font('Arabic1').fontSize(22).text("١٩٨١ لسنة ١٥٩ رقم بالقانون الصادر الواحد الشخص وشركات المحدودة المسئولیة ", {
-      width: 410,
-      align: 'right'
-    });
-  
-    
-
-  
-    doc.font('Arabic1').fontSize(24).text(newCompany._id+" العقد رقم ", {
-      width: 410,
-      align: 'center'
-    });
-
-    doc.end();
-    res.setHeader('access-control-allow-origin', '*');
-    res.status(200);
-
 
 
 
@@ -1317,7 +1319,7 @@ router.post('/login', function (req, res) {
   })
 })
 
-router.get('/:id/:companyID/viewFees', async (req, res) => {
+router.get('/:companyID/viewFees', async (req, res) => {
   var stat = 0
   var token = req.headers['x-access-token']
   if (!token) {
@@ -1333,13 +1335,6 @@ router.get('/:id/:companyID/viewFees', async (req, res) => {
     }
     stat = decoded.id
   })
-  const id = req.params.id
-  if (id !== stat) {
-    return res
-      .status(500)
-      .send({ auth: false, message: 'Failed to authenticate' })
-  }
-
   const investor = await Investor.findById(stat)
   if (!investor) {
     return res.status(400).send({ error: 'You are not an investor' })
@@ -1378,7 +1373,7 @@ router.get('/:id/:companyID/viewFees', async (req, res) => {
     }
   }
 
-  res.json({ EstimatedFees: fees })
+  res.json({ EstimatedFees: fees , Currency : c.capitalCurrency })
 })
 
 router.put('/', async (req, res) => {
@@ -1423,16 +1418,34 @@ router.post("/searchCases",async function(req , res) {
 
 var search = req.body.tag
 //var collection = await SearchTag.find({ tag: ("/^" + search +"/") })
+var index = req.body.index
+var breakFlag = 0
+var counter = 0
 var collection = await SearchTag.find({tag: new RegExp(search)})
 
 var data = []
 for(var i = 0 ; i<collection.length ; i++)
 { console.log("I am in")
   for(var k = 0 ; k<collection[i].location.length ; k++ )
-  {
+  { if(counter>=index*4  )
+    {
     var company = await Company.findById({_id :collection[i].location[k]})
     data.push(company)
+    console.log("Fetching counter: "+counter )
+    }
+    console.log(counter)
+    counter++
+    
+    console.log(index*4+4)
+    if(counter>=(index*4+4))
+    {
+      breakFlag = 1;
+      break;
+    }
   }
+  if(breakFlag ==1)
+    break;
+
 }
 
 res.json({Search : data})
@@ -1440,17 +1453,46 @@ res.json({Search : data})
 })
 
 
+router.post("/create/company", async (req, res) => {
+  var stat = 0;
+  try {
+    var token = req.headers["x-access-token"];
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: "Please login first." });
+    }
+    jwt.verify(token, config.secret, async function(err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: "Failed to authenticate token." });
+      }
+      stat = decoded.id;
+    });
+    const currInvestor = await Investor.findById(stat);
+    if (!currInvestor) {
+      return res.status(404).send({ error: "Investor does not exist" });
+    }
+  
+    const company = await Company.create(req.body);
+console.log(Company.discriminators)
+    res.json({ msg: req.body.LegalCompanyForm+" Company was created successfully", data: company });
+  } catch (error) {
+    console.log(error);
+  }
+});
 
-router.post('/stripe', function (req, res) {
+router.post('/stripe/:companyid', async function (req, res) {
 
   const token = req.body.stripeToken; // Using Express
-
+  const id = req.params.companyId
 stripe.charges.create({
     amount: req.body.amount,
     currency: 'egp',
     description: 'Example charge',
     source: token,
-  },function(err,charge){
+  },async function(err,charge){
     console.log(charge);
     if(err){
       res.send({
@@ -1462,9 +1504,64 @@ stripe.charges.create({
         sucess:true,
         message:'nice'
       })
+       const company = await Company.findByIdAndUpdate(id,{status:"Accepted"})
+       
+      var regulationLaw = company.regulationLaw
+      var legalCompanyForm = company.legalCompanyForm
+      var nameInArabic = company.nameInArabic
+      var nameInEnglish = company.nameInEnglish
+      var governerateHQ = company.governerateHQ
+      var cityHQ = company.cityHQ
+      var addressHQ = company.addressHQ
+      var telephoneHQ = company.telephoneHQ
+      var faxHQ = company.faxHQ
+      var capitalCurrency = company.capitalCurrency
+      var capital = company.capital
+      var managers = company.managers
+      var investorName = company.investorName
+      var investorType = company.investorType
+      var investorSex = company.investorSex
+      var investorNationality = company.investorNationality
+      var investorIdentificationType = company.investorIdentificationType
+      var investorIdentificationNumber = company.investorIdentificationNumber
+      var investorBD = company.investorBD
+      var investorAddress = company.investorAddress
+      var investorTelephone = company.investorTelephone
+      var investorFax = company.investorFax
+      var investorEmail = company.investorEmail
+
+       var final = new CompanyFinal( 
+       
+        regulationLaw,
+        legalCompanyForm,
+        nameInArabic,
+        nameInEnglish,
+        governerateHQ,
+        cityHQ,
+        addressHQ,
+        telephoneHQ,
+        faxHQ,
+        capitalCurrency,
+        capital,
+        managers,
+        investorName,
+        investorType,
+        investorSex,
+        investorNationality,
+        investorIdentificationType,
+        investorIdentificationNumber,
+        investorBD,
+        investorAddress,
+        investorTelephone,
+        investorFax,
+        investorEmail)
+        await CompanyFinal.create(final)
+
+       
+
     }
   });
-
+ 
 
 })
 

@@ -9,7 +9,7 @@ import Required from '../layout/inputs/Required'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import BlueButton from '../layout/Buttons/BlueButton'
 import Gender from '../layout/inputs/Gender';
-import Date from '../layout/DatePickers/Date'
+import Date from '../layout/inputs/Date'
 
 const styles = theme => ({
   main: {
@@ -56,7 +56,14 @@ class Manager extends React.Component {
     this.handleInput = this.handleInput.bind(this)
     this.handle = this.handle.bind(this)
   }
-
+  handleDate(v) {
+    this.setState(prevState => ({
+      manager:
+      {
+        ...prevState.manager, birthDate: v
+      }
+    }))
+  }
   handleInput(event) {
     let value = event.target.value
     let name = event.target.name
@@ -110,7 +117,7 @@ class Manager extends React.Component {
             <Required field={sessionStorage.getItem('lang') === 'en' ? 'Identification Number' : 'رقم اثبات الشخصية'} type={'text'} callBack={this.handleInput} name={'identificationNumber'} />
           </Grid>
           <Grid container direction='column' alignItems='center' >
-            <Date callBack={this.handleInput} name={'birthDate'} />
+            <Date name='birthDate' callBack={this.handleDate} />
           </Grid>
           <Grid container direction='column' alignItems='center' >
             <Required field={sessionStorage.getItem('lang') === 'en' ? 'Address' : 'عنوان الاقامة'} type={'text'} callBack={this.handleInput} name={'address'} />

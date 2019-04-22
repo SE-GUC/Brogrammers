@@ -120,15 +120,15 @@ class RegisterLawyer extends React.Component {
           <Typography component='h1' variant='h5'>
           Sign up
           </Typography>
-          <Required name='firstName' field={'First Name'} type='text' callBack={this.handleInput} />
-          <Required name='middleName' field={'Middle Name'} type='text' callBack={this.handleInput} />
-          <Required name='lastName' field={'Last Name'} type='text' callBack={this.handleInput} />
-          <Required name='email' field={'Email'} type='email' callBack={this.handleInput} />
-          <Required name='password' field={'Password'} type='password' callBack={this.handleInput} />
-          <Required name='salary' field={'Salary'} type='number' callBack={this.handleInput} />
-          <Required name='yearsOfExperience' field={'Years Of Experience'} type='number' callBack={this.handleInput} />
-          <Required name='socialSecurityNumber' field={'Social Security Number'} type='text' callBack={this.handleInput} />
-          <Required name='mobileNumber' field={'Phone Number'} type='text' callBack={this.handleInput} />
+          <Required name='firstName' field={sessionStorage.getItem('lang')==='en'? 'FirstName': 'الاسم الاول '} type='text' callBack={this.handleInput} />
+          <Required name='middleName' field={sessionStorage.getItem('lang')==='en'? 'Middle Name': 'الاسم الثانى '} type='text' callBack={this.handleInput} />
+          <Required name='lastName' field={sessionStorage.getItem('lang')==='en'? 'Last Name': 'الاسم الاخير '} type='text' callBack={this.handleInput} />
+          <Required name='email' field={sessionStorage.getItem('lang')==='en'? 'Email': 'البريد '} type='email' callBack={this.handleInput} />
+          <Required name='password' field={sessionStorage.getItem('lang')==='en'? 'Password': 'الرقم السرى '} type='password' callBack={this.handleInput} />
+          <Required name='salary' field={sessionStorage.getItem('lang')==='en'? 'Salary': 'المرتب '} type='number' callBack={this.handleInput} />
+          <Required name='yearsOfExperience' field={sessionStorage.getItem('lang')==='en'? 'Years of Experience': 'سنين الخبره '} type='number' callBack={this.handleInput} />
+          <Required name='socialSecurityNumber' field={sessionStorage.getItem('lang')==='en'? 'Social security number': 'الرقم القومى '} type='text' callBack={this.handleInput} />
+          <Required name='mobileNumber'field={sessionStorage.getItem('lang')==='en'? 'Phone Number': 'رقم الهاتف '} type='text' callBack={this.handleInput} />
           <Date name='birthDate' callBack={this.handleDate} />
           <AlertDialogSlide handleRegister={this.handleRegister} />
         </Paper>

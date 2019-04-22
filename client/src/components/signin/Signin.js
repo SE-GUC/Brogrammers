@@ -155,7 +155,7 @@ export class SignIn extends Component {
               className={classes.submit}
               onClick={this.handleRegister}
             >
-              Sign in
+              Sign In
             </Button>
           </form>
         </Paper>

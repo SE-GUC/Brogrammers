@@ -55,9 +55,9 @@ function ViewLawyersByAdminCard (props) {
         <Typography className={classes.pos} color='textSecondary'>
           {/* {props.addressHQ} */}
         
-         E-mail:{props.email}
+          {sessionStorage.getItem('lang')==='en'? 'Email ': 'البريد'}:{props.email}
           <br></br>
-          Phone Number:{props.mobileNumber}
+          {sessionStorage.getItem('lang')==='en'? 'Phone number': 'رقم الهاتف'}:{props.mobileNumber}
         </Typography>
         <Typography component='p'>
          {/* insert the data in the list here */}

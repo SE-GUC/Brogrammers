@@ -62,6 +62,7 @@ class ReviewerComment extends Component {
           investorTelephone={element.investorTelephone}
           investorFax={element.investorFax}
           investorEmail={element.investorEmail}
+         
         
         
         
@@ -85,3 +86,5 @@ class ReviewerComment extends Component {
   }
 }
 export default ReviewerComment
+
+

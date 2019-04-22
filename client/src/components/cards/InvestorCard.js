@@ -90,7 +90,8 @@ class InvestorCard extends React.Component {
           <CardContent>
           </CardContent>
           <CardActions className={classes.actions} disableActionSpacing>
-            <IconButton aria-label="View_Details">
+            <IconButton aria-label={sessionStorage.getItem('lang')==='en'? 'View details': 'اظهار التفاصيل '}
+>
               <CustomDialog
                 className={classes.dialog}
                 company={this.props.company}

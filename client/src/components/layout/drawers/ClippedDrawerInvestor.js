@@ -1,29 +1,38 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import AppBar from "@material-ui/core/AppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import EditProfileInvestor from "../../pages/EditProfileInvestor";
-import InvestorRequests from "../../pages/InvestorRequests";
-import ViewCompanies from "../../pages/ViewCompanies";
-import Stepper from "../../steppers/stepper";
-import { Paper } from "@material-ui/core";
-import LinearDeterminate from "../loading/LinearDeterminate";
-import InvestorCompanyRegSSC from "../../pages/InvestorCompanyRegSSC";
-import InvestorCompanyRegSPC from "../../pages/InvestorCompanyRegSPC";
-import stepper from "../../steppers/stepper";
+import React from 'react'
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import Drawer from '@material-ui/core/Drawer'
+import AppBar from '@material-ui/core/AppBar'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import Toolbar from '@material-ui/core/Toolbar'
+import List from '@material-ui/core/List'
+import Typography from '@material-ui/core/Typography'
+import Divider from '@material-ui/core/Divider'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import InboxIcon from '@material-ui/icons/MoveToInbox'
+import EditProfileInvestor from '../../pages/EditProfileInvestor'
+import InvestorRequests from '../../pages/InvestorRequests'
+import ViewCompanies from '../../pages/ViewCompanies'
+import InvestorCompanyRegSPC from '../../pages/InvestorCompanyRegSPC'
+import InvestorCompanyRegSSC from '../../pages/InvestorCompanyRegSSC'
+import Stepper from '../../steppers/stepper'
+import { Paper } from '@material-ui/core'
+import NavBar from '../Navbar'
+import ViewList from '@material-ui/icons/ViewList'
+import CreateCompany from '@material-ui/icons/CreateNewFolder'
+import EditProfile from '@material-ui/icons/BorderColor'
+import Identity from '@material-ui/icons/Person'
+import Home from '@material-ui/icons/Home'
+import Upload from '@material-ui/icons/CloudUpload'
+import Note from '@material-ui/icons/NoteAdd'
+import Add from '@material-ui/icons/PersonAdd'
+import LinearDeterminate from '../loading/LinearDeterminate'
 
-const drawerWidth = 240;
 
+
+const drawerWidth = 240
 const styles = theme => ({
   root: {
     display: "flex"
@@ -121,15 +130,6 @@ handleLoading=()=>{
     return (
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar position="fixed" className={classes.appBar}>
-          <Toolbar>
-            <Typography variant="h6" color="inherit" noWrap>
-              <p>
-              {sessionStorage.getItem('lang') === 'en' ? 'Investor Profile' : 'حساب المستثمر'}
-              </p>
-            </Typography>
-          </Toolbar>
-        </AppBar>
 
         <Drawer
           className={classes.drawer}
@@ -138,12 +138,13 @@ handleLoading=()=>{
             paper: classes.drawerPaper
           }}
         >
+        <NavBar/>
           <div className={classes.toolbar} />
 
           <List>
             <ListItem button key={"Home"} onClick={this.handleHome}>
               <ListItemIcon>
-                <InboxIcon />
+                <Home />
               </ListItemIcon>
               <ListItemText primary= {sessionStorage.getItem('lang') === 'en' ? 'Home' : 'صفحتي'}/>
             </ListItem>
@@ -153,7 +154,7 @@ handleLoading=()=>{
               onClick={this.handleProfile}
             >
               <ListItemIcon>
-                <InboxIcon />
+                <EditProfile />
               </ListItemIcon>
               <ListItemText primary={sessionStorage.getItem('lang') === 'en' ? 'Edit Your Profile' : 'تغير البينات'} />
             </ListItem>
@@ -166,7 +167,7 @@ handleLoading=()=>{
               onClick={this.handleCases2}
             >
               <ListItemIcon>
-                <InboxIcon />
+                <ViewList />
               </ListItemIcon>
               <ListItemText primary={sessionStorage.getItem('lang') === 'en' ? 'View My Companies' : 'اظهر شركاتي'} />
             </ListItem>
@@ -176,7 +177,7 @@ handleLoading=()=>{
               onClick={this.handleRequests}
             >
               <ListItemIcon>
-                <InboxIcon />
+                <ViewList />
               </ListItemIcon>
               <ListItemText primary={sessionStorage.getItem('lang') === 'en' ? 'View My Requests' : 'اظهر طلباتي'} />
             </ListItem>
@@ -186,7 +187,7 @@ handleLoading=()=>{
               onClick={this.handleCreatessc}
             >
               <ListItemIcon>
-                <InboxIcon />
+                <Note />
               </ListItemIcon>
               <ListItemText primary={sessionStorage.getItem('lang') === 'en' ? 'Create SSC Companies' : 'سجل شركتي ال SSC'} />
             </ListItem>
@@ -196,7 +197,7 @@ handleLoading=()=>{
               onClick={this.handleCreatespc}
             >
               <ListItemIcon>
-                <InboxIcon />
+                <Note />
                 
               </ListItemIcon>
               <ListItemText primary={sessionStorage.getItem('lang') === 'en' ? 'Create SPC Companies' : 'سجل شركتي ال SPC'} />
@@ -207,7 +208,7 @@ handleLoading=()=>{
               onClick={this.handleCreated}
             >
               <ListItemIcon>
-                <InboxIcon />
+                <Note />
                 
               </ListItemIcon>
               <ListItemText primary={sessionStorage.getItem('lang') === 'en' ? 'Create Other Companies' : 'سجل شركات اخرة'} />

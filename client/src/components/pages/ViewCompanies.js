@@ -46,12 +46,12 @@ class ViewCompanies extends Component {
   render() {
     const { classes } = this.props;
     if (!this.state.investorCompanies) {
-      return (<h10>{sessionStorage.getItem('lang') === 'en' ? 'You have no companies' : 'لا يوجد لديك شريكات'}</h10>)
+      return (<h10>{sessionStorage.getItem('lang') === 'en' ? 'You have no companies' : 'لا يوجد لديك شركات'}</h10>)
     }
     else {
       return (
         <div className={classes.holder}>
-          <h1 className={classes.header}>{sessionStorage.getItem('lang') === 'en' ? 'Your Companies' : ' شريكاتك'}</h1>
+          <h1 className={classes.header}>{sessionStorage.getItem('lang') === 'en' ? 'Your Companies' : ' شركاتك'}</h1>
           <div className={classes.sep}>
             <GridList className={classes.list}>
               {this.state.investorCompanies.map((item, i) => (
