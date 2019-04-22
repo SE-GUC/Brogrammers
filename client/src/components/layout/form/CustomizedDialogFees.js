@@ -113,7 +113,7 @@ class CustomizedDialogFees extends React.Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <TakeMoney />
+            <TakeMoney companyid={this.props.id} />
             <Button onClick={this.handleClose} color="primary">
               Close
             </Button>

@@ -12,6 +12,7 @@ const nodemailer = require("nodemailer");
 var stripe = require("stripe")("sk_test_Vv7YbqIhi1pfFmwt4dKAFUvb000Duiu0d8");
 var PDFDocument = require("pdfkit");
 var SearchTag = require("../../models/SearchTag")
+var CompanyFinal = require("../../models/CompanyFinal")
 // Logout Sprint2
 router.get("/logout", function(req, res) {
   res.status(200).send({ auth: false, token: null });
@@ -1459,10 +1460,10 @@ res.json({Search : data})
 
 
 
-router.post('/stripe', function (req, res) {
+router.post('/stripe/:companyid', function (req, res) {
 
   const token = req.body.stripeToken; // Using Express
-
+  const id = req.params.companyId
 stripe.charges.create({
     amount: req.body.amount,
     currency: 'egp',
@@ -1480,6 +1481,61 @@ stripe.charges.create({
         sucess:true,
         message:'nice'
       })
+       var company = await Company.findByIdAndUpdate(id,{status:"Accepted"})
+       
+      var regulationLaw = company.regulationLaw
+      var legalCompanyForm = company.legalCompanyForm
+      var nameInArabic = company.nameInArabic
+      var nameInEnglish = company.nameInEnglish
+      var governerateHQ = company.governerateHQ
+      var cityHQ = company.cityHQ
+      var addressHQ = company.addressHQ
+      var telephoneHQ = company.telephoneHQ
+      var faxHQ = company.faxHQ
+      var capitalCurrency = company.capitalCurrency
+      var capital = company.capital
+      var managers = company.managers
+      var investorName = company.investorName
+      var investorType = company.investorType
+      var investorSex = company.investorSex
+      var investorNationality = company.investorNationality
+      var investorIdentificationType = company.investorIdentificationType
+      var investorIdentificationNumber = company.investorIdentificationNumber
+      var investorBD = company.investorBD
+      var investorAddress = company.investorAddress
+      var investorTelephone = company.investorTelephone
+      var investorFax = company.investorFax
+      var investorEmail = company.investorEmail
+
+       var final = new CompanyFinal( 
+       
+        regulationLaw,
+        legalCompanyForm,
+        nameInArabic,
+        nameInEnglish,
+        governerateHQ,
+        cityHQ,
+        addressHQ,
+        telephoneHQ,
+        faxHQ,
+        capitalCurrency,
+        capital,
+        managers,
+        investorName,
+        investorType,
+        investorSex,
+        investorNationality,
+        investorIdentificationType,
+        investorIdentificationNumber,
+        investorBD,
+        investorAddress,
+        investorTelephone,
+        investorFax,
+        investorEmail)
+        await CompanyFinal.create(final)
+
+       
+
     }
   });
 
