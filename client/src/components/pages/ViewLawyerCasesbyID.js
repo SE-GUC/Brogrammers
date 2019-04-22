@@ -141,9 +141,9 @@ class ViewLawyerCasesbyID extends Component {
       return (
 
         <div>
-              <Button variant="outlined" color="dark" onClick={this.sortById}> Sort By Id</Button> >
-               <Button variant="outlined" color="dark" onClick={this.sortByCreationDate}> Sort By creation Date</Button> >
-               <Button variant="outlined" color="dark" onClick={this.sortByStatus}> Sort By Status</Button> >
+              <Button variant="outlined" color="dark" onClick={this.sortById}>{sessionStorage.getItem('lang')==='en'? 'Sort by ID': 'ترتيب برقم الشركه'}</Button> >
+               <Button variant="outlined" color="dark" onClick={this.sortByCreationDate}>{sessionStorage.getItem('lang')==='en'? 'Sort by Creation Date': 'ترتيب بتاريخ انشاء الشركه'}</Button> >
+               <Button variant="outlined" color="dark" onClick={this.sortByStatus}> {sessionStorage.getItem('lang')==='en'? 'Sort by Status': 'ترتيب  بحاله الشركه'}</Button> >
           
           
 {listItems}

@@ -40,7 +40,7 @@ class DeleteReviewerButton extends React.Component {
       }
     }).then(response => {
      console.log(response)
-      alert("Reviewer Deleted!!")
+      alert( sessionStorage.getItem('lang')==='en'? 'Reviewer Deleted !!!': ' تم مسح المراجع بنجاح')
       window.location.reload();
     })
    }
@@ -50,8 +50,8 @@ class DeleteReviewerButton extends React.Component {
     return (
       <div>
         <Button variant="contained" color="secondary" onClick={this.handleClickOpen}>
-          Delete Reviewer
-        </Button>
+       {sessionStorage.getItem('lang')==='en'? 'Delete Reviewer !!!': '  مسح المراجع '}
+       </Button>
         <Dialog
           open={this.state.open}
           TransitionComponent={Transition}
@@ -61,20 +61,21 @@ class DeleteReviewerButton extends React.Component {
           aria-describedby="alert-dialog-slide-description"
         >
           <DialogTitle id="alert-dialog-slide-title">
-            {"Delete this Reviewer?"}
+          {sessionStorage.getItem('lang')==='en'? 'Delete thisReviewer ?': '   مسح المراجع؟ '}
+    
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
-              Are you sure you want to proceed?
-
+             {sessionStorage.getItem('lang')==='en'? 'Are you sure you want to procees!!!': '  مسح المراجع '}
+    
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
-              Disagree
+            {sessionStorage.getItem('lang')==='en'? 'Disagree': 'غير موافق'}
             </Button>
             <Button onClick={this.handleClose2}  color="primary">
-              Agree
+            {sessionStorage.getItem('lang')==='en'? 'Agree': 'موافق'}
             </Button>
           </DialogActions>
         </Dialog>
