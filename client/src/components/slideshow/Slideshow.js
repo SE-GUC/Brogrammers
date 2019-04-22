@@ -1,8 +1,8 @@
 import React from 'react'
 import { Slide } from 'react-slideshow-image'
 import img1 from '../../components/Images/Pyramids.jpg'
-import img2 from '../../components/Images/investorImage.jpg'
-import img3 from '../../components/Images/lawyerImage.jpg'
+import img2 from '../../components/Images/egypt.jpg'
+import img3 from '../../components/Images/flag.jpg'
 
 const properties = {
   duration: 5000,

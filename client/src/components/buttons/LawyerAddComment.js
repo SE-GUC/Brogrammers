@@ -12,6 +12,8 @@ class LawyerAddComment extends Component{
           lawyerComment: null
         }
       }
+      this.addComment = this.addComment.bind(this)
+      this.onChange = this.onChange.bind(this)
 }
 
 addComment()
@@ -31,6 +33,14 @@ addComment()
      window.location.reload();
    }) 
 }
+clean = obj => {
+  for (var propName in obj) {
+    if (obj[propName] === "" || obj[propName] === undefined || obj[propName] === null) {
+      delete obj[propName];
+    }
+  }
+};
+
 
 render(){
     return(

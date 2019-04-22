@@ -40,6 +40,7 @@ import LawyerCompanyRegSPC from './components/pages/LawyerCompanyRegSPC'
 import ViewCompanies from './components/pages/ViewCompanies'
 import LinearDeterminate from './components/layout/loading/LinearDeterminate'
 import Slideshow from './components/slideshow/Slideshow'
+import SearchCases from './components/pages/searchCases'
 
 class App extends Component {
   constructor(props) {
@@ -439,6 +440,12 @@ class App extends Component {
                   <SignIn />
                 )
               }
+            />
+
+            <Route
+              exact
+              path="/searchCases/:search"
+              component={props =>  <SearchCases {...props}/> }
             />
             <Route
               exact

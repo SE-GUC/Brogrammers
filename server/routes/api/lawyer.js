@@ -11,6 +11,7 @@ var config = require('../../config/jwt')
 const Lawyer = require('../../models/Lawyer')
 const Company = require('../../models/Company')
 const nodemailer = require("nodemailer");
+const SearchTag = require('../../models/SearchTag')
 
 router.get('/', async (req, res) => {
   var token = req.headers['x-access-token']
@@ -132,6 +133,22 @@ router.put('/assignFreeTask/:id2', async (req, res) => {
       // const isValidated=await companyvalidator.updateValidationSSC
       res.json({ msg: 'Task assigned Successfully' })
     }
+    var com = await Company.findById(companyID)
+    var SSN = await SearchTag.findOne({tag:lawyerSSN})
+   
+    if(SSN)
+    {
+   SSN.location.push(com._id)
+    await SearchTag.findByIdAndUpdate(SSN._id,SSN)
+    console.log("tag lawyerSSN updated  successfully")
+    }
+    else
+    {
+      const newSearchTag = new SearchTag({ tag:lawyerSSN,
+        location :[com._id]})
+        var tag = await SearchTag.create(newSearchTag)
+        console.log("tag lawyerSSN  successfully")
+    }
   } catch (error) {
     console.log(error)
   }
@@ -177,6 +194,37 @@ router.put('/getTasks/approve/:id2', async (req, res) => {
           .status(400)
           .send({ error: isValidated.error.details[0].message })
       }
+
+      var deleteIdinArrayinSearch = await SearchTag.findOne({tag:"PendingLawyer"})
+    
+    
+    if(deleteIdinArrayinSearch){
+    for (var i =0; i < deleteIdinArrayinSearch.location.length; i++)
+    {
+       if (deleteIdinArrayinSearch.location[i] == compid) {
+          deleteIdinArrayinSearch.location.splice(i,1);
+          await SearchTag.findByIdAndUpdate(deleteIdinArrayinSearch._id,deleteIdinArrayinSearch)
+          console.log("tag state  delteted  successfully")
+          break;
+        }
+   }
+  }
+  var statusss = await SearchTag.findOne({tag:"PendingReviewer"})
+  var com = await Company.findById(compid)
+  if(statusss)
+  {
+ statusss.location.push(com._id)
+  await SearchTag.findByIdAndUpdate(statusss._id,statusss)
+  console.log("tag statusss switched  successfully")
+  }
+  else
+  {
+    const newSearchTag = new SearchTag({ tag:"PendingReviewer",
+      location :[com._id]})
+      var tag = await SearchTag.create(newSearchTag)
+      console.log("tag statuss  successfully")
+  }
+
       res.json({ msg: 'Task approved successfully' })
     }
   } catch (error) {
@@ -214,7 +262,7 @@ router.put('/getTasks/disapprove/:id2', async (req, res) => {
     if (!currentCompany) {
       return res.status(404).send({ error: 'You have no due tasks' })
     } else {
-      await Company.findByIdAndUpdate(companyID, { status: 'RejectedLawyer' })
+     var com = await Company.findByIdAndUpdate(companyID, { status: 'RejectedLawyer' })
       const isValidated = await companyvalidator.updateValidationSSC({
         status: 'RejectedLawyer'
       })
@@ -235,6 +283,38 @@ router.put('/getTasks/disapprove/:id2', async (req, res) => {
           rejectUnauthorized:false
         }
       });
+ 
+
+    var deleteIdinArrayinSearch = await SearchTag.findOne({tag:"PendingLawyer"})
+    
+    
+    if(deleteIdinArrayinSearch){
+    for (var i =0; i < deleteIdinArrayinSearch.location.length; i++)
+    {
+       if (deleteIdinArrayinSearch.location[i].equals( com._id)) {
+          deleteIdinArrayinSearch.location.splice(i,1);
+          await SearchTag.findByIdAndUpdate(deleteIdinArrayinSearch._id,deleteIdinArrayinSearch)
+          console.log("tag regulation law delteted  successfully")
+          break;
+        }
+   }
+  }
+
+  var statusss = await SearchTag.findOne({tag:"RejectedLawyer"})
+  if(statusss)
+  {
+ statusss.location.push(com._id)
+  await SearchTag.findByIdAndUpdate(statusss._id,statusss)
+  console.log("tag statusss switched  successfully")
+  }
+  else
+  {
+    const newSearchTag = new SearchTag({ tag:"RejectedLawyer",
+      location :[com._id]})
+      var tag = await SearchTag.create(newSearchTag)
+      console.log("tag statuss  successfully")
+  }
+
     
       // send mail with defined transport object
       let info ={
@@ -431,7 +511,7 @@ router.put('/editForm/:id/:companyId', async function (req, res) {
     }
     const id = stat
     const lawyer = await Lawyer.findOne({socialSecurityNumber: lawyerId}, { _id: 1 })
-  
+    const companybeforeupdate = await Company.findById(companyId)
     if(!lawyer){
       return res
       .status(500)
@@ -448,9 +528,324 @@ router.put('/editForm/:id/:companyId', async function (req, res) {
             .send({ error: isValidated.error.details[0].message })
         }
         await Company.findByIdAndUpdate(companyId, req.body)
-        await Company.findByIdAndUpdate(companyId,{status: 'PendingReviewer'})
+        const updatedcompstatus = await Company.findById(companyId) 
+
+              
+// delete the the ids in the search tag Array before we update the company
+
+  if(req.body.regulationLaw)
+  {
+    var deleteIdinArrayinSearch = await SearchTag.findOne({tag:companybeforeupdate.regulationLaw})
+    
+    console.log(deleteIdinArrayinSearch)
+    if(deleteIdinArrayinSearch){
+    for (var i =0; i < deleteIdinArrayinSearch.location.length; i++)
+    {
+       if (deleteIdinArrayinSearch.location[i] == companybeforeupdate._id) {
+          deleteIdinArrayinSearch.location.splice(i,1);
+          await SearchTag.findByIdAndUpdate(deleteIdinArrayinSearch._id,deleteIdinArrayinSearch)
+          console.log("tag regulation law delteted  successfully")
+          break;
+        }
+   }
+  }
+}
+  if(req.body.legalCompanyForm)
+  {
+    var deleteIdinArrayinSearch = await SearchTag.findOne({tag:companybeforeupdate.legalCompanyForm})
+    if(deleteIdinArrayinSearch){
+    for (var i =0; i < deleteIdinArrayinSearch.location.length; i++)
+       if (deleteIdinArrayinSearch.location[i] == companybeforeupdate._id) {
+          deleteIdinArrayinSearch.location.splice(i,1);
+          await SearchTag.findByIdAndUpdate(deleteIdinArrayinSearch._id,deleteIdinArrayinSearch)
+          console.log("tag CompantForm delteted  successfully") 
+          break;
+   }
+  }}
+  if(req.body.governerateHQ)
+  {
+    var deleteIdinArrayinSearch = await SearchTag.findOne({tag:companybeforeupdate.governerateHQ})
+    if(deleteIdinArrayinSearch){
+    for (var i =0; i < deleteIdinArrayinSearch.location.length; i++)
+       if (deleteIdinArrayinSearch.location[i] == companybeforeupdate._id) {
+          deleteIdinArrayinSearch.location.splice(i,1);
+          await SearchTag.findByIdAndUpdate(deleteIdinArrayinSearch._id,deleteIdinArrayinSearch)
+          console.log("tag governarerate delteted  successfully")
+          break;
+   }
+  }
+}
+  if(req.body.capitalCurrency)
+  {
+    var deleteIdinArrayinSearch = await SearchTag.findOne({tag:companybeforeupdate.capitalCurrency})
+   if(deleteIdinArrayinSearch){
+    for (var i =0; i < deleteIdinArrayinSearch.location.length; i++)
+       if (deleteIdinArrayinSearch.location[i] == companybeforeupdate._id) {
+          deleteIdinArrayinSearch.location.splice(i,1);
+          await SearchTag.findByIdAndUpdate(deleteIdinArrayinSearch._id,deleteIdinArrayinSearch)
+          console.log("tag Currecy delteted  successfully") 
+          break;
+   }}
+  }
+  if(req.body.investorEmail)
+  {
+    var deleteIdinArrayinSearch = await SearchTag.findOne({tag:companybeforeupdate.investorEmail})
+    if(deleteIdinArrayinSearch){
+    for (var i =0; i < deleteIdinArrayinSearch.location.length; i++)
+       if (deleteIdinArrayinSearch.location[i] == companybeforeupdate._id) {
+          deleteIdinArrayinSearch.location.splice(i,1);
+          await SearchTag.findByIdAndUpdate(deleteIdinArrayinSearch._id,deleteIdinArrayinSearch)
+          console.log("tag email delteted  successfully") 
+          break;
+   }
+  }}
+  if(req.body.investorName)
+  {
+    var resq = companybeforeupdate.investorName.split(" ")
+    for(var k = 0 ; k<resq.length ; k++)
+    {
+   
+
+    var deleteIdinArrayinSearch = await SearchTag.findOne({tag:resq[k]})
+    if(deleteIdinArrayinSearch){
+    for (var i =0; i < deleteIdinArrayinSearch.location.length; i++)
+       if (deleteIdinArrayinSearch.location[i] == companybeforeupdate._id) {
+          deleteIdinArrayinSearch.location.splice(i,1);
+          await SearchTag.findByIdAndUpdate(deleteIdinArrayinSearch._id,deleteIdinArrayinSearch)
+          console.log("tag investName delteted  successfully") 
+          break;
+   }
+  }}
+  }
+  if(req.body.nameInArabic)
+  {
+    var resq = companybeforeupdate.nameInArabic.split(" ")
+    for(var k = 0 ; k<resq.length ; k++)
+    {
+    
+
+    var deleteIdinArrayinSearch = await SearchTag.findOne({tag:resq[k]})
+    if(deleteIdinArrayinSearch){
+    for (var i =0; i < deleteIdinArrayinSearch.location.length; i++)
+       if (deleteIdinArrayinSearch.location[i] == companybeforeupdate._id) {
+          deleteIdinArrayinSearch.location.splice(i,1);
+          await SearchTag.findByIdAndUpdate(deleteIdinArrayinSearch._id,deleteIdinArrayinSearch)
+          console.log("tag Name IN Arabic delteted  successfully") 
+          break;
+   }
+  }}
+  }
+  if(req.body.nameInEnglish)
+  {
+    var resq = companybeforeupdate.nameInEnglish.split(" ")
+    for(var k = 0 ; k<resq.length ; k++)
+    {
+
+
+    var deleteIdinArrayinSearch = await SearchTag.findOne({tag:resq[k]})
+    if(deleteIdinArrayinSearch){
+
+    for (var i =0; i < deleteIdinArrayinSearch.location.length; i++)
+       if (deleteIdinArrayinSearch.location[i] == companybeforeupdate._id) {
+          deleteIdinArrayinSearch.location.splice(i,1);
+          await SearchTag.findByIdAndUpdate(deleteIdinArrayinSearch._id,deleteIdinArrayinSearch)
+          console.log("tag NameInEnglish delteted  successfully") 
+          break;
+   }
+  }}
+  }
+
+
+
+console.log(companybeforeupdate.status )
+const statuss = await SearchTag.findOne({tag:companybeforeupdate.status})
+if(statuss){
+for (var i =0; i < statuss.location.length; i++){
+if (statuss.location[i] == companybeforeupdate._id) {
+   statuss.location.splice(i,1);
+   await SearchTag.findByIdAndUpdate(statuss._id,statuss)
+   console.log("tag status delteted  successfully")
+    break;
+}
+}
+}
+
+if(req.body.regulationLaw)
+        {
+          const regulationlaw = await SearchTag.findOne({tag:updatedcompstatus.regulationLaw})
+          if(regulationlaw){
+          regulationlaw.location.push(companyid)
+        await SearchTag.findByIdAndUpdate(regulationlaw._id,regulationlaw)
+        console.log("tag regulation switched  successfully")
+          }
+          else{
+            const newSearchTag = new SearchTag({ tag: updatedcompstatus.regulationLaw,
+              location :[updatedcompstatus._id]})
+              var tag = await SearchTag.create(newSearchTag)
+              console.log("tag regulationLaw updated when updating company  successfully")
+          }
+    
+        }
+        if(req.body.legalCompanyForm)
+        {
+          const legalForm = await SearchTag.findOne({tag:updatedcompstatus.legalCompanyForm})
+          if(legalForm){
+          legalForm.location.push(companyid)
+        await SearchTag.findByIdAndUpdate(legalForm._id,legalForm)
+        console.log("tag legalForm switched  successfully")
+          }
+          else{
+            const newSearchTag = new SearchTag({ tag: updatedcompstatus.legalCompanyForm,
+              location :[updatedcompstatus._id]})
+              var tag = await SearchTag.create(newSearchTag)
+              console.log("tag legalCompanyForm updated when updating company  successfully")
+          }
+        }
+        if(req.body.governerateHQ)
+        {
+          const governerate = await SearchTag.findOne({tag:updatedcompstatus.governerateHQ})
+          if(governerate){
+          governerate.location.push(companyid)
+        await SearchTag.findByIdAndUpdate(governerate._id,governerate)
+        console.log("tag governerate switched  successfully")
+        }
+        else{
+          const newSearchTag = new SearchTag({ tag: updatedcompstatus.governerateHQ,
+            location :[updatedcompstatus._id]})
+            var tag = await SearchTag.create(newSearchTag)
+            console.log("tag governerateHQ updated when updating company  successfully")
+        }
+      }
+
+        if(req.body.capitalCurrency)
+        {
+          const currency = await SearchTag.findOne({tag:updatedcompstatus.capitalCurrency})
+          if(currency){
+          currency.location.push(companyid)
+        await SearchTag.findByIdAndUpdate(currency._id,currency)
+        console.log("tag capitalCurrency switched  successfully")
+          }
+          else
+          {
+            const newSearchTag = new SearchTag({ tag: updatedcompstatus.capitalCurrency,
+              location :[updatedcompstatus._id]})
+              var tag = await SearchTag.create(newSearchTag)
+              console.log("tag capitalCurenncy updated when updating company  successfully")
+          }
+        }
+        if(req.body.investorEmail)
+        {
+          const investEmail = await SearchTag.findOne({tag:updatedcompstatus.investorEmail})
+          if(investEmail){
+          investEmail.location.push(companyid)
+        await SearchTag.findByIdAndUpdate(investEmail._id,investEmail)
+        console.log("tag investorEmail switched  successfully")
+        }else{
+          const newSearchTag = new SearchTag({ tag: updatedcompstatus.investorEmail,
+            location :[updatedcompstatus._id]})
+            var tag = await SearchTag.create(newSearchTag)
+            console.log("tag investorEmail updated when updating company  successfully")
+        }}
+        if(req.body.investorName)
+        {
+          var resq = updatedcompstatus.investorName.split(" ")
+          console.log(resq)
+          for(var k = 0 ; k < resq.length ; k++)
+          {
+          
+          
+            var investName = await SearchTag.findOne({tag:resq[k]})
+          console.log(investName)
+          if(investName)
+          {
+          investName.location.push(companyid)
+          await SearchTag.findByIdAndUpdate(investName._id,investName)
+          console.log("tag investorName switched  successfully")
+        }else{
+          const newSearchTag = new SearchTag({ tag: resq[k],
+            location :[updatedcompstatus._id]})
+            var tag = await SearchTag.create(newSearchTag)
+            console.log("tag investorName updated when updating company  successfully")
+        }
+      }
+        }
+        if(req.body.nameInArabic)
+        {
+          
+          var resq = updatedcompstatus.nameInArabic.split(" ")
+          for(var k = 0 ; k<resq.length ; k++)
+          {
+          
+          
+          var arabicName = await SearchTag.findOne({tag:resq[k]})
+          if(arabicName){
+          arabicName.location.push(companyid)
+          await SearchTag.findByIdAndUpdate(arabicName._id,arabicName)
+          console.log("tag nameInArabic switched  successfully")
+        }else{
+          const newSearchTag = new SearchTag({ tag: resq[k],
+            location :[updatedcompstatus._id]})
+            var tag = await SearchTag.create(newSearchTag)
+            console.log("tag nameInArabic updated when updating company  successfully")
+        }}
+        }
+        if(req.body.nameInEnglish)
+        {
+          
+          var resq = updatedcompstatus.nameInEnglish.split(" ")
+          for(var k = 0 ; k<resq.length ; k++)
+          {
+          
+            console.log(resq[k])
+          var englishName = await SearchTag.findOne({tag:resq[k]})
+          if(englishName){
+            englishName.location.push(companyid)
+            await SearchTag.findByIdAndUpdate(englishName._id,englishName)
+            console.log("tag nameInEnglish switched  successfully")
+          }
+         else
+         {
+          const newSearchTag = new SearchTag({ tag: resq[k],
+            location :[updatedcompstatus._id]})
+            var tag = await SearchTag.create(newSearchTag)
+            console.log("tag nameInEnglish updated when updating company  successfully")
+         }
+        }
+        
+      
+      }
+    const statusss = await SearchTag.findOne({tag:updatedcompstatus.status})
+    if(statusss)
+    {
+   statusss.location.push(updatedcompstatus._id)
+    await SearchTag.findByIdAndUpdate(statusss._id,statusss)
+    console.log("tag statusss switched  successfully")
+    }
+    else
+    {
+      const newSearchTag = new SearchTag({ tag: updatedcompstatus.status,
+        location :[updatedcompstatus._id]})
+        var tag = await SearchTag.create(newSearchTag)
+        console.log("tag statuss  successfully")
+    }
+
+
+
+
+
         res.json({ msg: 'fourm updated successfully' })
       }
+
+
+
+
+      
+     
+
+
+
+
+
     }
     else{
       res.json({ auth: false, message: 'Failed to authenticate token.' })
@@ -532,6 +927,180 @@ router.post('/lawyerinvestor/createspccompany', async (req, res) => {
       investorEmail
     })
     const company = await Company.create(newCompany)
+
+    //governerate tag
+    const government = await SearchTag.findOne({tag:company.governerateHQ})
+    if(!government)
+    {
+      const newSearchTag = new SearchTag({ tag: company.governerateHQ,
+        location :[company._id]})
+        var tag = await SearchTag.create(newSearchTag)
+        console.log("tag government  successfully")
+    }
+    else{
+      government.location.push(company._id)
+      await SearchTag.findByIdAndUpdate(government._id,government)
+      console.log("tag government updated successfully")
+
+    }
+
+
+
+
+    // investor Name tag
+          var resq = company.investorName.split(" ")
+          for(var i = 0 ; i< resq.length ; i++)
+      {
+      var investname = await SearchTag.findOne({tag:resq[i]})
+      if(!investname)
+      { const newSearchTag = new SearchTag({ tag:resq[i],
+        location :[company._id]
+
+      })
+      var tag = await SearchTag.create(newSearchTag)
+      console.log("tag investorName successfully")
+
+      }
+      else{
+      investname.location.push(company._id)
+      await SearchTag.findByIdAndUpdate(investname._id,investname)
+      console.log("tag investorName updated successfully")
+      }
+      }
+
+
+        // nameInArabic tag
+
+        var resq = company.nameInArabic.split(" ")
+        for(var i = 0 ; i< resq.length ; i++)
+   {
+   var arabicName = await SearchTag.findOne({tag:resq[i]})
+   if(!arabicName)
+   { const newSearchTag = new SearchTag({ tag:resq[i],
+           location :[company._id]
+ 
+   })
+   var tag = await SearchTag.create(newSearchTag)
+   console.log("tag arabicName successfully")
+    
+   }
+   else{
+    arabicName.location.push(company._id)
+    await SearchTag.findByIdAndUpdate(arabicName._id,arabicName)
+     console.log("tag arabicName updated successfully")
+   }
+   }
+
+
+
+    // investorEmail tag
+   
+    const investmail = await SearchTag.findOne({tag:company.investorEmail})
+    if(!investmail)
+    {
+      const newSearchTag = new SearchTag({ tag: company.investorEmail,
+        location :[company._id]})
+        var tag = await SearchTag.create(newSearchTag)
+        console.log("tag investorEmail  successfully")
+    }
+    else{
+      investmail.location.push(company._id)
+      await SearchTag.findByIdAndUpdate(investmail._id,investmail)
+      console.log("tag investorEmail updated successfully")
+
+    }
+
+      // currency tag
+      const currency = await SearchTag.findOne({tag:company.capitalCurrency})
+      if(!currency)
+      {
+        const newSearchTag = new SearchTag({ tag: company.capitalCurrency,
+          location :[company._id]})
+          var tag = await SearchTag.create(newSearchTag)
+          console.log("tag capitalCurrency  successfully")
+      }
+      else{
+        currency.location.push(company._id)
+        await SearchTag.findByIdAndUpdate(currency._id,currency)
+        console.log("tag capitalCurrency updated successfully")
+  
+      }
+
+    //regulation law tag
+    const regulationlaw = await SearchTag.findOne({tag:company.regulationLaw})
+    if(!regulationlaw)
+    {
+      const newSearchTag = new SearchTag({ tag: company.regulationLaw,
+        location :[company._id]})
+        var tag = await SearchTag.create(newSearchTag)
+        console.log("tag regulationLaw updated successfully")
+    }
+    else
+    {
+      regulationlaw.location.push(company._id)
+      await SearchTag.findByIdAndUpdate(regulationlaw._id,regulationlaw)
+      console.log("tag regulationLaw updated successfully")
+    }
+
+    // status tag
+    const statusTag =  await SearchTag.findOne({tag:company.status})
+    if(!statusTag)
+   { const newSearchTag = new SearchTag({ tag: company.status,
+           location :[company._id]
+ 
+   })
+   var tag = await SearchTag.create(newSearchTag)
+   console.log("tag status successfully")
+    
+   }
+   else{
+     statusTag.location.push(company._id)
+     await SearchTag.findByIdAndUpdate(statusTag._id,statusTag)
+     console.log("tag status update successfully")
+   }
+   
+   const legalCompany = await SearchTag.findOne({tag:company.legalCompanyForm})
+    resq = company.nameInEnglish.split(" ")
+   // nameIn English Tag
+   for(var i = 0 ; i< resq.length ; i++)
+   {
+   var englishName = await SearchTag.findOne({tag:resq[i]})
+   if(!englishName)
+   { const newSearchTag = new SearchTag({ tag:resq[i],
+           location :[company._id]
+ 
+   })
+   var tag = await SearchTag.create(newSearchTag)
+   console.log("tag englishName successfully")
+    
+   }
+   else{
+    englishName.location.push(company._id)
+    await SearchTag.findByIdAndUpdate(englishName._id,englishName)
+     console.log("tag englishName updated successfully")
+   }
+   }
+   // type tag
+   if(!legalCompany)
+   { const newSearchTag = new SearchTag({ tag: company.legalCompanyForm,
+           location :[company._id]
+ 
+   })
+   var tag = await SearchTag.create(newSearchTag)
+
+   console.log("tag legalCompany successfully")
+    
+   }
+   else{
+     legalCompany.location.push(company._id)
+     await SearchTag.findByIdAndUpdate(legalCompany._id,legalCompany)
+     console.log("tag legalCompany  updated successfully")
+   }
+
+
+
+
+
     res.json({ msg: 'Company was created successfully', data: company })
   } catch (error) {
     console.log(error)
@@ -616,6 +1185,179 @@ router.post('/lawyerinvestor/createssccompany', async (req, res) => {
       managers
     })
     const company = await Company.create(newCompany)
+
+
+    //governerate tag
+    const government = await SearchTag.findOne({tag:company.governerateHQ})
+    if(!government)
+    {
+      const newSearchTag = new SearchTag({ tag: company.governerateHQ,
+        location :[company._id]})
+        var tag = await SearchTag.create(newSearchTag)
+        console.log("tag government  successfully")
+    }
+    else{
+      government.location.push(company._id)
+      await SearchTag.findByIdAndUpdate(government._id,government)
+      console.log("tag government updated successfully")
+
+    }
+
+
+
+
+    // investor Name tag
+          var resq = company.investorName.split(" ")
+          for(var i = 0 ; i< resq.length ; i++)
+      {
+      var investname = await SearchTag.findOne({tag:resq[i]})
+      if(!investname)
+      { const newSearchTag = new SearchTag({ tag:resq[i],
+        location :[company._id]
+
+      })
+      var tag = await SearchTag.create(newSearchTag)
+      console.log("tag investorName successfully")
+
+      }
+      else{
+      investname.location.push(company._id)
+      await SearchTag.findByIdAndUpdate(investname._id,investname)
+      console.log("tag investorName updated successfully")
+      }
+      }
+
+
+        // nameInArabic tag
+
+        var resq = company.nameInArabic.split(" ")
+        for(var i = 0 ; i< resq.length ; i++)
+   {
+   var arabicName = await SearchTag.findOne({tag:resq[i]})
+   if(!arabicName)
+   { const newSearchTag = new SearchTag({ tag:resq[i],
+           location :[company._id]
+ 
+   })
+   var tag = await SearchTag.create(newSearchTag)
+   console.log("tag arabicName successfully")
+    
+   }
+   else{
+    arabicName.location.push(company._id)
+    await SearchTag.findByIdAndUpdate(arabicName._id,arabicName)
+     console.log("tag arabicName updated successfully")
+   }
+   }
+
+
+
+    // investorEmail tag
+    const investmail = await SearchTag.findOne({tag:company.investorEmail})
+    if(!investmail)
+    {
+      const newSearchTag = new SearchTag({ tag: company.investorEmail,
+        location :[company._id]})
+        var tag = await SearchTag.create(newSearchTag)
+        console.log("tag investorEmail  successfully")
+    }
+    else{
+      investmail.location.push(company._id)
+      await SearchTag.findByIdAndUpdate(investmail._id,investmail)
+      console.log("tag investorEmail updated successfully")
+
+    }
+
+      // currency tag
+      const currency = await SearchTag.findOne({tag:company.capitalCurrency})
+      if(!currency)
+      {
+        const newSearchTag = new SearchTag({ tag: company.capitalCurrency,
+          location :[company._id]})
+          var tag = await SearchTag.create(newSearchTag)
+          console.log("tag capitalCurrency  successfully")
+      }
+      else{
+        currency.location.push(company._id)
+        await SearchTag.findByIdAndUpdate(currency._id,currency)
+        console.log("tag capitalCurrency updated successfully")
+  
+      }
+
+    //regulation law tag
+    const regulationlaw = await SearchTag.findOne({tag:company.regulationLaw})
+    if(!regulationlaw)
+    {
+      const newSearchTag = new SearchTag({ tag: company.regulationLaw,
+        location :[company._id]})
+        var tag = await SearchTag.create(newSearchTag)
+        console.log("tag regulationLaw updated successfully")
+    }
+    else
+    {
+      regulationlaw.location.push(company._id)
+      await SearchTag.findByIdAndUpdate(regulationlaw._id,regulationlaw)
+      console.log("tag regulationLaw updated successfully")
+    }
+
+    // status tag
+    const statusTag =  await SearchTag.findOne({tag:company.status})
+    if(!statusTag)
+   { const newSearchTag = new SearchTag({ tag: company.status,
+           location :[company._id]
+ 
+   })
+   var tag = await SearchTag.create(newSearchTag)
+   console.log("tag status successfully")
+    
+   }
+   else{
+     statusTag.location.push(company._id)
+     await SearchTag.findByIdAndUpdate(statusTag._id,statusTag)
+     console.log("tag status update successfully")
+   }
+   
+   const legalCompany = await SearchTag.findOne({tag:company.legalCompanyForm})
+    resq = company.nameInEnglish.split(" ")
+   // nameIn English Tag
+   for(var i = 0 ; i< resq.length ; i++)
+   {
+   var englishName = await SearchTag.findOne({tag:resq[i]})
+   if(!englishName)
+   { const newSearchTag = new SearchTag({ tag:resq[i],
+           location :[company._id]
+ 
+   })
+   var tag = await SearchTag.create(newSearchTag)
+   console.log("tag englishName successfully")
+    
+   }
+   else{
+    englishName.location.push(company._id)
+    await SearchTag.findByIdAndUpdate(englishName._id,englishName)
+     console.log("tag englishName updated successfully")
+   }
+   }
+   // type tag
+   if(!legalCompany)
+   { const newSearchTag = new SearchTag({ tag: company.legalCompanyForm,
+           location :[company._id]
+ 
+   })
+   var tag = await SearchTag.create(newSearchTag)
+
+   console.log("tag legalCompany successfully")
+    
+   }
+   else{
+     legalCompany.location.push(company._id)
+     await SearchTag.findByIdAndUpdate(legalCompany._id,legalCompany)
+     console.log("tag legalCompany  updated successfully")
+   }
+
+
+
+
     res.json({ msg: 'Company was created successfully', data: company })
   } catch (error) {
     console.log(error)
@@ -808,45 +1550,7 @@ router.get('/getRejectedTasks/Lawyer', async (req, res) => {
     $and: [
       { status: 'RejectedLawyer' },
       { lawyer: lawyerssn },
-    ]
-  }
-    const comps = await Company.find(query)
-
-    res.json({ data:comps})
-  } catch(error) {
-    console.log(error)
-  }
-})
-
-router.get('/getRejectedTasks/Lawyer', async (req, res) => {
-  try {
-    var stat = 0
-    var token = req.headers['x-access-token']
-    if (!token) {
-      return res
-        .status(401)
-        .send({ auth: false, message: 'Please login first.' })
-    }
-    jwt.verify(token, config.secret, async function (err, decoded) {
-      if (err) {
-        return res
-          .status(500)
-          .send({ auth: false, message: 'Failed to authenticate token.' })
-      }
-
-      stat = decoded.id
-    })
-    const id = stat
-    
-
-    const lawyerss = await Lawyer.findById(id)
-    const lawyerssn = await lawyerss.socialSecurityNumber
-
-   
-  var query = {
-    $and: [
-      { status: 'RejectedLawyer' },
-      { lawyer: lawyerssn },
+      {lawyerComment : null},
     ]
   }
     const comps = await Company.find(query)
@@ -860,8 +1564,9 @@ router.get('/getRejectedTasks/Lawyer', async (req, res) => {
 
 
 
-router.put('addcomment/id2',async(req,res)=>{
+router.put('/addcomment/:id2',async(req,res)=>{
   var companyId = req.params.id2
+  
     
  try{ 
   var stat = 0
@@ -877,9 +1582,8 @@ router.put('addcomment/id2',async(req,res)=>{
         .send({ auth: false, message: 'Failed to authenticate token.' })
     }
   })
-  const id = stat
-  const lawyerID = id
-  const currentLawyer = await Lawyer.findById(lawyerID)
+ 
+  const currentLawyer = await Lawyer.findById(stat)
    const lawyerSSN = await currentLawyer.socialSecurityNumber
   
   var query = {
@@ -889,11 +1593,13 @@ router.put('addcomment/id2',async(req,res)=>{
       { _id: companyId }
     ]
   }
+
   const editableCompanies = await Company.find(query)
  
   if (!editableCompanies) {
     return res.status(404).send({ error: 'There are no Fourms to be edited' })
   } else {
+   
     const isValidated = companyvalidator.updateValidationSSC(req.body)
     if (isValidated.error) {
       return res
@@ -903,6 +1609,31 @@ router.put('addcomment/id2',async(req,res)=>{
     await Company.findByIdAndUpdate(companyId, {
       lawyerComment: req.body.lawyerComment
     })
+    
+    var com =await Company.findById(companyId)
+
+    var resq = req.body.lawyerComment.split(" ");
+    for(var i = 0 ; i < resq.length ; i++ )
+    {
+      if(resq[i].length() >=3)
+      {
+  var comment = await SearchTag.findOne({tag:resq[i]})
+  if(comment)
+  {
+ comment.location.push(com._id)
+  await SearchTag.findByIdAndUpdate(comment._id,comment)
+  console.log("tagLawyer comment added  successfully")
+  }
+  else
+  {
+    const newSearchTag = new SearchTag({ tag:resq[i],
+      location :[companyId]})
+      var tag = await SearchTag.create(newSearchTag)
+      console.log("tag Lawyer comment created  successfully")
+  }
+}
+}
+console.log("done")
     res.json({ msg: 'Comment added Successfully' })
   }
 }catch(error){
@@ -950,6 +1681,30 @@ router.put('/addcomment/:id/:companyId', async function (req, res) {
     await Company.findByIdAndUpdate(companyId, {
       lawyerComment: req.body.lawyerComment
     })
+
+    const com = await Company.findById(companyId)
+    var resq = req.body.lawyerComment.split(" ");
+    for(var i = 0 ; i < resq.length ; i++ )
+    {
+      if(resq[i].length() >=3)
+      {
+  var comment = await SearchTag.findOne({tag:resq[i]})
+  if(comment)
+  {
+ comment.location.push(com._id)
+  await SearchTag.findByIdAndUpdate(comment._id,comment)
+  console.log("tag comment added  successfully")
+  }
+  else
+  {
+    const newSearchTag = new SearchTag({ tag:resq[i],
+      location :[com._id]})
+      var tag = await SearchTag.create(newSearchTag)
+      console.log("tag comment created  successfully")
+  }
+}
+}
+  
     res.json({ msg: 'Comment added Successfully' })
   }
 }catch(error){
@@ -1051,7 +1806,10 @@ router.put('/resubmit/:id/:companyId', async function (req, res) {
       .send({ error: 'There are no Fourms to be resubmitted' })
   } else {
     const x = await Company.findOneAndUpdate(query, { status: 'PendingReviewer' })
-    res.json({ msg: 'fourm resubmitted successfully' })	   
+
+    // I will put tag here
+
+
     if(x)
       res.json({ msg: 'fourm resubmitted successfully' })
     else
@@ -1085,7 +1843,9 @@ router.get('/mycases', async (req, res) => {
 
       let lawyer = await Lawyer.findById(id)
       let ssn = lawyer.socialSecurityNumber
-      let query = { status:'PendingLawyer',  lawyer:ssn  }
+      var query = {
+        $and: [$or[{ status: "PendingLawyer" },{ status: "RejectedLawyer" }], { reviewer: ssn }]
+      };
       let company = await Company.find(query) // Because no Accepted companys... used 'PendingLawyer' as a test case
 
       res.json({ data: company })

@@ -21,7 +21,7 @@ approveTask()
   }).then(response => {
    console.log(response)
     alert("Task Approved!!... Now the company is established!!")
-    window.location.reload();
+    this.forceUpdate()
   })
  }
 
