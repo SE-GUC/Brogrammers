@@ -12,6 +12,8 @@ class ViewReviewerCasesbyID extends Component {
         }
         this.sortById=this.sortById.bind(this);
         this.sortByCreationDate=this.sortByCreationDate.bind(this);
+        this.sortByStatus=this.sortByStatus.bind(this);
+
   }
 
   componentDidMount () {
@@ -28,8 +30,11 @@ class ViewReviewerCasesbyID extends Component {
 
 
   sortById(e){
-    const myData = [].concat(this.state.companies)
-    .sort((a, b) => a._id > b._id)
+    const myData=this.state.companies.sort(function(a, b){
+      if(a._id < b._id) { return -1; }
+      if(a._id > b._id) { return 1; }
+      return 0;
+  })
     this.setState(
       prevState=>{
         return{
@@ -40,13 +45,18 @@ class ViewReviewerCasesbyID extends Component {
         ()=>console.log(myData)
       
      )
-     
+  this.forceUpdate()
+    
+ 
     
   }
 
   sortByCreationDate(e){
-    const myData = [].concat(this.state.companies)
-    .sort((a, b) => a.creationDate > b.creationDate)
+    const myData=this.state.companies.sort(function(a, b){
+      if(a.creationDate < b.creationDate) { return -1; }
+      if(a.creationDate > b.creationDate) { return 1; }
+      return 0;
+  })
     this.setState(
       prevState=>{
         return{
@@ -57,11 +67,31 @@ class ViewReviewerCasesbyID extends Component {
         ()=>console.log(myData)
       
      )
-     
+  this.forceUpdate()
     
+  
   }
 
 
+  sortByStatus(e){
+    const myData=this.state.companies.sort(function(a, b){
+      if(a.status < b.status) { return -1; }
+      if(a.status > b.status) { return 1; }
+      return 0;
+  })
+    this.setState(
+      prevState=>{
+        return{
+          myData
+
+          }
+        },
+        ()=>console.log(myData)
+      
+     )
+  this.forceUpdate()
+    
+  }
 
   
 
@@ -73,7 +103,8 @@ class ViewReviewerCasesbyID extends Component {
         <div>
           <Button variant="outlined" color="dark" onClick={this.sortById}> Sort By Id</Button> >
                <Button variant="outlined" color="dark" onClick={this.sortByCreationDate}> Sort By creation Date</Button> >
-             
+               <Button variant="outlined" color="dark" onClick={this.sortByStatus}> Sort By Status</Button> >
+          
           <ul>
             {this.state.companies.map((element, i) => (
               <MyReviewerCasesCard key={i} title={'helo'} info={element.investorName} 
