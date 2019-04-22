@@ -21,7 +21,7 @@ import ChooseCompanyType from '../../pages/ChooseCompanyType'
 import LawyerComment from '../../pages/LawyerComment'
 import LawyerCompanyRegSSC from '../../pages/LawyerCompanyRegSSC'
 import LawyerCompanyRegSPC from '../../pages/LawyerCompanyRegSPC'
-
+import NavBar from '../../../components/layout/Navbar'
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -85,14 +85,7 @@ class ClippedDrawerLawyer extends React.Component {
       return (
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Lawyer profile
-                      </Typography>
-            </Toolbar>
-          </AppBar>
-
+    
           <Drawer
             className={classes.drawer}
             variant="permanent"
@@ -100,6 +93,11 @@ class ClippedDrawerLawyer extends React.Component {
               paper: classes.drawerPaper,
             }}
           >
+
+          
+            
+            
+            <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
@@ -157,16 +155,17 @@ class ClippedDrawerLawyer extends React.Component {
 
     if (this.state.clicked == 'myCases') {
       return (
+       
         <div className={classes.root}>
+       
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Lawyer profile
-                  </Typography>
-            </Toolbar>
-          </AppBar>
-
+      
+          {/* <NavBar> */}
+      
+       
+         {/* </NavBar> */}
+         
+       
           <Drawer
             className={classes.drawer}
             variant="permanent"
@@ -174,8 +173,15 @@ class ClippedDrawerLawyer extends React.Component {
               paper: classes.drawerPaper,
             }}
           >
-            <div className={classes.toolbar} />
-
+           
+            <br/>
+            <br/>
+           <br/>
+            
+            <NavBar/>
+           
+            <div className={classes.toolbar}>
+            
             <List>
               <ListItem button key={"Home"} onClick={this.handleHome}>
                 <ListItemIcon><InboxIcon /></ListItemIcon>
@@ -190,9 +196,10 @@ class ClippedDrawerLawyer extends React.Component {
                 <ListItemText primary="View All Cases" />
               </ListItem>
             </List>
+            
             <Divider />
             <List>
-
+           
               <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
                 <ListItemIcon><InboxIcon /></ListItemIcon>
                 <ListItemText primary="View My Cases" />
@@ -214,11 +221,17 @@ class ClippedDrawerLawyer extends React.Component {
                 <ListItemText primary="Write Comment" />
               </ListItem>
 
-
+             
             </List>
+          
 
-
+          
+            </div>
+          
+           
+          
           </Drawer>
+          
           <main className={classes.content}>
             <div className={classes.toolbar} />
 
@@ -232,13 +245,7 @@ class ClippedDrawerLawyer extends React.Component {
       return (
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Lawyer profile
-                      </Typography>
-            </Toolbar>
-          </AppBar>
+        
 
           <Drawer
             className={classes.drawer}
@@ -247,6 +254,7 @@ class ClippedDrawerLawyer extends React.Component {
               paper: classes.drawerPaper,
             }}
           >
+             <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
@@ -311,13 +319,7 @@ class ClippedDrawerLawyer extends React.Component {
       return (
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Lawyer profile
-                          </Typography>
-            </Toolbar>
-          </AppBar>
+         
 
           <Drawer
             className={classes.drawer}
@@ -326,6 +328,7 @@ class ClippedDrawerLawyer extends React.Component {
               paper: classes.drawerPaper,
             }}
           >
+             <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
@@ -387,13 +390,7 @@ class ClippedDrawerLawyer extends React.Component {
       return (
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Lawyer profile
-                            </Typography>
-            </Toolbar>
-          </AppBar>
+          
 
           <Drawer
             className={classes.drawer}
@@ -402,6 +399,7 @@ class ClippedDrawerLawyer extends React.Component {
               paper: classes.drawerPaper,
             }}
           >
+             <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
@@ -463,13 +461,7 @@ class ClippedDrawerLawyer extends React.Component {
       return (
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Lawyer profile
-                                </Typography>
-            </Toolbar>
-          </AppBar>
+       
 
           <Drawer
             className={classes.drawer}
@@ -478,6 +470,7 @@ class ClippedDrawerLawyer extends React.Component {
               paper: classes.drawerPaper,
             }}
           >
+          <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
@@ -537,13 +530,7 @@ class ClippedDrawerLawyer extends React.Component {
       return (
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Lawyer profile
-                              </Typography>
-            </Toolbar>
-          </AppBar>
+        
 
           <Drawer
             className={classes.drawer}
@@ -552,6 +539,7 @@ class ClippedDrawerLawyer extends React.Component {
               paper: classes.drawerPaper,
             }}
           >
+          <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
@@ -614,13 +602,7 @@ class ClippedDrawerLawyer extends React.Component {
 
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Lawyer profile
-                                </Typography>
-            </Toolbar>
-          </AppBar>
+       
 
           <Drawer
             className={classes.drawer}
@@ -629,6 +611,7 @@ class ClippedDrawerLawyer extends React.Component {
               paper: classes.drawerPaper,
             }}
           >
+          <NavBar/>
             <div className={classes.toolbar} />
 
             <List>

@@ -60,7 +60,8 @@ const DialogActions = withStyles(theme => ({
 
 class CustomizedDialogFees1 extends React.Component {
   constructor(props){
-  state = {
+    super(props);
+  this.state = {
       open: false,
       fees:0,
       curr:''

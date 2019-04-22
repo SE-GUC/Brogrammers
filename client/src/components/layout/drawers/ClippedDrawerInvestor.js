@@ -19,6 +19,7 @@ import InvestorCompanyRegSPC from '../../pages/InvestorCompanyRegSPC'
 import InvestorCompanyRegSSC from '../../pages/InvestorCompanyRegSSC'
 import Stepper from '../../steppers/stepper'
 import { Paper } from '@material-ui/core'
+import NavBar from '../Navbar'
 const drawerWidth = 240
 
 const styles = theme => ({
@@ -75,23 +76,21 @@ class ClippedDrawerInvestor extends React.Component {
   handleCompanySPC = () => {
     this.setState({ clicked: 'createspc' })
   }
+//   handleContent=()=>{
+// switch(this.state.clicked){
+    
+//     case 'companies': 
+//     return       
+//     <ViewCompanies token={sessionStorage.getItem('jwtToken')} />
+
+//   }
   render() {
     const { classes } = this.props
     if (this.state.clicked == 'i') {
       return (
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar
-            position="fixed"
-            className={classes.appBar}
-            style={{ backgroundColor: 'black' }}
-          >
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Investor profile
-              </Typography>
-            </Toolbar>
-          </AppBar>
+     
 
           <Drawer
             className={classes.drawer}
@@ -100,6 +99,7 @@ class ClippedDrawerInvestor extends React.Component {
               paper: classes.drawerPaper
             }}
           >
+           <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
@@ -194,13 +194,7 @@ class ClippedDrawerInvestor extends React.Component {
       return (
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Investor profile
-              </Typography>
-            </Toolbar>
-          </AppBar>
+        
 
           <Drawer
             className={classes.drawer}
@@ -209,6 +203,7 @@ class ClippedDrawerInvestor extends React.Component {
               paper: classes.drawerPaper
             }}
           >
+           <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
@@ -309,13 +304,7 @@ class ClippedDrawerInvestor extends React.Component {
       return (
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Investor profile
-              </Typography>
-            </Toolbar>
-          </AppBar>
+         
 
           <Drawer
             className={classes.drawer}
@@ -324,6 +313,7 @@ class ClippedDrawerInvestor extends React.Component {
               paper: classes.drawerPaper
             }}
           >
+           <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
@@ -415,18 +405,12 @@ class ClippedDrawerInvestor extends React.Component {
         </div>
       )
     }
-
+//editProfile
     if (this.state.clicked == 'profile') {
       return (
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Investor profile
-              </Typography>
-            </Toolbar>
-          </AppBar>
+         
 
           <Drawer
             className={classes.drawer}
@@ -435,6 +419,7 @@ class ClippedDrawerInvestor extends React.Component {
               paper: classes.drawerPaper
             }}
           >
+           <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
@@ -526,19 +511,14 @@ class ClippedDrawerInvestor extends React.Component {
         </div>
       )
     }
-
+//here
     if (this.state.clicked == 'createssc') {
       return (
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Investor profile
-              </Typography>
-            </Toolbar>
-          </AppBar>
+        
 
+         
           <Drawer
             className={classes.drawer}
             variant="permanent"
@@ -546,6 +526,7 @@ class ClippedDrawerInvestor extends React.Component {
               paper: classes.drawerPaper
             }}
           >
+           <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
@@ -577,6 +558,26 @@ class ClippedDrawerInvestor extends React.Component {
                   <InboxIcon />
                 </ListItemIcon>
                 <ListItemText primary="View My Companies" />
+              </ListItem>
+              <ListItem
+                button
+                key={'View My Requests'}
+                onClick={this.handleRequests}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="View My Requests" />
+              </ListItem>
+              <ListItem
+                button
+                key={'Create Companies'}
+                onClick={this.handleCreate}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Create Companies" />
               </ListItem>
               <ListItem
                 button
@@ -627,13 +628,7 @@ class ClippedDrawerInvestor extends React.Component {
       return (
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Investor profile
-              </Typography>
-            </Toolbar>
-          </AppBar>
+         
 
           <Drawer
             className={classes.drawer}
@@ -642,6 +637,7 @@ class ClippedDrawerInvestor extends React.Component {
               paper: classes.drawerPaper
             }}
           >
+           <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
@@ -673,6 +669,26 @@ class ClippedDrawerInvestor extends React.Component {
                   <InboxIcon />
                 </ListItemIcon>
                 <ListItemText primary="View My Companies" />
+              </ListItem>
+              <ListItem
+                button
+                key={'View My Requests'}
+                onClick={this.handleRequests}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="View My Requests" />
+              </ListItem>
+              <ListItem
+                button
+                key={'Create Companies'}
+                onClick={this.handleCreate}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Create Companies" />
               </ListItem>
               <ListItem
                 button
@@ -723,13 +739,7 @@ class ClippedDrawerInvestor extends React.Component {
       return (
         <div className={classes.root}>
           <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Investor profile
-              </Typography>
-            </Toolbar>
-          </AppBar>
+          
 
           <Drawer
             className={classes.drawer}
@@ -738,6 +748,7 @@ class ClippedDrawerInvestor extends React.Component {
               paper: classes.drawerPaper
             }}
           >
+           <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
@@ -769,6 +780,26 @@ class ClippedDrawerInvestor extends React.Component {
                   <InboxIcon />
                 </ListItemIcon>
                 <ListItemText primary="View My Companies" />
+              </ListItem>
+              <ListItem
+                button
+                key={'View My Requests'}
+                onClick={this.handleRequests}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="View My Requests" />
+              </ListItem>
+              <ListItem
+                button
+                key={'Create Companies'}
+                onClick={this.handleCreate}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Create Companies" />
               </ListItem>
               <ListItem
                 button
@@ -805,7 +836,7 @@ class ClippedDrawerInvestor extends React.Component {
           <main className={classes.content}>
             <div className={classes.toolbar} />
 
-            <Paper>
+            <Paper token={sessionStorage.getItem('jwtToken')}>
               {' '}
               <Stepper
                 id={sessionStorage.getItem('id')}
