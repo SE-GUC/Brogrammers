@@ -69,6 +69,8 @@ console.log(props.id)
             <li>investorTelephone: {props.investorTelephone}</li>
             <li>investorFax: {props.investorFax}</li>
             <li>investorEmail:{props.investorEmail}</li>
+            <li>lawyerComment:{props.lawyerComment}</li>
+            
           </ul>
           <br />
 

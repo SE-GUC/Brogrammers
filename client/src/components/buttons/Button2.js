@@ -34,7 +34,7 @@ render(){
     return(
         <div>
 <Button variant='contained' color='primary' size="medium" onClick={this.claimTask.bind(this)}>
- {sessionStorage.getitem('lang')==='en'? 'Claim task': 'استلام المهمه '},
+ {sessionStorage.getItem('lang')==='en'? 'Claim task': 'استلام المهمه '},
 </Button>
 
 
