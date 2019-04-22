@@ -1423,16 +1423,34 @@ router.post("/searchCases",async function(req , res) {
 
 var search = req.body.tag
 //var collection = await SearchTag.find({ tag: ("/^" + search +"/") })
+var index = req.body.index
+var breakFlag = 0
+var counter = 0
 var collection = await SearchTag.find({tag: new RegExp(search)})
 
 var data = []
 for(var i = 0 ; i<collection.length ; i++)
 { console.log("I am in")
   for(var k = 0 ; k<collection[i].location.length ; k++ )
-  {
+  { if(counter>=index*4  )
+    {
     var company = await Company.findById({_id :collection[i].location[k]})
     data.push(company)
+    console.log("Fetching counter: "+counter )
+    }
+    console.log(counter)
+    counter++
+    
+    console.log(index*4+4)
+    if(counter>=(index*4+4))
+    {
+      breakFlag = 1;
+      break;
+    }
   }
+  if(breakFlag ==1)
+    break;
+
 }
 
 res.json({Search : data})

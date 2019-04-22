@@ -994,7 +994,7 @@ router.post('/lawyerinvestor/createspccompany', async (req, res) => {
 
     // investorEmail tag
    
-    
+    const investmail = await SearchTag.findOne({tag:company.investorEmail})
     if(!investmail)
     {
       const newSearchTag = new SearchTag({ tag: company.investorEmail,

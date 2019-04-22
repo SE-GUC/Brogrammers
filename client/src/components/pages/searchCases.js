@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { withStyles, List, Paper } from '@material-ui/core'
 import GridList from '@material-ui/core/GridList'
 import CompanyCard from '../cards/CompanyCard'
-import InvestorCard from '../cards/InvestorCard'
-import SimpleCard from '../cards/SimpleCard'
+import Button from '@material-ui/core/Button'
 
 const styles = {
   list: {
@@ -19,6 +18,7 @@ const styles = {
     borderStyle: 'solid',
     borderColor: 'black'
   }
+  
 }
 
 class searchCases extends Component {
@@ -28,7 +28,8 @@ class searchCases extends Component {
       cases: [],
       search:this.props.match.params.search,
       isLoadied:false,
-      flag : false
+      flag : false,
+      index:0
     }
   }
 
@@ -37,14 +38,17 @@ class searchCases extends Component {
     fetch("http://localhost:3000/api/investors/searchCases", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json'},
-      body: JSON.stringify({tag :this.state.search })
+      body: JSON.stringify({tag :this.state.search ,
+     index:this.state.index })
       
     })
       .then(res => res.json())
       .then(json => {
         this.setState({ isLoadied: true,
             flag:true,
-            cases: json.Search })
+            cases: json.Search, 
+            index:this.state.index}
+           )
         console.log(this.state.cases)
         
       })
@@ -52,11 +56,53 @@ class searchCases extends Component {
      
   }
 
+  handleNext=()=>{
+    
+    fetch("http://localhost:3000/api/investors/searchCases", {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json'},
+      body: JSON.stringify({tag :this.state.search ,
+     index:this.state.index+1 })
+      
+    })
+      .then(res => res.json())
+      .then(json => {
+        this.setState({ isLoadied: true,
+            flag:true,
+            cases: json.Search, 
+            index:this.state.index+1}
+           )
+        console.log(this.state.cases)
+        
+      })
+  }
+  handleBack=()=>{
+
+    fetch("http://localhost:3000/api/investors/searchCases", {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json'},
+      body: JSON.stringify({tag :this.state.search ,
+     index:this.state.index>0?this.state.index-1:this.state.index })
+      
+    })
+      .then(res => res.json())
+      .then(json => {
+        this.setState({ isLoadied: true,
+            flag:true,
+            cases: json.Search, 
+            index:this.state.index>0? this.state.index-1 : this.state.index}
+           )
+        console.log(this.state.cases)
+        
+      })
+  }
+
   render() {
     const { classes } = this.props
     
     return (
         <div className={classes.holder}>
+
       
         <div
           className={classes.sep}
@@ -70,6 +116,10 @@ class searchCases extends Component {
             ))}
             
           </GridList>
+          <div align="center">
+          <Button onClick={this.handleBack} >Back</Button>
+          <Button onClick={this.handleNext} >Next</Button>
+          </div>
         </div>
       </div>
     )
