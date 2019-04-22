@@ -630,83 +630,81 @@ router.get('/getRejectedTasks/Reviewer', async (req, res) => {
   })
   
 
-
-router.put('addcomment/id2',async(req,res)=>{
-  var companyId = req.params.id2
-    
- try{ 
-  var stat = 0
-  var token = req.headers['x-access-token']
-  if (!token) {
-    return res.status(401).send({ auth: false, message: 'No token provided.' })
-  }
-  jwt.verify(token, config.secret, function (err, decoded) {
-    stat = decoded.id
-    if (err) {
-      return res
-        .status(500)
-        .send({ auth: false, message: 'Failed to authenticate token.' })
+  router.put('/addcomment/:id2',async(req,res)=>{
+    var companyId = req.params.id2  
+   try{ 
+    var stat = 0
+    var token = req.headers['x-access-token']
+    if (!token) {
+      return res.status(401).send({ auth: false, message: 'No token provided.' })
     }
-  })
-  const id = stat
-  const reviewerID = id
-  const currentReviewer = await Reviewer.findById(reviewerID)
-   const reviewerSSN = await currentReviewer.socialSecurityNumber
-  
-  var query = {
-    $and: [
-      { status: 'RejectedReviewer' },
-      { reviewer: reviewerSSN },
-      { _id: companyId }
-    ]
-  }
-  const editableCompanies = await Company.find(query)
- 
-  if (!editableCompanies) {
-    return res.status(404).send({ error: 'There are no Fourms to be edited' })
-  } else {
-    const isValidated = companyvalidator.updateValidationSSC(req.body)
-    if (isValidated.error) {
-      return res
-        .status(400)
-        .send({ error: isValidated.error.details[0].message })
-    }
-    await Company.findByIdAndUpdate(companyId, {
-      reviewerComment: req.body.reviewerComment
+    jwt.verify(token, config.secret, function (err, decoded) {
+      stat = decoded.id
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: 'Failed to authenticate token.' })
+      }
     })
-
-
-    var resq = req.body.reviewerComment.split(" ");
-    for(var i = 0 ; i < resq.length ; i++ )
-    {
-      if(resq[i].length() >=3)
+   
+    const currentReviewer = await Reviewer.findById(stat)
+     const reviewerSSN = await currentReviewer.socialSecurityNumber
+    
+    var query = {
+      $and: [
+        { status: 'RejectedReviewer' },
+        { reviewer: reviewerSSN },
+        { _id: companyId }
+      ]
+    }
+  
+    const editableCompanies = await Company.find(query)
+   
+    if (!editableCompanies) {
+      return res.status(404).send({ error: 'There are no Fourms to be edited' })
+    } else {
+   
+      const isValidated = companyvalidator.updateValidationSSC(req.body)
+      if (isValidated.error) {
+        return res
+          .status(400)
+          .send({ error: isValidated.error.details[0].message })
+      }
+      await Company.findByIdAndUpdate(companyId, {
+        reviewerComment: req.body.reviewerComment
+      })
+     
+      var com =await Company.findById(companyId)
+  
+      var resq = req.body.reviewerComment.split(" ");
+      for(var i = 0 ; i < resq.length ; i++ )
       {
-  var comment = await SearchTag.findOne({tag:resq[i]})
-  if(comment)
-  {
- comment.location.push(companyId)
-  await SearchTag.findByIdAndUpdate(comment._id,comment)
-  console.log("tag comment added  successfully")
+        if(resq[i].length() >=3)
+        {
+    var comment = await SearchTag.findOne({tag:resq[i]})
+    if(comment)
+    {
+   comment.location.push(com._id)
+    await SearchTag.findByIdAndUpdate(comment._id,comment)
+    console.log("tagreviewer comment added  successfully")
+    }
+    else
+    {
+      const newSearchTag = new SearchTag({ tag:resq[i],
+        location :[companyId]})
+        var tag = await SearchTag.create(newSearchTag)
+        console.log("tag reviewer comment created  successfully")
+    }
   }
-  else
-  {
-    const newSearchTag = new SearchTag({ tag:resq[i],
-      location :[companyId]})
-      var tag = await SearchTag.create(newSearchTag)
-      console.log("tag comment created  successfully")
   }
-}
-}
-
-
-
-    res.json({ msg: 'Comment added Successfully' })
+  console.log("done")
+      res.json({ msg: 'Comment added Successfully' })
+    }
+  }catch(error){
+    res.json({ err:'error occured' })
   }
-}catch(error){
-  res.json({ err:'error occured' })
-}
-})
-
+  })
+  
 
 
 router.put('/addcomment/:id/:companyId', async function (req, res) {

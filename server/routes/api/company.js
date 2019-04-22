@@ -50,7 +50,7 @@ router.post('/create', async (req, res) => {
 
 router.get('/', async (req, res) => {
   const companys = await Company.find()
-  res.json({ data: companys })
+  res.json({ data: companys })  
 })
 
 // Sprint 2: viewing approved Companies
