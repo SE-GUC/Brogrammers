@@ -59,13 +59,17 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 
 class CustomizedDialogFees1 extends React.Component {
+  constructor(props){
   state = {
-    open: false,
-    fees:0,
-    curr:''
-  };
+      open: false,
+      fees:0,
+      curr:''
+    };
+  this.handleViewFees = this.handleViewFees.bind(this)
+  }
 
   handleClickOpen = () => {
+    this.handleViewFees()
     this.setState({
       open: true
     });
@@ -94,7 +98,7 @@ class CustomizedDialogFees1 extends React.Component {
 }
 
   render() {
-    this.handleViewFees()
+    
     return (
       <div>
         <MenuItem onClick={this.handleClickOpen}>View Fees</MenuItem>
