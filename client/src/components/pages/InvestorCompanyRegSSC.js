@@ -76,7 +76,12 @@ class InvestorCompanyReg extends React.Component {
         }
       }).then(response => {
         response.json().then(data => {
-          console.log('Successful' + data)
+          if (data.error) {
+            alert(data.error);
+          }
+          else {
+            console.log('Successful' + data)
+          }
         })
       })
   }
