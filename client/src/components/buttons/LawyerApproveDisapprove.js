@@ -21,7 +21,7 @@ approveTask()
   }).then(response => {
    console.log(response)
     alert("Task Approved!!... Now waiting Reviewer's Approval")
-    window.location.reload();
+    this.forceUpdate()
   })
  }
 

@@ -9,6 +9,7 @@ const Admin = require("../../models/Admin");
 const validator = require("../../validations/reviewerValidations");
 const companyvalidator = require("../../validations/companyValidations");
 const nodemailer = require("nodemailer");
+const SearchTag = require('../../models/SearchTag')
 
 router.get("/", async (req, res) => {
   var token = req.headers["x-access-token"];
@@ -610,14 +611,15 @@ router.get('/getRejectedTasks/Reviewer', async (req, res) => {
     const id = stat
     
 
-    const reviewerss = await Reviewer.findById(id)
-    const reviewerssn = await reviewerss.socialSecurityNumber
+    const lawyerss = await Reviewer.findById(stat)
+    const reviewerssn = await lawyerss.ssn
 
    
   var query = {
     $and: [
       { status: 'RejectedReviewer' },
       { reviewer: reviewerssn },
+      {reviewerComment : null},
     ]
   }
     const comps = await Company.find(query)
@@ -627,50 +629,10 @@ router.get('/getRejectedTasks/Reviewer', async (req, res) => {
     console.log(error)
   }
 })
+  
 
-
-router.get('/getRejectedTasks/Reviewer', async (req, res) => {
-  try {
-    var stat = 0
-    var token = req.headers['x-access-token']
-    if (!token) {
-      return res
-        .status(401)
-        .send({ auth: false, message: 'Please login first.' })
-    }
-    jwt.verify(token, config.secret, async function (err, decoded) {
-      if (err) {
-        return res
-          .status(500)
-          .send({ auth: false, message: 'Failed to authenticate token.' })
-      }
-
-      stat = decoded.id
-    })
-    const id = stat
-    
-
-    const reviewerss = await Reviewer.findById(id)
-    const reviewerssn = await reviewerss.socialSecurityNumber
-
-   
-  var query = {
-    $and: [
-      { status: 'RejectedReviewer' },
-      { reviewer: reviewerssn },
-    ]
-  }
-    const comps = await Company.find(query)
-
-    res.json({ data:comps})
-  } catch(error) {
-    console.log(error)
-  }
-})
-
-router.put('addcomment/id2',async(req,res)=>{
+router.put('/addcomment/:id2',async(req,res)=>{
   var companyId = req.params.id2
-    
  try{ 
   var stat = 0
   var token = req.headers['x-access-token']
@@ -685,33 +647,38 @@ router.put('addcomment/id2',async(req,res)=>{
         .send({ auth: false, message: 'Failed to authenticate token.' })
     }
   })
-  const id = stat
-  const reviewerID = id
-  const currentReviewer = await Reviewer.findById(reviewerID)
-   const reviewerSSN = await currentReviewer.socialSecurityNumber
+ 
+  const currentLawyer = await Reviewer.findById(stat)
+   const lawyerSSN = await currentLawyer.ssn
   
   var query = {
     $and: [
       { status: 'RejectedReviewer' },
-      { reviewer: reviewerSSN },
+      { reviewer: lawyerSSN },
       { _id: companyId }
     ]
   }
+
   const editableCompanies = await Company.find(query)
  
   if (!editableCompanies) {
     return res.status(404).send({ error: 'There are no Fourms to be edited' })
   } else {
+    console.log("hh")
+    await Company.findByIdAndUpdate(companyId, {
+      reviewerComment: req.body.reviewerComment
+    })
+    var com =await Company.findById(companyId)
+    console.log(com.reviewerComment)
     const isValidated = companyvalidator.updateValidationSSC(req.body)
     if (isValidated.error) {
       return res
         .status(400)
         .send({ error: isValidated.error.details[0].message })
     }
-    await Company.findByIdAndUpdate(companyId, {
-      reviewerComment: req.body.reviewerComment
-    })
-
+    
+    
+    
 
     var resq = req.body.reviewerComment.split(" ");
     for(var i = 0 ; i < resq.length ; i++ )
@@ -721,29 +688,27 @@ router.put('addcomment/id2',async(req,res)=>{
   var comment = await SearchTag.findOne({tag:resq[i]})
   if(comment)
   {
- comment.location.push(companyId)
+ comment.location.push(com._id)
   await SearchTag.findByIdAndUpdate(comment._id,comment)
-  console.log("tag comment added  successfully")
+  console.log("tagreviewer comment added  successfully")
   }
   else
   {
     const newSearchTag = new SearchTag({ tag:resq[i],
       location :[companyId]})
       var tag = await SearchTag.create(newSearchTag)
-      console.log("tag comment created  successfully")
+      console.log("tag reviewer comment created  successfully")
   }
 }
 }
-
-
-
+console.log("done")
     res.json({ msg: 'Comment added Successfully' })
   }
 }catch(error){
   res.json({ err:'error occured' })
 }
 })
-
+  
 
 
 router.put('/addcomment/:id/:companyId', async function (req, res) {

@@ -11,6 +11,7 @@ var config = require('../../config/jwt')
 const Lawyer = require('../../models/Lawyer')
 const Company = require('../../models/Company')
 const nodemailer = require("nodemailer");
+const SearchTag = require('../../models/SearchTag')
 
 router.get('/', async (req, res) => {
   var token = req.headers['x-access-token']
@@ -1549,45 +1550,7 @@ router.get('/getRejectedTasks/Lawyer', async (req, res) => {
     $and: [
       { status: 'RejectedLawyer' },
       { lawyer: lawyerssn },
-    ]
-  }
-    const comps = await Company.find(query)
-
-    res.json({ data:comps})
-  } catch(error) {
-    console.log(error)
-  }
-})
-
-router.get('/getRejectedTasks/Lawyer', async (req, res) => {
-  try {
-    var stat = 0
-    var token = req.headers['x-access-token']
-    if (!token) {
-      return res
-        .status(401)
-        .send({ auth: false, message: 'Please login first.' })
-    }
-    jwt.verify(token, config.secret, async function (err, decoded) {
-      if (err) {
-        return res
-          .status(500)
-          .send({ auth: false, message: 'Failed to authenticate token.' })
-      }
-
-      stat = decoded.id
-    })
-    const id = stat
-    
-
-    const lawyerss = await Lawyer.findById(id)
-    const lawyerssn = await lawyerss.socialSecurityNumber
-
-   
-  var query = {
-    $and: [
-      { status: 'RejectedLawyer' },
-      { lawyer: lawyerssn },
+      {lawyerComment : null},
     ]
   }
     const comps = await Company.find(query)
@@ -1601,8 +1564,9 @@ router.get('/getRejectedTasks/Lawyer', async (req, res) => {
 
 
 
-router.put('addcomment/id2',async(req,res)=>{
+router.put('/addcomment/:id2',async(req,res)=>{
   var companyId = req.params.id2
+  
     
  try{ 
   var stat = 0
@@ -1618,9 +1582,8 @@ router.put('addcomment/id2',async(req,res)=>{
         .send({ auth: false, message: 'Failed to authenticate token.' })
     }
   })
-  const id = stat
-  const lawyerID = id
-  const currentLawyer = await Lawyer.findById(lawyerID)
+ 
+  const currentLawyer = await Lawyer.findById(stat)
    const lawyerSSN = await currentLawyer.socialSecurityNumber
   
   var query = {
@@ -1630,11 +1593,13 @@ router.put('addcomment/id2',async(req,res)=>{
       { _id: companyId }
     ]
   }
+
   const editableCompanies = await Company.find(query)
  
   if (!editableCompanies) {
     return res.status(404).send({ error: 'There are no Fourms to be edited' })
   } else {
+   
     const isValidated = companyvalidator.updateValidationSSC(req.body)
     if (isValidated.error) {
       return res
@@ -1644,7 +1609,7 @@ router.put('addcomment/id2',async(req,res)=>{
     await Company.findByIdAndUpdate(companyId, {
       lawyerComment: req.body.lawyerComment
     })
-
+    
     var com =await Company.findById(companyId)
 
     var resq = req.body.lawyerComment.split(" ");
@@ -1668,13 +1633,7 @@ router.put('addcomment/id2',async(req,res)=>{
   }
 }
 }
-
-
-
-
-
-
-
+console.log("done")
     res.json({ msg: 'Comment added Successfully' })
   }
 }catch(error){
@@ -1745,10 +1704,7 @@ router.put('/addcomment/:id/:companyId', async function (req, res) {
   }
 }
 }
-
-
-
-
+  
     res.json({ msg: 'Comment added Successfully' })
   }
 }catch(error){

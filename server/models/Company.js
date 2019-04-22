@@ -44,6 +44,9 @@ const CompanySchema = new Schema(
     managers: {
       type: [ManagerSchema]
     },
+    creationDate:{
+      type:Date
+    },
     status: {
       type: String,
       default: "PendingLawyer",
