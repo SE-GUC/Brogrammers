@@ -62,7 +62,7 @@ class RegisterAdmin extends React.Component {
     e.preventDefault()
     let userData = this.state.admin
     console.log('abc')
-    fetch('http://localhost:3000/routes/api/admins/registerNo', {
+    fetch('http://localhost:3000/routes/api/admins/register', {
       method: 'POST',
       body: JSON.stringify(userData),
       headers: {

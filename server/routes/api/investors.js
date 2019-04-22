@@ -1243,45 +1243,6 @@ router.post('/createssccompany', async (req, res) => {
 
 
 
-    const doc = new PDFDocument;
-  
-    // pipe the document to a blob
-    const stream = doc.pipe(res);
-    doc.registerFont('Arabic1', 'arabtype.ttf');
-    doc.font('Arabic1').fontSize(24).text('الأساسي النظام ', {
-      width: 410,
-      align:'center'
-    });
-    doc.font('Arabic1').fontSize(24).text(newCompany.nameInArabic+" "+newCompany.nameInEnglish, {
-      width: 410,
-      align: 'center'
-    });
-    
-    doc.font('Arabic1').fontSize(24).text("واحد شخص شركة  ", {
-      width: 410,
-      align: 'center'
-    });
-    doc.font('Arabic1').fontSize(22).text("ذات والشركات بالأسھم التوصیة وشركات المساھمة شركات قانون لأحكام خاضع", {
-      width: 410,
-      align: 'right'
-    });
-    doc.font('Arabic1').fontSize(22).text("١٩٨١ لسنة ١٥٩ رقم بالقانون الصادر الواحد الشخص وشركات المحدودة المسئولیة ", {
-      width: 410,
-      align: 'right'
-    });
-  
-    
-
-  
-    doc.font('Arabic1').fontSize(24).text(newCompany._id+" العقد رقم ", {
-      width: 410,
-      align: 'center'
-    });
-
-    doc.end();
-    res.setHeader('access-control-allow-origin', '*');
-    res.status(200);
-
 
 
 
@@ -1318,7 +1279,7 @@ router.post('/login', function (req, res) {
   })
 })
 
-router.get('/:id/:companyID/viewFees', async (req, res) => {
+router.get('/:companyID/viewFees', async (req, res) => {
   var stat = 0
   var token = req.headers['x-access-token']
   if (!token) {
@@ -1334,13 +1295,6 @@ router.get('/:id/:companyID/viewFees', async (req, res) => {
     }
     stat = decoded.id
   })
-  const id = req.params.id
-  if (id !== stat) {
-    return res
-      .status(500)
-      .send({ auth: false, message: 'Failed to authenticate' })
-  }
-
   const investor = await Investor.findById(stat)
   if (!investor) {
     return res.status(400).send({ error: 'You are not an investor' })
@@ -1379,7 +1333,7 @@ router.get('/:id/:companyID/viewFees', async (req, res) => {
     }
   }
 
-  res.json({ EstimatedFees: fees })
+  res.json({ EstimatedFees: fees , Currency : c.capitalCurrency })
 })
 
 router.put('/', async (req, res) => {
