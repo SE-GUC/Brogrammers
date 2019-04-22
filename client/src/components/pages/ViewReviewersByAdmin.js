@@ -15,6 +15,8 @@ class ViewReviewersByAdmin extends React.Component {
   componentDidMount () {
     
     {
+
+      
       fetch('http://localhost:3000/api/reviewer/', {
         headers: new Headers({
           'x-access-token': this.props.token

@@ -47,7 +47,7 @@ class ViewCompanies extends Component {
     const { classes } = this.props;
     return (
       <div className={classes.holder}>
-        <h1 className={classes.header}>Your Companies</h1>
+        <h1 className={classes.header}>{sessionStorage.getItem('lang')==='en'? 'Your Companies': 'شركاتك'}</h1>
         <div className={classes.sep}>
           <GridList className={classes.list}>
             {this.state.investorCompanies.map((item, i) => (

@@ -20,7 +20,8 @@ approveTask()
     }
   }).then(response => {
    console.log(response)
-    alert("Task Approved!!... Now waiting Reviewer's Approval")
+    alert( sessionStorage.getItem('lang')==='en'? 'Task Approved!!... Now waiting Reviewe': 'تم قبول الشركه فى انتظار المراجع'
+  )
     this.forceUpdate()
   })
  }
@@ -36,7 +37,8 @@ approveTask()
      }
    }).then(response => {
     console.log(response)
-     alert("Task Disapproved!!....Please do not forget to write a comment")
+     alert( sessionStorage.getItem('lang')==='en'? 'Task Disapproved!!....Please do not forget to write a comment': 'تم رفض الشركه ....من فضلك لا تنسى ترك تعليق'
+    )
      window.location.reload();
    })
   }
@@ -50,8 +52,10 @@ render(){
 
     return(
         <div>
-<Button variant='contained' color='primary' size="medium" onClick={this.approveTask.bind(this)} >Accept Company</Button>
-<Button variant='contained' color='secondary' size="medium" onClick={this.disapproveTask.bind(this)}>Reject Company</Button>
+<Button variant='contained' color='primary' size="medium" onClick={this.approveTask.bind(this)} >{ sessionStorage.getItem('lang')==='en'? 'Accept Company': 'قبول الشركه'
+          }</Button>
+<Button variant='contained' color='secondary' size="medium" onClick={this.disapproveTask.bind(this)}>{ sessionStorage.getItem('lang')==='en'? 'Reject Company': 'رفض الشركه'
+          }</Button>
 
 
         </div>

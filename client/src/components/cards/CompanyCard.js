@@ -74,7 +74,8 @@ class CompanyCard extends React.Component {
           />
           <CardContent />
           <CardActions className={classes.actions} disableActionSpacing>
-            <IconButton aria-label="View_Details">
+            <IconButton aria-label={sessionStorage.getItem('lang')==='en'? 'View Details': 'اظهار التفاصيل '}
+>
               <CustomDialog
                 className={classes.dialog}
                 company={this.props.company}

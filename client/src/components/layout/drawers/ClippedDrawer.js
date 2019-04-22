@@ -21,6 +21,7 @@ import SimpleReactFileUpload from "../../layout/form/SimpleReactFileUpload";
 import EditProfileAdmin from "../../pages/EditProfileAdmin";
 import ViewLawyersByAdmin from "../../pages/ViewLawyersByAdmin"
 import ViewReviewersByAdmin from "../../pages/ViewReviewersByAdmin"
+import NavBar from '../../../components/layout/Navbar'
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -94,6 +95,7 @@ class ClippedDrawer extends React.Component {
               paper: classes.drawerPaper
             }}
           >
+           <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
@@ -203,6 +205,7 @@ class ClippedDrawer extends React.Component {
               paper: classes.drawerPaper
             }}
           >
+           <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
@@ -317,6 +320,7 @@ class ClippedDrawer extends React.Component {
               paper: classes.drawerPaper
             }}
           >
+           <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
@@ -426,6 +430,7 @@ class ClippedDrawer extends React.Component {
               paper: classes.drawerPaper
             }}
           >
+           <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
@@ -535,6 +540,7 @@ class ClippedDrawer extends React.Component {
               paper: classes.drawerPaper
             }}
           >
+           <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
@@ -645,6 +651,7 @@ class ClippedDrawer extends React.Component {
               paper: classes.drawerPaper
             }}
           >
+           <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
@@ -760,6 +767,7 @@ class ClippedDrawer extends React.Component {
               paper: classes.drawerPaper
             }}
           >
+           <NavBar/>
             <div className={classes.toolbar} />
 
             <List>
@@ -879,6 +887,7 @@ class ClippedDrawer extends React.Component {
             paper: classes.drawerPaper
           }}
         >
+         <NavBar/>
           <div className={classes.toolbar} />
 
           <List>

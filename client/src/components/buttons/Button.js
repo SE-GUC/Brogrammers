@@ -24,7 +24,7 @@ function ContainedButtons (props) {
     <div>
 
       <Button variant='contained' color='secondary' className={classes.button}  >
-        Next
+       {sessionstorage.getItem('lang')==='en'? 'Next': 'التالى'},
 
       </Button>
 
