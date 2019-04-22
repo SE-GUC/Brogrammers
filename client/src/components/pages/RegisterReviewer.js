@@ -120,13 +120,13 @@ class RegisterReviewer extends React.Component {
           <Typography component='h1' variant='h5'>
           Sign up
           </Typography>
-          <Required name='name' field={'Full Name'} type='text' callBack={this.handleInput} />
-          <Required name='email' field={'Email'} type='email' callBack={this.handleInput} />
-          <Required name='password' field={'Password'} type='password' callBack={this.handleInput} />
-          <Required name='ssn' field={'Social Security Number'} type='text' callBack={this.handleInput} />
-          <Required name='yearsOfExperience' field={'Years Of Experience'} type='number' callBack={this.handleInput} />
-          <Required name='address' field={'Address'} type='text' callBack={this.handleInput} />
-          <Required name='phone' field={'Phone'} type='text' callBack={this.handleInput} />
+          <Required name='name'field={sessionStorage.getItem('lang')==='en'? 'Full Name': 'الاسم كامل '} type='text' callBack={this.handleInput} />
+          <Required name='email' field={sessionStorage.getItem('lang')==='en'? 'Email': 'البريد '} type='email' callBack={this.handleInput} />
+          <Required name='password'field={sessionStorage.getItem('lang')==='en'? 'Password': 'الرقم السرى '}  type='password' callBack={this.handleInput} />
+          <Required name='ssn' field={sessionStorage.getItem('lang')==='en'? 'Social security number': 'الرقم القومى '} type='text' callBack={this.handleInput} />
+          <Required name='yearsOfExperience' field={sessionStorage.getItem('lang')==='en'? 'Years of Experience': 'سنين الخبره '} type='number' callBack={this.handleInput} />
+          <Required name='address' field={sessionStorage.getItem('lang')==='en'? 'Address': 'العنوان '} type='text' callBack={this.handleInput} />
+          <Required name='phone' field={sessionStorage.getItem('lang')==='en'? 'Telephone': 'رقم الهاتف '} type='text' callBack={this.handleInput} />
           <Date name='birth' callBack={this.handleDate} />
           <Gender name='gender' callBack={this.handleInput} />
           <AlertDialogSlide handleRegister={this.handleRegister} />

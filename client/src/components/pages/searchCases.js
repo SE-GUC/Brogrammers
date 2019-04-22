@@ -117,8 +117,8 @@ class searchCases extends Component {
             
           </GridList>
           <div align="center">
-          <Button onClick={this.handleBack} >Back</Button>
-          <Button onClick={this.handleNext} >Next</Button>
+          <Button onClick={this.handleBack} >{sessionStorage.getItem('lang')==='en'? 'Back': 'الماضى'}</Button>
+          <Button onClick={this.handleNext} >{sessionStorage.getItem('lang')==='en'? 'Next': 'التالى'}</Button>
           </div>
         </div>
       </div>
