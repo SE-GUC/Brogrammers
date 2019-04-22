@@ -602,65 +602,7 @@ router.post("/createssccompany", async (req, res) => {
     });
     const company = await Company.create(newCompany);
 
-    const doc = new PDFDocument();
 
-    // pipe the document to a blob
-    const stream = doc.pipe(res);
-    doc.registerFont("Arabic1", "arabtype.ttf");
-    doc
-      .font("Arabic1")
-      .fontSize(24)
-      .text("الأساسي النظام ", {
-        width: 410,
-        align: "center"
-      });
-    doc
-      .font("Arabic1")
-      .fontSize(24)
-      .text(newCompany.nameInArabic + " " + newCompany.nameInEnglish, {
-        width: 410,
-        align: "center"
-      });
-
-    doc
-      .font("Arabic1")
-      .fontSize(24)
-      .text("واحد شخص شركة  ", {
-        width: 410,
-        align: "center"
-      });
-    doc
-      .font("Arabic1")
-      .fontSize(22)
-      .text(
-        "ذات والشركات بالأسھم التوصیة وشركات المساھمة شركات قانون لأحكام خاضع",
-        {
-          width: 410,
-          align: "right"
-        }
-      );
-    doc
-      .font("Arabic1")
-      .fontSize(22)
-      .text(
-        "١٩٨١ لسنة ١٥٩ رقم بالقانون الصادر الواحد الشخص وشركات المحدودة المسئولیة ",
-        {
-          width: 410,
-          align: "right"
-        }
-      );
-
-    doc
-      .font("Arabic1")
-      .fontSize(24)
-      .text(newCompany._id + " العقد رقم ", {
-        width: 410,
-        align: "center"
-      });
-
-    doc.end();
-    res.setHeader("access-control-allow-origin", "*");
-    res.status(200);
 
     res.json({ msg: "SSC Company was created successfully", data: company });
   } catch (error) {
