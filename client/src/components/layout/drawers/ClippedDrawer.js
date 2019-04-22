@@ -22,6 +22,15 @@ import EditProfileAdmin from "../../pages/EditProfileAdmin";
 import ViewLawyersByAdmin from "../../pages/ViewLawyersByAdmin"
 import ViewReviewersByAdmin from "../../pages/ViewReviewersByAdmin"
 import NavBar from '../../../components/layout/Navbar'
+import ViewList from '@material-ui/icons/ViewList'
+import CreateCompany from '@material-ui/icons/CreateNewFolder'
+import EditProfile from '@material-ui/icons/BorderColor'
+import Identity from '@material-ui/icons/Person'
+import Home from '@material-ui/icons/Home'
+import Upload from '@material-ui/icons/CloudUpload'
+import Add from '@material-ui/icons/PersonAdd'
+
+
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -101,7 +110,7 @@ class ClippedDrawer extends React.Component {
             <List>
               <ListItem button key={"Home"} onClick={this.handleHome}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Home />
                 </ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
@@ -111,7 +120,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleProfile}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <EditProfile />
                 </ListItemIcon>
                 <ListItemText primary="Edit Your Profile" />
               </ListItem>
@@ -121,13 +130,13 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleCases}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View All Cases" />
               </ListItem>
               <ListItem button key={"Upload Form"} onClick={this.handleForms}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Upload />
                 </ListItemIcon>
                 <ListItemText primary="Upload Form" />
               </ListItem>
@@ -136,7 +145,7 @@ class ClippedDrawer extends React.Component {
             <List>
               <ListItem button key={"Create Admin"} onClick={this.handleAdmin}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Admin" />
               </ListItem>
@@ -146,7 +155,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleReviewer}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Reviewer" />
               </ListItem>
@@ -156,7 +165,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleLawyer}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Lawyer" />
               </ListItem>
@@ -167,7 +176,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleViewLawyers}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Identity />
                 </ListItemIcon>
                 <ListItemText primary="View Lawyers" />
               </ListItem>
@@ -178,7 +187,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleViewReviewers}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Identity />
                 </ListItemIcon>
                 <ListItemText primary="View Reviewers" />
               </ListItem>
@@ -198,6 +207,7 @@ class ClippedDrawer extends React.Component {
         <div className={classes.root}>
           <CssBaseline />
         
+         
           <Drawer
             className={classes.drawer}
             variant="permanent"
@@ -211,7 +221,7 @@ class ClippedDrawer extends React.Component {
             <List>
               <ListItem button key={"Home"} onClick={this.handleHome}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Home />
                 </ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
@@ -221,7 +231,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleProfile}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <EditProfile />
                 </ListItemIcon>
                 <ListItemText primary="Edit Your Profile" />
               </ListItem>
@@ -231,13 +241,13 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleCases}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View All Cases" />
               </ListItem>
               <ListItem button key={"Upload Form"} onClick={this.handleForms}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Upload />
                 </ListItemIcon>
                 <ListItemText primary="Upload Form" />
               </ListItem>
@@ -246,7 +256,7 @@ class ClippedDrawer extends React.Component {
             <List>
               <ListItem button key={"Create Admin"} onClick={this.handleAdmin}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Admin" />
               </ListItem>
@@ -256,7 +266,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleReviewer}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Reviewer" />
               </ListItem>
@@ -266,11 +276,10 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleLawyer}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Lawyer" />
               </ListItem>
-              {/* here */}
               <Divider />
               <ListItem
                 button
@@ -278,7 +287,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleViewLawyers}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Identity />
                 </ListItemIcon>
                 <ListItemText primary="View Lawyers" />
               </ListItem>
@@ -289,13 +298,13 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleViewReviewers}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Identity />
                 </ListItemIcon>
                 <ListItemText primary="View Reviewers" />
               </ListItem>
 
 
-           </List>
+            </List>
           </Drawer>
           <main className={classes.content}>
             <div className={classes.toolbar} />
@@ -313,6 +322,7 @@ class ClippedDrawer extends React.Component {
           <CssBaseline />
          
 
+         
           <Drawer
             className={classes.drawer}
             variant="permanent"
@@ -326,7 +336,7 @@ class ClippedDrawer extends React.Component {
             <List>
               <ListItem button key={"Home"} onClick={this.handleHome}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Home />
                 </ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
@@ -336,7 +346,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleProfile}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <EditProfile />
                 </ListItemIcon>
                 <ListItemText primary="Edit Your Profile" />
               </ListItem>
@@ -346,13 +356,13 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleCases}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View All Cases" />
               </ListItem>
               <ListItem button key={"Upload Form"} onClick={this.handleForms}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Upload />
                 </ListItemIcon>
                 <ListItemText primary="Upload Form" />
               </ListItem>
@@ -361,7 +371,7 @@ class ClippedDrawer extends React.Component {
             <List>
               <ListItem button key={"Create Admin"} onClick={this.handleAdmin}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Admin" />
               </ListItem>
@@ -371,7 +381,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleReviewer}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Reviewer" />
               </ListItem>
@@ -381,7 +391,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleLawyer}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Lawyer" />
               </ListItem>
@@ -392,21 +402,22 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleViewLawyers}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Identity />
                 </ListItemIcon>
                 <ListItemText primary="View Lawyers" />
               </ListItem>
-              
+
               <ListItem
                 button
                 key={"View Reviewers"}
                 onClick={this.handleViewReviewers}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Identity />
                 </ListItemIcon>
                 <ListItemText primary="View Reviewers" />
               </ListItem>
+
 
             </List>
           </Drawer>
@@ -423,6 +434,7 @@ class ClippedDrawer extends React.Component {
           <CssBaseline />
         
 
+          
           <Drawer
             className={classes.drawer}
             variant="permanent"
@@ -436,7 +448,7 @@ class ClippedDrawer extends React.Component {
             <List>
               <ListItem button key={"Home"} onClick={this.handleHome}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Home />
                 </ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
@@ -446,7 +458,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleProfile}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <EditProfile />
                 </ListItemIcon>
                 <ListItemText primary="Edit Your Profile" />
               </ListItem>
@@ -456,13 +468,13 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleCases}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View All Cases" />
               </ListItem>
               <ListItem button key={"Upload Form"} onClick={this.handleForms}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Upload />
                 </ListItemIcon>
                 <ListItemText primary="Upload Form" />
               </ListItem>
@@ -471,7 +483,7 @@ class ClippedDrawer extends React.Component {
             <List>
               <ListItem button key={"Create Admin"} onClick={this.handleAdmin}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Admin" />
               </ListItem>
@@ -481,7 +493,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleReviewer}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Reviewer" />
               </ListItem>
@@ -491,7 +503,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleLawyer}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Lawyer" />
               </ListItem>
@@ -502,7 +514,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleViewLawyers}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Identity />
                 </ListItemIcon>
                 <ListItemText primary="View Lawyers" />
               </ListItem>
@@ -513,10 +525,11 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleViewReviewers}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Identity />
                 </ListItemIcon>
                 <ListItemText primary="View Reviewers" />
               </ListItem>
+
 
             </List>
           </Drawer>
@@ -533,6 +546,7 @@ class ClippedDrawer extends React.Component {
           <CssBaseline />
        
 
+          
           <Drawer
             className={classes.drawer}
             variant="permanent"
@@ -546,7 +560,7 @@ class ClippedDrawer extends React.Component {
             <List>
               <ListItem button key={"Home"} onClick={this.handleHome}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Home />
                 </ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
@@ -556,7 +570,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleProfile}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <EditProfile />
                 </ListItemIcon>
                 <ListItemText primary="Edit Your Profile" />
               </ListItem>
@@ -566,13 +580,13 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleCases}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View All Cases" />
               </ListItem>
               <ListItem button key={"Upload Form"} onClick={this.handleForms}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Upload />
                 </ListItemIcon>
                 <ListItemText primary="Upload Form" />
               </ListItem>
@@ -581,7 +595,7 @@ class ClippedDrawer extends React.Component {
             <List>
               <ListItem button key={"Create Admin"} onClick={this.handleAdmin}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Admin" />
               </ListItem>
@@ -591,7 +605,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleReviewer}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Reviewer" />
               </ListItem>
@@ -601,7 +615,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleLawyer}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Lawyer" />
               </ListItem>
@@ -612,7 +626,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleViewLawyers}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Identity />
                 </ListItemIcon>
                 <ListItemText primary="View Lawyers" />
               </ListItem>
@@ -623,10 +637,11 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleViewReviewers}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Identity />
                 </ListItemIcon>
                 <ListItemText primary="View Reviewers" />
               </ListItem>
+
 
             </List>
           </Drawer>
@@ -644,6 +659,7 @@ class ClippedDrawer extends React.Component {
           <CssBaseline />
          
 
+         
           <Drawer
             className={classes.drawer}
             variant="permanent"
@@ -657,7 +673,7 @@ class ClippedDrawer extends React.Component {
             <List>
               <ListItem button key={"Home"} onClick={this.handleHome}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Home />
                 </ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
@@ -667,7 +683,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleProfile}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <EditProfile />
                 </ListItemIcon>
                 <ListItemText primary="Edit Your Profile" />
               </ListItem>
@@ -677,24 +693,22 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleCases}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View All Cases" />
               </ListItem>
               <ListItem button key={"Upload Form"} onClick={this.handleForms}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Upload />
                 </ListItemIcon>
                 <ListItemText primary="Upload Form" />
               </ListItem>
-          
             </List>
-           
             <Divider />
             <List>
               <ListItem button key={"Create Admin"} onClick={this.handleAdmin}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Admin" />
               </ListItem>
@@ -704,7 +718,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleReviewer}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Reviewer" />
               </ListItem>
@@ -714,7 +728,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleLawyer}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Lawyer" />
               </ListItem>
@@ -725,7 +739,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleViewLawyers}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Identity />
                 </ListItemIcon>
                 <ListItemText primary="View Lawyers" />
               </ListItem>
@@ -736,11 +750,10 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleViewReviewers}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Identity />
                 </ListItemIcon>
                 <ListItemText primary="View Reviewers" />
               </ListItem>
-
 
 
             </List>
@@ -760,6 +773,7 @@ class ClippedDrawer extends React.Component {
           <CssBaseline />
          
 
+          
           <Drawer
             className={classes.drawer}
             variant="permanent"
@@ -773,7 +787,7 @@ class ClippedDrawer extends React.Component {
             <List>
               <ListItem button key={"Home"} onClick={this.handleHome}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Home />
                 </ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
@@ -783,7 +797,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleProfile}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <EditProfile />
                 </ListItemIcon>
                 <ListItemText primary="Edit Your Profile" />
               </ListItem>
@@ -793,24 +807,22 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleCases}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View All Cases" />
               </ListItem>
               <ListItem button key={"Upload Form"} onClick={this.handleForms}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Upload />
                 </ListItemIcon>
                 <ListItemText primary="Upload Form" />
               </ListItem>
-          
             </List>
-           
             <Divider />
             <List>
               <ListItem button key={"Create Admin"} onClick={this.handleAdmin}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Admin" />
               </ListItem>
@@ -820,7 +832,7 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleReviewer}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Reviewer" />
               </ListItem>
@@ -830,38 +842,34 @@ class ClippedDrawer extends React.Component {
                 onClick={this.handleLawyer}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Add />
                 </ListItemIcon>
                 <ListItemText primary="Create Lawyer" />
               </ListItem>
               <Divider />
-
               <ListItem
                 button
                 key={"View Lawyers"}
                 onClick={this.handleViewLawyers}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Identity />
                 </ListItemIcon>
                 <ListItemText primary="View Lawyers" />
               </ListItem>
 
-          <ListItem
+              <ListItem
                 button
                 key={"View Reviewers"}
                 onClick={this.handleViewReviewers}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Identity />
                 </ListItemIcon>
                 <ListItemText primary="View Reviewers" />
               </ListItem>
 
 
-
-
-              
             </List>
           </Drawer>
           <main className={classes.content}>
@@ -880,110 +888,105 @@ class ClippedDrawer extends React.Component {
         <CssBaseline />
        
 
-        <Drawer
-          className={classes.drawer}
-          variant="permanent"
-          classes={{
-            paper: classes.drawerPaper
-          }}
-        >
-         <NavBar/>
-          <div className={classes.toolbar} />
-
-          <List>
-            <ListItem button key={"Home"} onClick={this.handleHome}>
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home" />
-            </ListItem>
-            <ListItem
-              button
-              key={"Edit Your Profile"}
-              onClick={this.handleProfile}
-            >
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary="Edit Your Profile" />
-            </ListItem>
-            <ListItem
-              button
-              key={"View All Cases"}
-              onClick={this.handleCases}
-            >
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary="View All Cases" />
-            </ListItem>
-            <ListItem button key={"Upload Form"} onClick={this.handleForms}>
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary="Upload Form" />
-            </ListItem>
         
-          </List>
-         
-          <Divider />
-          <List>
-            <ListItem button key={"Create Admin"} onClick={this.handleAdmin}>
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary="Create Admin" />
-            </ListItem>
-            <ListItem
-              button
-              key={"Create Reviewer"}
-              onClick={this.handleReviewer}
-            >
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary="Create Reviewer" />
-            </ListItem>
-            <ListItem
-              button
-              key={"Create Lawyer"}
-              onClick={this.handleLawyer}
-            >
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary="Create Lawyer" />
-            </ListItem>
+        <Drawer
+            className={classes.drawer}
+            variant="permanent"
+            classes={{
+              paper: classes.drawerPaper
+            }}
+          >
+           <NavBar/>
+            <div className={classes.toolbar} />
+
+            <List>
+              <ListItem button key={"Home"} onClick={this.handleHome}>
+                <ListItemIcon>
+                  <Home />
+                </ListItemIcon>
+                <ListItemText primary="Home" />
+              </ListItem>
+              <ListItem
+                button
+                key={"Edit Your Profile"}
+                onClick={this.handleProfile}
+              >
+                <ListItemIcon>
+                  <EditProfile />
+                </ListItemIcon>
+                <ListItemText primary="Edit Your Profile" />
+              </ListItem>
+              <ListItem
+                button
+                key={"View All Cases"}
+                onClick={this.handleCases}
+              >
+                <ListItemIcon>
+                  <ViewList />
+                </ListItemIcon>
+                <ListItemText primary="View All Cases" />
+              </ListItem>
+              <ListItem button key={"Upload Form"} onClick={this.handleForms}>
+                <ListItemIcon>
+                  <Upload />
+                </ListItemIcon>
+                <ListItemText primary="Upload Form" />
+              </ListItem>
+            </List>
             <Divider />
+            <List>
+              <ListItem button key={"Create Admin"} onClick={this.handleAdmin}>
+                <ListItemIcon>
+                  <Add />
+                </ListItemIcon>
+                <ListItemText primary="Create Admin" />
+              </ListItem>
+              <ListItem
+                button
+                key={"Create Reviewer"}
+                onClick={this.handleReviewer}
+              >
+                <ListItemIcon>
+                  <Add />
+                </ListItemIcon>
+                <ListItemText primary="Create Reviewer" />
+              </ListItem>
+              <ListItem
+                button
+                key={"Create Lawyer"}
+                onClick={this.handleLawyer}
+              >
+                <ListItemIcon>
+                  <Add />
+                </ListItemIcon>
+                <ListItemText primary="Create Lawyer" />
+              </ListItem>
+              <Divider />
+              <ListItem
+                button
+                key={"View Lawyers"}
+                onClick={this.handleViewLawyers}
+              >
+                <ListItemIcon>
+                  <Identity />
+                </ListItemIcon>
+                <ListItemText primary="View Lawyers" />
+              </ListItem>
 
-            <ListItem
-              button
-              key={"View Lawyers"}
-              onClick={this.handleViewLawyers}
-            >
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary="View Lawyers" />
-            </ListItem>
-
-        <ListItem
-              button
-              key={"View Reviewers"}
-              onClick={this.handleViewReviewers}
-            >
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary="View Reviewers" />
-            </ListItem>
+              <ListItem
+                button
+                key={"View Reviewers"}
+                onClick={this.handleViewReviewers}
+              >
+                <ListItemIcon>
+                  <Identity />
+                </ListItemIcon>
+                <ListItemText primary="View Reviewers" />
+              </ListItem>
 
 
-
-
-            
-          </List>
-        </Drawer>
+            </List>
+          </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
           {/* my page goes in here */}

@@ -18,7 +18,7 @@ const styles = theme => ({
   },
   image: {
     position: 'relative',
-    height: 200,
+    height: 754,
     [theme.breakpoints.down('xs')]: {
       width: '100% !important', // Overrides inline-style
       height: 100
@@ -113,7 +113,15 @@ function ButtonBases (props) {
   const { classes } = props
   return (
     <div className={classes.root}>
+
+  
       {images.map(image => (
+  
+        <>
+        <br/>
+  <br/>
+  <br/>
+  <br/>
         <ButtonBase
           focusRipple
           key={image.title}
@@ -145,7 +153,16 @@ function ButtonBases (props) {
             </Typography>
           </span>
         </ButtonBase>
-      ))}
+ 
+    </>
+      )
+      
+      )
+    
+      }
+  
+  
+    
     </div>
   )
 }
