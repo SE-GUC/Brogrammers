@@ -18,6 +18,7 @@ import ViewReviewerCasesbyID from '../../pages/ViewReviewerCasesbyID'
 import EditProfileReviewer from '../../pages/EditProfileReviewer'
 import ReviewerComment from '../../pages/ReviewerComment'
 import InvestorCompanyRegSPC from '../../pages/InvestorCompanyRegSPC'
+import NavBar from '../../../components/layout/Navbar'
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -75,14 +76,7 @@ constructor(props){
             return (
                 <div className={classes.root}>
                   <CssBaseline />
-                  <AppBar position="fixed" className={classes.appBar}>
-                    <Toolbar>
-                      <Typography variant="h6" color="inherit" noWrap>
-                        Reviewer profile
-                      </Typography>
-                    </Toolbar>
-                  </AppBar>
-
+             
                   <Drawer
                     className={classes.drawer}
                     variant="permanent"
@@ -90,6 +84,7 @@ constructor(props){
                       paper: classes.drawerPaper,
                     }}
                   >
+                   <NavBar/>
                     <div className={classes.toolbar} />
                    
                     <List>
@@ -139,13 +134,7 @@ constructor(props){
 
               <div className={classes.root}>
               <CssBaseline />
-              <AppBar position="fixed" className={classes.appBar}>
-                <Toolbar>
-                  <Typography variant="h6" color="inherit" noWrap>
-                    Reviewer profile
-                  </Typography>
-                </Toolbar>
-              </AppBar>
+           
 
               <Drawer
                 className={classes.drawer}
@@ -154,6 +143,7 @@ constructor(props){
                   paper: classes.drawerPaper,
                 }}
               >
+               <NavBar/>
                 <div className={classes.toolbar} />
                
                 <List>
@@ -203,14 +193,7 @@ constructor(props){
                        
                 <div className={classes.root}>
                 <CssBaseline />
-                <AppBar position="fixed" className={classes.appBar}>
-                  <Toolbar>
-                    <Typography variant="h6" color="inherit" noWrap>
-                      Reviewer profile
-                    </Typography>
-                  </Toolbar>
-                </AppBar>
-
+         
                 <Drawer
                   className={classes.drawer}
                   variant="permanent"
@@ -218,6 +201,7 @@ constructor(props){
                     paper: classes.drawerPaper,
                   }}
                 >
+                 <NavBar/>
                   <div className={classes.toolbar} />
                  
                   <List>
@@ -269,14 +253,7 @@ constructor(props){
                          
                 <div className={classes.root}>
                 <CssBaseline />
-                <AppBar position="fixed" className={classes.appBar}>
-                  <Toolbar>
-                    <Typography variant="h6" color="inherit" noWrap>
-                      Reviewer profile
-                    </Typography>
-                  </Toolbar>
-                </AppBar>
-
+             
                 <Drawer
                   className={classes.drawer}
                   variant="permanent"
@@ -284,6 +261,7 @@ constructor(props){
                     paper: classes.drawerPaper,
                   }}
                 >
+                 <NavBar/>
                   <div className={classes.toolbar} />
                  
                   <List>
@@ -335,13 +313,7 @@ constructor(props){
                            
                 <div className={classes.root}>
                 <CssBaseline />
-                <AppBar position="fixed" className={classes.appBar}>
-                  <Toolbar>
-                    <Typography variant="h6" color="inherit" noWrap>
-                      Reviewer profile
-                    </Typography>
-                  </Toolbar>
-                </AppBar>
+               
 
                 <Drawer
                   className={classes.drawer}
@@ -350,6 +322,7 @@ constructor(props){
                     paper: classes.drawerPaper,
                   }}
                 >
+                 <NavBar/>
                   <div className={classes.toolbar} />
                  
                   <List>
