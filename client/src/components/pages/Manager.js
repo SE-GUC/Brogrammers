@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid'
 import Required from '../layout/inputs/Required'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import BlueButton from '../layout/Buttons/BlueButton'
+import Date from '../layout/inputs/Date'
 
 const styles = theme => ({
   main: {
@@ -54,7 +55,12 @@ class Manager extends React.Component {
     this.handleInput = this.handleInput.bind(this)
     this.handle = this.handle.bind(this)
   }
-
+  handleDate (v) {
+    this.setState(prevState => ({ manager:
+         { ...prevState.manager, birthDate: v
+         }
+    }))
+  }
   handleInput(event) {
     let value = event.target.value
     let name = event.target.name
@@ -106,7 +112,7 @@ class Manager extends React.Component {
             <Required field={'identificationNumber'} type={'text'} callBack={this.handleInput} name={'identificationNumber'} />
           </Grid>
           <Grid container direction='column' alignItems='center' >
-            <Required field={'birthDate'} type={'text'} callBack={this.handleInput} name={'birthDate'} />
+          <Date name='birthDate' callBack={this.handleDate} />
           </Grid>
           <Grid container direction='column' alignItems='center' >
             <Required field={'address'} type={'text'} callBack={this.handleInput} name={'address'} />

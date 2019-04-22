@@ -1414,7 +1414,7 @@ res.json({Search : data})
 
 
 
-router.post('/stripe/:companyid', function (req, res) {
+router.post('/stripe/:companyid', async function (req, res) {
 
   const token = req.body.stripeToken; // Using Express
   const id = req.params.companyId
@@ -1423,7 +1423,7 @@ stripe.charges.create({
     currency: 'egp',
     description: 'Example charge',
     source: token,
-  },function(err,charge){
+  }, async function(err,charge){
     console.log(charge);
     if(err){
       res.send({
@@ -1435,7 +1435,7 @@ stripe.charges.create({
         sucess:true,
         message:'nice'
       })
-       var company = await Company.findByIdAndUpdate(id,{status:"Accepted"})
+       const company = await Company.findByIdAndUpdate(id,{status:"Accepted"})
        
       var regulationLaw = company.regulationLaw
       var legalCompanyForm = company.legalCompanyForm
