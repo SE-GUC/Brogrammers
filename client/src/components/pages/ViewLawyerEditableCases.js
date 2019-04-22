@@ -30,7 +30,7 @@ class ViewLawyerEditableCases extends Component {
             </Grid>
         </div>)}
         else{
-            return <Snackbar variant='error' message="Something went wrong!" />
+            return <Snackbar variant='warning' message="There are no requests" />
         }
     }
     handleReq2 = () => {
@@ -39,7 +39,7 @@ class ViewLawyerEditableCases extends Component {
             return <Snackbar variant='warning' message="There are no requests" />
         }}
         else{
-            return <Snackbar variant='error' message="Something went wrong!" />
+            return <Snackbar variant='warning' message="There are no requests" />
         }
     }
     handleRequests() {

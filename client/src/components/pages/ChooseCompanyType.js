@@ -15,7 +15,7 @@ class  ChooseCompanyType extends React.Component  {
     render(){
   return (
     <>
-    <h1>Choose Company Type {this.props.match.params.law}</h1>
+    <h1>{sessionStorage.getItem('lang') === 'en' ? 'Choose Company Type' : 'اختار نوع الشركة'} {this.props.match.params.law}</h1>
 
   
     

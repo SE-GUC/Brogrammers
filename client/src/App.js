@@ -56,6 +56,7 @@ class App extends Component {
       token: null,
       auth: false,
       type: '',
+      lang: 'ar',
       loading: false
     }
   }
@@ -66,6 +67,7 @@ class App extends Component {
     sessionStorage.setItem('type', type)
     sessionStorage.setItem('id', id)
     sessionStorage.setItem('ssn', ssn)
+    sessionStorage.setItem('lang', this.state.lang);
     console.log(sessionStorage.getItem('ssn'))
   }
   handleSignOut = () => {

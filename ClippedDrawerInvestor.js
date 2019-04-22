@@ -18,6 +18,10 @@ import ViewCompanies from "../../pages/ViewCompanies";
 import Stepper from "../../steppers/stepper";
 import { Paper } from "@material-ui/core";
 import LinearDeterminate from "../loading/LinearDeterminate";
+import InvestorCompanyRegSSC from "../../pages/InvestorCompanyRegSSC";
+import InvestorCompanyRegSPC from "../../pages/InvestorCompanyRegSPC";
+import stepper from "../../steppers/stepper";
+
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -48,23 +52,21 @@ class ClippedDrawerInvestor extends React.Component {
       clicked: "i"
     };
   }
-  handleLoading = () => {
-    console.log(sessionStorage.getItem("isLoading"))
-    if (sessionStorage.getItem("isLoading")) {
-      return <LinearDeterminate />;
-    }
-  };
+handleLoading=()=>{
+  if(sessionStorage.getItem("loading"))
+  return <LinearDeterminate/>
+}
   handleContent = state => {
     switch (state.clicked) {
       case "requests":
         return (
-          <>{this.handleLoading}
+          
 
           <InvestorRequests
             id={sessionStorage.getItem("id")}
             token={sessionStorage.getItem("jwtToken")}
           />
-          </>
+      
         );
       case "companies":
         return <ViewCompanies token={sessionStorage.getItem("jwtToken")} />;
@@ -72,15 +74,16 @@ class ClippedDrawerInvestor extends React.Component {
         return (
           <EditProfileInvestor token={sessionStorage.getItem("jwtToken")} />
         );
-      case "create":
+      case "createssc":
         return (
-          <Paper>
-            <Stepper
-              id={sessionStorage.getItem("id")}
-              token={sessionStorage.getItem("jwtToken")}
-            />
-          </Paper>
+         <InvestorCompanyRegSSC/>
         );
+        case "createspc":
+        return(
+          <InvestorCompanyRegSPC/>
+        );
+        case "created":
+       return  <Stepper/>
       default:
         return;
     }
@@ -93,9 +96,17 @@ class ClippedDrawerInvestor extends React.Component {
     this.setState({ clicked: "companies" });
   };
 
-  handleCreate = () => {
-    this.setState({ clicked: "create" });
+  handleCreatessc = () => {
+    this.setState({ clicked: "createssc" });
   };
+
+  handleCreatespc = () => {
+    this.setState({ clicked: "createspc"})
+  }
+
+  handleCreated = () => {
+    this.setState({ clicked: "created"})
+  }
 
   handleProfile = () => {
     this.setState({ clicked: "profile" });
@@ -113,7 +124,9 @@ class ClippedDrawerInvestor extends React.Component {
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar>
             <Typography variant="h6" color="inherit" noWrap>
-              Investor profile
+              <p>
+              {sessionStorage.getItem('lang') === 'en' ? 'Investor Profile' : 'حساب المستثمر'}
+              </p>
             </Typography>
           </Toolbar>
         </AppBar>
@@ -132,7 +145,7 @@ class ClippedDrawerInvestor extends React.Component {
               <ListItemIcon>
                 <InboxIcon />
               </ListItemIcon>
-              <ListItemText primary="Home" />
+              <ListItemText primary= {sessionStorage.getItem('lang') === 'en' ? 'Home' : 'صفحتي'}/>
             </ListItem>
             <ListItem
               button
@@ -142,7 +155,7 @@ class ClippedDrawerInvestor extends React.Component {
               <ListItemIcon>
                 <InboxIcon />
               </ListItemIcon>
-              <ListItemText primary="Edit Your Profile" />
+              <ListItemText primary={sessionStorage.getItem('lang') === 'en' ? 'Edit Your Profile' : 'تغير البينات'} />
             </ListItem>
           </List>
           <Divider />
@@ -155,7 +168,7 @@ class ClippedDrawerInvestor extends React.Component {
               <ListItemIcon>
                 <InboxIcon />
               </ListItemIcon>
-              <ListItemText primary="View My Companies" />
+              <ListItemText primary={sessionStorage.getItem('lang') === 'en' ? 'View My Companies' : 'اظهر شركاتي'} />
             </ListItem>
             <ListItem
               button
@@ -165,22 +178,44 @@ class ClippedDrawerInvestor extends React.Component {
               <ListItemIcon>
                 <InboxIcon />
               </ListItemIcon>
-              <ListItemText primary="View My Requests" />
+              <ListItemText primary={sessionStorage.getItem('lang') === 'en' ? 'View My Requests' : 'اظهر طلباتي'} />
             </ListItem>
             <ListItem
               button
-              key={"Create Companies"}
-              onClick={this.handleCreate}
+              key={"Create SSC Companies"}
+              onClick={this.handleCreatessc}
             >
               <ListItemIcon>
                 <InboxIcon />
               </ListItemIcon>
-              <ListItemText primary="Create Companies" />
+              <ListItemText primary={sessionStorage.getItem('lang') === 'en' ? 'Create SSC Companies' : 'سجل شركتي ال SSC'} />
+            </ListItem>
+            <ListItem
+              button
+              key={"Create SPC Companies"}
+              onClick={this.handleCreatespc}
+            >
+              <ListItemIcon>
+                <InboxIcon />
+                
+              </ListItemIcon>
+              <ListItemText primary={sessionStorage.getItem('lang') === 'en' ? 'Create SPC Companies' : 'سجل شركتي ال SPC'} />
+            </ListItem>
+            <ListItem
+              button
+              key={"Create D Companies"}
+              onClick={this.handleCreated}
+            >
+              <ListItemIcon>
+                <InboxIcon />
+                
+              </ListItemIcon>
+              <ListItemText primary={sessionStorage.getItem('lang') === 'en' ? 'Create Dynamic Companies' : 'سجل شركتي ال Dynamic'} />
             </ListItem>
           </List>
         </Drawer>
         <main className={classes.content}>
-       
+       {this.handleLoading}
           {this.handleContent(this.state)}
           <div className={classes.toolbar} />
         </main>

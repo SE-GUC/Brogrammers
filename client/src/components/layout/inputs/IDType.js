@@ -36,7 +36,7 @@ class IDType extends React.Component {
     return (
       <div className={classes.root}>
         <FormControl component="fieldset" className={classes.formControl}>
-          <FormLabel component="legend">Identification Type</FormLabel>
+          <FormLabel component="legend">{sessionStorage.getItem('lang') === 'en' ? 'Identification Type' : 'نوع تعريف الهويه'}</FormLabel>
           <RadioGroup
             aria-label="Identification Type"
             name="idType"
@@ -44,8 +44,8 @@ class IDType extends React.Component {
             value={this.state.value}
             onChange={this.handleChange}
           >
-            <FormControlLabel value="National ID" control={<Radio color="primary"/>} label="National ID" />
-            <FormControlLabel value="Passport" control={<Radio  color="primary"/>} label="Passport" />
+            <FormControlLabel value="National ID" control={<Radio color="primary"/>} label={sessionStorage.getItem('lang') === 'en' ? 'National ID' : 'الرقم القومي'} />
+            <FormControlLabel value="Passport" control={<Radio  color="primary"/>} label={sessionStorage.getItem('lang') === 'en' ? 'Passport' : 'جواز السفر'} />
           </RadioGroup>
         </FormControl>
       </div>
