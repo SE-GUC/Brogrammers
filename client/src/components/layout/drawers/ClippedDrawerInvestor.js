@@ -20,8 +20,19 @@ import InvestorCompanyRegSSC from '../../pages/InvestorCompanyRegSSC'
 import Stepper from '../../steppers/stepper'
 import { Paper } from '@material-ui/core'
 import NavBar from '../Navbar'
-const drawerWidth = 240
+import ViewList from '@material-ui/icons/ViewList'
+import CreateCompany from '@material-ui/icons/CreateNewFolder'
+import EditProfile from '@material-ui/icons/BorderColor'
+import Identity from '@material-ui/icons/Person'
+import Home from '@material-ui/icons/Home'
+import Upload from '@material-ui/icons/CloudUpload'
+import Note from '@material-ui/icons/NoteAdd'
+import Add from '@material-ui/icons/PersonAdd'
 
+
+
+
+const drawerWidth = 240
 const styles = theme => ({
   root: {
     display: 'flex'
@@ -105,7 +116,7 @@ class ClippedDrawerInvestor extends React.Component {
             <List>
               <ListItem button key={'Home'} onClick={this.handleHome}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Home />
                 </ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
@@ -115,7 +126,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleProfile}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <EditProfile />
                 </ListItemIcon>
                 <ListItemText primary="Edit Your Profile" />
               </ListItem>
@@ -128,7 +139,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCases2}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View My Companies" />
               </ListItem>
@@ -138,7 +149,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleRequests}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View My Requests" />
               </ListItem>
@@ -148,7 +159,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCreate}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create Companies" />
               </ListItem>
@@ -158,7 +169,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCompanySSC}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
@@ -168,7 +179,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCompanySPC}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
@@ -178,7 +189,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCreate}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create using existent dynamic form" />
               </ListItem>
@@ -209,7 +220,7 @@ class ClippedDrawerInvestor extends React.Component {
             <List>
               <ListItem button key={'Home'} onClick={this.handleHome}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Home />
                 </ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
@@ -219,7 +230,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleProfile}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <EditProfile />
                 </ListItemIcon>
                 <ListItemText primary="Edit Your Profile" />
               </ListItem>
@@ -232,7 +243,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCases2}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View My Companies" />
               </ListItem>
@@ -242,7 +253,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleRequests}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View My Requests" />
               </ListItem>
@@ -252,7 +263,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCreate}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create Companies" />
               </ListItem>
@@ -262,7 +273,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCompanySSC}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
@@ -272,7 +283,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCompanySPC}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
@@ -282,7 +293,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCreate}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create using existent dynamic form" />
               </ListItem>
@@ -306,6 +317,7 @@ class ClippedDrawerInvestor extends React.Component {
           <CssBaseline />
          
 
+          
           <Drawer
             className={classes.drawer}
             variant="permanent"
@@ -319,7 +331,7 @@ class ClippedDrawerInvestor extends React.Component {
             <List>
               <ListItem button key={'Home'} onClick={this.handleHome}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Home />
                 </ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
@@ -329,7 +341,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleProfile}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <EditProfile />
                 </ListItemIcon>
                 <ListItemText primary="Edit Your Profile" />
               </ListItem>
@@ -342,7 +354,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCases2}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View My Companies" />
               </ListItem>
@@ -352,7 +364,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleRequests}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View My Requests" />
               </ListItem>
@@ -362,7 +374,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCreate}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create Companies" />
               </ListItem>
@@ -372,7 +384,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCompanySSC}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
@@ -382,7 +394,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCompanySPC}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
@@ -392,7 +404,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCreate}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create using existent dynamic form" />
               </ListItem>
@@ -412,6 +424,7 @@ class ClippedDrawerInvestor extends React.Component {
           <CssBaseline />
          
 
+          
           <Drawer
             className={classes.drawer}
             variant="permanent"
@@ -425,7 +438,7 @@ class ClippedDrawerInvestor extends React.Component {
             <List>
               <ListItem button key={'Home'} onClick={this.handleHome}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Home />
                 </ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
@@ -435,7 +448,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleProfile}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <EditProfile />
                 </ListItemIcon>
                 <ListItemText primary="Edit Your Profile" />
               </ListItem>
@@ -448,7 +461,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCases2}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View My Companies" />
               </ListItem>
@@ -458,7 +471,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleRequests}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View My Requests" />
               </ListItem>
@@ -468,7 +481,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCreate}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create Companies" />
               </ListItem>
@@ -478,7 +491,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCompanySSC}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
@@ -488,7 +501,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCompanySPC}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
@@ -498,7 +511,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCreate}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create using existent dynamic form" />
               </ListItem>
@@ -519,6 +532,7 @@ class ClippedDrawerInvestor extends React.Component {
         
 
          
+          
           <Drawer
             className={classes.drawer}
             variant="permanent"
@@ -532,7 +546,7 @@ class ClippedDrawerInvestor extends React.Component {
             <List>
               <ListItem button key={'Home'} onClick={this.handleHome}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Home />
                 </ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
@@ -542,7 +556,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleProfile}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <EditProfile />
                 </ListItemIcon>
                 <ListItemText primary="Edit Your Profile" />
               </ListItem>
@@ -555,7 +569,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCases2}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View My Companies" />
               </ListItem>
@@ -565,7 +579,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleRequests}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View My Requests" />
               </ListItem>
@@ -575,7 +589,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCreate}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create Companies" />
               </ListItem>
@@ -585,7 +599,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCompanySSC}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
@@ -595,7 +609,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCompanySPC}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
@@ -605,7 +619,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCreate}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create using existent dynamic form" />
               </ListItem>
@@ -643,7 +657,7 @@ class ClippedDrawerInvestor extends React.Component {
             <List>
               <ListItem button key={'Home'} onClick={this.handleHome}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Home />
                 </ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
@@ -653,7 +667,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleProfile}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <EditProfile />
                 </ListItemIcon>
                 <ListItemText primary="Edit Your Profile" />
               </ListItem>
@@ -666,7 +680,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCases2}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View My Companies" />
               </ListItem>
@@ -676,7 +690,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleRequests}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View My Requests" />
               </ListItem>
@@ -686,7 +700,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCreate}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create Companies" />
               </ListItem>
@@ -696,7 +710,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCompanySSC}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
@@ -706,7 +720,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCompanySPC}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
@@ -716,7 +730,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCreate}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create using existent dynamic form" />
               </ListItem>
@@ -741,6 +755,7 @@ class ClippedDrawerInvestor extends React.Component {
           <CssBaseline />
           
 
+          
           <Drawer
             className={classes.drawer}
             variant="permanent"
@@ -754,7 +769,7 @@ class ClippedDrawerInvestor extends React.Component {
             <List>
               <ListItem button key={'Home'} onClick={this.handleHome}>
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Home />
                 </ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
@@ -764,7 +779,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleProfile}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <EditProfile />
                 </ListItemIcon>
                 <ListItemText primary="Edit Your Profile" />
               </ListItem>
@@ -777,7 +792,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCases2}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View My Companies" />
               </ListItem>
@@ -787,7 +802,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleRequests}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <ViewList />
                 </ListItemIcon>
                 <ListItemText primary="View My Requests" />
               </ListItem>
@@ -797,7 +812,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCreate}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create Companies" />
               </ListItem>
@@ -807,7 +822,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCompanySSC}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create SSC Company" />
               </ListItem>
@@ -817,7 +832,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCompanySPC}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create SPC Company" />
               </ListItem>
@@ -827,7 +842,7 @@ class ClippedDrawerInvestor extends React.Component {
                 onClick={this.handleCreate}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <Note />
                 </ListItemIcon>
                 <ListItemText primary="Create using existent dynamic form" />
               </ListItem>
