@@ -1,0 +1,73 @@
+{
+  "title": "SAC Company",
+  "type": "object",
+  "properties": {
+    "regulationLaw": {"title":"Regulation Law","type": "string","enum": ["Law 159","Law 72"]},
+	"nameInArabic":{"title":"Name in Arabic","type": "string"},
+	"nameInEngish":{"title":"Name in English","type":"string"},
+  "governerateHQ": {  "type": "string", "required": "true" },
+  "cityHQ": {"type": "string", "required": "true"},
+  "addressHQ": {
+      "type": "string",
+      "required": "true"
+    },
+  "telephoneHQ": {
+      "type": "number"
+    },
+  "faxHQ": {
+      "type": "number"
+    },
+  "capitalCurrency": {
+      "type": "string",
+      "required": "true"
+    },
+  "capital": {
+      "type": "number",
+      "required": "true",
+      "min": "50000"
+    },
+    "investorName": {
+      "type": "string",
+      "required": "true"
+    },
+    "investorType": {
+      "type": "string",
+      "required": "false"
+    },
+    "investorSex": {
+      "type": "string",
+      "required": "true"
+    },
+    "investorNationality": {
+      "type": "string",
+      "required": "true"
+    },
+    "investorIdentificationType": {
+      "type": "string",
+      "required": "true"
+    },
+    "investorIdentificationNumber": {
+      "type": "string",
+      "required": "true"
+    },
+    "investorBD": {
+      "type": "string",
+      "required": "true"
+    },
+    "investorAddress": {
+      "type": "string",
+      "required": "true"
+    },
+    "investorTelephone": {
+      "type": "string"
+    },
+    "investorFax": {
+      "type": "string"
+    },
+    "investorEmail": {
+      "type": "string"
+    }
+  }
+  
+    }
+  
