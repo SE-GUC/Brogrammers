@@ -7,6 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import Grid from "@material-ui/core/Grid";
 
 
+
+
 class ViewLawyerEditableCases extends Component {
     constructor(props) {
         super(props);
@@ -30,23 +32,23 @@ class ViewLawyerEditableCases extends Component {
             </Grid>
         </div>)}
         else{
-            return <Snackbar variant='warning' message="There are no requests" />
+            return <Snackbar variant='warning' message={sessionStorage.getItem('lang') === 'en' ? 'There are no requests' : 'لا يوجد شركات'} />
         }
     }
     handleReq2 = () => {
         if(this.state.requests){
         if (this.state.requests.length === 0) {
-            return <Snackbar variant='warning' message="There are no requests" />
+            return <Snackbar variant='warning' message={sessionStorage.getItem('lang') === 'en' ? 'There are no requests' : 'لا يوجد شركات'} />
         }}
         else{
-            return <Snackbar variant='warning' message="There are no requests" />
+            return <Snackbar variant='warning' message={sessionStorage.getItem('lang') === 'en' ? 'There are no requests' : 'لا يوجد شركات'} />
         }
     }
     handleRequests() {
         console.log(this.props.token)
         this.setState({ isLoading: true })
 
-        fetch(`http://localhost:3000/api/lawyer/editForm/${this.props.ssn}`, {
+        fetch(`http://localhost:3000/api/lawyer/editForm/${sessionStorage.getItem("ssn")}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',

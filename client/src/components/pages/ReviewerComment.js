@@ -14,7 +14,7 @@ class ReviewerComment extends Component {
   componentDidMount() {
     fetch(`http://localhost:3000/api/reviewer/getRejectedTasks/Reviewer`, {
       headers: new Headers({
-        "x-access-token": this.props.token
+        "x-access-token": sessionStorage.getItem("jwtToken")
       })
     })
       .then(response => response.json())

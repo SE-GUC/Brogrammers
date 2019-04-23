@@ -59,9 +59,9 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 
 class CustomizedDialogFees1 extends React.Component {
-  constructor(props) {
+  constructor(props){
     super(props);
-    this.state = {
+  this.state = {
       open: false,
       fees: 0,
       curr: ""
@@ -117,7 +117,7 @@ class CustomizedDialogFees1 extends React.Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <TakeMoney />
+            <TakeMoney companyid={this.props.id}/>
             <Button onClick={this.handleClose} color="primary">
               Close
             </Button>

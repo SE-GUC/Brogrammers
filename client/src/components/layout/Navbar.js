@@ -239,7 +239,7 @@ class PrimarySearchAppBar extends React.Component {
         : {}
     return (
       <div className={classes.root}>
-        <AppBar position="static" style={{ backgroundColor: '#000000' }}>
+        <AppBar position="static" style={{ backgroundColor: '#000000' }} className={classes.root}>
           <Toolbar>
             <IconButton
               className={classes.menuButton}

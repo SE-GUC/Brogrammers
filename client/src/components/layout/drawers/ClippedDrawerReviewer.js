@@ -18,8 +18,11 @@ import ViewReviewerCasesbyID from '../../pages/ViewReviewerCasesbyID'
 import EditProfileReviewer from '../../pages/EditProfileReviewer'
 import ReviewerComment from '../../pages/ReviewerComment'
 import InvestorCompanyRegSPC from '../../pages/InvestorCompanyRegSPC'
+import Home from '@material-ui/icons/Home'
+import EditProfile from '@material-ui/icons/BorderColor'
+import ViewList from '@material-ui/icons/ViewList'
 import LinearDeterminate from '../loading/LinearDeterminate';
-
+import Navbar from '../Navbar';
 
 const drawerWidth = 240;
 
@@ -118,18 +121,6 @@ class ClippedDrawerReviewer  extends React.Component {
     return (
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar position="fixed" className={classes.appBar}>
-          <Toolbar>
-            <Typography variant="h6" color="inherit" noWrap>
-              <p>
-                {sessionStorage.getItem("lang") === "en"
-                  ? "Reviewer Profile"
-                  : " حساب المراجع"}
-              </p>
-            </Typography>
-          </Toolbar>
-        </AppBar>
-
         <Drawer
           className={classes.drawer}
           variant="permanent"
@@ -137,12 +128,13 @@ class ClippedDrawerReviewer  extends React.Component {
             paper: classes.drawerPaper
           }}
         >
+        <Navbar />
           <div className={classes.toolbar} />
 
           <List>
             <ListItem button key={"Home"} onClick={this.handleHome}>
               <ListItemIcon>
-                <InboxIcon />
+                <Home />
               </ListItemIcon>
               <ListItemText
                 primary={
@@ -156,7 +148,7 @@ class ClippedDrawerReviewer  extends React.Component {
               onClick={this.handleProfile}
             >
               <ListItemIcon>
-                <InboxIcon />
+                <EditProfile />
               </ListItemIcon>
               <ListItemText
                 primary={
@@ -173,7 +165,7 @@ class ClippedDrawerReviewer  extends React.Component {
               onClick={this.handleCases}
             >
               <ListItemIcon>
-                <InboxIcon />
+                <ViewList />
               </ListItemIcon>
               <ListItemText
                 primary={
@@ -192,7 +184,7 @@ class ClippedDrawerReviewer  extends React.Component {
               onClick={this.handleCases2}
             >
               <ListItemIcon>
-                <InboxIcon />
+                <ViewList />
               </ListItemIcon>
               <ListItemText
                 primary={
@@ -208,7 +200,7 @@ class ClippedDrawerReviewer  extends React.Component {
               onClick={this.handleComment}
             >
               <ListItemIcon>
-                <InboxIcon />
+                <EditProfile />
               </ListItemIcon>
               <ListItemText
                 primary={

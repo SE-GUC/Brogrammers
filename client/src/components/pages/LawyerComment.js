@@ -16,11 +16,12 @@ class LawyerComment extends Component {
   componentDidMount() {
     fetch(`http://localhost:3000/api/lawyer/getRejectedTasks/Lawyer`, {
       headers: new Headers({
-        "x-access-token": this.props.token
+        "x-access-token": sessionStorage.getItem("jwtToken")
       })
     })
       .then(response => response.json())
       .then(json => {
+        console.log(json.data)
         this.setState({ isLoadied: true, companies: json.data });
       });
   }
@@ -30,6 +31,7 @@ class LawyerComment extends Component {
     if (!isLoadied) {
       return <div> Loading ...</div>;
     } else {
+      console.log(this.state.companies)
       if (!this.state.companies) {
         return (
           <h1>

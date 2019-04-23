@@ -47,7 +47,7 @@ class ViewApprovedCompanies extends Component {
           style={{ paddingTop: '5%', paddingRight: '23%' }}
         >
           <GridList className={classes.list} style={styles.companiesBackground}>
-            <h1 style={{ paddingLeft: '5%' }}> Approved Companies</h1>
+            <h1 style={{ paddingLeft: '5%' }}> {sessionStorage.getItem('lang')==='en'? 'Approved Companies': 'الشركات المقبوله'}</h1>
             {this.state.approvedCompanies.map((item, i) => (
               <CompanyCard key={i} company={item} />
             ))}

@@ -15,6 +15,8 @@ class ViewReviewersByAdmin extends React.Component {
   componentDidMount () {
     
     {
+
+      
       fetch('http://localhost:3000/api/reviewer/', {
         headers: new Headers({
           'x-access-token': this.props.token
@@ -31,7 +33,7 @@ class ViewReviewersByAdmin extends React.Component {
   }
 
   render () {
-    console.log(this.state.reviewersOnSystem)
+   
 
 const listItems=  this.state.reviewersOnSystem.map((item,i) => (
            <div>   

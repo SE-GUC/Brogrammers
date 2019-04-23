@@ -32,7 +32,7 @@ function SimpleCard (props) {
     <Card className={classes.card}>
       <CardContent >
         <Typography className={classes.title} color='textSecondary' gutterBottom>
-          status: {props.status}
+        {sessionStorage.getItem('lang')==='en'? 'status': 'الحاله'}: {props.status}
         </Typography>
         <Typography variant='h5' component='h2'>
           {props.nameInEnglish}
@@ -42,29 +42,28 @@ function SimpleCard (props) {
         </Typography>
         <Typography component='p'>
           <ul>
-          <li>Company id: {props.compid}</li>
-            <li>addressHQ: {props.addressHQ}</li>
-            <li>regulationLaw: {props.regulationLaw} </li>
-            <li>legalCompanyForm: {props.legalCompanyForm}</li>
-            <li>nameInArabic: {props.nameInArabic}</li>
-            <li> governerateHQ:{props.governerateHQ}</li>
-            <li>cityHQ: {props.cityHQ}</li>
-
-            <li>telephoneHQ: {props.telephoneHQ}</li>
-            <li>faxHQ: {props.faxHQ}</li>
-            <li>capitalCurrency: {props.capitalCurrency}</li>
-            <li>capital: {props.capital}</li>
-            <ul>investorName:{props.investorName} </ul>
-            <li>investorSex:{props.investorSex} </li>
-            <li>investorNationality: {props.investorNationality}</li>
-            <li>investorIdentificationType: {props.investorIdentificationType}</li>
-            <li>investorIdentificationNumber: {props.investorIdentificationNumber}</li>
-            <li>investorBD: {props.investorBD}</li>
-            <li>investorAddress: {props.investorAddress}</li>
-            <li>investorTelephone: {props.investorTelephone}</li>
-            <li>investorFax: {props.investorFax}</li>
-            <li>investorEmail:{props.investorEmail}</li>
-          </ul>
+          <li>{sessionStorage.getItem('lang')==='en'? 'Company id': 'رقم حساب الشركه'}: {props.compid}</li>
+            <li>{sessionStorage.getItem('lang')==='en'? 'addressHQ': 'عنوان الشركه '}: {props.addressHQ}</li>
+            <li>{sessionStorage.getItem('lang')==='en'? 'regulationLaw': 'القانون المنظم'}: {props.regulationLaw} </li>
+            <li>{sessionStorage.getItem('lang')==='en'? 'legalCompanyForm': 'شكل الشركه القانونى'}: {props.legalCompanyForm}</li>
+            <li>{sessionStorage.getItem('lang')==='en'? 'nameInArabic': 'اسم الشركه'}: {props.nameInArabic}</li>
+            <li> {sessionStorage.getItem('lang')==='en'? 'governerateHQ': 'المركز الرئيسى '}:{props.governerateHQ}</li>
+            <li>{sessionStorage.getItem('lang')==='en'? 'cityHQ': 'المركز الرئيسى (المدينه)ه '}: {props.cityHQ}</li>
+            <li>{sessionStorage.getItem('lang')==='en'? 'telephoneHQ': 'التليفون '}: {props.telephoneHQ}</li>
+            <li>{sessionStorage.getItem('lang')==='en'? 'faxHQ': 'الفاكس '}: {props.faxHQ}</li>
+            <li>{sessionStorage.getItem('lang')==='en'? 'capitalCurrency': 'عمله راس المال '}: {props.capitalCurrency}</li>
+            <li>{sessionStorage.getItem('lang')==='en'? 'capital': 'راس المال '}: {props.capital}</li>
+            <ul>{sessionStorage.getItem('lang')==='en'? 'investorName': 'اسم المستثمر'}:{props.investorName} </ul>
+            <li>{sessionStorage.getItem('lang')==='en'? 'investorSex': 'الجنس '}:{props.investorSex} </li>
+            <li>{sessionStorage.getItem('lang')==='en'? 'investorNationality': 'الجنسيه '}: {props.investorNationality}</li>
+            <li>{sessionStorage.getItem('lang')==='en'? 'investorIdentificationType': 'نوع اثبات الشخصيه '}: {props.investorIdentificationType}</li>
+            <li>{sessionStorage.getItem('lang')==='en'? 'investorIdentificationNumber': 'رقم اثبات الشخصيه'}: {props.investorIdentificationNumber}</li>
+            <li>{sessionStorage.getItem('lang')==='en'? 'investorBD': 'تاريخ الميلد'}: {props.investorBD}</li>
+            <li>{sessionStorage.getItem('lang')==='en'? 'investorAddress': 'عنوان الاقامه'}: {props.investorAddress}</li>
+            <li>{sessionStorage.getItem('lang')==='en'? 'investorTelephone': 'التليفون '}: {props.investorTelephone}</li>
+            <li>{sessionStorage.getItem('lang')==='en'? 'investorFax': 'الفاكس'}: {props.investorFax}</li>
+            <li>{sessionStorage.getItem('lang')==='en'? 'investorEmail': 'البريد الالكترونى'}:{props.investorEmail}</li>
+   </ul>
           <br />
 
         </Typography>
