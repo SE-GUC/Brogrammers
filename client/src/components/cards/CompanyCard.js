@@ -16,6 +16,7 @@ import { ReactComponent as LawyerRejectedIcon } from '../Icons/lawyerrejected.sv
 import { ReactComponent as AcceptedIcon } from '../Icons/accepted.svg'
 import { ReactComponent as ReviewerRejectedIcon } from '../Icons/reviewerrejected.svg'
 import CustomDialog from '../layout/Dialogs/CustomDialog'
+import Button from '@material-ui/core/Button'
 
 const styles = theme => ({
   card: {
@@ -81,7 +82,17 @@ class CompanyCard extends React.Component {
                 company={this.props.company}
               />
             </IconButton>
+            <Button variant='contained'
+            color='primary' 
+            size="medium" 
+            onClick={()=>window.open(this.props.company.pdf)} >{sessionStorage.getItem('lang')==='en'? 'View Contract': 'عرض العقد'
+          }</Button>
+
           </CardActions>
+
+
+
+     
           <Collapse in={this.state.expanded} timeout="auto" unmountOnExit />
         </Card>
       </div>

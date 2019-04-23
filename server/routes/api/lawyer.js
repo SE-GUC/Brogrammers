@@ -483,12 +483,12 @@ router.get('/logout', function (req, res) {
 router.put('/editForm/:id/:companyId', async function (req, res) {
   var stat = 0
   var lawyerId = req.params.id
-  var companyId = req.params.companyId
+  var companyid = req.params.companyId
   const query = {
     $and: [
       { status: 'RejectedReviewer' },
       { lawyer: lawyerId },
-      { _id: companyId }
+      { _id: companyid }
     ]
   }
   const editableCompanies = await Company.findOne(query)
@@ -511,7 +511,7 @@ router.put('/editForm/:id/:companyId', async function (req, res) {
     }
     const id = stat
     const lawyer = await Lawyer.findOne({socialSecurityNumber: lawyerId}, { _id: 1 })
-    const companybeforeupdate = await Company.findById(companyId)
+    const companybeforeupdate = await Company.findById(companyid)
     if(!lawyer){
       return res
       .status(500)
@@ -521,15 +521,15 @@ router.put('/editForm/:id/:companyId', async function (req, res) {
       if (!editableCompanies) {
         return res.status(404).send({ error: 'There are no Fourms to be edited' })
       } else {
-        const isValidated = companyvalidator.updateValidationSSC(req.body)
-        if (isValidated.error) {
-          return res
-            .status(400)
-            .send({ error: isValidated.error.details[0].message })
-        }
-        await Company.findByIdAndUpdate(companyId, req.body)
-        await Company.findOneAndUpdate(query, { status: 'PendingReviewer' })
-        const updatedcompstatus = await Company.findById(companyId) 
+        // const isValidated = companyvalidator.updateValidationSSC(req.body)
+        // if (isValidated.error) {
+        //   return res
+        //     .status(400)
+        //     .send({ error: isValidated.error.details[0].message })
+        // }
+        await Company.findByIdAndUpdate(companyid, req.body)
+        await Company.findByIdAndUpdate(companyid, { status: 'PendingReviewer' })
+        const updatedcompstatus = await Company.findById(companyid) 
 
               
 // delete the the ids in the search tag Array before we update the company
@@ -834,7 +834,7 @@ if(req.body.regulationLaw)
 
 
 
-        res.json({ msg: 'fourm updated successfully' })
+        res.json({ msg: 'fourm updated successfully',data: updatedcompstatus})
       }
 
 
