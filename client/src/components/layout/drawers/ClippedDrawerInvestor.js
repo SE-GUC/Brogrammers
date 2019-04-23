@@ -193,6 +193,7 @@ class ClippedDrawerInvestor extends React.Component {
                 }
               />
             </ListItem>
+            <Divider/>
             <ListItem
               button
               key={"Create SSC Companies"}
