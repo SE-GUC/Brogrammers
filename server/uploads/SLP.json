@@ -1,0 +1,9 @@
+{
+"title":"SLP",
+"type": "object",
+"required": ["title"],
+"properties": {
+  "title": {"type": "string", "title": "Title"},
+  "done": {"type": "string", "title": "Done?","enum":["SSC","SPC"]}
+}
+}
