@@ -6,6 +6,9 @@ const ManagerSchema = new Schema({
     type: String,
     required: true
   },
+  creationDate:{
+    Date
+  },
   type: {
     type: String,
     required: true
@@ -154,6 +157,9 @@ const CompanySchema = new Schema(
     },
     reviewerComment: {
       type: String
+    },
+    pdf:{
+      type:String
     }
   },
   { strict: false }

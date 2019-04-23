@@ -19,6 +19,9 @@ import EditProfileReviewer from '../../pages/EditProfileReviewer'
 import ReviewerComment from '../../pages/ReviewerComment'
 import InvestorCompanyRegSPC from '../../pages/InvestorCompanyRegSPC'
 import NavBar from '../../../components/layout/Navbar'
+import Home from '@material-ui/icons/Home'
+import EditProfile from '@material-ui/icons/BorderColor'
+import ViewList from '@material-ui/icons/ViewList'
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -89,29 +92,30 @@ constructor(props){
                    
                     <List>
                     <ListItem button key={"Home"} onClick={this.handleHome}>
-                          <ListItemIcon><InboxIcon /></ListItemIcon>
+                          <ListItemIcon><Home /></ListItemIcon>
                           <ListItemText primary="Home" />
                         </ListItem>
-                        <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                          <ListItemIcon><InboxIcon /></ListItemIcon>
-                          <ListItemText primary="Edit Your Profile" />
+                        <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
+                          <ListItemIcon><ViewList /></ListItemIcon>
+                          <ListItemText primary="View My Cases" />
                         </ListItem>
+                  
+                       
                         <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                          <ListItemIcon><InboxIcon /></ListItemIcon>
+                          <ListItemIcon><ViewList /></ListItemIcon>
                           <ListItemText primary="View All Cases" />
                         </ListItem>
                     </List>
                     <Divider />
                     <List>
                       
-                        <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                          <ListItemIcon><InboxIcon /></ListItemIcon>
-                          <ListItemText primary="View My Cases" />
+                    <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
+                          <ListItemIcon><EditProfile /></ListItemIcon>
+                          <ListItemText primary="Edit Your Profile" />
                         </ListItem>
-                  
                        
                         <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                                <ListItemIcon><InboxIcon /></ListItemIcon>
+                                <ListItemIcon><EditProfile /></ListItemIcon>
                                 <ListItemText primary="Write Comment" />
                                 </ListItem>
                         
@@ -137,47 +141,48 @@ constructor(props){
            
 
               <Drawer
-                className={classes.drawer}
-                variant="permanent"
-                classes={{
-                  paper: classes.drawerPaper,
-                }}
-              >
-               <NavBar/>
-                <div className={classes.toolbar} />
-               
-                <List>
-                <ListItem button key={"Home"} onClick={this.handleHome}>
-                      <ListItemIcon><InboxIcon /></ListItemIcon>
-                      <ListItemText primary="Home" />
-                    </ListItem>
-                    <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                      <ListItemIcon><InboxIcon /></ListItemIcon>
-                      <ListItemText primary="Edit Your Profile" />
-                    </ListItem>
-                    <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                      <ListItemIcon><InboxIcon /></ListItemIcon>
-                      <ListItemText primary="View All Cases" />
-                    </ListItem>
-                </List>
-                <Divider />
-                <List>
-                  
-                    <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                      <ListItemIcon><InboxIcon /></ListItemIcon>
-                      <ListItemText primary="View My Cases" />
-                    </ListItem>
-              
+                    className={classes.drawer}
+                    variant="permanent"
+                    classes={{
+                      paper: classes.drawerPaper,
+                    }}
+                  >
+                   <NavBar/>
+                    <div className={classes.toolbar} />
                    
-                    <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                            <ListItemIcon><InboxIcon /></ListItemIcon>
-                            <ListItemText primary="Write Comment" />
-                            </ListItem>
-                    
-          
-                
-                  </List>
-                  </Drawer>
+                    <List>
+                    <ListItem button key={"Home"} onClick={this.handleHome}>
+                          <ListItemIcon><Home /></ListItemIcon>
+                          <ListItemText primary="Home" />
+                        </ListItem>
+                        <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
+                          <ListItemIcon><ViewList /></ListItemIcon>
+                          <ListItemText primary="View My Cases" />
+                        </ListItem>
+                  
+                       
+                        <ListItem button key={"View All Cases"} onClick={this.handleCases}>
+                          <ListItemIcon><ViewList /></ListItemIcon>
+                          <ListItemText primary="View All Cases" />
+                        </ListItem>
+                    </List>
+                    <Divider />
+                    <List>
+                      
+                    <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
+                          <ListItemIcon><EditProfile /></ListItemIcon>
+                          <ListItemText primary="Edit Your Profile" />
+                        </ListItem>
+                       
+                        <ListItem button key={"Write Comment"} onClick={this.handleComment}>
+                                <ListItemIcon><EditProfile /></ListItemIcon>
+                                <ListItemText primary="Write Comment" />
+                                </ListItem>
+                        
+              
+                    </List>
+                   
+                    </Drawer>
                   <main className={classes.content}>
                     <div className={classes.toolbar} />
                         
@@ -195,46 +200,48 @@ constructor(props){
                 <CssBaseline />
          
                 <Drawer
-                  className={classes.drawer}
-                  variant="permanent"
-                  classes={{
-                    paper: classes.drawerPaper,
-                  }}
-                >
-                 <NavBar/>
-                  <div className={classes.toolbar} />
-                 
-                  <List>
-                  <ListItem button key={"Home"} onClick={this.handleHome}>
-                        <ListItemIcon><InboxIcon /></ListItemIcon>
-                        <ListItemText primary="Home" />
-                      </ListItem>
-                      <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                        <ListItemIcon><InboxIcon /></ListItemIcon>
-                        <ListItemText primary="Edit Your Profile" />
-                      </ListItem>
-                      <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                        <ListItemIcon><InboxIcon /></ListItemIcon>
-                        <ListItemText primary="View All Cases" />
-                      </ListItem>
-                  </List>
-                  <Divider />
-                  <List>
-                    
-                      <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                        <ListItemIcon><InboxIcon /></ListItemIcon>
-                        <ListItemText primary="View My Cases" />
-                      </ListItem>
-                
-                     
-                      <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                              <ListItemIcon><InboxIcon /></ListItemIcon>
-                              <ListItemText primary="Write Comment" />
-                              </ListItem>
+                    className={classes.drawer}
+                    variant="permanent"
+                    classes={{
+                      paper: classes.drawerPaper,
+                    }}
+                  >
+                   <NavBar/>
+                    <div className={classes.toolbar} />
+                   
+                    <List>
+                    <ListItem button key={"Home"} onClick={this.handleHome}>
+                          <ListItemIcon><Home /></ListItemIcon>
+                          <ListItemText primary="Home" />
+                        </ListItem>
+                        <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
+                          <ListItemIcon><ViewList /></ListItemIcon>
+                          <ListItemText primary="View My Cases" />
+                        </ListItem>
+                  
+                       
+                        <ListItem button key={"View All Cases"} onClick={this.handleCases}>
+                          <ListItemIcon><ViewList /></ListItemIcon>
+                          <ListItemText primary="View All Cases" />
+                        </ListItem>
+                    </List>
+                    <Divider />
+                    <List>
                       
-            
-                  </List>
-                            </Drawer>
+                    <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
+                          <ListItemIcon><EditProfile /></ListItemIcon>
+                          <ListItemText primary="Edit Your Profile" />
+                        </ListItem>
+                       
+                        <ListItem button key={"Write Comment"} onClick={this.handleComment}>
+                                <ListItemIcon><EditProfile /></ListItemIcon>
+                                <ListItemText primary="Write Comment" />
+                                </ListItem>
+                        
+              
+                    </List>
+                   
+                    </Drawer>
                             <main className={classes.content}>
                               <div className={classes.toolbar} />
                               <ReviewerComment
@@ -255,46 +262,48 @@ constructor(props){
                 <CssBaseline />
              
                 <Drawer
-                  className={classes.drawer}
-                  variant="permanent"
-                  classes={{
-                    paper: classes.drawerPaper,
-                  }}
-                >
-                 <NavBar/>
-                  <div className={classes.toolbar} />
-                 
-                  <List>
-                  <ListItem button key={"Home"} onClick={this.handleHome}>
-                        <ListItemIcon><InboxIcon /></ListItemIcon>
-                        <ListItemText primary="Home" />
-                      </ListItem>
-                      <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                        <ListItemIcon><InboxIcon /></ListItemIcon>
-                        <ListItemText primary="Edit Your Profile" />
-                      </ListItem>
-                      <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                        <ListItemIcon><InboxIcon /></ListItemIcon>
-                        <ListItemText primary="View All Cases" />
-                      </ListItem>
-                  </List>
-                  <Divider />
-                  <List>
-                    
-                      <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                        <ListItemIcon><InboxIcon /></ListItemIcon>
-                        <ListItemText primary="View My Cases" />
-                      </ListItem>
-                
-                     
-                      <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                              <ListItemIcon><InboxIcon /></ListItemIcon>
-                              <ListItemText primary="Write Comment" />
-                              </ListItem>
+                    className={classes.drawer}
+                    variant="permanent"
+                    classes={{
+                      paper: classes.drawerPaper,
+                    }}
+                  >
+                   <NavBar/>
+                    <div className={classes.toolbar} />
+                   
+                    <List>
+                    <ListItem button key={"Home"} onClick={this.handleHome}>
+                          <ListItemIcon><Home /></ListItemIcon>
+                          <ListItemText primary="Home" />
+                        </ListItem>
+                        <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
+                          <ListItemIcon><ViewList /></ListItemIcon>
+                          <ListItemText primary="View My Cases" />
+                        </ListItem>
+                  
+                       
+                        <ListItem button key={"View All Cases"} onClick={this.handleCases}>
+                          <ListItemIcon><ViewList /></ListItemIcon>
+                          <ListItemText primary="View All Cases" />
+                        </ListItem>
+                    </List>
+                    <Divider />
+                    <List>
                       
-            
-                  </List>
-                         </Drawer>
+                    <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
+                          <ListItemIcon><EditProfile /></ListItemIcon>
+                          <ListItemText primary="Edit Your Profile" />
+                        </ListItem>
+                       
+                        <ListItem button key={"Write Comment"} onClick={this.handleComment}>
+                                <ListItemIcon><EditProfile /></ListItemIcon>
+                                <ListItemText primary="Write Comment" />
+                                </ListItem>
+                        
+              
+                    </List>
+                   
+                    </Drawer>
                                 <main className={classes.content}>
                                   <div className={classes.toolbar} />
                                   <EditProfileReviewer
@@ -316,46 +325,48 @@ constructor(props){
                
 
                 <Drawer
-                  className={classes.drawer}
-                  variant="permanent"
-                  classes={{
-                    paper: classes.drawerPaper,
-                  }}
-                >
-                 <NavBar/>
-                  <div className={classes.toolbar} />
-                 
-                  <List>
-                  <ListItem button key={"Home"} onClick={this.handleHome}>
-                        <ListItemIcon><InboxIcon /></ListItemIcon>
-                        <ListItemText primary="Home" />
-                      </ListItem>
-                      <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                        <ListItemIcon><InboxIcon /></ListItemIcon>
-                        <ListItemText primary="Edit Your Profile" />
-                      </ListItem>
-                      <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                        <ListItemIcon><InboxIcon /></ListItemIcon>
-                        <ListItemText primary="View All Cases" />
-                      </ListItem>
-                  </List>
-                  <Divider />
-                  <List>
-                    
-                      <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                        <ListItemIcon><InboxIcon /></ListItemIcon>
-                        <ListItemText primary="View My Cases" />
-                      </ListItem>
-                
-                     
-                      <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                              <ListItemIcon><InboxIcon /></ListItemIcon>
-                              <ListItemText primary="Write Comment" />
-                              </ListItem>
+                    className={classes.drawer}
+                    variant="permanent"
+                    classes={{
+                      paper: classes.drawerPaper,
+                    }}
+                  >
+                   <NavBar/>
+                    <div className={classes.toolbar} />
+                   
+                    <List>
+                    <ListItem button key={"Home"} onClick={this.handleHome}>
+                          <ListItemIcon><Home /></ListItemIcon>
+                          <ListItemText primary="Home" />
+                        </ListItem>
+                        <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
+                          <ListItemIcon><ViewList /></ListItemIcon>
+                          <ListItemText primary="View My Cases" />
+                        </ListItem>
+                  
+                       
+                        <ListItem button key={"View All Cases"} onClick={this.handleCases}>
+                          <ListItemIcon><ViewList /></ListItemIcon>
+                          <ListItemText primary="View All Cases" />
+                        </ListItem>
+                    </List>
+                    <Divider />
+                    <List>
                       
-            
-                  </List>
-                       </Drawer>
+                    <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
+                          <ListItemIcon><EditProfile /></ListItemIcon>
+                          <ListItemText primary="Edit Your Profile" />
+                        </ListItem>
+                       
+                        <ListItem button key={"Write Comment"} onClick={this.handleComment}>
+                                <ListItemIcon><EditProfile /></ListItemIcon>
+                                <ListItemText primary="Write Comment" />
+                                </ListItem>
+                        
+              
+                    </List>
+                   
+                    </Drawer>
                                 <main className={classes.content}>
                                   <div className={classes.toolbar} />
                                   <ReviewerCases

@@ -18,7 +18,7 @@ class LawyerComment extends Component {
   componentDidMount () {
     fetch(`http://localhost:3000/api/lawyer/getRejectedTasks/Lawyer`, {
       headers: new Headers({
-        'x-access-token': this.props.token
+        'x-access-token': sessionStorage.getItem("jwtToken")
       }) })
       .then(response => response.json())
       .then(json => {

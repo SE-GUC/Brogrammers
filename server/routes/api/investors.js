@@ -589,6 +589,41 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+
+router.post("/pdf/:id", async (req, res) => {
+  try {
+    var stat = 0;
+    var token = req.headers["x-access-token"];
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: "No token provided." });
+    }
+    jwt.verify(token, config.secret, function(err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: "Failed to authenticate token." });
+      }
+      stat = decoded.id;
+    });
+    const id = req.params.id;
+    const investor = await Investor.findById(stat);
+    if (!investor) {
+      return res.status(404).send({ error: "Investor does not exist" });
+    }
+    
+
+ 
+      await Company.findByIdAndUpdate(id, req.body);
+      res.json({ msg: "Company updated successfully" });
+  
+  } catch (error) {
+    // We will be handling the error later
+    console.log(error);
+  }
+});
+
 router.get("/View/ViewCompanies", async (req, res) => {
   var stat = 0;
   try {
@@ -786,6 +821,9 @@ router.post("/createspccompany", async (req, res) => {
     const company = await Company.create(newCompany)
     // Insert Tags into the searchTag code in creating the company from code line 479 till 635
     //governerate tag
+    var d = new Date();
+    d.setTime(d.getTime());
+    company.creationDate=d
     const government = await SearchTag.findOne({tag:company.governerateHQ})
     if(!government)
     {
@@ -1072,7 +1110,9 @@ router.post('/createssccompany', async (req, res) => {
     const company = await Company.create(newCompany)
 
 
-
+    var d = new Date();
+    d.setTime(d.getTime());
+    company.creationDate=d
      //governerate tag
      const government = await SearchTag.findOne({tag:company.governerateHQ})
      if(!government)
