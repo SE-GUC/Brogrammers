@@ -42,7 +42,8 @@ function MediaCard (props) {
           {props.func}
         </Button>
         <Button size='small' color='primary'>
-          Learn More
+        <li>{sessionStorage.getItem('lang')==='en'? 'Learn More': ' المزيد'}: {props.faxHQ}</li>
+       
         </Button>
       </CardActions>
     </Card>

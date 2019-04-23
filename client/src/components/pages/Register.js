@@ -138,18 +138,18 @@ class Register extends React.Component {
           <Typography component='h1' variant='h5'>
           Sign up
           </Typography>
-          <Required name='name' field={'Full Name'} type='text' callBack={this.handleInput} />
-          <Required name='mail' field={'Email'} type='email' callBack={this.handleInput} />
-          <Required name='password' field={'Password'} type='password' callBack={this.handleInput} />
-          <Required name='type' field={'Investor Type'} type='text' callBack={this.handleInput} />
+          <Required name='name' field={sessionStorage.getItem('lang')==='en'? 'Full Name': 'الاسم كامل '} type='text' callBack={this.handleInput} />
+          <Required name='mail' field={sessionStorage.getItem('lang')==='en'? 'Email': 'البريد '} type='email' callBack={this.handleInput} />
+          <Required name='password' field={sessionStorage.getItem('lang')==='en'? 'Password': 'الرقم السرى '} type='password' callBack={this.handleInput} />
+          <Required name='type' field={sessionStorage.getItem('lang')==='en'? 'Investor Type': 'نوع المستثمر '} type='text' callBack={this.handleInput} />
           <Gender name='gender' callBack={this.handleInput} />
           <Date name='dob' callBack={this.handleDate} />
           <IDType name='idType' callBack={this.handleInput} />
-          <Required name='idNumber' field={'ID Number'} type='text' callBack={this.handleInput} />
-          <Required name='address' field={'Address'} type='text' callBack={this.handleInput} />
-          <Required name='telephone' field={'Telephone'} type='text' callBack={this.handleInput} />
-          <NotRequired name='fax' field={'Fax'} type='text' callBack={this.handleInput} />
-          <Required name='nationality' field={'Country'} type='text' callBack={this.handleInput} />
+          <Required name='idNumber' field={sessionStorage.getItem('lang')==='en'? 'Id number': ' الرقم القومى'} type='text' callBack={this.handleInput} />
+          <Required name='address' field={sessionStorage.getItem('lang')==='en'? 'Address': 'العنوان '} type='text' callBack={this.handleInput} />
+          <Required name='telephone' field={sessionStorage.getItem('lang')==='en'? 'Telephone': 'رقم الهاتف '} type='text' callBack={this.handleInput} />
+          <NotRequired name='fax' field={sessionStorage.getItem('lang')==='en'? 'fax': 'رقم الفاكس '} type='text' callBack={this.handleInput} />
+          <Required name='nationality' field={sessionStorage.getItem('lang')==='en'? 'Country': 'المدينه '} type='text' callBack={this.handleInput} />
 
           {/* <Country callBack={this.handleCountry}/> */}
           <AlertDialogSlide handleRegister={this.handleRegister} />

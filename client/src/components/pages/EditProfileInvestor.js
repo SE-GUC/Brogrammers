@@ -73,15 +73,19 @@ class EditProfileInvestor extends Component {
       <main className={classes.main}>
         <Paper className={classes.paper}>
         <UpdateIcon />
-          <h2>Edit Your Profile</h2>
-          <NotRequired name={"name"} field={"Full Name"} type="text" callBack={this.onChange} />
-          <NotRequired name={"mail"} field={"Email"} type="email" callBack={this.onChange} />
-          <NotRequired name={"password"} field={"Password"} type="password" callBack={this.onChange} />
-          <NotRequired name={"type"} field={"Investor Type"} type="text" callBack={this.onChange} />
-          <NotRequired name= {"idNumber"} field={"ID Number"} type="text" callBack={this.onChange} />
-          <NotRequired name= {"address"} field={"Address"} type="text" callBack={this.onChange} />
-          <NotRequired name={"telephone"} field={"Telephone"} type="text" callBack={this.onChange} />
-          <NotRequired name={"fax"} field={"Fax"} type="text" callBack={this.onChange} />
+        <h2>
+            {sessionStorage.getItem("lang") === "en"
+              ? "Edit Your Profile"
+              : "تغير بيانات حسابك"}
+          </h2>
+          <NotRequired name={"name"} field={sessionStorage.getItem('lang') === 'en' ? 'Full Name' : 'الاسم الكامل'} type="text" callBack={this.onChange} />
+          <NotRequired name={"mail"} field={sessionStorage.getItem('lang') === 'en' ? 'Email' : 'البريد الاكتروني'} type="email" callBack={this.onChange} />
+          <NotRequired name={"password"} field={sessionStorage.getItem('lang') === 'en' ? 'Password' : 'كلمة السر'} type="password" callBack={this.onChange} />
+          <NotRequired name={"type"} field={sessionStorage.getItem('lang') === 'en' ? 'Investor Type' : 'نوع المستثمر'} type="text" callBack={this.onChange} />
+          <NotRequired name= {"idNumber"} field={sessionStorage.getItem('lang') === 'en' ? 'ID Number' : 'رقم الهويه'} type="text" callBack={this.onChange} />
+          <NotRequired name= {"address"} field={sessionStorage.getItem('lang') === 'en' ? 'Address' : 'العنوان'} type="text" callBack={this.onChange} />
+          <NotRequired name={"telephone"} field={sessionStorage.getItem('lang') === 'en' ? 'Telephone' : 'رقم الهاتف'} type="text" callBack={this.onChange} />
+          <NotRequired name={"fax"} field={sessionStorage.getItem('lang') === 'en' ? 'Fax' : 'رقم الفاكس'} type="text" callBack={this.onChange} />
           <div className={classes.checks}>
             <Gender name={'gender'} callBack={this.onChange} />
             <IDType name={'idType'} callBack={this.onChange} />

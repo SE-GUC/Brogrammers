@@ -19,7 +19,7 @@ class  ChooseLawRegulation extends React.Component  {
     render(){
   return (
     <>
-    <h1>Choose Regulation Laws</h1>
+    <h1>{sessionStorage.getItem('lang') === 'en' ? 'Choose Regulation Laws' : 'اختار القانون المنظم'}</h1>
     <ComplexForRegulation/>
     
     </>

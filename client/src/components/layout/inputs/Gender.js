@@ -36,7 +36,7 @@ class Gender extends React.Component {
     return (
       <div className={classes.root}>
         <FormControl component="fieldset" className={classes.formControl}>
-          <FormLabel component="legend">Gender</FormLabel>
+        <FormLabel component="legend">{sessionStorage.getItem('lang') === 'en' ? 'Gender' : 'الجنس'}</FormLabel>
           <RadioGroup
             aria-label="Gender"
             name={this.props.name}
@@ -44,8 +44,8 @@ class Gender extends React.Component {
             value={this.state.value}
             onChange={this.handleChange} 
           >
-            <FormControlLabel value="male" control={<Radio color="primary"/>} label="Male" />
-            <FormControlLabel value="female" control={<Radio  color="primary"/>} label="Female" />
+            <FormControlLabel value="male" control={<Radio color="primary"/>} label={sessionStorage.getItem('lang') === 'en' ? 'Male' : 'ذكر'} />
+            <FormControlLabel value="female" control={<Radio  color="primary"/>} label={sessionStorage.getItem('lang') === 'en' ? 'Female' : 'انثي'} />
           </RadioGroup>
         </FormControl>
       </div>

@@ -9,8 +9,8 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
-import DialogContentText from "@material-ui/core/DialogContentText"
-import TakeMoney from "../../pages/TakeMoney"
+import DialogContentText from "@material-ui/core/DialogContentText";
+import TakeMoney from "../../pages/TakeMoney";
 
 const DialogTitle = withStyles(theme => ({
   root: {
@@ -59,52 +59,58 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 
 class CustomizedDialogFees1 extends React.Component {
-  state = {
-    open: false,
-    fees:0,
-    curr:''
-  };
+  constructor(props){
+    super(props);
+  this.state = {
+      open: false,
+      fees: 0,
+      curr: ""
+    };
+    this.handleViewFees = this.handleViewFees.bind(this);
+  }
 
   handleClickOpen = () => {
+    this.handleViewFees();
     this.setState({
       open: true
     });
   };
-  
+
   handleClose = () => {
     this.setState({ open: false });
   };
-  
-  handleViewFees=()=>{
-    let x =0 ;
-    fetch('http://localhost:3000/api/lawyer/'+this.props.id+'/viewFees',{
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token':this.props.token
-        }
-      }).then(response => {
-        response.json().then(data =>{
-          this.setState({
-            fees:data.EstimatedFees,
-            curr:data.Currency
-          })
-      }) 
-    }) 
-}
+
+  handleViewFees = () => {
+    let x = 0;
+    fetch("http://localhost:3000/api/lawyer/" + this.props.id + "/viewFees", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": sessionStorage.getItem("jwtToken")
+      }
+    }).then(response => {
+      response.json().then(data => {
+        this.setState({
+          fees: data.EstimatedFees,
+          curr: data.Currency
+        });
+      });
+    });
+  };
 
   render() {
-    this.handleViewFees()
     return (
       <div>
-        <MenuItem onClick={this.handleClickOpen}>View Fees</MenuItem>
+        <MenuItem onClick={this.handleClickOpen}>
+        {sessionStorage.getItem('lang') === 'en' ? 'View Fees' : 'اظهار المصاريف'}
+        </MenuItem>
 
         <Dialog
           onClose={this.handleClose}
           aria-labelledby="customized-dialog-title"
           open={this.state.open}
         >
-        <DialogTitle id="alert-dialog-title">{"Expected Fees:"}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{"Expected Fees:"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               <p>
@@ -113,7 +119,7 @@ class CustomizedDialogFees1 extends React.Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <TakeMoney />
+            <TakeMoney companyid={this.props.id}/>
             <Button onClick={this.handleClose} color="primary">
               Close
             </Button>

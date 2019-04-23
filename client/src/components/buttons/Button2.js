@@ -20,7 +20,7 @@ claimTask()
     }
   }).then(response => {
    console.log(response)
-    alert("Task Claimed!!!")
+    alert(sessionStorage.getItem('lang')==='en'? 'Task claimed': 'استلام المهمه ')
     window.location.reload();
   })
  }
@@ -33,7 +33,9 @@ render(){
 
     return(
         <div>
-<Button variant='contained' color='primary' size="medium" onClick={this.claimTask.bind(this)}>Claim Task</Button>
+<Button variant='contained' color='primary' size="medium" onClick={this.claimTask.bind(this)}>
+ {sessionStorage.getItem('lang')==='en'? 'Claim task': 'استلام المهمه '},
+</Button>
 
 
         </div>
