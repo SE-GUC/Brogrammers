@@ -22,30 +22,32 @@ class investorRequests extends Component {
         this.handleReq2 = this.handleReq2.bind(this)
     }
     handleReq = () => {
-        if(this.state.requests){
-        return (<div>
-            <Paper title={this.state.requests.investorName} elevation={1} />
-            <Grid >
-                <TitleBarGridList data={this.state.requests} token={this.props.token} />
-            </Grid>
-        </div>)}
-        else{
-            return <Snackbar variant='error' message="Something went wrong!" />
+        if (this.state.requests) {
+            return (<div>
+                <Paper title={this.state.requests.investorName} elevation={1} />
+                <Grid >
+                    <TitleBarGridList data={this.state.requests} token={this.props.token} />
+                </Grid>
+            </div>)
+        }
+        else {
+            return <Snackbar variant='error' warning={sessionStorage.getItem('lang') === 'en' ? 'You Dont have any requests' : 'يوجد خطء'}/>
         }
     }
     handleReq2 = () => {
-        if(this.state.requests){
-        if (this.state.requests.length === 0) {
-            return <Snackbar variant='warning' message="There are no requests" />
-        }}
-        else{
-            return <Snackbar variant='error' message="Something went wrong!" />
+        if (this.state.requests) {
+            if (this.state.requests.length === 0) {
+                return <Snackbar variant='warning' message={sessionStorage.getItem('lang') === 'en' ? 'There Are No Requests' : 'ليس هناك طلباط'} />
+            }
+        }
+        else {
+            return <Snackbar variant='error' message={sessionStorage.getItem('lang') === 'en' ? 'Something Went Wrong' : 'يوجد خطء'}/>
         }
     }
     handleRequests() {
         console.log(this.props.token)
         this.setState({ isLoading: true })
-
+        sessionStorage.setItem("loading", true)
         fetch('http://localhost:3000/api/investors/MyRequests/all', {
             method: "GET",
             headers: {
@@ -56,11 +58,13 @@ class investorRequests extends Component {
 
             response.json().then(data => {
                 this.setState({ requests: data.data, isLoading: false })
+                sessionStorage.setItem("loading", false)
+
 
             })
         }).catch(error =>
             this.setState({
-                error:{error}.message,
+                error: { error }.message,
                 isLoading: false
             }))
     }
@@ -69,7 +73,7 @@ class investorRequests extends Component {
     }
     render() {
         console.log(this.state.requests)
-      
+
 
         if (this.state.isLoading) {
             return <LinearDeterminate />
@@ -79,7 +83,7 @@ class investorRequests extends Component {
         } return (
             <div>
                 {this.handleReq()}
-           {this.handleReq2()}
+                {this.handleReq2()}
             </div>
         );
     }

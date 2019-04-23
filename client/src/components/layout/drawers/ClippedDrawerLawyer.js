@@ -25,41 +25,76 @@ import LawyerCompanyRegSPC from '../../pages/LawyerCompanyRegSPC'
 import NavBar from '../../../components/layout/Navbar'
 import Note from '@material-ui/icons/NoteAdd'
 import ViewList from '@material-ui/icons/ViewList'
-import CreateCompany from '@material-ui/icons/CreateNewFolder'
+import CreateCompany from '@material-ui/icons/CreateNewFolder';
+import Stepper from "../../steppers/stepper";
+import LinearDeterminate from "../loading/LinearDeterminate";
+import ChooseCompanyType from "../../pages/ChooseCompanyType";
+import Navbar from '../../../components/layout/Navbar';
 const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
-    display: 'flex',
+    display: "flex"
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: theme.zIndex.drawer + 1
   },
   drawer: {
     width: drawerWidth,
-    flexShrink: 0,
+    flexShrink: 0
   },
   drawerPaper: {
-    width: drawerWidth,
+    width: drawerWidth
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3,
+    padding: theme.spacing.unit * 3
   },
-  toolbar: theme.mixins.toolbar,
+  toolbar: theme.mixins.toolbar
 });
 
 class ClippedDrawerLawyer extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      clicked: "l"
-    }
+      clicked: "i"
+    };
   }
+  handleLoading = () => {
+    if (sessionStorage.getItem("loading")) return <LinearDeterminate />;
+  };
+  handleContent = state => {
+    switch (state.clicked) {
+      case "cases":
+        return (
+          <LawyerCases
+            id={sessionStorage.getItem("id")}
+            token={sessionStorage.getItem("jwtToken")}
+          />
+        );
+      case "companies":
+        return (
+          <ViewLawyerCasesbyID token={sessionStorage.getItem("jwtToken")} />
+        );
+      case "profile":
+        return <EditProfileLawyer token={sessionStorage.getItem("jwtToken")} />;
+      case "createssc":
+        return <LawyerCompanyRegSSC />;
+      case "createspc":
+        return <LawyerCompanyRegSPC />;
+      case "created":
+        return <Stepper />;
+      case "edit":
+        console.log("hello");
+        return <ViewLawyerEditableCases />;
+      case "comment":
+        return <LawyerComment />;
+      default:
+        return;
+    }
+  };
 
-
-  handleHome = () => {
+  /*   handleHome = () => {
     document.location.href = "/";
   }
   handleCases = () => {
@@ -82,644 +117,215 @@ class ClippedDrawerLawyer extends React.Component {
   }
   handleProfile = () => {
     this.setState({ clicked: "profile" })
-  }
+  } */
+
+  handleHome = () => {
+    document.location.href = "/";
+  };
+  handleCases = () => {
+    this.setState({ clicked: "cases" });
+  };
+  handleCases2 = () => {
+    this.setState({ clicked: "companies" });
+  };
+
+  handleCreatessc = () => {
+    this.setState({ clicked: "createssc" });
+  };
+
+  handleCreatespc = () => {
+    this.setState({ clicked: "createspc" });
+  };
+
+  handleEdit = () => {
+    this.setState({ clicked: "edit" });
+  };
+
+  handleCreated = () => {
+    this.setState({ clicked: "created" });
+  };
+
+  handleComment = () => {
+    this.setState({ clicked: "comment" });
+  };
+
+  handleProfile = () => {
+    this.setState({ clicked: "profile" });
+  };
+
   render() {
     const { classes } = this.props;
-    if (this.state.clicked == 'l') {
-      return (
-        <div className={classes.root}>
-          <CssBaseline />
-    
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-          >
 
-          
-            
-            
-            <NavBar/>
-            <div className={classes.toolbar} />
+    return (
+      <div className={classes.root}>
+        <CssBaseline />
 
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><Home /></ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              
-              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                <ListItemIcon><ViewList /></ListItemIcon>
-                <ListItemText primary="View My Cases" />
-              </ListItem>
-             
-              <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                <ListItemIcon><ViewList /></ListItemIcon>
-                <ListItemText primary="View All Cases" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
+        <Drawer
+          className={classes.drawer}
+          variant="permanent"
+          classes={{
+            paper: classes.drawerPaper
+          }}
+        >
+        <Navbar />
+          <div className={classes.toolbar} />
 
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><Note /></ListItemIcon>
-                <ListItemText primary="Create SSC Company" />
-              </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><Note /></ListItemIcon>
-                <ListItemText primary="Create SPC Company" />
-              </ListItem>
-              <Divider />
-              <ListItem button key={"Edit Company"} onClick={this.handleEdit}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Edit Company" />
-              </ListItem>
+          <List>
+            <ListItem button key={"Home"} onClick={this.handleHome}>
+              <ListItemIcon>
+                <Home />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en" ? "Home" : "صفحتي"
+                }
+              />
+            </ListItem>
+            <ListItem
+              button
+              key={"View My Companies"}
+              onClick={this.handleCases2}
+            >
+              <ListItemIcon>
+                <ViewList />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "View My Companies"
+                    : "اظهر شركاتي"
+                }
+              />
+            </ListItem>
            
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-              
-              <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Write Comment" />
-              </ListItem>
-            </List>
 
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <LawyerCases token={sessionStorage.getItem("jwtToken")} />
-
-
-
-          </main>
-        </div>
-      )
-    }
-
-    if (this.state.clicked == 'myCases') {
-      return (
-       
-        <div className={classes.root}>
-       
-          <CssBaseline />
-      
-          {/* <NavBar> */}
-      
-       
-         {/* </NavBar> */}
-         
-       
-         <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-          >
-
-          
+            <ListItem
+              button
+              key={"View All Available cases"}
+              onClick={this.handleCases}
+            >
+              <ListItemIcon>
+                <ViewList />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "View All Cases"
+                    : "اعرض كل الشركات"
+                }
+              />
+            </ListItem>
+          </List>
+          <Divider />
+          <ListItem
+              button
+              key={"Create SSC Companies"}
+              onClick={this.handleCreatessc}
+            >
+              <ListItemIcon>
+                <Note />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "Create SSC Companies"
+                    : "سجل شركتي ال SSC"
+                }
+              />
+            </ListItem>
+            <ListItem
+              button
+              key={"Create SPC Companies"}
+              onClick={this.handleCreatespc}
+            >
+              <ListItemIcon>
+                <Note />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "Create SPC Companies"
+                    : "سجل شركتي ال SPC"
+                }
+              />
+            </ListItem>
+            <ListItem
+              button
+              key={"Create D Companies"}
+              onClick={this.handleCreated}
+            >
+              <ListItemIcon>
+                <Note />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "Create Dynamic Companies"
+                    : "سجل شركتي ال Dynamic"
+                }
+              />
+            </ListItem>
+            <Divider/>
+          <List>
             
-            
-            <NavBar/>
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><Home /></ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              
-              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                <ListItemIcon><ViewList /></ListItemIcon>
-                <ListItemText primary="View My Cases" />
-              </ListItem>
-             
-              <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                <ListItemIcon><ViewList /></ListItemIcon>
-                <ListItemText primary="View All Cases" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
-
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><Note /></ListItemIcon>
-                <ListItemText primary="Create SSC Company" />
-              </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><Note /></ListItemIcon>
-                <ListItemText primary="Create SPC Company" />
-              </ListItem>
-              <Divider />
-              <ListItem button key={"Edit Company"} onClick={this.handleEdit}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Edit Company" />
-              </ListItem>
+            <ListItem
+              button
+              key={"Comment on my companies"}
+              onClick={this.handleComment}
+            >
+              <ListItemIcon>
+                <EditProfile />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "Comment on Company"
+                    : " علق علي شركاتي"
+                }
+              />
+            </ListItem>
+            <ListItem button key={"Edit Companies"} onClick={this.handleEdit}>
+              <ListItemIcon>
+                <EditProfile />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "Edit Companies "
+                    : "تغير الشركات"
+                }
+              />
+            </ListItem>
+            <ListItem
+              button
+              key={"Edit Your Profile"}
+              onClick={this.handleProfile}
+            >
+              <ListItemIcon>
+                <EditProfile />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "Edit Your Profile"
+                    : "تغير البيانات"
+                }
+              />
+            </ListItem>
            
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-              
-              <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Write Comment" />
-              </ListItem>
-            </List>
-
-          </Drawer>
-          
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-
-            <ViewLawyerCasesbyID token={sessionStorage.getItem("jwtToken")} id={sessionStorage.getItem("id")} />
-          </main>
-        </div>
-
-      )
-    }
-    if (this.state.clicked == 'edit') {
-      return (
-        <div className={classes.root}>
-          <CssBaseline />
-        
-
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-          >
-
-          
-            
-            
-            <NavBar/>
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><Home /></ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              
-              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                <ListItemIcon><ViewList /></ListItemIcon>
-                <ListItemText primary="View My Cases" />
-              </ListItem>
-             
-              <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                <ListItemIcon><ViewList /></ListItemIcon>
-                <ListItemText primary="View All Cases" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
-
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><Note /></ListItemIcon>
-                <ListItemText primary="Create SSC Company" />
-              </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><Note /></ListItemIcon>
-                <ListItemText primary="Create SPC Company" />
-              </ListItem>
-              <Divider />
-              <ListItem button key={"Edit Company"} onClick={this.handleEdit}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Edit Company" />
-              </ListItem>
-           
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-              
-              <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Write Comment" />
-              </ListItem>
-            </List>
-
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <ViewLawyerEditableCases
-              id={sessionStorage.getItem("id")}
-
-              token={sessionStorage.getItem("jwtToken")}
-            />
-
-          </main>
-        </div>
-
-      )
-    }
-
-
-    if (this.state.clicked == "companyssc") {
-      return (
-        <div className={classes.root}>
-          <CssBaseline />
-         
-
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-          >
-
-          
-            
-            
-            <NavBar/>
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><Home /></ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              
-              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                <ListItemIcon><ViewList /></ListItemIcon>
-                <ListItemText primary="View My Cases" />
-              </ListItem>
-             
-              <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                <ListItemIcon><ViewList /></ListItemIcon>
-                <ListItemText primary="View All Cases" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
-
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><Note /></ListItemIcon>
-                <ListItemText primary="Create SSC Company" />
-              </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><Note /></ListItemIcon>
-                <ListItemText primary="Create SPC Company" />
-              </ListItem>
-              <Divider />
-              <ListItem button key={"Edit Company"} onClick={this.handleEdit}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Edit Company" />
-              </ListItem>
-           
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-              
-              <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Write Comment" />
-              </ListItem>
-            </List>
-
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <LawyerCompanyRegSSC
-              id={sessionStorage.getItem("id")}
-              ssn={sessionStorage.getItem("ssn")}
-              token={sessionStorage.getItem("jwtToken")}
-            />
-
-          </main>
-        </div>
-      )
-    }
-
-    if (this.state.clicked == "companyspc") {
-      return (
-        <div className={classes.root}>
-          <CssBaseline />
-          
-
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-          >
-
-          
-            
-            
-            <NavBar/>
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><Home /></ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              
-              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                <ListItemIcon><ViewList /></ListItemIcon>
-                <ListItemText primary="View My Cases" />
-              </ListItem>
-             
-              <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                <ListItemIcon><ViewList /></ListItemIcon>
-                <ListItemText primary="View All Cases" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
-
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><Note /></ListItemIcon>
-                <ListItemText primary="Create SSC Company" />
-              </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><Note /></ListItemIcon>
-                <ListItemText primary="Create SPC Company" />
-              </ListItem>
-              <Divider />
-              <ListItem button key={"Edit Company"} onClick={this.handleEdit}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Edit Company" />
-              </ListItem>
-           
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-              
-              <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Write Comment" />
-              </ListItem>
-            </List>
-
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <LawyerCompanyRegSPC
-              id={sessionStorage.getItem("id")}
-              ssn={sessionStorage.getItem("ssn")}
-              token={sessionStorage.getItem("jwtToken")}
-            />
-
-          </main>
-        </div>
-      )
-    }
-
-    if (this.state.clicked == "comment") {
-      return (
-        <div className={classes.root}>
-          <CssBaseline />
-       
-
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-          >
-
-          
-            
-            
-            <NavBar/>
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><Home /></ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              
-              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                <ListItemIcon><ViewList /></ListItemIcon>
-                <ListItemText primary="View My Cases" />
-              </ListItem>
-             
-              <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                <ListItemIcon><ViewList /></ListItemIcon>
-                <ListItemText primary="View All Cases" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
-
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><Note /></ListItemIcon>
-                <ListItemText primary="Create SSC Company" />
-              </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><Note /></ListItemIcon>
-                <ListItemText primary="Create SPC Company" />
-              </ListItem>
-              <Divider />
-              <ListItem button key={"Edit Company"} onClick={this.handleEdit}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Edit Company" />
-              </ListItem>
-           
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-              
-              <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Write Comment" />
-              </ListItem>
-            </List>
-
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <LawyerComment
-
-              token={sessionStorage.getItem("jwtToken")}
-            />
-
-          </main>
-        </div>
-      )
-    }
-    if (this.state.clicked == "profile") {
-      return (
-        <div className={classes.root}>
-          <CssBaseline />
-        
-
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-          >
-
-          
-            
-            
-            <NavBar/>
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><Home /></ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              
-              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                <ListItemIcon><ViewList /></ListItemIcon>
-                <ListItemText primary="View My Cases" />
-              </ListItem>
-             
-              <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                <ListItemIcon><ViewList /></ListItemIcon>
-                <ListItemText primary="View All Cases" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
-
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><Note /></ListItemIcon>
-                <ListItemText primary="Create SSC Company" />
-              </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><Note /></ListItemIcon>
-                <ListItemText primary="Create SPC Company" />
-              </ListItem>
-              <Divider />
-              <ListItem button key={"Edit Company"} onClick={this.handleEdit}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Edit Company" />
-              </ListItem>
-           
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-              
-              <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Write Comment" />
-              </ListItem>
-            </List>
-
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <EditProfileLawyer
-
-              token={sessionStorage.getItem("jwtToken")}
-            />
-
-          </main>
-        </div>
-      )
-    }
-    if (this.state.clicked == "cases") {
-      return (
-
-
-
-        <div className={classes.root}>
-          <CssBaseline />
-       
-
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-          >
-
-          
-            
-            
-            <NavBar/>
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><Home /></ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              
-              <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                <ListItemIcon><ViewList /></ListItemIcon>
-                <ListItemText primary="View My Cases" />
-              </ListItem>
-             
-              <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                <ListItemIcon><ViewList /></ListItemIcon>
-                <ListItemText primary="View All Cases" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
-
-
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><Note /></ListItemIcon>
-                <ListItemText primary="Create SSC Company" />
-              </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><Note /></ListItemIcon>
-                <ListItemText primary="Create SPC Company" />
-              </ListItem>
-              <Divider />
-              <ListItem button key={"Edit Company"} onClick={this.handleEdit}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Edit Company" />
-              </ListItem>
-           
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-              
-              <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                <ListItemIcon><EditProfile /></ListItemIcon>
-                <ListItemText primary="Write Comment" />
-              </ListItem>
-            </List>
-
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <LawyerCases
-
-              token={sessionStorage.getItem("jwtToken")}
-            />
-
-          </main>
-        </div>
-      )
-    }
-
-
+          </List>
+        </Drawer>
+        <main className={classes.content} style={{ marginTop: 50 }}>
+          {this.handleLoading}
+          {this.handleContent(this.state)}
+          <div className={classes.toolbar} />
+        </main>
+      </div>
+    );
   }
 }
-
-
-
-
 ClippedDrawerLawyer.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(ClippedDrawerLawyer);

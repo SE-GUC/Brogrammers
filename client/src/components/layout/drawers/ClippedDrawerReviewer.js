@@ -18,373 +18,212 @@ import ViewReviewerCasesbyID from '../../pages/ViewReviewerCasesbyID'
 import EditProfileReviewer from '../../pages/EditProfileReviewer'
 import ReviewerComment from '../../pages/ReviewerComment'
 import InvestorCompanyRegSPC from '../../pages/InvestorCompanyRegSPC'
-import NavBar from '../../../components/layout/Navbar'
 import Home from '@material-ui/icons/Home'
 import EditProfile from '@material-ui/icons/BorderColor'
 import ViewList from '@material-ui/icons/ViewList'
+import LinearDeterminate from '../loading/LinearDeterminate';
+import Navbar from '../Navbar';
+
 const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
-    display: 'flex',
+    display: "flex"
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: theme.zIndex.drawer + 1
   },
   drawer: {
     width: drawerWidth,
-    flexShrink: 0,
+    flexShrink: 0
   },
   drawerPaper: {
-    width: drawerWidth,
+    width: drawerWidth
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3,
+    padding: theme.spacing.unit * 3
   },
-  toolbar: theme.mixins.toolbar,
+  toolbar: theme.mixins.toolbar
 });
 
-class ClippedDrawerReviewer extends React.Component{
-  
-constructor(props){
+class ClippedDrawerReviewer  extends React.Component {
+  constructor(props) {
     super(props);
-    this.state={
-        clicked:"r"
+    this.state = {
+      clicked: "i"
+    };
+  }
+  handleLoading = () => {
+    if (sessionStorage.getItem("loading")) return <LinearDeterminate />;
+  };
+  handleContent = state => {
+    switch (state.clicked) {
+      case "cases":
+        return (
+          <ReviewerCases
+            id={sessionStorage.getItem("id")}
+            token={sessionStorage.getItem("jwtToken")}
+          />
+        );
+      case "myCases":
+        return (
+          <ViewReviewerCasesbyID token={sessionStorage.getItem("jwtToken")} />
+        );
+      case "profile":
+        return <EditProfileReviewer token={sessionStorage.getItem("jwtToken")} />;
+      case "comment":
+        return <ReviewerComment/>;;
+      default:
+        return;
     }
-}
+  };
+  // handleHome = () => {
+  //   document.location.href = "/";
+  // }
+  // handleCases = () => {
+  //   this.setState({ clicked: "cases" })
+  // }
+  // handleCases2 = () => {
+  //   this.setState({ clicked: "myCases" })
+  // }
+  
+  
+  // handleComment = () => {
+  //   this.setState({ clicked: "comment" })
+  // }
+  // handleProfile = () => {
+  //   this.setState({ clicked: "profile" })
 
+  // }
 
   handleHome = () => {
     document.location.href = "/";
-  }
+  };
   handleCases = () => {
-    this.setState({ clicked: "cases" })
-  }
+    this.setState({ clicked: "cases" });
+  };
   handleCases2 = () => {
-    this.setState({ clicked: "myCases" })
-  }
-  
-  
+    this.setState({ clicked: "myCases" });
+  };
+
   handleComment = () => {
-    this.setState({ clicked: "comment" })
-  }
+    this.setState({ clicked: "comment" });
+  };
+
   handleProfile = () => {
-    this.setState({ clicked: "profile" })
+    this.setState({ clicked: "profile" });
+  };
 
-  }
-    render(){
-        const {classes}=this.props;
-        if(this.state.clicked=='r'){
-            return (
-                <div className={classes.root}>
-                  <CssBaseline />
-             
-                  <Drawer
-                    className={classes.drawer}
-                    variant="permanent"
-                    classes={{
-                      paper: classes.drawerPaper,
-                    }}
-                  >
-                   <NavBar/>
-                    <div className={classes.toolbar} />
-                   
-                    <List>
-                    <ListItem button key={"Home"} onClick={this.handleHome}>
-                          <ListItemIcon><Home /></ListItemIcon>
-                          <ListItemText primary="Home" />
-                        </ListItem>
-                        <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                          <ListItemIcon><ViewList /></ListItemIcon>
-                          <ListItemText primary="View My Cases" />
-                        </ListItem>
-                  
-                       
-                        <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                          <ListItemIcon><ViewList /></ListItemIcon>
-                          <ListItemText primary="View All Cases" />
-                        </ListItem>
-                    </List>
-                    <Divider />
-                    <List>
-                      
-                    <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                          <ListItemIcon><EditProfile /></ListItemIcon>
-                          <ListItemText primary="Edit Your Profile" />
-                        </ListItem>
-                       
-                        <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                                <ListItemIcon><EditProfile /></ListItemIcon>
-                                <ListItemText primary="Write Comment" />
-                                </ListItem>
-                        
-              
-                    </List>
-                   
-                    </Drawer>
-                      <main className={classes.content}>
-                        <div className={classes.toolbar} />
-                            <ReviewerCases token={sessionStorage.getItem("jwtToken")}/>
-                    
-                     
-                
-                  </main>
-                </div>
-            )}
-       
-        if(this.state.clicked=='myCases'){
-            return (
+  render() {
+    const { classes } = this.props;
 
-              <div className={classes.root}>
-              <CssBaseline />
-           
+    return (
+      <div className={classes.root}>
+        <CssBaseline />
+        <Drawer
+          className={classes.drawer}
+          variant="permanent"
+          classes={{
+            paper: classes.drawerPaper
+          }}
+        >
+        <Navbar />
+          <div className={classes.toolbar} />
 
-              <Drawer
-                    className={classes.drawer}
-                    variant="permanent"
-                    classes={{
-                      paper: classes.drawerPaper,
-                    }}
-                  >
-                   <NavBar/>
-                    <div className={classes.toolbar} />
-                   
-                    <List>
-                    <ListItem button key={"Home"} onClick={this.handleHome}>
-                          <ListItemIcon><Home /></ListItemIcon>
-                          <ListItemText primary="Home" />
-                        </ListItem>
-                        <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                          <ListItemIcon><ViewList /></ListItemIcon>
-                          <ListItemText primary="View My Cases" />
-                        </ListItem>
-                  
-                       
-                        <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                          <ListItemIcon><ViewList /></ListItemIcon>
-                          <ListItemText primary="View All Cases" />
-                        </ListItem>
-                    </List>
-                    <Divider />
-                    <List>
-                      
-                    <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                          <ListItemIcon><EditProfile /></ListItemIcon>
-                          <ListItemText primary="Edit Your Profile" />
-                        </ListItem>
-                       
-                        <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                                <ListItemIcon><EditProfile /></ListItemIcon>
-                                <ListItemText primary="Write Comment" />
-                                </ListItem>
-                        
-              
-                    </List>
-                   
-                    </Drawer>
-                  <main className={classes.content}>
-                    <div className={classes.toolbar} />
-                        
-                    <ViewReviewerCasesbyID token={sessionStorage.getItem("jwtToken") } id ={sessionStorage.getItem("id")}/>
-                  </main>
-                </div>
+          <List>
+            <ListItem button key={"Home"} onClick={this.handleHome}>
+              <ListItemIcon>
+                <Home />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en" ? "Home" : "صفحتي"
+                }
+              />
+            </ListItem>
             
-            )}
+
+            <ListItem
+              button
+              key={"View All Available cases"}
+              onClick={this.handleCases}
+            >
+              <ListItemIcon>
+                <ViewList />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "View All Cases"
+                    : "اعرض كل الشركات"
+                }
+              />
+            </ListItem>
+            <ListItem
+              button
+              key={"View My Companies"}
+              onClick={this.handleCases2}
+            >
+              <ListItemIcon>
+                <ViewList />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "View My Companies"
+                    : "اظهر شركاتي"
+                }
+              />
+            </ListItem>
+          </List>
+          
+          <List>
            
-
-                if (this.state.clicked == "comment"){
-                    return(
-                       
-                <div className={classes.root}>
-                <CssBaseline />
-         
-                <Drawer
-                    className={classes.drawer}
-                    variant="permanent"
-                    classes={{
-                      paper: classes.drawerPaper,
-                    }}
-                  >
-                   <NavBar/>
-                    <div className={classes.toolbar} />
-                   
-                    <List>
-                    <ListItem button key={"Home"} onClick={this.handleHome}>
-                          <ListItemIcon><Home /></ListItemIcon>
-                          <ListItemText primary="Home" />
-                        </ListItem>
-                        <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                          <ListItemIcon><ViewList /></ListItemIcon>
-                          <ListItemText primary="View My Cases" />
-                        </ListItem>
-                  
-                       
-                        <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                          <ListItemIcon><ViewList /></ListItemIcon>
-                          <ListItemText primary="View All Cases" />
-                        </ListItem>
-                    </List>
-                    <Divider />
-                    <List>
-                      
-                    <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                          <ListItemIcon><EditProfile /></ListItemIcon>
-                          <ListItemText primary="Edit Your Profile" />
-                        </ListItem>
-                       
-                        <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                                <ListItemIcon><EditProfile /></ListItemIcon>
-                                <ListItemText primary="Write Comment" />
-                                </ListItem>
-                        
-              
-                    </List>
-                   
-                    </Drawer>
-                            <main className={classes.content}>
-                              <div className={classes.toolbar} />
-                              <ReviewerComment
-                     
-                        token={sessionStorage.getItem("jwtToken")}
-                      />
-                          
-                            </main>
-                          </div>
-                    )}
-
-                   
-                        if(this.state.clicked == "profile"){return(
-
-                            
-                         
-                <div className={classes.root}>
-                <CssBaseline />
-             
-                <Drawer
-                    className={classes.drawer}
-                    variant="permanent"
-                    classes={{
-                      paper: classes.drawerPaper,
-                    }}
-                  >
-                   <NavBar/>
-                    <div className={classes.toolbar} />
-                   
-                    <List>
-                    <ListItem button key={"Home"} onClick={this.handleHome}>
-                          <ListItemIcon><Home /></ListItemIcon>
-                          <ListItemText primary="Home" />
-                        </ListItem>
-                        <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                          <ListItemIcon><ViewList /></ListItemIcon>
-                          <ListItemText primary="View My Cases" />
-                        </ListItem>
-                  
-                       
-                        <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                          <ListItemIcon><ViewList /></ListItemIcon>
-                          <ListItemText primary="View All Cases" />
-                        </ListItem>
-                    </List>
-                    <Divider />
-                    <List>
-                      
-                    <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                          <ListItemIcon><EditProfile /></ListItemIcon>
-                          <ListItemText primary="Edit Your Profile" />
-                        </ListItem>
-                       
-                        <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                                <ListItemIcon><EditProfile /></ListItemIcon>
-                                <ListItemText primary="Write Comment" />
-                                </ListItem>
-                        
-              
-                    </List>
-                   
-                    </Drawer>
-                                <main className={classes.content}>
-                                  <div className={classes.toolbar} />
-                                  <EditProfileReviewer
-                            
-                            token={sessionStorage.getItem("jwtToken")}
-                          />
-                              
-                                </main>
-                              </div>
-
-                        )}
-
-                        if(this.state.clicked == "cases"){return(
-
-                            
-                           
-                <div className={classes.root}>
-                <CssBaseline />
-               
-
-                <Drawer
-                    className={classes.drawer}
-                    variant="permanent"
-                    classes={{
-                      paper: classes.drawerPaper,
-                    }}
-                  >
-                   <NavBar/>
-                    <div className={classes.toolbar} />
-                   
-                    <List>
-                    <ListItem button key={"Home"} onClick={this.handleHome}>
-                          <ListItemIcon><Home /></ListItemIcon>
-                          <ListItemText primary="Home" />
-                        </ListItem>
-                        <ListItem button key={"View My Cases"} onClick={this.handleCases2}>
-                          <ListItemIcon><ViewList /></ListItemIcon>
-                          <ListItemText primary="View My Cases" />
-                        </ListItem>
-                  
-                       
-                        <ListItem button key={"View All Cases"} onClick={this.handleCases}>
-                          <ListItemIcon><ViewList /></ListItemIcon>
-                          <ListItemText primary="View All Cases" />
-                        </ListItem>
-                    </List>
-                    <Divider />
-                    <List>
-                      
-                    <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                          <ListItemIcon><EditProfile /></ListItemIcon>
-                          <ListItemText primary="Edit Your Profile" />
-                        </ListItem>
-                       
-                        <ListItem button key={"Write Comment"} onClick={this.handleComment}>
-                                <ListItemIcon><EditProfile /></ListItemIcon>
-                                <ListItemText primary="Write Comment" />
-                                </ListItem>
-                        
-              
-                    </List>
-                   
-                    </Drawer>
-                                <main className={classes.content}>
-                                  <div className={classes.toolbar} />
-                                  <ReviewerCases
-                            
-                            token={sessionStorage.getItem("jwtToken")}
-                          />
-                              
-                                </main>
-                              </div>
-
-                        )}
-                
-                
-            }
-    }
-  
-
-
+            <Divider />
+            <ListItem
+              button
+              key={"Edit Your Profile"}
+              onClick={this.handleProfile}
+            >
+              <ListItemIcon>
+                <EditProfile />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "Edit Your Profile"
+                    : "تغير البيانات"
+                }
+              />
+            </ListItem>
+            <ListItem
+              button
+              key={"Comment on my companies"}
+              onClick={this.handleComment}
+            >
+              <ListItemIcon>
+                <EditProfile />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "Comment on Company"
+                    : " علق علي شركاتي"
+                }
+              />
+            </ListItem>
+          </List>
+        </Drawer>
+        <main className={classes.content} style={{ marginTop: 50 }}>
+          {this.handleLoading}
+          {this.handleContent(this.state)}
+          <div className={classes.toolbar} />
+        </main>
+      </div>
+    );
+  }
+}
 
 ClippedDrawerReviewer.propTypes = {
   classes: PropTypes.object.isRequired,

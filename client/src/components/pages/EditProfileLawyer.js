@@ -109,17 +109,17 @@ class EditProfileLawyer extends Component {
       <main className={classes.main}>
         <Paper className={classes.paper}>
         <UpdateIcon/>
-          <h2>Edit Your Profile</h2>
-          <NotRequired name={"firstName"} field={"First Name"} type="text" callBack={this.onChange}/>
-          <NotRequired name={"middleName"} field={"Middle Name"} type="text" callBack={this.onChange} />
-          <NotRequired name={"lastName"} field={"Last Name"} type="text" callBack={this.onChange} />
-          <NotRequired name={"email"} field={"Email"} type="email" callBack={this.onChange}/>
-          <NotRequired name={"password"} field={"Password"} type="password" callBack={this.onChange}/>
-          <NotRequired name={"mobileNumber"} field={"Telephone"} type="text" callBack={this.onChange}/>
-          <NotRequired name={"socialSecurityNumber"} field={"Social Security Number"} type="text" callBack={this.onChange}/>
-          <NotRequired name={"yearsOfExperience"} field={"Years Of Experience "} type="number" callBack={this.onChange}/>
-          <NotRequired name={"gensalaryder"} field={"Salary"} type="number" callBack={this.onChange}/>
-          <Date name={"birthDate"} field={"Birth Date"} callBack={this.handleDate}/>
+          <h2>{sessionStorage.getItem('lang') === 'en' ? 'Edit your Profile' : 'تغير بيانات حسابك'}</h2>
+          <NotRequired name={"firstName"} field={sessionStorage.getItem('lang') === 'en' ? 'First Name' : 'الاسم الاول'} type="text" callBack={this.onChange}/>
+          <NotRequired name={"middleName"} field={sessionStorage.getItem('lang') === 'en' ? 'Middle Name' : 'اسم الاب'} type="text" callBack={this.onChange} />
+          <NotRequired name={"lastName"} field={sessionStorage.getItem('lang') === 'en' ? 'Last Name' : 'اسم العائلة'} type="text" callBack={this.onChange} />
+          <NotRequired name={"email"} field={sessionStorage.getItem('lang') === 'en' ? 'Email' : 'البريد الاكتروني'} type="email" callBack={this.onChange}/>
+          <NotRequired name={"password"} field={sessionStorage.getItem('lang') === 'en' ? 'Password' : 'كلمة السر'} type="password" callBack={this.onChange}/>
+          <NotRequired name={"mobileNumber"} field={sessionStorage.getItem('lang') === 'en' ? 'Mobile Number' : 'رقم الهاتف'} type="text" callBack={this.onChange}/>
+          <NotRequired name={"socialSecurityNumber"} field={sessionStorage.getItem('lang') === 'en' ? 'Social Security Number' : 'الرقم القومي'} type="text" callBack={this.onChange}/>
+          <NotRequired name={"yearsOfExperience"} field={sessionStorage.getItem('lang') === 'en' ? 'Years of Experience' : 'عدد سنين الخبرة'} type="number" callBack={this.onChange}/>
+          <NotRequired name={"gensalaryder"} field={sessionStorage.getItem('lang') === 'en' ? 'ٍSalary' : 'الراتب'} type="number" callBack={this.onChange}/>
+          <Date name={"birthDate"} field={sessionStorage.getItem('lang') === 'en' ? 'Birth Date' : 'تاريخ الميلاد'} callBack={this.handleDate}/>
           <Gender name={"gender"} callBack={this.onChange} />
           <SaveChangesButton onClick={this.handleSubmission}/>
         </Paper>

@@ -5,9 +5,11 @@ import Form from "react-jsonschema-form";
 class postForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { jsonFile: null, formData: null,uiSchema:{
-      
-    } };
+    this.state = {
+      jsonFile: null,
+      formData: null,
+      uiSchema: {}
+    };
   }
   handleFetch = state => {
     if (!state.jsonFile) {
@@ -17,7 +19,7 @@ class postForm extends React.Component {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "x-access-token": this.props.token
+            "x-access-token": sessionStorage.getItem("jwtToken")
           }
         }
       )
@@ -31,21 +33,38 @@ class postForm extends React.Component {
   };
 
   onSubmit = () => {
-
-    const bod=JSON.stringify({...this.state.formData,LegalCompanyForm:this.props.type});
+    const bod = JSON.stringify({
+      ...this.state.formData,
+      legalCompanyForm: this.props.type
+    });
+    if(sessionStorage.getItem('type') === 'i')
     fetch("http://localhost:3000/api/investors/create/company", {
       method: "POST",
       body: bod,
       headers: {
         "Content-Type": "application/json",
-        "x-access-token": this.props.token
+        "x-access-token":  sessionStorage.getItem("jwtToken")
       }
     }).then(response => {
       response.json().then(data => {
         console.log("Successful" + data);
       });
-    });
-  };
+    })
+  if (sessionStorage.getItem('type') === 'l')
+    fetch("http://localhost:3000/api/lawyer/create/company", {
+      method: "POST",
+      body: bod,
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": sessionStorage.getItem("jwtToken")
+      }
+    }).then(response => {
+      response.json().then(data => {
+        console.log("Successful" + data);
+      });
+    })
+
+  }
   handleInputs = e => {
     let value = e.formData.value;
     let name = e.formData.name;
@@ -65,9 +84,6 @@ class postForm extends React.Component {
   };
   handleFile = state => {
     function validate(formData, errors) {
-      if (formData.nameInArabic === "ss") {
-        errors.nameInArabic.addError("Passwords don't match");
-      }
       return errors;
     }
 

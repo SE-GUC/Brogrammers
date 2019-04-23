@@ -608,10 +608,7 @@ router.post("/pdf/:id", async (req, res) => {
       stat = decoded.id;
     });
     const id = req.params.id;
-    const investor = await Investor.findById(stat);
-    if (!investor) {
-      return res.status(404).send({ error: "Investor does not exist" });
-    }
+
     
 
  
@@ -1477,7 +1474,7 @@ router.post("/create/company", async (req, res) => {
   
     const company = await Company.create(req.body);
 console.log(Company.discriminators)
-    res.json({ msg: req.body.LegalCompanyForm+" Company was created successfully", data: company });
+    res.json({ msg: req.body.legalCompanyForm+" Company was created successfully", data: company });
   } catch (error) {
     console.log(error);
   }
