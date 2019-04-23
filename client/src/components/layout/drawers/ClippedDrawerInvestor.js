@@ -181,6 +181,7 @@ handleLoading=()=>{
               </ListItemIcon>
               <ListItemText primary={sessionStorage.getItem('lang') === 'en' ? 'View My Requests' : 'اظهر طلباتي'} />
             </ListItem>
+            <Divider/>
             <ListItem
               button
               key={"Create SSC Companies"}

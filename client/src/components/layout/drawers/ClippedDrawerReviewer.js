@@ -142,22 +142,7 @@ class ClippedDrawerReviewer  extends React.Component {
                 }
               />
             </ListItem>
-            <ListItem
-              button
-              key={"Edit Your Profile"}
-              onClick={this.handleProfile}
-            >
-              <ListItemIcon>
-                <EditProfile />
-              </ListItemIcon>
-              <ListItemText
-                primary={
-                  sessionStorage.getItem("lang") === "en"
-                    ? "Edit Your Profile"
-                    : "تغير البيانات"
-                }
-              />
-            </ListItem>
+            
 
             <ListItem
               button
@@ -175,9 +160,6 @@ class ClippedDrawerReviewer  extends React.Component {
                 }
               />
             </ListItem>
-          </List>
-          <Divider />
-          <List>
             <ListItem
               button
               key={"View My Companies"}
@@ -191,6 +173,27 @@ class ClippedDrawerReviewer  extends React.Component {
                   sessionStorage.getItem("lang") === "en"
                     ? "View My Companies"
                     : "اظهر شركاتي"
+                }
+              />
+            </ListItem>
+          </List>
+          
+          <List>
+           
+            <Divider />
+            <ListItem
+              button
+              key={"Edit Your Profile"}
+              onClick={this.handleProfile}
+            >
+              <ListItemIcon>
+                <EditProfile />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "Edit Your Profile"
+                    : "تغير البيانات"
                 }
               />
             </ListItem>
