@@ -15,29 +15,22 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import EditProfileInvestor from "../../pages/EditProfileInvestor";
 import InvestorRequests from "../../pages/InvestorRequests";
 import ViewCompanies from "../../pages/ViewCompanies";
-import InvestorCompanyRegSPC from "../../pages/InvestorCompanyRegSPC";
-import InvestorCompanyRegSSC from "../../pages/InvestorCompanyRegSSC";
 import Stepper from "../../steppers/stepper";
 import { Paper } from "@material-ui/core";
-import NavBar from "../Navbar";
-import ViewList from "@material-ui/icons/ViewList";
-import CreateCompany from "@material-ui/icons/CreateNewFolder";
-import EditProfile from "@material-ui/icons/BorderColor";
-import Identity from "@material-ui/icons/Person";
-import Home from "@material-ui/icons/Home";
-import Upload from "@material-ui/icons/CloudUpload";
-import Note from "@material-ui/icons/NoteAdd";
-import Add from "@material-ui/icons/PersonAdd";
 import LinearDeterminate from "../loading/LinearDeterminate";
-import zIndex from "@material-ui/core/styles/zIndex";
+import InvestorCompanyRegSSC from "../../pages/InvestorCompanyRegSSC";
+import InvestorCompanyRegSPC from "../../pages/InvestorCompanyRegSPC";
+import stepper from "../../steppers/stepper";
 
 const drawerWidth = 240;
+
 const styles = theme => ({
   root: {
-    display: "flex",
-    zIndex:-1
+    display: "flex"
   },
-  
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1
+  },
   drawer: {
     width: drawerWidth,
     flexShrink: 0
@@ -59,17 +52,21 @@ class ClippedDrawerInvestor extends React.Component {
       clicked: "i"
     };
   }
-  handleLoading = () => {
-    if (sessionStorage.getItem("loading")) return <LinearDeterminate />;
-  };
+handleLoading=()=>{
+  if(sessionStorage.getItem("loading"))
+  return <LinearDeterminate/>
+}
   handleContent = state => {
     switch (state.clicked) {
       case "requests":
         return (
+          
+
           <InvestorRequests
             id={sessionStorage.getItem("id")}
             token={sessionStorage.getItem("jwtToken")}
           />
+      
         );
       case "companies":
         return <ViewCompanies token={sessionStorage.getItem("jwtToken")} />;
@@ -78,11 +75,15 @@ class ClippedDrawerInvestor extends React.Component {
           <EditProfileInvestor token={sessionStorage.getItem("jwtToken")} />
         );
       case "createssc":
-        return <InvestorCompanyRegSSC />;
-      case "createspc":
-        return <InvestorCompanyRegSPC />;
-      case "created":
-        return <Stepper />;
+        return (
+         <InvestorCompanyRegSSC/>
+        );
+        case "createspc":
+        return(
+          <InvestorCompanyRegSPC/>
+        );
+        case "created":
+       return  <Stepper/>
       default:
         return;
     }
@@ -100,12 +101,12 @@ class ClippedDrawerInvestor extends React.Component {
   };
 
   handleCreatespc = () => {
-    this.setState({ clicked: "createspc" });
-  };
+    this.setState({ clicked: "createspc"})
+  }
 
   handleCreated = () => {
-    this.setState({ clicked: "created" });
-  };
+    this.setState({ clicked: "created"})
+  }
 
   handleProfile = () => {
     this.setState({ clicked: "profile" });
@@ -120,6 +121,15 @@ class ClippedDrawerInvestor extends React.Component {
     return (
       <div className={classes.root}>
         <CssBaseline />
+        <AppBar position="fixed" className={classes.appBar}>
+          <Toolbar>
+            <Typography variant="h6" color="inherit" noWrap>
+              <p>
+              {sessionStorage.getItem('lang') === 'en' ? 'Investor Profile' : 'حساب المستثمر'}
+              </p>
+            </Typography>
+          </Toolbar>
+        </AppBar>
 
         <Drawer
           className={classes.drawer}
@@ -128,19 +138,14 @@ class ClippedDrawerInvestor extends React.Component {
             paper: classes.drawerPaper
           }}
         >
-          <NavBar />
           <div className={classes.toolbar} />
 
           <List>
             <ListItem button key={"Home"} onClick={this.handleHome}>
               <ListItemIcon>
-                <Home />
+                <InboxIcon />
               </ListItemIcon>
-              <ListItemText
-                primary={
-                  sessionStorage.getItem("lang") === "en" ? "Home" : "صفحتي"
-                }
-              />
+              <ListItemText primary= {sessionStorage.getItem('lang') === 'en' ? 'Home' : 'صفحتي'}/>
             </ListItem>
             <ListItem
               button
@@ -148,15 +153,9 @@ class ClippedDrawerInvestor extends React.Component {
               onClick={this.handleProfile}
             >
               <ListItemIcon>
-                <EditProfile />
+                <InboxIcon />
               </ListItemIcon>
-              <ListItemText
-                primary={
-                  sessionStorage.getItem("lang") === "en"
-                    ? "Edit Your Profile"
-                    : "تغير البينات"
-                }
-              />
+              <ListItemText primary={sessionStorage.getItem('lang') === 'en' ? 'Edit Your Profile' : 'تغير البينات'} />
             </ListItem>
           </List>
           <Divider />
@@ -167,15 +166,9 @@ class ClippedDrawerInvestor extends React.Component {
               onClick={this.handleCases2}
             >
               <ListItemIcon>
-                <ViewList />
+                <InboxIcon />
               </ListItemIcon>
-              <ListItemText
-                primary={
-                  sessionStorage.getItem("lang") === "en"
-                    ? "View My Companies"
-                    : "اظهر شركاتي"
-                }
-              />
+              <ListItemText primary={sessionStorage.getItem('lang') === 'en' ? 'View My Companies' : 'اظهر شركاتي'} />
             </ListItem>
             <ListItem
               button
@@ -183,32 +176,19 @@ class ClippedDrawerInvestor extends React.Component {
               onClick={this.handleRequests}
             >
               <ListItemIcon>
-                <ViewList />
+                <InboxIcon />
               </ListItemIcon>
-              <ListItemText
-                primary={
-                  sessionStorage.getItem("lang") === "en"
-                    ? "View My Requests"
-                    : "اظهر طلباتي"
-                }
-              />
+              <ListItemText primary={sessionStorage.getItem('lang') === 'en' ? 'View My Requests' : 'اظهر طلباتي'} />
             </ListItem>
-            <Divider/>
             <ListItem
               button
               key={"Create SSC Companies"}
               onClick={this.handleCreatessc}
             >
               <ListItemIcon>
-                <Note />
+                <InboxIcon />
               </ListItemIcon>
-              <ListItemText
-                primary={
-                  sessionStorage.getItem("lang") === "en"
-                    ? "Create SSC Companies"
-                    : "سجل شركتي ال SSC"
-                }
-              />
+              <ListItemText primary={sessionStorage.getItem('lang') === 'en' ? 'Create SSC Companies' : 'سجل شركتي ال SSC'} />
             </ListItem>
             <ListItem
               button
@@ -216,15 +196,10 @@ class ClippedDrawerInvestor extends React.Component {
               onClick={this.handleCreatespc}
             >
               <ListItemIcon>
-                <Note />
+                <InboxIcon />
+                
               </ListItemIcon>
-              <ListItemText
-                primary={
-                  sessionStorage.getItem("lang") === "en"
-                    ? "Create SPC Companies"
-                    : "سجل شركتي ال SPC"
-                }
-              />
+              <ListItemText primary={sessionStorage.getItem('lang') === 'en' ? 'Create SPC Companies' : 'سجل شركتي ال SPC'} />
             </ListItem>
             <ListItem
               button
@@ -232,20 +207,15 @@ class ClippedDrawerInvestor extends React.Component {
               onClick={this.handleCreated}
             >
               <ListItemIcon>
-                <Note />
+                <InboxIcon />
+                
               </ListItemIcon>
-              <ListItemText
-                primary={
-                  sessionStorage.getItem("lang") === "en"
-                    ? "Create Other Companies"
-                    : "سجل شركات اخرة"
-                }
-              />
+              <ListItemText primary={sessionStorage.getItem('lang') === 'en' ? 'Create Dynamic Companies' : 'سجل شركتي ال Dynamic'} />
             </ListItem>
           </List>
         </Drawer>
-        <main className={classes.content} style={{ marginTop: 50 }}>
-          {this.handleLoading}
+        <main className={classes.content}>
+       {this.handleLoading}
           {this.handleContent(this.state)}
           <div className={classes.toolbar} />
         </main>

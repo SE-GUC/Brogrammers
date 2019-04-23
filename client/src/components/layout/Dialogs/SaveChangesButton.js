@@ -33,7 +33,7 @@ class SaveChangesButton extends React.Component {
     return (
       <div>
         <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-          Save Changes
+         {sessionStorage.getItem('lang') === 'en' ? 'Save Changes' : 'حفظ التغيرات'}
         </Button>
         <Dialog
           open={this.state.open}
@@ -44,20 +44,19 @@ class SaveChangesButton extends React.Component {
           aria-describedby="alert-dialog-slide-description"
         >
           <DialogTitle id="alert-dialog-slide-title">
-            {"Submit your Form?"}
+            {sessionStorage.getItem('lang') === 'en' ? 'Submit your form?' : 'تسليم البيانات'}
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
-              Are you sure you want to proceed?
-
+              {sessionStorage.getItem('lang') === 'en' ? 'Are you sure you want to proceed' : 'هل تريد المتابعة؟'}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
-              Disagree
+            {sessionStorage.getItem('lang') === 'en' ? 'Disagree' : 'إلغاء'}
             </Button>
             <Button onClick={this.handleClose2} color="primary">
-              Agree
+              {sessionStorage.getItem('lang') === 'en' ? 'Agree' : 'متابعه'}
             </Button>
           </DialogActions>
         </Dialog>

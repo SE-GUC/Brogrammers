@@ -6,6 +6,9 @@ const ManagerSchema = new Schema({
     type: String,
     required: true
   },
+  creationDate:{
+    Date
+  },
   type: {
     type: String,
     required: true

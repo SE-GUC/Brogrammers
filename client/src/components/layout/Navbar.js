@@ -35,7 +35,7 @@ const styles = theme => ({
     width: '100%',
     top: 0,
     position: 'fixed',
-    zIndex: 2
+    zIndex: 12
   },
   grow: {
     flexGrow: 1

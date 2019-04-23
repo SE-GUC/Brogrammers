@@ -87,7 +87,12 @@ class LawyerCompanyReg extends React.Component {
                 }
             }).then(response => {
                 response.json().then(data => {
-                    console.log('Successful' + data)
+                    if (data.error) {
+                        alert(data.error);
+                    }
+                    else {
+                        console.log('Successful' + data)
+                    }
                 })
             })
     }
@@ -140,74 +145,76 @@ class LawyerCompanyReg extends React.Component {
                         </Grid>
                         <Grid container direction='column' alignItems='center'>
                             <Typography variant='h6' component='h3'>
-                                Fill in your Company Form!
-              </Typography>
+                                <p>
+                                    {sessionStorage.getItem('lang') === 'en' ? 'Fill in your Company Form!' : 'املئ بينات شركتك'}
+                                </p>
+                            </Typography>
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <Required field={'Law'} type={'text'} callBack={this.handleInput} name={'regulationLaw'} />
+                            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Law' : ' ‫القانون‬‫ المنظم'} type={'text'} callBack={this.handleInput} name={'regulationLaw'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <Required field={'Legal Company Form'} type={'text'} callBack={this.handleInput} name={'legalCompanyForm'} />
+                            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Legal Company Form' : '‫شكل‬ ‫الشركة ‫القانوني‬ '} type={'text'} callBack={this.handleInput} name={'legalCompanyForm'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <Required field={'Name In Arabic'} type={'text'} callBack={this.handleInput} name={'nameInArabic'} />
+                            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Name In Arabic' : ' ‫اسم‬‫ المنشأة‬'} type={'text'} callBack={this.handleInput} name={'nameInArabic'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <NotRequired field={'Name In English'} type={'text'} callBack={this.handleInput} name={'nameInEnglish'} />
+                            <NotRequired field={sessionStorage.getItem('lang') === 'en' ? 'Name In English' : 'اسم‬ ‫المنشأه‬‫بالانجلیزیة‬ (في‬‬ ‫حالة‫ وجوده‬‫)'} type={'text'} callBack={this.handleInput} name={'nameInEnglish'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <Required field={'Governemt HQ'} type={'text'} callBack={this.handleInput} name={'governerateHQ'} />
+                            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Government HQ' : '‫المركز ‫الرئیسي‬ ‫(المحافظة)‬‬'} type={'text'} callBack={this.handleInput} name={'governerateHQ'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <Required field={'City HQ'} type={'text'} callBack={this.handleInput} name={'cityHQ'} />
+                            <Required field={sessionStorage.getItem('lang') === 'en' ? 'City HQ' : 'المركز ‫الرئیسي‬ ‫‫(المدینة)'} type={'text'} callBack={this.handleInput} name={'cityHQ'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <Required field={'Address HQ'} type={'text'} callBack={this.handleInput} name={'addressHQ'} />
+                            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Address HQ' : ' ‫المركز‬ ‫الرئیسي ‫(العنوان)'} type={'text'} callBack={this.handleInput} name={'addressHQ'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <Required field={'Telephone HQ'} type={'text'} callBack={this.handleInput} name={'telephoneHQ'} />
+                            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Telephone HQ' : '‫التلیفون‬'} type={'text'} callBack={this.handleInput} name={'telephoneHQ'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <Required field={'Fax HQ'} type={'text'} callBack={this.handleInput} name={'faxHQ'} />
+                            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Fax HQ' : '‫الفاكس‬'} type={'text'} callBack={this.handleInput} name={'faxHQ'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <Required field={'Capital Currency'} type={'text'} callBack={this.handleInput} name={'capitalCurrency'} />
+                            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Capital Currency' : '‫عملة‬ ‫رأس‬ ‫المال‬'} type={'text'} callBack={this.handleInput} name={'capitalCurrency'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <Required field={'Capital'} type={'number'} callBack={this.handleInput} name={'capital'} />
+                            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Capital' : 'رأس‬ ‫المال'} type={'number'} callBack={this.handleInput} name={'capital'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <Required field={'Investor Name'} type={'text'} callBack={this.handleInput} name={'investorName'} />
+                            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Investor Name' : '‫‫الاسم‬ المستثمر‬'} type={'text'} callBack={this.handleInput} name={'investorName'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <Required field={'Investor Type'} type={'text'} callBack={this.handleInput} name={'investorType'} />
+                            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Investor Type' : '‫نوع‬ المستثمر‬'} type={'text'} callBack={this.handleInput} name={'investorType'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <Gender callBack={this.handleInput} name='investorSex' />
+                            <Gender field={sessionStorage.getItem('lang') === 'en' ? 'Investor Sex' : '‫‫جنس‬ المستثمر‬'} callBack={this.handleInput} name={'investorSex'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <Required field={'Investor Nationality'} type={'text'} callBack={this.handleInput} name={'investorNationality'} />
+                            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Investor Nationality' : 'جنسیة‬ ‫المستثمر‬'} type={'text'} callBack={this.handleInput} name={'investorNationality'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <Required field={'Investor Identification Type'} type={'text'} callBack={this.handleInput} name={'investorIdentificationType'} />
+                            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Investor Identification Type' : '‫‫نوع‬ ‫اثبات‬ شخصیة‬ المستثمر‬‫'} type={'text'} callBack={this.handleInput} name={'investorIdentificationType'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <Required field={'Investor Identification Number'} type={'number'} callBack={this.handleInput} name={'investorIdentificationNumber'} />
+                            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Investor Identification Number' : '‫‫رقم‬ ‫اثبات‬ شخصیة‬ المستثمر‫‬'} type={'number'} callBack={this.handleInput} name={'investorIdentificationNumber'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
                             <Date callBack={this.handleDate} name={'investorBD'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <Required field={'Investor Address'} type={'text'} callBack={this.handleInput} name={'investorAddress'} />
+                            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Investor Address' : '‫‫تلیفون‬ المستثمر‬'} type={'text'} callBack={this.handleInput} name={'investorAddress'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <Required field={'Investor Telephone'} type={'number'} callBack={this.handleInput} name={'investorTelephone'} />
+                            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Investor Telephone' : '‫‫فاكس‬ المستثمر‬'} type={'number'} callBack={this.handleInput} name={'investorTelephone'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <Required field={'Investor Fax'} type={'number'} callBack={this.handleInput} name={'investorFax'} />
+                            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Investor Fax' : ' ‫برید الكترونى‬ ‬‫المستثمر‬'} type={'number'} callBack={this.handleInput} name={'investorFax'} />
                         </Grid>
                         <Grid container direction='column' alignItems='center' >
-                            <Required field={'Investor Email'} type={'text'} callBack={this.handleInput} name={'investorEmail'} />
+                            <Required field={sessionStorage.getItem('lang') === 'en' ? 'Investor Email' : '‫‫‫عنوان‬ الإقامة‬ المستثمر‬'} type={'text'} callBack={this.handleInput} name={'investorEmail'} />
                         </Grid>
                         <Grid>
                             <Manager callBack={this.handleOnClick} />

@@ -1,30 +1,30 @@
-import React, { Component } from 'react'
-import NotRequired from '../layout/inputs/NotRequired'
-import Gender from '../layout/inputs/Gender'
-import { withStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
-import { Icon, Button } from '@material-ui/core'
-import SaveChangesButton from '../layout/Dialogs/SaveChangesButton'
-import Date from '../layout/inputs/Date'
-import {ReactComponent as UpdateIcon} from '../Icons/UpdateIcon.svg'
+import React, { Component } from "react";
+import NotRequired from "../layout/inputs/NotRequired";
+import Gender from "../layout/inputs/Gender";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import { Icon, Button } from "@material-ui/core";
+import SaveChangesButton from "../layout/Dialogs/SaveChangesButton";
+import Date from "../layout/inputs/Date";
+import { ReactComponent as UpdateIcon } from "../Icons/UpdateIcon.svg";
 
 const styles = theme => ({
   main: {
-    width: 'auto',
-    display: 'block', // Fix IE 11 issue.
+    width: "auto",
+    display: "block", // Fix IE 11 issue.
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
       width: 700,
-      marginLeft: 'auto',
-      marginRight: 'auto'
+      marginLeft: "auto",
+      marginRight: "auto"
     }
   },
   paper: {
     marginTop: theme.spacing.unit * 8,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
       .spacing.unit * 3}px`
   },
@@ -33,12 +33,12 @@ const styles = theme => ({
     backgroundColor: theme.palette.primary.main
   },
   cluster: {
-    display: 'flex'
+    display: "flex"
   }
-})
+});
 class EditProfileReviewer extends Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       reviewer: {
         name: null,
@@ -52,15 +52,19 @@ class EditProfileReviewer extends Component {
         gender: null,
         birth: null
       }
-    }
-    this.handleSubmission = this.handleSubmission.bind(this)
-    this.handleDate = this.handleDate.bind(this)
-    this.onChange = this.onChange.bind(this)
+    };
+    this.handleSubmission = this.handleSubmission.bind(this);
+    this.handleDate = this.handleDate.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
   clean = obj => {
     for (var propName in obj) {
-      if (obj[propName] === "" || obj[propName] === undefined || obj[propName] === null) {
+      if (
+        obj[propName] === "" ||
+        obj[propName] === undefined ||
+        obj[propName] === null
+      ) {
         delete obj[propName];
       }
     }
@@ -74,14 +78,13 @@ class EditProfileReviewer extends Component {
       method: "PUT",
       body: JSON.stringify(updatedData),
       headers: {
-        'Content-Type': 'application/json',
-        'x-access-token': this.props.token
+        "Content-Type": "application/json",
+        "x-access-token": this.props.token
       }
     }).then(response => {
-      console.log('Information updated successfully')
-    })
+      console.log("Information updated successfully");
+    });
   }
-
 
   onChange(e) {
     let value = e.target.value;
@@ -93,44 +96,115 @@ class EditProfileReviewer extends Component {
             ...prevState.lawyer,
             [name]: value
           }
-        }
+        };
       },
       () => console.log(value)
-    )
+    );
   }
 
   handleDate(v) {
     console.log(v);
-    this.setState( prevState => ({ lawyer : 
-         {...prevState.lawyer, birth: v
-         }
-    }))
+    this.setState(prevState => ({ lawyer: { ...prevState.lawyer, birth: v } }));
   }
 
-  render () {
-    const { classes } = this.props
+  render() {
+    const { classes } = this.props;
     return (
       <main className={classes.main}>
         <Paper className={classes.paper}>
-        <UpdateIcon />
-          <h2>Edit Your Profile</h2>
-          <NotRequired name={"name"} field={"Name"} type="text" callBack={this.onChange} />
-          <NotRequired name={"email"} field={"Email"} type="email" callBack={this.onChange}/>
-          <NotRequired name={"password"} field={"Password"} type="password" callBack={this.onChange}/>
-          <NotRequired name={"phone"} field={"Telephone"} type="text" callBack={this.onChange}/>
-          <NotRequired name={"address"} field={"Address"} type="text" callBack={this.onChange}/>
-          <NotRequired name={"ssn"} field={"Social Security Number"} type="text" callBack={this.onChange}/>
-          <NotRequired name={"yearsOfExperience"} field={"Years Of Experience "} type="number" callBack={this.onChange}/>
-          <NotRequired name={"age"} field={"Age"} type="number" callBack={this.onChange}/>
+          <UpdateIcon />
+          <h2>
+            {sessionStorage.getItem("lang") === "en"
+              ? "Edit Your Profile"
+              : "تغير بيانات حسابك"}
+          </h2>
+          <NotRequired
+            name={"name"}
+            field={
+              sessionStorage.getItem("lang") === "en" ? "Name" : "الاسم الكامل"
+            }
+            type="text"
+            callBack={this.onChange}
+          />
+          <NotRequired
+            name={"email"}
+            field={
+              sessionStorage.getItem("lang") === "en"
+                ? "Email"
+                : "البريد الاكتروني"
+            }
+            type="email"
+            callBack={this.onChange}
+          />
+          <NotRequired
+            name={"password"}
+            field={
+              sessionStorage.getItem("lang") === "en" ? "Password" : "كلمة السر"
+            }
+            type="password"
+            callBack={this.onChange}
+          />
+          <NotRequired
+            name={"phone"}
+            field={
+              sessionStorage.getItem("lang") === "en"
+                ? "Telephone"
+                : "رقم الهاتف"
+            }
+            type="text"
+            callBack={this.onChange}
+          />
+          <NotRequired
+            name={"address"}
+            field={
+              sessionStorage.getItem("lang") === "en" ? "Address" : "العنوان"
+            }
+            type="text"
+            callBack={this.onChange}
+          />
+          <NotRequired
+            name={"ssn"}
+            field={
+              sessionStorage.getItem("lang") === "en"
+                ? "Social Security Number"
+                : "الرقم القومي"
+            }
+            type="text"
+            callBack={this.onChange}
+          />
+          <NotRequired
+            name={"yearsOfExperience"}
+            field={
+              sessionStorage.getItem("lang") === "en"
+                ? "Years of Experience"
+                : "عدد سنين الخبرة"
+            }
+            type="number"
+            callBack={this.onChange}
+          />
+          <NotRequired
+            name={"age"}
+            field={sessionStorage.getItem("lang") === "en" ? "Age" : "السن"}
+            type="number"
+            callBack={this.onChange}
+          />
           <div className={classes.cluster}>
-            <Gender name={"gender"} callBack={this.onChange}/>
-            <Date name={"birth"} field={"Birth Date"} callBack={this.handleDate}/>
+            <Gender name={"gender"} callBack={this.onChange} />
+            <Date
+              name={"birth"}
+              field={
+                sessionStorage.getItem("lang") === "en"
+                  ? "Date of Birth"
+                  : "تاريخ الميلاد"
+              }
+              callBack={this.handleDate}
+            />
           </div>
           <SaveChangesButton onClick={this.handleSubmission} />
         </Paper>
       </main>
-    )
+    );
   }
 }
 
-export default withStyles(styles)(EditProfileReviewer)
+export default withStyles(styles)(EditProfileReviewer);

@@ -3,11 +3,44 @@ import Button from "@material-ui/core/Button";
 import Form from "react-jsonschema-form";
 import ChooseType from "../../pages/ChooseType";
 import Snackbar from "../snackbar/Snackbar";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
 
 import axios from "axios";
 
-import TextField from "@material-ui/core/TextField";
-import { Input, Paper, MenuItem } from "@material-ui/core";
+import { Input, Paper, MenuItem, Divider } from "@material-ui/core";
+
+const styles = theme => ({
+  root: {
+    width: "auto",
+    display: "block",
+    marginLeft: theme.spacing.unit * 3,
+    marginRight: theme.spacing.unit * 3,
+    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
+      width: "70%",
+      marginLeft: "auto",
+      marginRight: "auto"
+    }
+  },
+  paper: {
+    marginTop: theme.spacing.unit * 8,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: `${theme.spacing.unit * 7}px ${theme.spacing.unit * 4}px ${theme
+      .spacing.unit * 4}px`
+  },
+  dividers: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+   
+  },
+  backButton: {
+    marginRight: theme.spacing.unit
+  },
+  instructions: {}
+});
 
 class SimpleReactFileUpload extends React.Component {
   constructor(props) {
@@ -65,16 +98,11 @@ class SimpleReactFileUpload extends React.Component {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        "x-access-token": this.props.token
+        "x-access-token": sessionStorage.getItem("jwtToken")
       },
-      body: 
-        JSON.stringify( {formName: data})
-      
-    }).then(res => {
-      console.log(res);
-
-      return <Snackbar variant="error" message={res.data} />;
-    });
+      body: JSON.stringify({ formName: data })
+    })
+    return <Snackbar variant="error" message="error" />
   };
 
   handleDisplay = state => {
@@ -114,21 +142,35 @@ class SimpleReactFileUpload extends React.Component {
   };
 
   render() {
+    const { classes } = this.props;
     return (
-      <>
-        <div>
-          <input type="file" name="myfile" onChange={this.onChangeHandler} />
-          <Button onClick={this.onClickHandler}>Upload</Button>
-          {this.handleDisplay(this.state)}
-          {this.handleFile(this.state)}
-        </div>
-        <div>
-          <Button onClick={this.onDeleteHandler}>Delete</Button>
-          <ChooseType />
-        </div>
-      </>
+      <div className={classes.root}>
+        <Paper className={classes.paper} elevation={16}>
+          <div>
+            <h1 style={{ marginBottom: 50 }}>Add new Company Type</h1>
+
+            <input type="file" name="myfile" onChange={this.onChangeHandler} />
+            <Button onClick={this.onClickHandler}>Upload</Button>
+            {this.handleDisplay(this.state)}
+            {this.handleFile(this.state)}
+          </div>
+        </Paper>
+        <Divider />
+
+        <Paper className={classes.paper} elevation={16}>
+            <h1 style={{ marginBottom: 50 }}>Delete Existing Company Type</h1>
+          <div className={classes.dividers}>
+            <ChooseType style={{marginRight:100}}/>
+            <Button variant="outlined" onClick={this.onDeleteHandler}>
+              Delete
+            </Button>
+          </div>
+        </Paper>
+      </div>
     );
   }
 }
-
-export default SimpleReactFileUpload;
+SimpleReactFileUpload.propTypes = {
+  classes: PropTypes.object
+};
+export default withStyles(styles)(SimpleReactFileUpload);

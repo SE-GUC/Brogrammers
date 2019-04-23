@@ -32,16 +32,16 @@ class ViewLawyerEditableCases extends Component {
             </Grid>
         </div>)}
         else{
-            return <Snackbar variant='error' message="Something went wrong!" />
+            return <Snackbar variant='warning' message={sessionStorage.getItem('lang') === 'en' ? 'There are no requests' : 'لا يوجد شركات'} />
         }
     }
     handleReq2 = () => {
         if(this.state.requests){
         if (this.state.requests.length === 0) {
-            return <Snackbar variant='warning' message="There are no requests" />
+            return <Snackbar variant='warning' message={sessionStorage.getItem('lang') === 'en' ? 'There are no requests' : 'لا يوجد شركات'} />
         }}
         else{
-            return <Snackbar variant='error' message="Something went wrong!" />
+            return <Snackbar variant='warning' message={sessionStorage.getItem('lang') === 'en' ? 'There are no requests' : 'لا يوجد شركات'} />
         }
     }
     handleRequests() {

@@ -21,9 +21,14 @@ class ReviewerCases extends React.Component {
 
         .then(res => res.json())
         .then(json => {
+          if (json.data.length === 0) {
+            alert("No Companies Available");
+          }
+          else {
           this.setState({
             reviewerCases: json.data
           })
+        }
         })
     }
   }
