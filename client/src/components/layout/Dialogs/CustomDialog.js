@@ -90,7 +90,7 @@ class CustomizedDialogDemo extends React.Component {
           color="primary"
           onClick={this.handleClickOpen}
         >
-          View Details
+          {sessionStorage.getItem('lang') === 'en' ? 'View Details' : 'اظهار البيانات'}
         </Button>
         <Dialog
           onClose={this.handleClose}
@@ -120,7 +120,7 @@ class CustomizedDialogDemo extends React.Component {
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
-              Close
+            {sessionStorage.getItem('lang') === 'en' ? 'Close' : ' اغلاق'}
             </Button>
           </DialogActions>
         </Dialog>

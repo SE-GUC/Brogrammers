@@ -68,7 +68,7 @@ class CreateCompany extends React.Component {
         margin="normal"
         variant="outlined"
       >
-      { sessionStorage.setItem("type", this.state.selected)}
+      { sessionStorage.setItem("companyType", this.state.selected)}
         {this.state.companytypes.map(option => (
           <MenuItem key={option} value={option}>
             {option}

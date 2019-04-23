@@ -86,7 +86,7 @@ class CustomizedDialogFees1 extends React.Component {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "x-access-token": this.props.token
+        "x-access-token": sessionStorage.getItem("jwtToken")
       }
     }).then(response => {
       response.json().then(data => {
@@ -101,7 +101,9 @@ class CustomizedDialogFees1 extends React.Component {
   render() {
     return (
       <div>
-        <MenuItem onClick={this.handleClickOpen}>View Fees</MenuItem>
+        <MenuItem onClick={this.handleClickOpen}>
+        {sessionStorage.getItem('lang') === 'en' ? 'View Fees' : 'اظهار المصاريف'}
+        </MenuItem>
 
         <Dialog
           onClose={this.handleClose}

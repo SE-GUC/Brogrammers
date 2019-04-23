@@ -87,7 +87,7 @@ class CustomizedDialogFees extends React.Component {
         method: "GET",
         headers: {
           'Content-Type': 'application/json',
-          'x-access-token':this.props.token
+          'x-access-token':sessionStorage.getItem("jwtToken")
         }
       }).then(response => {
         response.json().then(data =>{
@@ -103,7 +103,9 @@ class CustomizedDialogFees extends React.Component {
     
     return (
       <div>
-        <MenuItem onClick={this.handleClickOpen}>View Fees</MenuItem>
+        <MenuItem onClick={this.handleClickOpen}>
+        {sessionStorage.getItem('lang') === 'en' ? 'View Fees' : 'اظهار المصاريف'}
+        </MenuItem>
 
         <Dialog
           onClose={this.handleClose}
@@ -121,7 +123,7 @@ class CustomizedDialogFees extends React.Component {
           <DialogActions>
             <TakeMoney companyid={this.props.id} />
             <Button onClick={this.handleClose} color="primary">
-              Close
+            {sessionStorage.getItem('lang') === 'en' ? 'Close' : 'اغلاق'}
             </Button>
           </DialogActions>
         </Dialog>

@@ -5,6 +5,8 @@ import ChooseType from "../../pages/ChooseType";
 import Snackbar from "../snackbar/Snackbar";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import Icon from '@material-ui/core/Icon';
 
 import axios from "axios";
 
@@ -33,13 +35,24 @@ const styles = theme => ({
   dividers: {
     display: "flex",
     flexDirection: "row",
-    alignItems: "center",
-   
+    alignItems: "center"
   },
   backButton: {
     marginRight: theme.spacing.unit
   },
-  instructions: {}
+  instructions: {},
+  button: {
+    margin: theme.spacing.unit
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit
+  },
+  iconSmall: {
+    fontSize: 20
+  }
 });
 
 class SimpleReactFileUpload extends React.Component {
@@ -86,13 +99,16 @@ class SimpleReactFileUpload extends React.Component {
       })
       .then(res => {
         // then print response status
-
         this.setState({ submitted: true });
-      });
+        return <Snackbar variant="success" message="success" style={{zIndex:222700}}/>;
+      }).then(
+        window.location.reload()
+  
+      )
   };
 
   onDeleteHandler = () => {
-    const data = sessionStorage.getItem("type");
+    const data = sessionStorage.getItem("companyType");
     console.log(data);
     fetch("http://localhost:3000/routes/api/admins/delete-form", {
       method: "DELETE",
@@ -101,13 +117,23 @@ class SimpleReactFileUpload extends React.Component {
         "x-access-token": sessionStorage.getItem("jwtToken")
       },
       body: JSON.stringify({ formName: data })
-    })
-    return <Snackbar variant="error" message="error" />
+    }).then(
+      window.location.reload()
+
+    )
+    
   };
 
   handleDisplay = state => {
+    const { classes } = this.props;
     return state.uploaded && !state.submitted ? (
-      <Button onClick={this.onSubmitHandler}>Submit</Button>
+      <Button variant="contained" color="primary" className={classes.button} onClick={this.onSubmitHandler}>
+    {sessionStorage.getItem("lang") === "en"
+                    ? "submit"
+                    : "تسجيل"}
+     
+      <Icon className={classes.rightIcon}>send</Icon>
+    </Button>
     ) : (
       console.log("s")
     );
@@ -147,10 +173,27 @@ class SimpleReactFileUpload extends React.Component {
       <div className={classes.root}>
         <Paper className={classes.paper} elevation={16}>
           <div>
-            <h1 style={{ marginBottom: 50 }}>Add new Company Type</h1>
+            <h1 style={{ marginBottom: 50 }}>{sessionStorage.getItem("lang") === "en"
+                    ? "New Company Type"
+                    : "نوع شركة جديد"}</h1>
 
-            <input type="file" name="myfile" onChange={this.onChangeHandler} />
-            <Button onClick={this.onClickHandler}>Upload</Button>
+            <input
+              className={classes.button}
+              type="file"
+              name="myfile"
+              onChange={this.onChangeHandler}
+            />
+            <Button
+              variant="contained"
+              color="default"
+              className={classes.button}
+              onClick={this.onClickHandler}
+            >
+             {sessionStorage.getItem("lang") === "en"
+                    ? "upload"
+                    : "رفع"}
+              <CloudUploadIcon className={classes.rightIcon} />
+            </Button>
             {this.handleDisplay(this.state)}
             {this.handleFile(this.state)}
           </div>
@@ -158,11 +201,15 @@ class SimpleReactFileUpload extends React.Component {
         <Divider />
 
         <Paper className={classes.paper} elevation={16}>
-            <h1 style={{ marginBottom: 50 }}>Delete Existing Company Type</h1>
+          <h1 style={{ marginBottom: 50 }}>{sessionStorage.getItem("lang") === "en"
+                    ? "Delete Company Type"
+                    : "حذف نوع شركة"}</h1>
           <div className={classes.dividers}>
-            <ChooseType style={{marginRight:100}}/>
-            <Button variant="outlined" onClick={this.onDeleteHandler}>
-              Delete
+            <ChooseType style={{ marginRight: 100 }} />
+            <Button variant="outlined" color="secondary" onClick={this.onDeleteHandler}>
+            {sessionStorage.getItem("lang") === "en"
+                    ? "Delete"
+                    : "حذف"}
             </Button>
           </div>
         </Paper>
