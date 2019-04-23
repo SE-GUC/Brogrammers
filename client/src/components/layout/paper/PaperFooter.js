@@ -7,15 +7,16 @@ import Grid from '@material-ui/core/Grid'
 const styles = theme => ({
     root: {
         ...theme.mixins.gutters(),
-        paddingTop: theme.spacing.unit * 2,
-        paddingBottom: theme.spacing.unit * 2,
+        paddingTop: theme.spacing.unit *2,
+        paddingBottom: theme.spacing.unit ,
         width: '100%',
         bottom: 0,
         position: 'fixed',
         background: 'black',
         borderStyle: 'solid',
         borderColor: 'black',
-        color:'white'
+        color:'white',
+        zIndex:9090909
     },
 });
 

@@ -1,62 +1,66 @@
 {
-  "title": "SAC Company",
+  "title": "SXQ Company",
   "type": "object",
   "properties": {
     "regulationLaw": {"title":"Regulation Law","type": "string","enum": ["Law 159","Law 72"]},
 	"nameInArabic":{"title":"Name in Arabic","type": "string"},
 	"nameInEngish":{"title":"Name in English","type":"string"},
-  "governerateHQ": {  "type": "string", "required": "true" },
-  "cityHQ": {"type": "string", "required": "true"},
+  "governerateHQ": { "title":"Governerate HQ", "type": "string"  },
+  "cityHQ": {"title":"City HQ","type": "string" },
   "addressHQ": {
-      "type": "string",
-      "required": "true"
+    "title":"Address HQ",
+      "type": "string"
+      
     },
   "telephoneHQ": {
+    "title":"Telephone HQ",
       "type": "number"
     },
   "faxHQ": {
+    "title":"Fax HQ",
       "type": "number"
     },
   "capitalCurrency": {
-      "type": "string",
-      "required": "true"
+      "enum":["USD","EGP","EUR","GBP"],
+      "type": "string"
+      
     },
   "capital": {
-      "type": "number",
-      "required": "true",
+      "type": "number"
+      ,
       "min": "50000"
     },
     "investorName": {
-      "type": "string",
-      "required": "true"
+      "type": "string"
+      
     },
     "investorType": {
-      "type": "string",
-      "required": "false"
+      "type": "string"
+  
     },
     "investorSex": {
-      "type": "string",
-      "required": "true"
+      "type": "string"
+      
     },
     "investorNationality": {
-      "type": "string",
-      "required": "true"
+      "type": "string"
+      
     },
     "investorIdentificationType": {
-      "type": "string",
-      "required": "true"
+      "type": "string"
+      
     },
     "investorIdentificationNumber": {
-      "type": "string",
-      "required": "true"
+      "type": "string"
+      
     },
     "investorBD": {
-      "type": "string",
-      "required": "true"
+      "type": "string"
+      
     },
     "investorAddress": {
-      "type": "string",
-      "required": "true"
+      "type": "string"
+      
     },
     "investorTelephone": {
       "type": "string"

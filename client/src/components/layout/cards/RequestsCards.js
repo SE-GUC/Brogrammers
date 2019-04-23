@@ -163,7 +163,7 @@ class SimpleCard extends React.Component {
             <SimpleMenu
               a={this.checkrej(this.props)}
               id={this.props.id}
-              token={this.props.token}
+              token={sessionStorage.getItem("jwtToken")}
               data={this.props.data}
             />
           }

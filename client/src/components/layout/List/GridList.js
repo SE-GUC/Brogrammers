@@ -45,7 +45,7 @@ class TitlebarGridList extends React.Component {
                   lawyer={tile.lawyer}
                   key={i}
                   id={tile._id}
-                  token={this.props.token}
+                  token={sessionStorage.getItem("jwtToken")}
                   subheader={tile.status}
                   nameAr={tile.nameInArabic}
                   data={tile}
