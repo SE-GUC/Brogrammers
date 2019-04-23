@@ -12,16 +12,27 @@ import PostForm from "../pages/postForm";
 
 const styles = theme => ({
   root: {
-    width: "90%"
+    width: 'auto',
+    display: 'block',
+    marginLeft: theme.spacing.unit * 3,
+    marginRight: theme.spacing.unit * 3,
+    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
+      width: 700,
+      marginLeft: 'auto',
+      marginRight: 'auto'
+    }
+  },
+  paper: {
+    marginTop: theme.spacing.unit * 8,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: `${theme.spacing.unit * 7}px ${theme.spacing.unit * 4}px ${theme.spacing.unit * 4}px`
   },
   backButton: {
     marginRight: theme.spacing.unit
   },
-  instructions: {
-    marginTop: theme.spacing.unit,
-    marginBottom: theme.spacing.unit,
-    marginLeft: theme.spacing.unit * 4
-  }
+  instructions: {}
 });
 
 class HorizontalLabelPositionBelowStepper extends React.Component {
@@ -52,9 +63,7 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
     if (sessionStorage.getItem("type")) {
       this.setState(state => ({
         activeStep: state.activeStep + 1
-        
       }));
-      
     } else {
       console.log("must not be null");
     }
@@ -71,7 +80,9 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
       activeStep: 0
     });
   };
-
+handleButtons=()=>{
+  
+}
   render() {
     const { classes } = this.props;
     const steps = this.getSteps();
@@ -79,45 +90,46 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
 
     return (
       <div className={classes.root}>
-        <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map(label => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-        <div>
-          {this.state.activeStep === steps.length ? (
-            <div>
-              <Typography className={classes.instructions}>
-                All steps completed
-              </Typography>
-              <Button onClick={this.handleReset}>Reset</Button>
-            </div>
-          ) : (
-            <div>
-              <Typography className={classes.instructions}>
-                {this.getStepContent(activeStep)}
-              </Typography>
+        <Paper className={classes.paper} elevation={16}>
+          <Stepper activeStep={activeStep} alternativeLabel>
+            {steps.map(label => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          <div>
+            {this.state.activeStep === steps.length ? (
               <div>
-                <Button
-                  disabled={activeStep === 0}
-                  onClick={this.handleBack}
-                  className={classes.backButton}
-                >
-                  Back
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={this.handleNext}
-                >
-                  {activeStep === steps.length - 1 ? "Finish" : "Next"}
-                </Button>
+                <Typography className={classes.instructions}>
+                  All steps completed
+                </Typography>
+                <Button onClick={this.handleReset}>Reset</Button>
               </div>
-            </div>
-          )}
-        </div>
+            ) : (
+              <>
+                <div>{this.getStepContent(activeStep)}</div>
+                <div >
+                  <Button
+                    disabled={activeStep === 0}
+                    onClick={this.handleBack}
+                    className={classes.backButton}
+                  >
+                    Back
+                  </Button>
+                  {activeStep!==steps.length-1? <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={this.handleNext}
+                  >Next
+                  </Button>:""}
+                 
+                
+                </div>
+              </>
+            )}
+          </div>
+        </Paper>
       </div>
     );
   }

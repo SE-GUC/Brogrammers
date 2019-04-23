@@ -1891,5 +1891,37 @@ router.put('/', async (req, res) => {
     // We will be handling the error later
     console.log(error)
   }
+
 })
+
+router.post("/create/company", async (req, res) => {
+  var stat = 0;
+  try {
+    var token = req.headers["x-access-token"];
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: "Please login first." });
+    }
+    jwt.verify(token, config.secret, async function(err, decoded) {
+      if (err) {
+        return res
+          .status(500)
+          .send({ auth: false, message: "Failed to authenticate token." });
+      }
+      stat = decoded.id;
+    });
+    const currLawyer = await Lawyer.findById(stat);
+    if (!currLawyer) {
+      return res.status(404).send({ error: "Lawyer does not exist" });
+    }
+  
+    const company = await Company.create(req.body);
+console.log(Company.discriminators)
+    res.json({ msg: req.body.legalCompanyForm+" Company was created successfully", data: company });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = router
