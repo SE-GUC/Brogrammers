@@ -12,9 +12,10 @@ const styles = theme => ({
         width: '100%',
         bottom: 0,
         position: 'fixed',
-        background: 'grey',
+        background: 'black',
         borderStyle: 'solid',
-        borderColor: 'grey'
+        borderColor: 'black',
+        color:'white'
     },
 });
 

@@ -19,17 +19,16 @@ import RegisterLawyer from "../../pages/RegisterLawyer";
 import AdminCases from "../../pages/AdminCases";
 import SimpleReactFileUpload from "../../layout/form/SimpleReactFileUpload";
 import EditProfileAdmin from "../../pages/EditProfileAdmin";
-import ViewLawyersByAdmin from "../../pages/ViewLawyersByAdmin"
-import ViewReviewersByAdmin from "../../pages/ViewReviewersByAdmin"
-import NavBar from '../../../components/layout/Navbar'
-import ViewList from '@material-ui/icons/ViewList'
-import CreateCompany from '@material-ui/icons/CreateNewFolder'
-import EditProfile from '@material-ui/icons/BorderColor'
-import Identity from '@material-ui/icons/Person'
-import Home from '@material-ui/icons/Home'
-import Upload from '@material-ui/icons/CloudUpload'
-import Add from '@material-ui/icons/PersonAdd'
-
+import ViewLawyersByAdmin from "../../pages/ViewLawyersByAdmin";
+import ViewReviewersByAdmin from "../../pages/ViewReviewersByAdmin";
+import NavBar from "../../../components/layout/Navbar";
+import ViewList from "@material-ui/icons/ViewList";
+import CreateCompany from "@material-ui/icons/CreateNewFolder";
+import EditProfile from "@material-ui/icons/BorderColor";
+import Identity from "@material-ui/icons/Person";
+import Home from "@material-ui/icons/Home";
+import Upload from "@material-ui/icons/CloudUpload";
+import Add from "@material-ui/icons/PersonAdd";
 
 const drawerWidth = 240;
 
@@ -61,10 +60,72 @@ class ClippedDrawer extends React.Component {
       clicked: "a"
     };
   }
-
-  handleAdmin = () => {
-    this.setState({ clicked: "a" });
+  handleContent = state => {
+    switch (this.state.clicked) {
+      case "profile":
+        return (
+          <EditProfileAdmin
+            id={sessionStorage.getItem("id")}
+            token={sessionStorage.getItem("jwtToken")}
+          />
+        );
+      case "viewLawyers":
+        return (
+          <ViewLawyersByAdmin
+            id={sessionStorage.getItem("id")}
+            token={sessionStorage.getItem("jwtToken")}
+          />
+        );
+      case "viewReviewers":
+        return (
+          <ViewReviewersByAdmin
+            id={sessionStorage.getItem("id")}
+            token={sessionStorage.getItem("jwtToken")}
+          />
+        );
+      case "l":
+        return (
+          <RegisterLawyer
+            id={sessionStorage.getItem("id")}
+            token={sessionStorage.getItem("jwtToken")}
+          />
+        );
+      case "r":
+        return (
+          <RegisterReviewer
+            id={sessionStorage.getItem("id")}
+            token={sessionStorage.getItem("jwtToken")}
+          />
+        );
+      case "a":
+        return (
+          <RegisterAdmin
+            id={sessionStorage.getItem("id")}
+            token={sessionStorage.getItem("jwtToken")}
+          />
+        );
+      case "forms":
+        return (
+          <SimpleReactFileUpload
+            id={sessionStorage.getItem("id")}
+            token={sessionStorage.getItem("jwtToken")}
+          />
+        );
+      case "cases":
+        return (
+          <AdminCases
+            id={sessionStorage.getItem("id")}
+            token={sessionStorage.getItem("jwtToken")}
+          />
+        );
+      default:
+        return;
+    }
   };
+  handleHome = () => {
+    document.location.href = "/";
+  };
+
   handleViewLawyers = () => {
     this.setState({ clicked: "viewLawyers" });
   };
@@ -77,13 +138,13 @@ class ClippedDrawer extends React.Component {
   handleReviewer = () => {
     this.setState({ clicked: "r" });
   };
-  handleHome = () => {
-    document.location.href = "/";
+  handleAdmin = () => {
+    this.setState({ clicked: "a" });
   };
   handleCases = () => {
     this.setState({ clicked: "cases" });
   };
-  handleForms = () => {
+  handleUpload = () => {
     this.setState({ clicked: "forms" });
   };
   handleProfile = () => {
@@ -91,915 +152,157 @@ class ClippedDrawer extends React.Component {
   };
   render() {
     const { classes } = this.props;
-    if (this.state.clicked == "a") {
-      return (
-        <div className={classes.root}>
-          <CssBaseline />
-          
-
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper
-            }}
-          >
-           <NavBar/>
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon>
-                  <Home />
-                </ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Edit Your Profile"}
-                onClick={this.handleProfile}
-              >
-                <ListItemIcon>
-                  <EditProfile />
-                </ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-              <ListItem
-                button
-                key={"View All Cases"}
-                onClick={this.handleCases}
-              >
-                <ListItemIcon>
-                  <ViewList />
-                </ListItemIcon>
-                <ListItemText primary="View All Cases" />
-              </ListItem>
-              <ListItem button key={"Upload Form"} onClick={this.handleForms}>
-                <ListItemIcon>
-                  <Upload />
-                </ListItemIcon>
-                <ListItemText primary="Upload Form" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
-              <ListItem button key={"Create Admin"} onClick={this.handleAdmin}>
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Admin" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Create Reviewer"}
-                onClick={this.handleReviewer}
-              >
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Reviewer" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Create Lawyer"}
-                onClick={this.handleLawyer}
-              >
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Lawyer" />
-              </ListItem>
-              <Divider />
-              <ListItem
-                button
-                key={"View Lawyers"}
-                onClick={this.handleViewLawyers}
-              >
-                <ListItemIcon>
-                  <Identity />
-                </ListItemIcon>
-                <ListItemText primary="View Lawyers" />
-              </ListItem>
-
-              <ListItem
-                button
-                key={"View Reviewers"}
-                onClick={this.handleViewReviewers}
-              >
-                <ListItemIcon>
-                  <Identity />
-                </ListItemIcon>
-                <ListItemText primary="View Reviewers" />
-              </ListItem>
-
-
-            </List>
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <RegisterAdmin token={sessionStorage.getItem("jwtToken")} />
-          </main>
-        </div>
-      );
-    }
-    if (this.state.clicked == "l") {
-      return (
-        <div className={classes.root}>
-          <CssBaseline />
-        
-         
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper
-            }}
-          >
-           <NavBar/>
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon>
-                  <Home />
-                </ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Edit Your Profile"}
-                onClick={this.handleProfile}
-              >
-                <ListItemIcon>
-                  <EditProfile />
-                </ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-              <ListItem
-                button
-                key={"View All Cases"}
-                onClick={this.handleCases}
-              >
-                <ListItemIcon>
-                  <ViewList />
-                </ListItemIcon>
-                <ListItemText primary="View All Cases" />
-              </ListItem>
-              <ListItem button key={"Upload Form"} onClick={this.handleForms}>
-                <ListItemIcon>
-                  <Upload />
-                </ListItemIcon>
-                <ListItemText primary="Upload Form" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
-              <ListItem button key={"Create Admin"} onClick={this.handleAdmin}>
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Admin" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Create Reviewer"}
-                onClick={this.handleReviewer}
-              >
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Reviewer" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Create Lawyer"}
-                onClick={this.handleLawyer}
-              >
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Lawyer" />
-              </ListItem>
-              <Divider />
-              <ListItem
-                button
-                key={"View Lawyers"}
-                onClick={this.handleViewLawyers}
-              >
-                <ListItemIcon>
-                  <Identity />
-                </ListItemIcon>
-                <ListItemText primary="View Lawyers" />
-              </ListItem>
-
-              <ListItem
-                button
-                key={"View Reviewers"}
-                onClick={this.handleViewReviewers}
-              >
-                <ListItemIcon>
-                  <Identity />
-                </ListItemIcon>
-                <ListItemText primary="View Reviewers" />
-              </ListItem>
-
-
-            </List>
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <RegisterLawyer
-              callBack={this.callBack}
-              token={sessionStorage.getItem("jwtToken")}
-            />
-          </main>
-        </div>
-      );
-    }
-    if (this.state.clicked == "r") {
-      return (
-        <div className={classes.root}>
-          <CssBaseline />
-         
-
-         
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper
-            }}
-          >
-           <NavBar/>
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon>
-                  <Home />
-                </ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Edit Your Profile"}
-                onClick={this.handleProfile}
-              >
-                <ListItemIcon>
-                  <EditProfile />
-                </ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-              <ListItem
-                button
-                key={"View All Cases"}
-                onClick={this.handleCases}
-              >
-                <ListItemIcon>
-                  <ViewList />
-                </ListItemIcon>
-                <ListItemText primary="View All Cases" />
-              </ListItem>
-              <ListItem button key={"Upload Form"} onClick={this.handleForms}>
-                <ListItemIcon>
-                  <Upload />
-                </ListItemIcon>
-                <ListItemText primary="Upload Form" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
-              <ListItem button key={"Create Admin"} onClick={this.handleAdmin}>
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Admin" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Create Reviewer"}
-                onClick={this.handleReviewer}
-              >
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Reviewer" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Create Lawyer"}
-                onClick={this.handleLawyer}
-              >
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Lawyer" />
-              </ListItem>
-              <Divider />
-              <ListItem
-                button
-                key={"View Lawyers"}
-                onClick={this.handleViewLawyers}
-              >
-                <ListItemIcon>
-                  <Identity />
-                </ListItemIcon>
-                <ListItemText primary="View Lawyers" />
-              </ListItem>
-
-              <ListItem
-                button
-                key={"View Reviewers"}
-                onClick={this.handleViewReviewers}
-              >
-                <ListItemIcon>
-                  <Identity />
-                </ListItemIcon>
-                <ListItemText primary="View Reviewers" />
-              </ListItem>
-
-
-            </List>
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <RegisterReviewer token={sessionStorage.getItem("jwtToken")} />
-          </main>
-        </div>
-      );
-    }
-    if (this.state.clicked == "cases") {
-      return (
-        <div className={classes.root}>
-          <CssBaseline />
-        
-
-          
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper
-            }}
-          >
-           <NavBar/>
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon>
-                  <Home />
-                </ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Edit Your Profile"}
-                onClick={this.handleProfile}
-              >
-                <ListItemIcon>
-                  <EditProfile />
-                </ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-              <ListItem
-                button
-                key={"View All Cases"}
-                onClick={this.handleCases}
-              >
-                <ListItemIcon>
-                  <ViewList />
-                </ListItemIcon>
-                <ListItemText primary="View All Cases" />
-              </ListItem>
-              <ListItem button key={"Upload Form"} onClick={this.handleForms}>
-                <ListItemIcon>
-                  <Upload />
-                </ListItemIcon>
-                <ListItemText primary="Upload Form" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
-              <ListItem button key={"Create Admin"} onClick={this.handleAdmin}>
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Admin" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Create Reviewer"}
-                onClick={this.handleReviewer}
-              >
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Reviewer" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Create Lawyer"}
-                onClick={this.handleLawyer}
-              >
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Lawyer" />
-              </ListItem>
-              <Divider />
-              <ListItem
-                button
-                key={"View Lawyers"}
-                onClick={this.handleViewLawyers}
-              >
-                <ListItemIcon>
-                  <Identity />
-                </ListItemIcon>
-                <ListItemText primary="View Lawyers" />
-              </ListItem>
-
-              <ListItem
-                button
-                key={"View Reviewers"}
-                onClick={this.handleViewReviewers}
-              >
-                <ListItemIcon>
-                  <Identity />
-                </ListItemIcon>
-                <ListItemText primary="View Reviewers" />
-              </ListItem>
-
-
-            </List>
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <AdminCases token={sessionStorage.getItem("jwtToken")} />
-          </main>
-        </div>
-      );
-    }
-    if (this.state.clicked == "forms") {
-      return (
-        <div className={classes.root}>
-          <CssBaseline />
-       
-
-          
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper
-            }}
-          >
-           <NavBar/>
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon>
-                  <Home />
-                </ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Edit Your Profile"}
-                onClick={this.handleProfile}
-              >
-                <ListItemIcon>
-                  <EditProfile />
-                </ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-              <ListItem
-                button
-                key={"View All Cases"}
-                onClick={this.handleCases}
-              >
-                <ListItemIcon>
-                  <ViewList />
-                </ListItemIcon>
-                <ListItemText primary="View All Cases" />
-              </ListItem>
-              <ListItem button key={"Upload Form"} onClick={this.handleForms}>
-                <ListItemIcon>
-                  <Upload />
-                </ListItemIcon>
-                <ListItemText primary="Upload Form" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
-              <ListItem button key={"Create Admin"} onClick={this.handleAdmin}>
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Admin" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Create Reviewer"}
-                onClick={this.handleReviewer}
-              >
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Reviewer" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Create Lawyer"}
-                onClick={this.handleLawyer}
-              >
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Lawyer" />
-              </ListItem>
-              <Divider />
-              <ListItem
-                button
-                key={"View Lawyers"}
-                onClick={this.handleViewLawyers}
-              >
-                <ListItemIcon>
-                  <Identity />
-                </ListItemIcon>
-                <ListItemText primary="View Lawyers" />
-              </ListItem>
-
-              <ListItem
-                button
-                key={"View Reviewers"}
-                onClick={this.handleViewReviewers}
-              >
-                <ListItemIcon>
-                  <Identity />
-                </ListItemIcon>
-                <ListItemText primary="View Reviewers" />
-              </ListItem>
-
-
-            </List>
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <SimpleReactFileUpload />
-          </main>
-        </div>
-      );
-    }
-
-    if (this.state.clicked == "profile") {
-      return (
-        <div className={classes.root}>
-          <CssBaseline />
-         
-
-         
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper
-            }}
-          >
-           <NavBar/>
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon>
-                  <Home />
-                </ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Edit Your Profile"}
-                onClick={this.handleProfile}
-              >
-                <ListItemIcon>
-                  <EditProfile />
-                </ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-              <ListItem
-                button
-                key={"View All Cases"}
-                onClick={this.handleCases}
-              >
-                <ListItemIcon>
-                  <ViewList />
-                </ListItemIcon>
-                <ListItemText primary="View All Cases" />
-              </ListItem>
-              <ListItem button key={"Upload Form"} onClick={this.handleForms}>
-                <ListItemIcon>
-                  <Upload />
-                </ListItemIcon>
-                <ListItemText primary="Upload Form" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
-              <ListItem button key={"Create Admin"} onClick={this.handleAdmin}>
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Admin" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Create Reviewer"}
-                onClick={this.handleReviewer}
-              >
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Reviewer" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Create Lawyer"}
-                onClick={this.handleLawyer}
-              >
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Lawyer" />
-              </ListItem>
-              <Divider />
-              <ListItem
-                button
-                key={"View Lawyers"}
-                onClick={this.handleViewLawyers}
-              >
-                <ListItemIcon>
-                  <Identity />
-                </ListItemIcon>
-                <ListItemText primary="View Lawyers" />
-              </ListItem>
-
-              <ListItem
-                button
-                key={"View Reviewers"}
-                onClick={this.handleViewReviewers}
-              >
-                <ListItemIcon>
-                  <Identity />
-                </ListItemIcon>
-                <ListItemText primary="View Reviewers" />
-              </ListItem>
-
-
-            </List>
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <EditProfileAdmin token={sessionStorage.getItem("jwtToken")} />
-          </main>
-        </div>
-      );
-    }
-
-    // ATEF
-    if (this.state.clicked == "viewLawyers") {
-      return (
-        <div className={classes.root}>
-          <CssBaseline />
-         
-
-          
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper
-            }}
-          >
-           <NavBar/>
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon>
-                  <Home />
-                </ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Edit Your Profile"}
-                onClick={this.handleProfile}
-              >
-                <ListItemIcon>
-                  <EditProfile />
-                </ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-              <ListItem
-                button
-                key={"View All Cases"}
-                onClick={this.handleCases}
-              >
-                <ListItemIcon>
-                  <ViewList />
-                </ListItemIcon>
-                <ListItemText primary="View All Cases" />
-              </ListItem>
-              <ListItem button key={"Upload Form"} onClick={this.handleForms}>
-                <ListItemIcon>
-                  <Upload />
-                </ListItemIcon>
-                <ListItemText primary="Upload Form" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
-              <ListItem button key={"Create Admin"} onClick={this.handleAdmin}>
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Admin" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Create Reviewer"}
-                onClick={this.handleReviewer}
-              >
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Reviewer" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Create Lawyer"}
-                onClick={this.handleLawyer}
-              >
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Lawyer" />
-              </ListItem>
-              <Divider />
-              <ListItem
-                button
-                key={"View Lawyers"}
-                onClick={this.handleViewLawyers}
-              >
-                <ListItemIcon>
-                  <Identity />
-                </ListItemIcon>
-                <ListItemText primary="View Lawyers" />
-              </ListItem>
-
-              <ListItem
-                button
-                key={"View Reviewers"}
-                onClick={this.handleViewReviewers}
-              >
-                <ListItemIcon>
-                  <Identity />
-                </ListItemIcon>
-                <ListItemText primary="View Reviewers" />
-              </ListItem>
-
-
-            </List>
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            {/* my page goes in here */}
-            <ViewLawyersByAdmin token={sessionStorage.getItem("jwtToken")} />
-          </main>
-        </div>
-      );
-    }
-// hereh
-  // ATEF
-  if (this.state.clicked == "viewReviewers") {
     return (
       <div className={classes.root}>
         <CssBaseline />
-       
 
-        
         <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper
-            }}
-          >
-           <NavBar/>
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon>
-                  <Home />
-                </ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Edit Your Profile"}
-                onClick={this.handleProfile}
-              >
-                <ListItemIcon>
-                  <EditProfile />
-                </ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-              <ListItem
-                button
-                key={"View All Cases"}
-                onClick={this.handleCases}
-              >
-                <ListItemIcon>
-                  <ViewList />
-                </ListItemIcon>
-                <ListItemText primary="View All Cases" />
-              </ListItem>
-              <ListItem button key={"Upload Form"} onClick={this.handleForms}>
-                <ListItemIcon>
-                  <Upload />
-                </ListItemIcon>
-                <ListItemText primary="Upload Form" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
-              <ListItem button key={"Create Admin"} onClick={this.handleAdmin}>
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Admin" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Create Reviewer"}
-                onClick={this.handleReviewer}
-              >
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Reviewer" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Create Lawyer"}
-                onClick={this.handleLawyer}
-              >
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Lawyer" />
-              </ListItem>
-              <Divider />
-              <ListItem
-                button
-                key={"View Lawyers"}
-                onClick={this.handleViewLawyers}
-              >
-                <ListItemIcon>
-                  <Identity />
-                </ListItemIcon>
-                <ListItemText primary="View Lawyers" />
-              </ListItem>
-
-              <ListItem
-                button
-                key={"View Reviewers"}
-                onClick={this.handleViewReviewers}
-              >
-                <ListItemIcon>
-                  <Identity />
-                </ListItemIcon>
-                <ListItemText primary="View Reviewers" />
-              </ListItem>
-
-
-            </List>
-          </Drawer>
-        <main className={classes.content}>
+          className={classes.drawer}
+          variant="permanent"
+          classes={{
+            paper: classes.drawerPaper
+          }}
+        >
+          <NavBar />
           <div className={classes.toolbar} />
-          {/* my page goes in here */}
-          <ViewReviewersByAdmin token={sessionStorage.getItem("jwtToken")} />
+          <List>
+            <ListItem button key={"Home"} onClick={this.handleHome}>
+              <ListItemIcon>
+                <Home />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en" ? "Home" : "صفحتي"
+                }
+              />
+            </ListItem>
+            <ListItem
+              button
+              key={"Edit Your Profile"}
+              onClick={this.handleProfile}
+            >
+              <ListItemIcon>
+                <EditProfile />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "Edit Your Profile"
+                    : "تغير البينات"
+                }
+              />
+            </ListItem>
+            <ListItem button key={"View All Cases"} onClick={this.handleCases}>
+              <ListItemIcon>
+                <ViewList />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "View All Cases"
+                    : "اظهار الشركات"
+                }
+              />
+            </ListItem>
+            <ListItem button key={"upload Form"} onClick={this.handleUpload}>
+              <ListItemIcon>
+                <Upload />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "Upload form"
+                    : "نوع شركة جديد"
+                }
+              />
+            </ListItem>
+            <Divider/>
+            <ListItem button key={"Create Admin"} onClick={this.handleAdmin}>
+              <ListItemIcon>
+                <Add />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "Create new Admin"
+                    : "ادمون جديد"
+                }
+              />
+            </ListItem>
+
+            <ListItem button key={"Create Lawyer"} onClick={this.handleLawyer}>
+              <ListItemIcon>
+                <Add />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "Create new Lawyer"
+                    : "محامي جديد"
+                }
+              />
+            </ListItem>
+            <ListItem
+              button
+              key={"Create Reviewer"}
+              onClick={this.handleReviewer}
+            >
+              <ListItemIcon>
+                <Add />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "Create new Reviewer"
+                    : "مراجع جديد"
+                }
+              />
+            </ListItem>
+<Divider/>
+            <ListItem
+              button
+              key={"View Lawyers"}
+              onClick={this.handleViewLawyers}
+            >
+              <ListItemIcon>
+                <Identity />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "View Lawyers"
+                    : "اظهار المحاميين"
+                }
+              />
+            </ListItem>
+
+            <ListItem
+              button
+              key={"View Lawyers"}
+              onClick={this.handleViewReviewers}
+            >
+              <ListItemIcon>
+                <Identity />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "View Reviewer"
+                    : "اظهار المراجعين"
+                }
+              />
+            </ListItem>
+          </List>
+        </Drawer>
+        <main className={classes.content} style={{ marginTop: 50 }}>
+          {this.handleLoading}
+          {this.handleContent(this.state)}
+          <div className={classes.toolbar} />
         </main>
       </div>
     );
   }
-
-  }
-  
 }
-
 ClippedDrawer.propTypes = {
   classes: PropTypes.object.isRequired
 };

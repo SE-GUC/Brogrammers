@@ -1,10 +1,6 @@
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
+
 node_modules/
 config/
-=======
->>>>>>> e9b960e1ba76d802bf8beb25384177ae1162c276
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
@@ -29,7 +25,3 @@ config/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-<<<<<<< HEAD
-=======
->>>>>>> 970c13795cc861b7db52fb06fc120652421f191c
->>>>>>> e9b960e1ba76d802bf8beb25384177ae1162c276

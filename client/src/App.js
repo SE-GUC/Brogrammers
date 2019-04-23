@@ -93,7 +93,7 @@ class App extends Component {
     return (
       <Router>
         <React.Fragment>
-          <Navbar />
+          <Navbar style={{zIndex:500}}/>
           {this.handleLoading(this.state)}
           <Route
             exact

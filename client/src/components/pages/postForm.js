@@ -50,7 +50,7 @@ class postForm extends React.Component {
         console.log("Successful" + data);
       });
     })
-    else if (sessionStorage.getItem('type') === 'l')
+  if (sessionStorage.getItem('type') === 'l')
     fetch("http://localhost:3000/api/lawyer/create/company", {
       method: "POST",
       body: bod,
