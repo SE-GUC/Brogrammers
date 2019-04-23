@@ -9,7 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import NotRequired from "../inputs/NotRequired";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
-import Snackbar from "../snackbar/Snackbar"
+import Snackbar from "../snackbar/Snackbar";
 
 const styles = theme => ({
   root: {
@@ -26,7 +26,7 @@ class FormDialogue extends React.Component {
     this.state = {
       open: false,
       width: "100%",
-      success:false,
+      success: false,
       company: {
         regulationLaw: "",
         legalCompanyForm: "",
@@ -45,7 +45,6 @@ class FormDialogue extends React.Component {
         reviewerComment: "",
         managers: [
           {
-           
             name: "",
             type: "",
             sex: "",
@@ -64,7 +63,11 @@ class FormDialogue extends React.Component {
   }
   clean = obj => {
     for (var propName in obj) {
-      if (obj[propName] === "" || obj[propName] === undefined || obj[propName]===[]) {
+      if (
+        obj[propName] === "" ||
+        obj[propName] === undefined ||
+        obj[propName] === []
+      ) {
         delete obj[propName];
       }
     }
@@ -75,20 +78,20 @@ class FormDialogue extends React.Component {
     let userData = this.state.company;
 
     this.clean(userData);
-    console.log(userData)
-console.log(this.props.id)
+    console.log(userData);
+    console.log(this.props.id);
     fetch("http://localhost:3000/api/investors/MyRequests/" + this.props.id, {
       method: "PUT",
       body: JSON.stringify(userData),
       headers: {
         "Content-Type": "application/json",
-        "x-access-token": this.props.token
+        "x-access-token": sessionStorage.getItem("jwtToken")
       }
     }).then(response => {
       response.json().then(data => {
         console.log("Successfuly updated" + data);
-        this.setState({success:true})
-        window.location.reload(); 
+        this.setState({ success: true });
+        window.location.reload();
       });
     });
   }
@@ -105,7 +108,7 @@ console.log(this.props.id)
   handleInputval = props => {
     return Object.keys(props.data).map(key => [key, props.data[key]][1]);
   };
-  handleInputs=(e)=> {
+  handleInputs = e => {
     let value = e.target.value;
     let name = e.target.name;
     // console.log(this.state.investor)
@@ -120,10 +123,8 @@ console.log(this.props.id)
       },
       () => console.log(this.state.company)
     );
-  }
+  };
   render() {
-  
-    
     return (
       <div>
         <MenuItem onClick={this.handleClickOpen}>Edit</MenuItem>
@@ -138,8 +139,9 @@ console.log(this.props.id)
           </Grid>
           <DialogContent>
             <DialogContentText>
-              This form has been commented on and rejected by the lawyer, please
-              edit the required fields to proceed.
+              {sessionStorage.getItem("lang") === "en"
+                ? "This form has been commented on and rejected by the lawyer, please edit the required fields to proceed."
+                : "هذا النص تم التعليق عليه و رفض من المراجع من فضلك عدل الحقول المطلوبه"}
             </DialogContentText>
 
             {this.handleInput(this.props).map((input, i) =>
@@ -148,9 +150,8 @@ console.log(this.props.id)
               input !== "__v" &&
               input !== "lawyer" &&
               input !== "lawyerComment" &&
-              input !== 'reviewer'&&
-              input !== 'reviewerComment'
-              ? (
+              input !== "reviewer" &&
+              input !== "reviewerComment" ? (
                 <Grid container direction="column" alignItems="center">
                   <NotRequired
                     name={input}
@@ -161,12 +162,12 @@ console.log(this.props.id)
                 </Grid>
               ) : (
                 console.log()
-                )
-                )}
+              )
+            )}
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
-              Cancel
+              {sessionStorage.getItem("lang") === "en" ? "Cancel" : "الغاء"}
             </Button>
             <Button
               onClick={event => {
@@ -175,10 +176,10 @@ console.log(this.props.id)
               }}
               color="primary"
             >
-              Submit
-          
+              {sessionStorage.getItem("lang") === "en"
+                ? "Save Changes"
+                : "حفظ التغيرات"}
             </Button>
-           
           </DialogActions>
         </Dialog>
       </div>

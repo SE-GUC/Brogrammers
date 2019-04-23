@@ -12,6 +12,8 @@ class LawyerAddComment extends Component{
           lawyerComment: null
         }
       }
+      this.addComment = this.addComment.bind(this)
+      this.onChange = this.onChange.bind(this)
 }
 
 addComment()
@@ -27,10 +29,19 @@ addComment()
     }
   }).then(response => {
     console.log(response)
-     alert("Your comment has been added successfully !!")
+     alert( sessionStorage.getItem('lang')==='en'? 'Your Comment has been added successfully': 'تم اضافه تعليقك بنجاح'
+     )
      window.location.reload();
    }) 
 }
+clean = obj => {
+  for (var propName in obj) {
+    if (obj[propName] === "" || obj[propName] === undefined || obj[propName] === null) {
+      delete obj[propName];
+    }
+  }
+};
+
 
 render(){
     return(
@@ -38,14 +49,16 @@ render(){
 
       <NotRequired
             name={"lawyerComment"}
-            field={"lawyerComment"}
+            field={ sessionStorage.getItem('lang')==='en'? 'lawyerComment': 'تعليق المحامى'
+          }
             type="text"
             callBack={this.onChange}
           />
             <Button variant='contained'
             color='primary' 
             size="medium" 
-            onClick={this.addComment.bind(this)} >Add Comment</Button>
+            onClick={this.addComment.bind(this)} >{ sessionStorage.getItem('lang')==='en'? 'Add comment': 'اضافه التعليق'
+          }</Button>
         </div>
     )
 }

@@ -59,13 +59,19 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 
 class CustomizedDialogFees extends React.Component {
-  state = {
-    open: false,
-    fees:0,
-    curr:''
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+      open: false,
+      fees:0,
+      curr:''
+    };
+    this.handleViewFees = this.handleViewFees.bind(this)
+  }
+    
 
   handleClickOpen = () => {
+    this.handleViewFees()
     this.setState({
       open: true
     });
@@ -81,7 +87,7 @@ class CustomizedDialogFees extends React.Component {
         method: "GET",
         headers: {
           'Content-Type': 'application/json',
-          'x-access-token':this.props.token
+          'x-access-token':sessionStorage.getItem("jwtToken")
         }
       }).then(response => {
         response.json().then(data =>{
@@ -94,10 +100,12 @@ class CustomizedDialogFees extends React.Component {
 }
 
   render() {
-    this.handleViewFees()
+    
     return (
       <div>
-        <MenuItem onClick={this.handleClickOpen}>View Fees</MenuItem>
+        <MenuItem onClick={this.handleClickOpen}>
+        {sessionStorage.getItem('lang') === 'en' ? 'View Fees' : 'اظهار المصاريف'}
+        </MenuItem>
 
         <Dialog
           onClose={this.handleClose}
@@ -113,9 +121,9 @@ class CustomizedDialogFees extends React.Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <TakeMoney />
+            <TakeMoney companyid={this.props.id} />
             <Button onClick={this.handleClose} color="primary">
-              Close
+            {sessionStorage.getItem('lang') === 'en' ? 'Close' : 'اغلاق'}
             </Button>
           </DialogActions>
         </Dialog>

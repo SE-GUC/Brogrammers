@@ -33,40 +33,45 @@ class AdminCases extends React.Component {
   render () {
     console.log(this.state.adminCases)
 
+    const listItems =
+    this.state.adminCases.map((item) => (
+      <div>
+      <SimpleCard key={item._id} nameInEnglish={item.nameInEnglish} status={item.status}
+        addressHQ={item.addressHQ}
+        Status={item.status}
+        addressHQ={item.addressHQ}
+        regulationLaw={item.regulationLaw}
+        legalCompanyForm={item.legalCompanyForm}
+        nameInArabic={item.nameInArabic}
+        governerateHQ={item.governerateHQ}
+        cityHQ={item.cityHQ}
+
+        telephoneHQ={item.telephoneHQ}
+        faxHQ={item.faxHQ}
+        capitalCurrency={item.capitalCurrency}
+        capital={item.capital}
+        investorName={item.investorName}
+        investorSex={item.investorSex}
+        investorNationaty={item.investorNationaty}
+        investorIdentificationType={item.investorIdentificationType}
+        investorIdentificationNumber={item.investorIdentificationNumber}
+        investorBD={item.investorBD}
+        investorAddress={item.investorAddress}
+        investorTelephone={item.investorTelephone}
+        investorFax={item.investorFax}
+        investorEmail={item.investorEmail}
+
+      />
+<br></br>
+</div>
+    )
+    )
+
     return (
       <div>
 
-        <ul>
-          {this.state.adminCases.map((item) => (
-            <SimpleCard key={item._id} nameInEnglish={item.nameInEnglish} status={item.status}
-              addressHQ={item.addressHQ}
-              Status={item.status}
-              addressHQ={item.addressHQ}
-              regulationLaw={item.regulationLaw}
-              legalCompanyForm={item.legalCompanyForm}
-              nameInArabic={item.nameInArabic}
-              governerateHQ={item.governerateHQ}
-              cityHQ={item.cityHQ}
-
-              telephoneHQ={item.telephoneHQ}
-              faxHQ={item.faxHQ}
-              capitalCurrency={item.capitalCurrency}
-              capital={item.capital}
-              investorName={item.investorName}
-              investorSex={item.investorSex}
-              investorNationaty={item.investorNationaty}
-              investorIdentificationType={item.investorIdentificationType}
-              investorIdentificationNumber={item.investorIdentificationNumber}
-              investorBD={item.investorBD}
-              investorAddress={item.investorAddress}
-              investorTelephone={item.investorTelephone}
-              investorFax={item.investorFax}
-              investorEmail={item.investorEmail}
-
-            />
-
-          ))}
-        </ul>
+      {listItems}
+       <br></br>
 
       </div>
 

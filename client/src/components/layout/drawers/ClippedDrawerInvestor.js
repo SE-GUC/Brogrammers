@@ -15,19 +15,29 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import EditProfileInvestor from "../../pages/EditProfileInvestor";
 import InvestorRequests from "../../pages/InvestorRequests";
 import ViewCompanies from "../../pages/ViewCompanies";
-import InvestorCompanyRegSPC from '../../pages/InvestorCompanyRegSPC'
-import InvestorCompanyRegSSC from '../../pages/InvestorCompanyRegSSC'
+import InvestorCompanyRegSPC from "../../pages/InvestorCompanyRegSPC";
+import InvestorCompanyRegSSC from "../../pages/InvestorCompanyRegSSC";
 import Stepper from "../../steppers/stepper";
 import { Paper } from "@material-ui/core";
-const drawerWidth = 240;
+import NavBar from "../Navbar";
+import ViewList from "@material-ui/icons/ViewList";
+import CreateCompany from "@material-ui/icons/CreateNewFolder";
+import EditProfile from "@material-ui/icons/BorderColor";
+import Identity from "@material-ui/icons/Person";
+import Home from "@material-ui/icons/Home";
+import Upload from "@material-ui/icons/CloudUpload";
+import Note from "@material-ui/icons/NoteAdd";
+import Add from "@material-ui/icons/PersonAdd";
+import LinearDeterminate from "../loading/LinearDeterminate";
+import zIndex from "@material-ui/core/styles/zIndex";
 
+const drawerWidth = 240;
 const styles = theme => ({
   root: {
-    display: "flex"
+    display: "flex",
+    zIndex:-1
   },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1
-  },
+  
   drawer: {
     width: drawerWidth,
     flexShrink: 0
@@ -49,7 +59,34 @@ class ClippedDrawerInvestor extends React.Component {
       clicked: "i"
     };
   }
-
+  handleLoading = () => {
+    if (sessionStorage.getItem("loading")) return <LinearDeterminate />;
+  };
+  handleContent = state => {
+    switch (state.clicked) {
+      case "requests":
+        return (
+          <InvestorRequests
+            id={sessionStorage.getItem("id")}
+            token={sessionStorage.getItem("jwtToken")}
+          />
+        );
+      case "companies":
+        return <ViewCompanies token={sessionStorage.getItem("jwtToken")} />;
+      case "profile":
+        return (
+          <EditProfileInvestor token={sessionStorage.getItem("jwtToken")} />
+        );
+      case "createssc":
+        return <InvestorCompanyRegSSC />;
+      case "createspc":
+        return <InvestorCompanyRegSPC />;
+      case "created":
+        return <Stepper />;
+      default:
+        return;
+    }
+  };
   handleHome = () => {
     document.location.href = "/";
   };
@@ -58,8 +95,16 @@ class ClippedDrawerInvestor extends React.Component {
     this.setState({ clicked: "companies" });
   };
 
-  handleCreate = () => {
-    this.setState({ clicked: "create" });
+  handleCreatessc = () => {
+    this.setState({ clicked: "createssc" });
+  };
+
+  handleCreatespc = () => {
+    this.setState({ clicked: "createspc" });
+  };
+
+  handleCreated = () => {
+    this.setState({ clicked: "created" });
   };
 
   handleProfile = () => {
@@ -69,598 +114,143 @@ class ClippedDrawerInvestor extends React.Component {
     this.setState({ clicked: "requests" });
   };
 
-  handleCompanySSC = () => {
-    this.setState({ clicked: "createssc" })
-  }
-  handleCompanySPC = () => {
-    this.setState({ clicked: "createspc" })
-  }
   render() {
     const { classes } = this.props;
-    if (this.state.clicked == "i") {
-      return (
-        <div className={classes.root}>
-          <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Investor profile
-              </Typography>
-            </Toolbar>
-          </AppBar>
 
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper
-            }}
-          >
-            <div className={classes.toolbar} />
+    return (
+      <div className={classes.root}>
+        <CssBaseline />
 
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Edit Your Profile"}
-                onClick={this.handleProfile}
-              >
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
-              <ListItem
-                button
-                key={"View My Companies"}
-                onClick={this.handleCases2}
-              >
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="View My Companies" />
-              </ListItem>
-              <ListItem
-                button
-                key={"View My Requests"}
-                onClick={this.handleRequests}
-              >
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="View My Requests" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Create Companies"}
-                onClick={this.handleCreate}
-              >
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Create Companies" />
-              </ListItem>
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create SSC Company" />
-              </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create SPC Company" />
-              </ListItem>
-              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create using existent dynamic form" />
-              </ListItem>
-            </List>
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-          </main>
-        </div>
-      );
-    }
-    if (this.state.clicked == "requests") {
-      return (
-        <div className={classes.root}>
-          <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Investor profile
-              </Typography>
-            </Toolbar>
-          </AppBar>
+        <Drawer
+          className={classes.drawer}
+          variant="permanent"
+          classes={{
+            paper: classes.drawerPaper
+          }}
+        >
+          <NavBar />
+          <div className={classes.toolbar} />
 
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper
-            }}
-          >
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Edit Your Profile"}
-                onClick={this.handleProfile}
-              >
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
-              <ListItem
-                button
-                key={"View My Companies"}
-                onClick={this.handleCases2}
-              >
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="View My Companies" />
-              </ListItem>
-              <ListItem
-                button
-                key={"View My Requests"}
-                onClick={this.handleRequests}
-              >
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="View My Requests" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Create Companies"}
-                onClick={this.handleCreate}
-              >
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Create Companies" />
-              </ListItem>
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create SSC Company" />
-              </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create SPC Company" />
-              </ListItem>
-              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create using existent dynamic form" />
-              </ListItem>
-            </List>
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-
-            <InvestorRequests
-              id={sessionStorage.getItem("id")}
-              token={sessionStorage.getItem("jwtToken")}
-            />
-          </main>
-        </div>
-      );
-    }
-
-    if (this.state.clicked == "companies") {
-      return (
-        <div className={classes.root}>
-          <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Investor profile
-              </Typography>
-            </Toolbar>
-          </AppBar>
-
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper
-            }}
-          >
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Edit Your Profile"}
-                onClick={this.handleProfile}
-              >
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
-              <ListItem
-                button
-                key={"View My Companies"}
-                onClick={this.handleCases2}
-              >
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="View My Companies" />
-              </ListItem>
-              <ListItem
-                button
-                key={"View My Requests"}
-                onClick={this.handleRequests}
-              >
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="View My Requests" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Create Companies"}
-                onClick={this.handleCreate}
-              >
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Create Companies" />
-              </ListItem>
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create SSC Company" />
-              </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create SPC Company" />
-              </ListItem>
-              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create using existent dynamic form" />
-              </ListItem>
-            </List>
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <ViewCompanies token={sessionStorage.getItem("jwtToken")} />
-          </main>
-        </div>
-      );
-    }
-
-    if (this.state.clicked == "profile") {
-      return (
-        <div className={classes.root}>
-          <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Investor profile
-              </Typography>
-            </Toolbar>
-          </AppBar>
-
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper
-            }}
-          >
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Edit Your Profile"}
-                onClick={this.handleProfile}
-              >
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
-              <ListItem
-                button
-                key={"View My Companies"}
-                onClick={this.handleCases2}
-              >
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="View My Companies" />
-              </ListItem>
-              <ListItem
-                button
-                key={"View My Requests"}
-                onClick={this.handleRequests}
-              >
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="View My Requests" />
-              </ListItem>
-              <ListItem
-                button
-                key={"Create Companies"}
-                onClick={this.handleCreate}
-              >
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Create Companies" />
-              </ListItem>
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create SSC Company" />
-              </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create SPC Company" />
-              </ListItem>
-              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create using existent dynamic form" />
-              </ListItem>
-            </List>
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <EditProfileInvestor token={sessionStorage.getItem("jwtToken")} />
-          </main>
-        </div>
-      );
-    }
-
-    if (this.state.clicked == "createssc") {
-      return (
-
-
-        <div className={classes.root}>
-          <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Investor profile
-                              </Typography>
-            </Toolbar>
-          </AppBar>
-
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-          >
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-
-            </List>
-            <Divider />
-            <List>
-
-              <ListItem button key={"View My Companies"} onClick={this.handleCases2}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="View My Companies" />
-              </ListItem>
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create SSC Company" />
-              </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create SPC Company" />
-              </ListItem>
-              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create using existent dynamic form" />
-              </ListItem>
-            </List>
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-
-            <InvestorCompanyRegSSC
-              id={sessionStorage.getItem("id")}
-              ssn={sessionStorage.getItem("ssn")}
-              token={sessionStorage.getItem("jwtToken")}
-            />
-
-          </main>
-        </div>
-
-      )
-    }
-
-    if (this.state.clicked == "createspc") {
-      return (
-
-
-        <div className={classes.root}>
-          <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Investor profile
-                              </Typography>
-            </Toolbar>
-          </AppBar>
-
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-          >
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-
-            </List>
-            <Divider />
-            <List>
-
-              <ListItem button key={"View My Companies"} onClick={this.handleCases2}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="View My Companies" />
-              </ListItem>
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create SSC Company" />
-              </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create SPC Company" />
-              </ListItem>
-              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create using existent dynamic form" />
-              </ListItem>
-            </List>
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-
-            <InvestorCompanyRegSPC
-              id={sessionStorage.getItem("id")}
-              ssn={sessionStorage.getItem("ssn")}
-              token={sessionStorage.getItem("jwtToken")}
-            />
-          
-          </main>
-        </div>
-
-      )
-    }
-    
-    if (this.state.clicked == "create") {
-      return (
-
-
-        <div className={classes.root}>
-          <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <Typography variant="h6" color="inherit" noWrap>
-                Investor profile
-                              </Typography>
-            </Toolbar>
-          </AppBar>
-
-          <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-          >
-            <div className={classes.toolbar} />
-
-            <List>
-              <ListItem button key={"Home"} onClick={this.handleHome}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-              <ListItem button key={"Edit Your Profile"} onClick={this.handleProfile}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Edit Your Profile" />
-              </ListItem>
-
-            </List>
-            <Divider />
-            <List>
-
-              <ListItem button key={"View My Companies"} onClick={this.handleCases2}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="View My Companies" />
-              </ListItem>
-              <ListItem button key={"Create SSC Company"} onClick={this.handleCompanySSC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create SSC Company" />
-              </ListItem>
-              <ListItem button key={"Create SPC Company"} onClick={this.handleCompanySPC}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create SPC Company" />
-              </ListItem>
-              <ListItem button key={"Create using existent dynamic form"} onClick={this.handleCreate}>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Create using existent dynamic form" />
-              </ListItem>
-            </List>
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-
-        
-
-            <Paper>
-              {" "}
-              <Stepper   id={sessionStorage.getItem("id")}
-              token={sessionStorage.getItem("jwtToken")}/>
-            </Paper>
-          </main>
-        </div>
-
-      )
-    }
+          <List>
+            <ListItem button key={"Home"} onClick={this.handleHome}>
+              <ListItemIcon>
+                <Home />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en" ? "Home" : "صفحتي"
+                }
+              />
+            </ListItem>
+            <ListItem
+              button
+              key={"Edit Your Profile"}
+              onClick={this.handleProfile}
+            >
+              <ListItemIcon>
+                <EditProfile />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "Edit Your Profile"
+                    : "تغير البينات"
+                }
+              />
+            </ListItem>
+          </List>
+          <Divider />
+          <List>
+            <ListItem
+              button
+              key={"View My Companies"}
+              onClick={this.handleCases2}
+            >
+              <ListItemIcon>
+                <ViewList />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "View My Companies"
+                    : "اظهر شركاتي"
+                }
+              />
+            </ListItem>
+            <ListItem
+              button
+              key={"View My Requests"}
+              onClick={this.handleRequests}
+            >
+              <ListItemIcon>
+                <ViewList />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "View My Requests"
+                    : "اظهر طلباتي"
+                }
+              />
+            </ListItem>
+            <Divider/>
+            <ListItem
+              button
+              key={"Create SSC Companies"}
+              onClick={this.handleCreatessc}
+            >
+              <ListItemIcon>
+                <Note />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "Create SSC Companies"
+                    : "سجل شركتي ال SSC"
+                }
+              />
+            </ListItem>
+            <ListItem
+              button
+              key={"Create SPC Companies"}
+              onClick={this.handleCreatespc}
+            >
+              <ListItemIcon>
+                <Note />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "Create SPC Companies"
+                    : "سجل شركتي ال SPC"
+                }
+              />
+            </ListItem>
+            <ListItem
+              button
+              key={"Create D Companies"}
+              onClick={this.handleCreated}
+            >
+              <ListItemIcon>
+                <Note />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  sessionStorage.getItem("lang") === "en"
+                    ? "Create Other Companies"
+                    : "سجل شركات اخرة"
+                }
+              />
+            </ListItem>
+          </List>
+        </Drawer>
+        <main className={classes.content} style={{ marginTop: 50 }}>
+          {this.handleLoading}
+          {this.handleContent(this.state)}
+          <div className={classes.toolbar} />
+        </main>
+      </div>
+    );
   }
 }
 

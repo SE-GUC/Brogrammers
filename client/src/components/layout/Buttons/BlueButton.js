@@ -68,7 +68,7 @@ function CustomizedButtons (props) {
     <div>
       <MuiThemeProvider theme={theme}>
         <Button variant='contained' color='primary' className={classes.margin} onClick={() => {props.callBack()}}>
-          Submit a Manager
+        {sessionStorage.getItem('lang') === 'en' ? 'Submit A Manager' : 'تسجيل المدير'}
         </Button>
       </MuiThemeProvider>
     </div>

@@ -388,7 +388,7 @@ function Country(props) {
               props,
               classes,
               InputProps: getInputProps({
-                placeholder: 'Country of origin*',
+                placeholder: sessionStorage.getItem('lang') === 'en' ? 'country of origin*' : 'بلد المنشأ',
               }),
             })}
             <div {...getMenuProps()}>

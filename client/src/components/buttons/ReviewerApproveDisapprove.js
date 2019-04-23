@@ -20,8 +20,9 @@ approveTask()
     }
   }).then(response => {
    console.log(response)
-    alert("Task Approved!!... Now the company is established!!")
-    window.location.reload();
+    alert( sessionStorage.getItem('lang')==='en'? 'Task Approved!!... Now the company is established!!': 'تم قبول الشركه  ... الان تم انشاء الشركه  '
+  )
+    this.forceUpdate()
   })
  }
 
@@ -36,7 +37,7 @@ approveTask()
      }
    }).then(response => {
     console.log(response)
-     alert("Task Disapproved!!....Please do not forget to write a comment")
+    alert( sessionStorage.getItem('lang')==='en'? 'Task Approved!!... Dont forget to write a comment!!': 'تم رفض الشركه  ... لا تنس اضافه التعليق  ')
      window.location.reload();
    })
   }
@@ -50,9 +51,10 @@ render(){
 
     return(
         <div>
-<Button variant='contained' color='primary' size="medium" onClick={this.approveTask.bind(this)} >Accept Company</Button>
+<Button variant='contained' color='primary' size="medium" onClick={this.approveTask.bind(this)} > { sessionStorage.getItem('lang')==='en'? 'Accept Company': 'قبول الشركه '}
+  </Button>
 
-<Button variant='contained' color='secondary' size="medium" onClick={this.disapproveTask.bind(this)}>Reject Company</Button>
+<Button variant='contained' color='secondary' size="medium" onClick={this.disapproveTask.bind(this)}>{ sessionStorage.getItem('lang')==='en'? 'Reject Company': 'رفض الشركه '}</Button>
 
 
         </div>

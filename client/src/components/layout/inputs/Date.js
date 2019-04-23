@@ -33,7 +33,7 @@ class Date extends React.Component {
         <Grid container className={classes.grid} justify="space-around">
           <DatePicker
             margin="normal"
-            label="Date of Birth"
+            label={sessionStorage.getItem('lang') === 'en' ? 'Date of Birth' : 'تاريخ الميلاد'}
             name={this.props.name}
             variant="outlined"
             value={selectedDate}

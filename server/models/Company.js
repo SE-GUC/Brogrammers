@@ -6,6 +6,9 @@ const ManagerSchema = new Schema({
     type: String,
     required: true
   },
+  creationDate:{
+    Date
+  },
   type: {
     type: String,
     required: true
@@ -137,6 +140,7 @@ const CompanySchema = new Schema(
         "PendingReviewer",
         "RejectedLawyer",
         "RejectedReviewer",
+        "AccpetedReviewer",
         "Accepted"
       ]
     },
@@ -153,9 +157,12 @@ const CompanySchema = new Schema(
     },
     reviewerComment: {
       type: String
+    },
+    pdf:{
+      type:String
     }
   },
-  { discriminatorKey: "legalCompanyForm" }
+  { strict: false }
 );
 
-module.exports = mongoose.model('companys',CompanySchema);
+module.exports = mongoose.model("companys", CompanySchema);

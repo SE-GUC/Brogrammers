@@ -55,7 +55,7 @@ class CreateCompany extends React.Component {
       <TextField
         id="outlined-select-currency"
         select
-        label="company type"
+        label={sessionStorage.getItem('lang') === 'en' ? "company type" : "نوع الشركة"}
         className={styles.textField}
         value={this.state.selected}
         onChange={this.handleChange("selected")}
@@ -64,11 +64,11 @@ class CreateCompany extends React.Component {
             className: styles.menu
           }
         }}
-        helperText="Please select your Company Type"
+        helperText={sessionStorage.getItem('lang') === 'en' ? "Please select your Company Type" : "اختار نوع الشركة"}
         margin="normal"
         variant="outlined"
       >
-      { sessionStorage.setItem("type", this.state.selected)}
+      { sessionStorage.setItem("companyType", this.state.selected)}
         {this.state.companytypes.map(option => (
           <MenuItem key={option} value={option}>
             {option}

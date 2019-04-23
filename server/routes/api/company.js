@@ -13,6 +13,9 @@ router.post('/ssc', async (req, res) => {
     const isValidated = validator.createValidationSSC(req.body)
     if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
     const newCompany = await Company.create(req.body)
+    var d = new Date();
+    d.setTime(d.getTime());
+    newCompany.creationDate=d
     res.json({ msg: 'Company was created successfully', data: newCompany })
   } catch (error) {
     // We will be handling the error later
@@ -25,6 +28,9 @@ router.post('/spc', async (req, res) => {
     const isValidated = validator.createValidationSPC(req.body)
     if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
     const newCompany = await Company.create(req.body)
+    var d = new Date();
+    d.setTime(d.getTime());
+    newCompany.creationDate=d
     res.json({ msg: 'Company was created successfully', data: newCompany })
   } catch (error) {
     // We will be handling the error later
@@ -44,7 +50,7 @@ router.post('/create', async (req, res) => {
 
 router.get('/', async (req, res) => {
   const companys = await Company.find()
-  res.json({ data: companys })
+  res.json({ data: companys })  
 })
 
 // Sprint 2: viewing approved Companies

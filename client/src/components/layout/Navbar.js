@@ -1,38 +1,41 @@
-import React from "react"
-import PropTypes from "prop-types"
-import AppBar from "@material-ui/core/AppBar"
-import Toolbar from "@material-ui/core/Toolbar"
-import IconButton from "@material-ui/core/IconButton"
-import Typography from "@material-ui/core/Typography"
-import InputBase from "@material-ui/core/InputBase"
-import Badge from "@material-ui/core/Badge"
-import MenuItem from "@material-ui/core/MenuItem"
-import Menu from "@material-ui/core/Menu"
-import { fade } from "@material-ui/core/styles/colorManipulator"
-import { withStyles } from "@material-ui/core/styles"
-import MenuIcon from "@material-ui/icons/Menu"
-import SearchIcon from "@material-ui/icons/Search"
-import AccountCircle from "@material-ui/icons/AccountCircle"
-import MailIcon from "@material-ui/icons/Mail"
-import NotificationsIcon from "@material-ui/icons/Notifications"
-import MoreIcon from "@material-ui/icons/MoreVert"
-import Tab from '@material-ui/core/Tab';
-import red from '@material-ui/core/colors/red';
-import blue from '@material-ui/core/colors/blue';
-import SvgIcon from '@material-ui/core/SvgIcon';
+import React from 'react'
+import PropTypes from 'prop-types'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import IconButton from '@material-ui/core/IconButton'
+import Typography from '@material-ui/core/Typography'
+import InputBase from '@material-ui/core/InputBase'
+import Badge from '@material-ui/core/Badge'
+import MenuItem from '@material-ui/core/MenuItem'
+import Menu from '@material-ui/core/Menu'
+import { fade } from '@material-ui/core/styles/colorManipulator'
+import { withStyles } from '@material-ui/core/styles'
+import MenuIcon from '@material-ui/icons/Menu'
+import SearchIcon from '@material-ui/icons/Search'
+import AccountCircle from '@material-ui/icons/AccountCircle'
+import MailIcon from '@material-ui/icons/Mail'
+import NotificationsIcon from '@material-ui/icons/Notifications'
+import MoreIcon from '@material-ui/icons/MoreVert'
+import Tab from '@material-ui/core/Tab'
+import red from '@material-ui/core/colors/red'
+import blue from '@material-ui/core/colors/blue'
+import SvgIcon from '@material-ui/core/SvgIcon'
+import searchCases from '../pages/searchCases';
 
 function HomeIcon(props) {
   return (
     <SvgIcon {...props}>
       <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
     </SvgIcon>
-  );
+  )
 }
-
 
 const styles = theme => ({
   root: {
-    width: "100%"
+    width: '100%',
+    top: 0,
+    position: 'fixed',
+    zIndex: 12
   },
   grow: {
     flexGrow: 1
@@ -42,24 +45,24 @@ const styles = theme => ({
     marginRight: 20
   },
   title: {
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "block"
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block'
     }
   },
   search: {
-    position: "relative",
+    position: 'relative',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
+    '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25)
     },
     marginRight: theme.spacing.unit * 2,
     marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing.unit * 3,
-      width: "auto"
+      width: 'auto'
     }
   },
   searchIcon: {
@@ -106,7 +109,8 @@ class PrimarySearchAppBar extends React.Component {
     this.state = {
       anchorEl: null,
       mobileMoreAnchorEl: null,
-      auth: false
+      auth: false,
+      searchText:""
     }
   }
   handleProfileMenuOpen = event => {
@@ -135,23 +139,29 @@ class PrimarySearchAppBar extends React.Component {
     this.state.auth = false
     this.forceUpdate()
     this.handleMenuClose()
-    document.location.href = '/'
+    
   }
 
   handleProfile = () => {
     document.location.href = '/profile'
   }
 
-  handleSignUp=() =>{
+  handleSignUp = () => {
     document.location.href = '/register'
   }
 
-  handleSignIn=() =>{
+  handleSignIn = () => {
     document.location.href = '/signin'
   }
 
-  handleHome=() =>{
+  handleHome = () => {
     document.location.href = '/'
+  }
+  handleInput =(e) =>{
+    this.setState({searchText: e.target.value})
+  }
+  handleSearch = () => {
+    document.location.href = `/searchCases/${this.state.searchText}`
   }
 
   render() {
@@ -220,16 +230,16 @@ class PrimarySearchAppBar extends React.Component {
         ? {}
         : { display: 'none' }
 
-        const hiden =
-        sessionStorage.getItem('type') == 'i' ||
-        sessionStorage.getItem('type') == 'r' ||
-        sessionStorage.getItem('type') == 'a' ||
-        sessionStorage.getItem('type') == 'l'
-          ? { display: 'none' }
-          : {}
+    const hiden =
+      sessionStorage.getItem('type') == 'i' ||
+      sessionStorage.getItem('type') == 'r' ||
+      sessionStorage.getItem('type') == 'a' ||
+      sessionStorage.getItem('type') == 'l'
+        ? { display: 'none' }
+        : {}
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar position="static" style={{ backgroundColor: '#000000' }} className={classes.root}>
           <Toolbar>
             <IconButton
               className={classes.menuButton}
@@ -246,12 +256,30 @@ class PrimarySearchAppBar extends React.Component {
             >
               GAFI
             </Typography>
+            
 
-           
-            <Tab label="Sign in" onClick={this.handleSignIn} style={hiden}/>
-            <Tab label="Sign up" onClick={this.handleSignUp} style={hiden}/>
+            <Tab label="Search" onClick={this.handleSearch}  />
+            
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                onChange = {this.handleInput}
+              />
+            </div>
+
+
+            <Tab label="Sign in" onClick={this.handleSignIn} style={hiden} />
+            <Tab label="Sign up" onClick={this.handleSignUp} style={hiden} />
             <div className={classes.grow} />
             <div className={classes.sectionDesktop} style={hidei}>
+            
               <IconButton color="inherit">
                 <Badge badgeContent={69} color="secondary">
                   <MailIcon />
@@ -273,22 +301,24 @@ class PrimarySearchAppBar extends React.Component {
             </div>
 
             <HomeIcon
-            onClick={this.handleHome}
-        className={classes.icon}
-        color="primary"
-        fontSize="large"
-        component={svgProps => (
-          <svg {...svgProps}>
-            <defs>
-              <linearGradient id="gradient1">
-                <stop offset="30%" stopColor={blue[400]} />
-                <stop offset="70%" stopColor={red[400]} />
-              </linearGradient>
-            </defs>
-            {React.cloneElement(svgProps.children[0], { fill: 'url(#gradient1)' })}
-          </svg>
-        )}
-      />
+              onClick={this.handleHome}
+              className={classes.icon}
+              color="primary"
+              fontSize="large"
+              component={svgProps => (
+                <svg {...svgProps}>
+                  <defs>
+                    <linearGradient id="gradient1">
+                      <stop offset="30%" stopColor={'#ffffff'} />
+                      <stop offset="70%" stopColor={'#ffffff'} />
+                    </linearGradient>
+                  </defs>
+                  {React.cloneElement(svgProps.children[0], {
+                    fill: 'url(#gradient1)'
+                  })}
+                </svg>
+              )}
+            />
             <div className={classes.sectionMobile}>
               <IconButton
                 aria-haspopup="true"
@@ -297,7 +327,6 @@ class PrimarySearchAppBar extends React.Component {
               >
                 <MoreIcon />
               </IconButton>
-              
             </div>
           </Toolbar>
         </AppBar>

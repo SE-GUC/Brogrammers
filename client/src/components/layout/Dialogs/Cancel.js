@@ -28,7 +28,7 @@ class Cancel extends React.Component {
     return (
       <div>
         <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-          Cancel
+        {sessionStorage.getItem('lang')==='en'? 'Cancel': 'الغاء'}
         </Button>
         <Dialog
           open={this.state.open}
@@ -39,20 +39,20 @@ class Cancel extends React.Component {
           aria-describedby="alert-dialog-slide-description"
         >
           <DialogTitle id="alert-dialog-slide-title">
-            {"Submit your Form?"}
+            {sessionStorage.getItem('lang')==='en'? 'Submit your form': 'ارسال الوثيقه'}
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
-              Are you sure you want to proceed?
+            {sessionStorage.getItem('lang')==='en'? 'Are you Sure you want to proceed': 'هل انت واثق من اتمام العمليه'}
 
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
-              Disagree
+            {sessionStorage.getItem('lang')==='en'? 'Disagree': 'غير موافق'}
             </Button>
             <Button onClick={this.props.handleRegister} color="primary">
-              Agree
+            {sessionStorage.getItem('lang')==='en'? 'Agree': ' موافق'}
             </Button>
           </DialogActions>
         </Dialog>

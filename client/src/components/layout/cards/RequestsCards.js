@@ -163,7 +163,7 @@ class SimpleCard extends React.Component {
             <SimpleMenu
               a={this.checkrej(this.props)}
               id={this.props.id}
-              token={this.props.token}
+              token={sessionStorage.getItem("jwtToken")}
               data={this.props.data}
             />
           }
@@ -179,7 +179,7 @@ class SimpleCard extends React.Component {
             {" "}
             {this.props.lawyer !== undefined
               ? '"' + this.props.comment + '"'
-              : <h1 style={{ textAlign: 'center', fontSize: "20px" }}> No Comments yet</h1>}
+              : <h1 style={{ textAlign: 'center', fontSize: "20px" }}>{sessionStorage.getItem('lang')==='en'? 'No comments Yet': 'لا يوجد تعليقات حتى الان'}</h1>}
           </Typography>
           <Typography className={classes.lawyer}>
             {this.props.lawyer !== undefined
