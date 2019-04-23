@@ -47,20 +47,20 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
         return (
           <PostForm
             token={this.props.token}
-            type={sessionStorage.getItem("type")}
+            type={sessionStorage.getItem("companyType")}
           />
         );
       default:
         return "Unknown stepIndex";
-    }
+    }  
   };
   state = {
     activeStep: 0
   };
 
   handleNext = () => {
-    console.log(sessionStorage.getItem("type"));
-    if (sessionStorage.getItem("type")) {
+    console.log(sessionStorage.getItem("companyType"));
+    if (sessionStorage.getItem("companyType")) {
       this.setState(state => ({
         activeStep: state.activeStep + 1
       }));

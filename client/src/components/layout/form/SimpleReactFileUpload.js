@@ -101,11 +101,14 @@ class SimpleReactFileUpload extends React.Component {
         // then print response status
         this.setState({ submitted: true });
         return <Snackbar variant="success" message="success" style={{zIndex:222700}}/>;
-      });
+      }).then(
+        window.location.reload()
+  
+      )
   };
 
   onDeleteHandler = () => {
-    const data = sessionStorage.getItem("type");
+    const data = sessionStorage.getItem("companyType");
     console.log(data);
     fetch("http://localhost:3000/routes/api/admins/delete-form", {
       method: "DELETE",
@@ -114,7 +117,10 @@ class SimpleReactFileUpload extends React.Component {
         "x-access-token": sessionStorage.getItem("jwtToken")
       },
       body: JSON.stringify({ formName: data })
-    });
+    }).then(
+      window.location.reload()
+
+    )
     
   };
 
