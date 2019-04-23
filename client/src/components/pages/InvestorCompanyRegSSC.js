@@ -21,6 +21,7 @@ window.html2canvas = html2canvas
 
 
 
+
 const storage = firebase.storage();
 
 const styles = theme => ({
