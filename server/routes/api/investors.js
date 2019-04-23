@@ -608,10 +608,7 @@ router.post("/pdf/:id", async (req, res) => {
       stat = decoded.id;
     });
     const id = req.params.id;
-    const investor = await Investor.findById(stat);
-    if (!investor) {
-      return res.status(404).send({ error: "Investor does not exist" });
-    }
+
     
 
  

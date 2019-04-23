@@ -123,9 +123,10 @@ class InvestorCompanyReg extends React.Component {
         doc.addPage()
         html2canvas(source3, {
           dpi: 144,
-          scale: 0.9
-        }).then(function (canvas) {
-          img = canvas.toDataURL('image3/png');
+          scale:0.9
+        }).then(function(canvas) {
+          var img = canvas.toDataURL('image/png');
+          var doc = new jsPDF();
           doc.addImage(img, 'JPEG', 17, 10);
           var image = doc.output('blob')
           // document.location.href = '/profile';

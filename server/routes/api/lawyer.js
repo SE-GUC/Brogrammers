@@ -481,12 +481,12 @@ router.get('/logout', function (req, res) {
 router.put('/editForm/:id/:companyId', async function (req, res) {
   var stat = 0
   var lawyerId = req.params.id
-  var companyId = req.params.companyId
+  var companyid = req.params.companyId
   const query = {
     $and: [
       { status: 'RejectedReviewer' },
       { lawyer: lawyerId },
-      { _id: companyId }
+      { _id: companyid }
     ]
   }
   const editableCompanies = await Company.findOne(query)
@@ -506,6 +506,49 @@ router.put('/editForm/:id/:companyId', async function (req, res) {
     return res
       .status(500)
       .send({ auth: false, message: 'Failed to authenticate token.' })
+<<<<<<< HEAD
+    }
+    const id = stat
+    const lawyer = await Lawyer.findOne({socialSecurityNumber: lawyerId}, { _id: 1 })
+    const companybeforeupdate = await Company.findById(companyid)
+    if(!lawyer){
+      return res
+      .status(500)
+      .send({ auth: false, message: 'Failed to authenticate token.' })
+    }
+    if(lawyer._id==id){
+      if (!editableCompanies) {
+        return res.status(404).send({ error: 'There are no Fourms to be edited' })
+      } else {
+        // const isValidated = companyvalidator.updateValidationSSC(req.body)
+        // if (isValidated.error) {
+        //   return res
+        //     .status(400)
+        //     .send({ error: isValidated.error.details[0].message })
+        // }
+        await Company.findByIdAndUpdate(companyid, req.body)
+        await Company.findByIdAndUpdate(companyid, { status: 'PendingReviewer' })
+        const updatedcompstatus = await Company.findById(companyid) 
+
+              
+// delete the the ids in the search tag Array before we update the company
+
+  if(req.body.regulationLaw)
+  {
+    var deleteIdinArrayinSearch = await SearchTag.findOne({tag:companybeforeupdate.regulationLaw})
+    
+    console.log(deleteIdinArrayinSearch)
+    if(deleteIdinArrayinSearch){
+    for (var i =0; i < deleteIdinArrayinSearch.location.length; i++)
+    {
+       if (deleteIdinArrayinSearch.location[i] == companybeforeupdate._id) {
+          deleteIdinArrayinSearch.location.splice(i,1);
+          await SearchTag.findByIdAndUpdate(deleteIdinArrayinSearch._id,deleteIdinArrayinSearch)
+          console.log("tag regulation law delteted  successfully")
+          break;
+        }
+   }
+=======
   }
   const id = stat
   const lawyer = await Lawyer.findOne({ socialSecurityNumber: lawyerId }, { _id: 1 })
@@ -514,6 +557,7 @@ router.put('/editForm/:id/:companyId', async function (req, res) {
     return res
       .status(500)
       .send({ auth: false, message: 'Failed to authenticate token.' })
+>>>>>>> d610559b70ede0c5cb71e6216eaaff067c3c502c
   }
   if (lawyer._id == id) {
     if (!editableCompanies) {
@@ -829,8 +873,13 @@ router.put('/editForm/:id/:companyId', async function (req, res) {
 
 
 
+<<<<<<< HEAD
+        res.json({ msg: 'fourm updated successfully',data: updatedcompstatus})
+      }
+=======
       res.json({ msg: 'fourm updated successfully' })
     }
+>>>>>>> d610559b70ede0c5cb71e6216eaaff067c3c502c
 
 
 
