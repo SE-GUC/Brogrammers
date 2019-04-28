@@ -1,0 +1,27 @@
+{
+  "title": "SAC Company",
+  "type": "object",
+  "properties": {
+    "regulationLaw": {
+	"title":"Regulation Law"
+      "type": "string",
+      "enum": [
+        "Law 159",
+        "Law 72"
+      ]
+     
+    },
+	"nameInArabic":{
+	"title":"Name in Arabic",
+	"type": "string"
+  },
+  "nameInEngish":{
+  "title":"Name in English",
+  "type":"string"
+  }},
+  "required": [
+    "NameInArabic"
+  ]
+  
+    }
+  
