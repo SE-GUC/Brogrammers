@@ -11,15 +11,14 @@ import Required from '../layout/inputs/Required'
 import NotRequired from '../layout/inputs/NotRequired'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import jsPDF from 'jspdf'
-import FileUploader from "react-firebase-file-uploader";
+import FileUploader from 'react-firebase-file-uploader'
 import html2canvas from 'html2canvas'
 import img3 from '../../components/Images/capture.png'
-import firebase from '../../firebase';
+import firebase from '../../firebase'
 window.html2canvas = html2canvas
-//import * as rasterizeHTML from 'rasterizehtml';
+// import * as rasterizeHTML from 'rasterizehtml';
 
-
-const storage = firebase.storage();
+const storage = firebase.storage()
 
 const styles = theme => ({
   main: {
@@ -57,8 +56,7 @@ const styles = theme => ({
 })
 
 class InvestorCompanyReg extends React.Component {
-
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       company: {
@@ -83,25 +81,22 @@ class InvestorCompanyReg extends React.Component {
       investorNationality: '',
       egp: 'none',
       negp: 'block',
-      vis: 'none',
+      vis: 'none'
     }
     this.handleRegister = this.handleRegister.bind(this)
     this.handleInput = this.handleInput.bind(this)
     this.createPdf = this.createPdf.bind(this)
   }
 
-
-
-
-  createPdf(e) {
+  createPdf (e) {
     this.setState({
-      vis: "block"
+      vis: 'block'
     })
-    e.preventDefault();
+    e.preventDefault()
 
-    var source = document.getElementById('com');
-    var source2 = document.getElementById('com2');
-    var source3 = document.getElementById('com3');
+    var source = document.getElementById('com')
+    var source2 = document.getElementById('com2')
+    var source3 = document.getElementById('com3')
     var doc = ''
     var blob = ''
     var id = this.state.id
@@ -109,114 +104,104 @@ class InvestorCompanyReg extends React.Component {
       dpi: 144,
       scale: 0.9
     }).then(function (canvas) {
-      var img = canvas.toDataURL('image/png');
-      var doc = new jsPDF();
-      var myImage = new Image(100, 200);
-      doc.addImage(img, 'JPEG', 17, 10);
-      doc.addPage();
+      var img = canvas.toDataURL('image/png')
+      var doc = new jsPDF()
+      var myImage = new Image(100, 200)
+      doc.addImage(img, 'JPEG', 17, 10)
+      doc.addPage()
       html2canvas(source2, {
         dpi: 144,
         scale: 0.9
       }).then(function (canvas) {
-        img = canvas.toDataURL('image2/png');
-        doc.addImage(img, 'JPEG', 17, 10);
+        img = canvas.toDataURL('image2/png')
+        doc.addImage(img, 'JPEG', 17, 10)
         doc.addPage()
         html2canvas(source3, {
           dpi: 144,
-          scale:0.9
-        }).then(function(canvas) {
-          var img = canvas.toDataURL('image/png');
-          doc.addImage(img, 'JPEG', 17, 10);
+          scale: 0.9
+        }).then(function (canvas) {
+          var img = canvas.toDataURL('image/png')
+          doc.addImage(img, 'JPEG', 17, 10)
           var image = doc.output('blob')
           // document.location.href = '/profile';
-          const uploadTask = storage.ref(`${id}/pdf`).put(image);
+          const uploadTask = storage.ref(`${id}/pdf`).put(image)
           uploadTask.on('state_changed',
             (snapshot) => {
               // progrss function ....
-              const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+              const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
             },
             (error) => {
               // error function ....
-              console.log(error);
+              console.log(error)
             },
             () => {
               // complete function ....
               storage.ref(id).child('pdf').getDownloadURL().then(url => {
-                console.log(url);
-                window.open(url, '_blank');
-                fetch('http://localhost:3000/api/investors/pdf/' + id,
+                console.log(url)
+                window.open(url, '_blank')
+                fetch('http://serverbrogrammers.herokuapp.com/api/investors/pdf/' + id,
                   {
                     method: 'POST',
                     body: JSON.stringify({ pdf: url }),
                     headers: {
                       'Content-Type': 'application/json',
                       'Origin': 'http://localhost:3000',
-                      'x-access-token': sessionStorage.getItem("jwtToken")
+                      'x-access-token': sessionStorage.getItem('jwtToken')
                     }
                   }).then(response => {
-                    console.log(response)
-                  })
+                  console.log(response)
+                })
               })
-            });
+            })
         })
-
-
       })
-
     })
-
-
-
   };
 
-  handleRegister(event) {
+  handleRegister (event) {
     event.preventDefault()
-    fetch('http://localhost:3000/api/investors/createspccompany',
+    fetch('http://serverbrogrammers.herokuapp.com/api/investors/createspccompany',
       {
         method: 'POST',
         body: JSON.stringify(this.state.company),
         headers: {
           'Content-Type': 'application/json',
           'Origin': 'http://localhost:3000',
-          'x-access-token': sessionStorage.getItem("jwtToken")
+          'x-access-token': sessionStorage.getItem('jwtToken')
         }
       }).then(response => {
-        response.json().then(data => {
-          if (data.error) {
-            alert(data.error);
-          }
-          else {
-            console.log('Successful' + data)
+      response.json().then(data => {
+        if (data.error) {
+          alert(data.error)
+        } else {
+          console.log('Successful' + data)
 
-            console.log('Successful' + data.data._id)
-            var lol = new Date(data.data.investorBD)
+          console.log('Successful' + data.data._id)
+          var lol = new Date(data.data.investorBD)
 
-            this.setState({
-              id: data.data._id,
-              investorName: data.data.investorName,
-              investorAddress: data.data.investorAddress,
-              investorBD: lol.getDay() + "/" + lol.getMonth() + "/" + lol.getFullYear(),
-              investorIdentificationNumber: data.data.investorIdentificationNumber,
-              investorIdentificationType: data.data.investorIdentificationType,
-              investorNationality: data.data.investorNationality
-            })
-            if (data.data.capitalCurrency == 'egp') {
-              document.getElementById("negp").style.visibility = "hidden";
-            } else {
-              document.getElementById("egp").style.visibility = "hidden";
-            }
-            //  this.state.id=data.data._id
-            console.log(this.state.id + " the ID")
-            this.createPdf(event);
+          this.setState({
+            id: data.data._id,
+            investorName: data.data.investorName,
+            investorAddress: data.data.investorAddress,
+            investorBD: lol.getDay() + '/' + lol.getMonth() + '/' + lol.getFullYear(),
+            investorIdentificationNumber: data.data.investorIdentificationNumber,
+            investorIdentificationType: data.data.investorIdentificationType,
+            investorNationality: data.data.investorNationality
+          })
+          if (data.data.capitalCurrency == 'egp') {
+            document.getElementById('negp').style.visibility = 'hidden'
+          } else {
+            document.getElementById('egp').style.visibility = 'hidden'
           }
-        })
+          //  this.state.id=data.data._id
+          console.log(this.state.id + ' the ID')
+          this.createPdf(event)
+        }
       })
-
-
-
+    })
   }
 
-  handleInput(event) {
+  handleInput (event) {
     let value = event.target.value
     let name = event.target.name
     this.setState(prevState => {
@@ -229,72 +214,75 @@ class InvestorCompanyReg extends React.Component {
     )
   }
 
-  render() {
+  render () {
     const { classes } = this.props
     return (
       <div className={classes.main}>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js' />
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js' />
 
         <CssBaseline />
-        <Paper className={classes.paper} elevation={16} >
-          <Grid container spacing={0} justify='space-evenly'>
-            <Grid container direction='column' alignItems='center'>
-              <Avatar className={classes.greenAvatar}>
-                <AssignmemtIcon />
-              </Avatar>
+        <Grid item xs={12}>
+
+          <Paper className={classes.paper} elevation={16} >
+            <Grid container spacing={0} justify='space-evenly'>
+              <Grid container direction='column' alignItems='center'>
+                <Avatar className={classes.greenAvatar}>
+                  <AssignmemtIcon />
+                </Avatar>
+              </Grid>
+              <Grid container direction='column' alignItems='center'>
+                <Typography variant='h6' component='h3'>
+                  <p>
+                    {sessionStorage.getItem('lang') === 'en' ? 'Fill in your Company Form!' : 'املئ بينات شركتك'}
+                  </p>
+                </Typography>
+              </Grid>
+              <Grid container direction='column' alignItems='center' >
+                <Required field={sessionStorage.getItem('lang') === 'en' ? 'Law' : ' ‫القانون‬‫ المنظم'} type={'text'} callBack={this.handleInput} name={'regulationLaw'} />
+              </Grid>
+              <Grid container direction='column' alignItems='center' >
+                <Required field={sessionStorage.getItem('lang') === 'en' ? 'Legal Company Form' : '‫شكل‬ ‫الشركة ‫القانوني‬ '} type={'text'} callBack={this.handleInput} name={'legalCompanyForm'} />
+              </Grid>
+              <Grid container direction='column' alignItems='center' >
+                <Required field={sessionStorage.getItem('lang') === 'en' ? 'Name In Arabic' : ' ‫اسم‬‫ المنشأة‬'} type={'text'} callBack={this.handleInput} name={'nameInArabic'} />
+              </Grid>
+              <Grid container direction='column' alignItems='center' >
+                <NotRequired field={sessionStorage.getItem('lang') === 'en' ? 'Name In English' : 'اسم‬ ‫المنشأه‬‫بالانجلیزیة‬ (في‬‬ ‫حالة‫ وجوده‬‫)'} type={'text'} callBack={this.handleInput} name={'nameInEnglish'} />
+              </Grid>
+              <Grid container direction='column' alignItems='center' >
+                <Required field={sessionStorage.getItem('lang') === 'en' ? 'Government HQ' : '‫المركز ‫الرئیسي‬ ‫(المحافظة)‬‬'} type={'text'} callBack={this.handleInput} name={'governerateHQ'} />
+              </Grid>
+              <Grid container direction='column' alignItems='center' >
+                <Required field={sessionStorage.getItem('lang') === 'en' ? 'City HQ' : 'المركز ‫الرئیسي‬ ‫‫(المدینة)'} type={'text'} callBack={this.handleInput} name={'cityHQ'} />
+              </Grid>
+              <Grid container direction='column' alignItems='center' >
+                <Required field={sessionStorage.getItem('lang') === 'en' ? 'Address HQ' : ' ‫المركز‬ ‫الرئیسي ‫(العنوان)'} type={'text'} callBack={this.handleInput} name={'addressHQ'} />
+              </Grid>
+              <Grid container direction='column' alignItems='center' >
+                <Required field={sessionStorage.getItem('lang') === 'en' ? 'Telephone HQ' : '‫التلیفون‬'} type={'text'} callBack={this.handleInput} name={'telephoneHQ'} />
+              </Grid>
+              <Grid container direction='column' alignItems='center' >
+                <Required field={sessionStorage.getItem('lang') === 'en' ? 'Fax HQ' : '‫الفاكس‬'} type={'text'} callBack={this.handleInput} name={'faxHQ'} />
+              </Grid>
+              <Grid container direction='column' alignItems='center' >
+                <Required field={sessionStorage.getItem('lang') === 'en' ? 'Capital Currency' : '‫عملة‬ ‫رأس‬ ‫المال‬'} type={'text'} callBack={this.handleInput} name={'capitalCurrency'} />
+              </Grid>
+              <Grid container direction='column' alignItems='center' >
+                <Required field={sessionStorage.getItem('lang') === 'en' ? 'Capital' : 'رأس‬ ‫المال'} type={'number'} callBack={this.handleInput} name={'capital'} />
+              </Grid>
+              <Grid>
+                <br />
+              </Grid>
+              <Grid container direction='column' alignItems='flex-end' >
+                <AlertDialogSlide handleRegister={this.handleRegister} />
+              </Grid>
             </Grid>
-            <Grid container direction='column' alignItems='center'>
-              <Typography variant='h6' component='h3'>
-                <p>
-                  {sessionStorage.getItem('lang') === 'en' ? 'Fill in your Company Form!' : 'املئ بينات شركتك'}
-                </p>
-              </Typography>
-            </Grid>
-            <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Law' : ' ‫القانون‬‫ المنظم'} type={'text'} callBack={this.handleInput} name={'regulationLaw'} />
-            </Grid>
-            <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Legal Company Form' : '‫شكل‬ ‫الشركة ‫القانوني‬ '} type={'text'} callBack={this.handleInput} name={'legalCompanyForm'} />
-            </Grid>
-            <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Name In Arabic' : ' ‫اسم‬‫ المنشأة‬'} type={'text'} callBack={this.handleInput} name={'nameInArabic'} />
-            </Grid>
-            <Grid container direction='column' alignItems='center' >
-              <NotRequired field={sessionStorage.getItem('lang') === 'en' ? 'Name In English' : 'اسم‬ ‫المنشأه‬‫بالانجلیزیة‬ (في‬‬ ‫حالة‫ وجوده‬‫)'} type={'text'} callBack={this.handleInput} name={'nameInEnglish'} />
-            </Grid>
-            <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Government HQ' : '‫المركز ‫الرئیسي‬ ‫(المحافظة)‬‬'} type={'text'} callBack={this.handleInput} name={'governerateHQ'} />
-            </Grid>
-            <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'City HQ' : 'المركز ‫الرئیسي‬ ‫‫(المدینة)'} type={'text'} callBack={this.handleInput} name={'cityHQ'} />
-            </Grid>
-            <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Address HQ' : ' ‫المركز‬ ‫الرئیسي ‫(العنوان)'} type={'text'} callBack={this.handleInput} name={'addressHQ'} />
-            </Grid>
-            <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Telephone HQ' : '‫التلیفون‬'} type={'text'} callBack={this.handleInput} name={'telephoneHQ'} />
-            </Grid>
-            <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Fax HQ' : '‫الفاكس‬'} type={'text'} callBack={this.handleInput} name={'faxHQ'} />
-            </Grid>
-            <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Capital Currency' : '‫عملة‬ ‫رأس‬ ‫المال‬'} type={'text'} callBack={this.handleInput} name={'capitalCurrency'} />
-            </Grid>
-            <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Capital' : 'رأس‬ ‫المال'} type={'number'} callBack={this.handleInput} name={'capital'} />
-            </Grid>
-            <Grid>
-              <br />
-            </Grid>
-            <Grid container direction='column' alignItems='flex-end' >
-              <AlertDialogSlide handleRegister={this.handleRegister} />
-            </Grid>
-          </Grid>
-        </Paper>
+          </Paper>
+        </Grid>
         <FileUploader
           // hidden
-          accept="image/*"
+          accept='image/*'
           storageRef={firebase.storage().ref('images')}
           onUploadStart={this.handleUploadStart}
           onUploadError={this.handleUploadError}
@@ -304,9 +292,9 @@ class InvestorCompanyReg extends React.Component {
 
         <div style={{ display: this.state.vis }}>
 
-          <div id="com" dir="rtl" lang='ar'  align ='right'>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
-            <img src={img3} width={160} height={133} mode="fill" />
+          <div id='com' dir='rtl' lang='ar' align='right'>
+            <script src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js' />
+            <img src={img3} width={160} height={133} mode='fill' />
             <h4 align='center' styles={{}}>النظام الأساسي</h4>
             <h4 align='center'>  لشركة {this.state.company.nameInArabic} {this.state.company.nameInEnglish}</h4>
             <h4 align='center'>شركة شخص واحد</h4>
@@ -324,25 +312,25 @@ class InvestorCompanyReg extends React.Component {
 
             <h4 align='center' style={{ textDecoration: 'underline' }}> الماده ( ٢ )</h4>
             <p>بیانات مؤسس الشركة</p>
-            <table align='center' style={{ border: '1px solid black', width: "85%" }}>
+            <table align='center' style={{ border: '1px solid black', width: '85%' }}>
               <tr style={{ border: '1px solid black' }}>
                 <th style={{ border: '1px solid black' }}>
                   الاسم
-    </th>
+                </th>
                 <th style={{ border: '1px solid black' }}>
                   الجنسیة
-    </th>
+                </th>
                 <th style={{ border: '1px solid black' }}>
                   تاریخ المیلاد
-    </th>
+                </th>
                 <th style={{ border: '1px solid black' }}>
                   إثبات الشخصیة
-    </th>
+                </th>
                 <th style={{ border: '1px solid black' }}>
                   الإقامة
-    </th>
+                </th>
               </tr>
-              <tr style={{ border: '1px solid black', width: "70%" }}>
+              <tr style={{ border: '1px solid black', width: '70%' }}>
                 <td style={{ border: '1px solid black' }}>
                   {this.state.investorName}
                 </td>
@@ -360,11 +348,10 @@ class InvestorCompanyReg extends React.Component {
               </tr>
             </table>
 
-
           </div>
 
-          <div id="com2" dir="rtl" lang='ar'  align ='right'>
-            <img src={img3} width={160} height={133} mode="fill" />
+          <div id='com2' dir='rtl' lang='ar' align='right'>
+            <img src={img3} width={160} height={133} mode='fill' />
 
             <h4 align='center' style={{ textDecoration: 'underline' }}> الماده ( ٣ )</h4>
             <p>یكون المركز الرئیسى لإدارة الشركة ومحلھا القانوني في العنوان الآتى  :{this.state.company.addressHQ} </p>
@@ -372,9 +359,7 @@ class InvestorCompanyReg extends React.Component {
             جمھوریة مصر العربیة أو خارجھا ، وللشركة أن تقرر نقل المركز الرئیسي لھا إلى أي مدینة أخرى داخل جمھوریة مصر العربیة
 بموافقة مؤسس أو مالك الشركة .</p>
 
-
             <h4 align='center' style={{ textDecoration: 'underline' }}> الماده ( ٤ )</h4>
-
 
             <p>حدد رأسمال الشركة بمبلغ{this.state.company.capital} ){this.state.company.capitalCurrency}( وقد أودع رأسمال الشركة بالكامل في البنك بموجب الشهادة المرفقة.</p>
 
@@ -384,44 +369,39 @@ class InvestorCompanyReg extends React.Component {
 
             <h4 align='center' style={{ textDecoration: 'underline' }}> الماده ( ٦ )</h4>
 
-
             <p >
               لمؤسس أو مالك الشركة أن يقرر تخفيض رأس مال الشركة لأي سبب ، سواء عن طريق إنقاص عدد الحصص أو تخفيض القيمة الاسمية لكل منها ، وفقاً لأحكام قانون الشركات ولائحته التنفيذية .
-    </p>
-            <p id="egp">
+            </p>
+            <p id='egp'>
               ولا يجوز تخفيض رأس المال إلى أقل من خمسين ألف جنيه .
-    </p>
+            </p>
 
-            <p id="negp">
+            <p id='negp'>
               ولا يجوز تخفيض رأس المال إلى أقل من ما يعادل خمسين ألف جنيه .    </p>
-
-
-
 
             <h4 align='center' style={{ textDecoration: 'underline' }}> الماده ( ٧ )</h4>
 
             <p>يتولى إدارة الشركة مؤسس الشركة أو مدير أو أكثر يعينهم مؤسس الشركة على النحو التالي</p>
 
-
-            <table align='center' style={{ border: '1px solid black', width: "85%" }}>
+            <table align='center' style={{ border: '1px solid black', width: '85%' }}>
               <tr style={{ border: '1px solid black' }}>
                 <th style={{ border: '1px solid black' }}>
                   الاسم
-   </th>
+                </th>
                 <th style={{ border: '1px solid black' }}>
                   الجنسیة
-   </th>
+                </th>
                 <th style={{ border: '1px solid black' }}>
                   تاریخ المیلاد
-   </th>
+                </th>
                 <th style={{ border: '1px solid black' }}>
                   إثبات الشخصیة
-   </th>
+                </th>
                 <th style={{ border: '1px solid black' }}>
                   الإقامة
-   </th>
+                </th>
               </tr>
-              <tr style={{ border: '1px solid black', width: "70%" }}>
+              <tr style={{ border: '1px solid black', width: '70%' }}>
                 <td style={{ border: '1px solid black' }}>
                   {this.state.investorName}
                 </td>
@@ -440,25 +420,24 @@ class InvestorCompanyReg extends React.Component {
             </table>
             <p>
               و يباشر المديرون وظائفهم لمدة غير محددة
-</p>
+            </p>
             <p>
               ويسرى في شأن مدير الشركة حكم المادة (89) من قانون الشركات ، مع مراعاة ألا يكون غير محظور عليه إدارة الشركات طبقاً لأحكام القانون .
-</p>
+            </p>
             <p>
               ولا يجوز للمدير أن يتولى إدارة شركة أخرى أياً كان نوعها إذا كانت تعمل في ذات النشاط الذي تزاوله الشركة أو أحد فروعها ، كما لا يجوز له أن يتعاقد مع الشركة التي يتولى إدارتها لحسابه أو لحساب غيره ، أو يمارس لحساب الغير نشاطاً من نوع النشاط الذى تزاوله الشركة .
-</p>
+            </p>
 
           </div>
 
-          <div id="com3" dir="rtl" lang='ar'  align ='right'>
-            <img src={img3} width={160} height={133} mode="fill" />
+          <div id='com3' dir='rtl' lang='ar' align='right'>
+            <img src={img3} width={160} height={133} mode='fill' />
 
             <h4 align='center' style={{ textDecoration: 'underline' }}> الماده ( ٨ )</h4>
             <p>تسري على الشركة أحكام قانون الشركات ولائحته التنفيذية فيما لم يرد بشأنه نص خاص في هذا النظام .</p>
 
             <h4 align='center' style={{ textDecoration: 'underline' }}> الماده ( ٩ )</h4>
             <p>ينشر هذا النظام طبقا لأحكام القانون .</p>
-
 
             <h4 align='center' style={{ textDecoration: 'underline' }}> الماده ( ١٠ )</h4>
             <p>قام مؤسس الشركة بشخصه باتخاذ كافة الإجراءات اللازمة في هذا الشأن .</p>

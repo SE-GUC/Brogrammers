@@ -77,7 +77,7 @@ class SimpleReactFileUpload extends React.Component {
     const data = new FormData();
     data.append("myFile", this.state.selectedFile);
     axios
-      .post("http://localhost:3000/routes/api/admins/uploadfile", data, {
+      .post("http://serverbrogrammers.herokuapp.com/routes/api/admins/uploadfile", data, {
         // receive two    parameter endpoint url ,form data
       })
       .then(res => {
@@ -94,7 +94,7 @@ class SimpleReactFileUpload extends React.Component {
     const data = new FormData();
     data.append("myFile", this.state.selectedFile);
     axios
-      .post("http://localhost:3000/routes/api/admins/submit-form", data, {
+      .post("http://serverbrogrammers.herokuapp.com/routes/api/admins/submit-form", data, {
         // receive two    parameter endpoint url ,form data
       })
       .then(res => {
@@ -110,7 +110,7 @@ class SimpleReactFileUpload extends React.Component {
   onDeleteHandler = () => {
     const data = sessionStorage.getItem("companyType");
     console.log(data);
-    fetch("http://localhost:3000/routes/api/admins/delete-form", {
+    fetch("http://serverbrogrammers.herokuapp.com/routes/api/admins/delete-form", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

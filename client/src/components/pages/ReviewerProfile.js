@@ -1,16 +1,13 @@
 
-
 import React, { Component } from 'react'
-import ClippedDrawerReviewer from '../layout/drawers/ClippedDrawerReviewer';
+import ClippedDrawerReviewer from '../layout/drawers/ClippedDrawerReviewer'
 
 export default class ReviewerProfile extends Component {
-  render() {
+  render () {
     return (
       <div>
-        <ClippedDrawerReviewer/>
+        <ClippedDrawerReviewer />
       </div>
     )
   }
 }
-
-

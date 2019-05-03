@@ -110,7 +110,7 @@ class EditProfileAdmin extends Component {
   handleSubmission(e) {
     let updatedData = this.state.admin;
     this.clean(updatedData);
-    fetch("http://localhost:3000/routes/api/admins/", {
+    fetch("http://serverbrogrammers.herokuapp.com/routes/api/admins/", {
       method: "PUT",
       body: JSON.stringify(updatedData),
       headers: {

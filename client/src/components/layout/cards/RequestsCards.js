@@ -18,11 +18,11 @@ import HourGlass from "@material-ui/icons/HourglassEmpty";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Popper from "../popper/Popper";
-import Popover from '@material-ui/core/Popover';
+import Popover from "@material-ui/core/Popover";
+import { Grid } from "@material-ui/core";
 const styles = theme => ({
   card: {
-    width: 290,
-    height: 160
+   
   },
   cover: {
     opacity: 0,
@@ -41,11 +41,10 @@ const styles = theme => ({
   title: {
     fontSize: 18,
     height: 20,
-    fontWeight: "bold",
-   
+    fontWeight: "bold"
   },
   subheader: {
-    fontSize: 15,
+    fontSize: 15
   },
   comment: {
     fontSize: 15,
@@ -67,18 +66,14 @@ const styles = theme => ({
     transition: "0.3s"
   },
   popover: {
-    pointerEvents: 'none',
+    pointerEvents: "none"
   },
   paper: {
-    padding: theme.spacing.unit,
+    padding: theme.spacing.unit
   }
-
-
 });
 class SimpleCard extends React.Component {
- 
-    state = { expanded: false, color: blue[500], opacity: 0,    anchorEl: null,   };
-  
+  state = { expanded: false, color: blue[500], opacity: 0, anchorEl: null };
 
   checkrejectedicon = props => {
     if (props.subheader === "Accepted") return <DoneAll />;
@@ -107,7 +102,7 @@ class SimpleCard extends React.Component {
     } else return false;
   };
   popper = props => {
-    return <Popper />
+    return <Popper />;
   };
   handlePopoverOpen = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -116,17 +111,22 @@ class SimpleCard extends React.Component {
   handlePopoverClose = () => {
     this.setState({ anchorEl: null });
   };
-  handleStatus=props=>{
-    switch (props.subheader){
-      case ('PendingLawyer'): return 'Pending lawyer approval'
-      case ('PendingReviewer'): return 'Accepted by lawyer and pending reviewer approval'
-      case ('RejectedReviewer'): return 'Rejected by Reviewer and returned to be corrected by a lawyer'
-      case ('RejectedLawyer'): return 'Rejected and commented on by Lawyer, Please resubmit the form after editing the required fields'
-      case ('Accepted'): return 'Your form has been accepted'
-      default:return 'none'
+  handleStatus = props => {
+    switch (props.subheader) {
+      case "PendingLawyer":
+        return "Pending lawyer approval";
+      case "PendingReviewer":
+        return "Accepted by lawyer and pending reviewer approval";
+      case "RejectedReviewer":
+        return "Rejected by Reviewer and returned to be corrected by a lawyer";
+      case "RejectedLawyer":
+        return "Rejected and commented on by Lawyer, Please resubmit the form after editing the required fields";
+      case "Accepted":
+        return "Your form has been accepted";
+      default:
+        return "none";
     }
-    
-  }
+  };
 
   // const bull = <span className={classes.bullet}>•</span>;
   render() {
@@ -135,75 +135,78 @@ class SimpleCard extends React.Component {
     const open = Boolean(anchorEl);
     return (
       <>
-      <Card className={classes.card}
-  >
-        <CardHeader
-          classes={{
-            title: classes.title,
-            subheader: classes.subheader
-          }}
-          avatar={
+      
+        <Card className={classes.card}>
+          <CardHeader
+            classes={{
+              title: classes.title,
+              subheader: classes.subheader
+            }}
+            avatar={
+              <>
+                {" "}
+                <Avatar
+                  aria-label="Request"
+                  style={{ backgroundColor: this.checkrejs(this.props) }}
+                  className={classes.avatar}
+                  aria-owns={open ? "mouse-over-popover" : undefined}
+                  aria-haspopup="true"
+                  onMouseEnter={this.handlePopoverOpen}
+                  onMouseLeave={this.handlePopoverClose}
+                >
+                  {this.checkrejectedicon(this.props)}
+                </Avatar>
+              </>
+            }
+            action={
+              <SimpleMenu
+                a={this.checkrej(this.props)}
+                id={this.props.id}
+                token={sessionStorage.getItem("jwtToken")}
+                data={this.props.data}
+              />
+            }
+            title={this.props.title}
 
-            <>   <Avatar
-              aria-label="Request"
-              style={{ backgroundColor: this.checkrejs(this.props) }}
-             
-              className={classes.avatar}
-              aria-owns={open ? 'mouse-over-popover' : undefined}
-          aria-haspopup="true"
-          onMouseEnter={this.handlePopoverOpen}
-          onMouseLeave={this.handlePopoverClose}
-            >
-              {this.checkrejectedicon(this.props)}
+            // subheader={this.props.nameAr}
+          />
 
-            </Avatar>
-            </>
-          }
-          action={
-            <SimpleMenu
-              a={this.checkrej(this.props)}
-              id={this.props.id}
-              token={sessionStorage.getItem("jwtToken")}
-              data={this.props.data}
-            />
-          }
-          title={this.props.title}
-
-
-        // subheader={this.props.nameAr}
-        />
-
-        <CardMedia className={classes.cover}  >
-          <Typography className={classes.comment}>
-    
-            {" "}
-            {this.props.lawyer !== undefined
-              ? '"' + this.props.comment + '"'
-              : <h1 style={{ textAlign: 'center', fontSize: "20px" }}>{sessionStorage.getItem('lang')==='en'? 'No comments Yet': 'لا يوجد تعليقات حتى الان'}</h1>}
-          </Typography>
-          <Typography className={classes.lawyer}>
-            {this.props.lawyer !== undefined
-              ? "- " + this.props.lawyer
-              : console.log}
-          </Typography>
-        </CardMedia>
-      </Card>
-    
+          <CardMedia className={classes.cover}>
+            <Typography className={classes.comment}>
+              {" "}
+              {this.props.lawyer !== undefined ? (
+                '"' + this.props.comment + '"'
+              ) : (
+                <h1 style={{ textAlign: "center", fontSize: "20px" }}>
+                  {sessionStorage.getItem("lang") === "en"
+                    ? "No comments Yet"
+                    : "لا يوجد تعليقات حتى الان"}
+                </h1>
+              )}
+            </Typography>
+            <Typography className={classes.lawyer}>
+              {this.props.lawyer !== undefined
+                ? "- " + this.props.lawyer
+                : console.log}
+            </Typography>
+          </CardMedia>
+        </Card>
+  
         <Popover
           id="mouse-over-popover"
           className={classes.popover}
           classes={{
-            paper: classes.paper,
+            paper: classes.paper
           }}
           open={open}
           anchorEl={anchorEl}
           anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
+            vertical: "bottom",
+            horizontal: "left"
           }}
           transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
+            vertical: "top",
+            horizontal: "left"
           }}
           onClose={this.handlePopoverClose}
           disableRestoreFocus

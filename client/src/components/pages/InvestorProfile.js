@@ -1,13 +1,12 @@
 
-
 import React, { Component } from 'react'
-import ClippedDrawerInvestor from '../layout/drawers/ClippedDrawerInvestor';
+import ClippedDrawerInvestor from '../layout/drawers/ClippedDrawerInvestor'
 
 export default class InvestorProfile extends Component {
-  render() {
+  render () {
     return (
       <div>
-        <ClippedDrawerInvestor/>
+        <ClippedDrawerInvestor />
       </div>
     )
   }

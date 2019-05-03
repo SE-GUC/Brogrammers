@@ -9,10 +9,10 @@ const styles = theme => ({
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2
-  
+
   },
-  title:{
-    fontSize: 30, color: "#3f3f3f", fontWeight: "bold" 
+  title: {
+    fontSize: 30, color: '#3f3f3f', fontWeight: 'bold'
   }
 })
 

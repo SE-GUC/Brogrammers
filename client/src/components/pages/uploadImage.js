@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-const BASE_URL = 'http://localhost:3000/routes/api/admins/';
+const BASE_URL = 'http://serverbrogrammers.herokuapp.com/routes/api/admins/';
  
 class uploadImage extends Component {
 constructor(props) {

@@ -31,7 +31,7 @@ class DeleteLawyerButton extends React.Component {
 
   deleteLawyer()
 {
-  fetch(`http://localhost:3000/api/lawyer/${this.props.id}`, {
+  fetch(`http://serverbrogrammers.herokuapp.com/api/lawyer/${this.props.id}`, {
     method: "DELETE",
    
     headers: {

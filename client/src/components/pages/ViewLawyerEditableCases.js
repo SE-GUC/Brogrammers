@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import LinearDeterminate from "../layout/loading/LinearDeterminate"
+import LinearDeterminate from "../layout/loading/CustomizedProgress"
 import Snackbar from "../layout/snackbar/Snackbar"
 import TitleBarGridList from "../layout/List/GridListEditableLawyer";
 import Paper from "../layout/paper/Paper";
@@ -48,7 +48,7 @@ class ViewLawyerEditableCases extends Component {
         console.log(this.props.token)
         this.setState({ isLoading: true })
 
-        fetch(`http://localhost:3000/api/lawyer/editForm/${sessionStorage.getItem("ssn")}`, {
+        fetch(`http://serverbrogrammers.herokuapp.com/api/lawyer/editForm/${sessionStorage.getItem("ssn")}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',

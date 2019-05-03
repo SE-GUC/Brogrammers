@@ -7,19 +7,13 @@ class LawyerCases extends Component {
     super(props)
     this.state = {
       lawyerCases: []
-      
 
     }
   }
 
-
-
-
-  
-
   componentDidMount () {
     {
-      fetch('http://localhost:3000/api/lawyer/getAllTasks/view', {
+      fetch('http://serverbrogrammers.herokuapp.com/api/lawyer/getAllTasks/view', {
         headers: new Headers({
           //  'x-access-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjYTllN2VlN2E0MDNjMDc3YzM3ZGNkMSIsImlhdCI6MTU1NDYzODgzMCwiZXhwIjoxNTU0NzI1MjMwfQ.bEFsxvXTTktmM0JxCPxaiqxmPd3WpjIJRrOEFOfVI8M'
           // if login setted token correctly this should work
@@ -34,60 +28,55 @@ class LawyerCases extends Component {
           })
         })
     }
-
   }
 
-
   render () {
- 
-    const listItems= this.state.lawyerCases.map((item,i) => (
+    const listItems = this.state.lawyerCases.map((item, i) => (
       <div>
-      <SimpleCard key={i} nameInEnglish={item.nameInEnglish} status={item.status}
-      compid={item._id}  
-      
-      token={this.props.token}
-      addressHQ={item.addressHQ}
-        Status={item.status}
-        addressHQ={item.addressHQ}
-        regulationLaw={item.regulationLaw}
-        legalCompanyForm={item.legalCompanyForm}
-        nameInArabic={item.nameInArabic}
-        governerateHQ={item.governerateHQ}
-        cityHQ={item.cityHQ}
+        <SimpleCard key={i} nameInEnglish={item.nameInEnglish} status={item.status}
+          compid={item._id}
 
-        telephoneHQ={item.telephoneHQ}
-        faxHQ={item.faxHQ}
-        capitalCurrency={item.capitalCurrency}
-        capital={item.capital}
-        investorName={item.investorName}
-        investorSex={item.investorSex}
-        investorNationaty={item.investorNationaty}
-        investorIdentificationType={item.investorIdentificationType}
-        investorIdentificationNumber={item.investorIdentificationNumber}
-        investorBD={item.investorBD}
-        investorAddress={item.investorAddress}
-        investorTelephone={item.investorTelephone}
-        investorFax={item.investorFax}
-        investorEmail={item.investorEmail}
+          token={this.props.token}
+          addressHQ={item.addressHQ}
+          Status={item.status}
+          addressHQ={item.addressHQ}
+          regulationLaw={item.regulationLaw}
+          legalCompanyForm={item.legalCompanyForm}
+          nameInArabic={item.nameInArabic}
+          governerateHQ={item.governerateHQ}
+          cityHQ={item.cityHQ}
 
-      />
-<br></br>
-</div>
+          telephoneHQ={item.telephoneHQ}
+          faxHQ={item.faxHQ}
+          capitalCurrency={item.capitalCurrency}
+          capital={item.capital}
+          investorName={item.investorName}
+          investorSex={item.investorSex}
+          investorNationaty={item.investorNationaty}
+          investorIdentificationType={item.investorIdentificationType}
+          investorIdentificationNumber={item.investorIdentificationNumber}
+          investorBD={item.investorBD}
+          investorAddress={item.investorAddress}
+          investorTelephone={item.investorTelephone}
+          investorFax={item.investorFax}
+          investorEmail={item.investorEmail}
+
+        />
+        <br />
+      </div>
     )
     )
- 
 
     return (
       <div>
 
         {listItems}
-         
-        <br></br>
+
+        <br />
 
       </div>
 
     )
-    
   }
 }
 

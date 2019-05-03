@@ -1,5 +1,27 @@
 import React from "react";
-import { MenuItem, TextField, Paper } from "@material-ui/core";
+import {
+  MenuItem,
+  TextField,
+  Paper,
+  FormControl,
+  NativeSelect,
+  FormHelperText,
+  Grid
+} from "@material-ui/core";
+
+const styles = theme => ({
+  root: {
+    display: "flex",
+    flexWrap: "wrap"
+  },
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 120
+  },
+  selectEmpty: {
+    marginTop: theme.spacing.unit * 2
+  }
+});
 
 class CreateCompany extends React.Component {
   constructor(props) {
@@ -17,17 +39,23 @@ class CreateCompany extends React.Component {
   };
   handleFetch = state => {
     if (state.companytypes.length === 0) {
-      fetch("http://localhost:3000/routes/api/admins/company/types", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "x-access-token": this.props.token
+      fetch(
+        "http://serverbrogrammers.herokuapp.com/routes/api/admins/company/types",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": this.props.token
+          }
         }
-      })
+      )
         .then(response => {
           response.json().then(data => {
-      
-            this.setState({ companytypes:  Object.keys(data.data).map(key => [key, data.data[key]][1].legalCompanyForm)});
+            this.setState({
+              companytypes: Object.keys(data.data).map(
+                key => [key, data.data[key]][1].legalCompanyForm
+              )
+            });
           });
         })
         .catch(error => console.log(error.message));
@@ -37,7 +65,7 @@ class CreateCompany extends React.Component {
     const styles = theme => ({
       container: {
         display: "flex",
-        flexWrap: "wrap"
+        flexWrap: "noWrap"
       },
       textField: {
         marginLeft: theme.spacing.unit,
@@ -46,35 +74,48 @@ class CreateCompany extends React.Component {
       dense: {
         marginTop: 16
       },
-      menu: {
-        width: 200
+      menu: {},
+      root: {
+        display: "flex",
+        flexWrap: "wrap"
+      },
+      formControl: {
+        margin: theme.spacing.unit,
+        minWidth: 120
+      },
+      selectEmpty: {
+        marginTop: theme.spacing.unit * 2
       }
     });
 
     return (
-      <TextField
-        id="outlined-select-currency"
-        select
-        label={sessionStorage.getItem('lang') === 'en' ? "company type" : "نوع الشركة"}
-        className={styles.textField}
-        value={this.state.selected}
-        onChange={this.handleChange("selected")}
-        SelectProps={{
-          MenuProps: {
-            className: styles.menu
-          }
-        }}
-        helperText={sessionStorage.getItem('lang') === 'en' ? "Please select your Company Type" : "اختار نوع الشركة"}
-        margin="normal"
-        variant="outlined"
-      >
-      { sessionStorage.setItem("companyType", this.state.selected)}
-        {this.state.companytypes.map(option => (
-          <MenuItem key={option} value={option}>
-            {option}
-          </MenuItem>
-        ))}
-      </TextField>
+      <Grid item xs={12}>
+      <FormControl className={styles.formControl}  fullWidth>
+        <NativeSelect
+          className={styles.selectEmpty}
+          value={this.state.selected}
+          name="selected"
+          onChange={this.handleChange("selected")}
+         
+        >
+          <option value="" disabled>
+            {sessionStorage.getItem("lang") === "en"
+              ? "company type"
+              : "نوع الشركة"}
+          </option>
+          {sessionStorage.setItem("companyType", this.state.selected)}
+          {this.state.companytypes.map((option,i) => (
+            <option key={i} value={option}>{option}</option>
+          ))}
+        </NativeSelect>
+        <FormHelperText>
+          {sessionStorage.getItem("lang") === "en"
+            ? "company type"
+            : "نوع الشركة"}
+        </FormHelperText>
+      </FormControl>
+      </Grid>
+
     );
   };
 

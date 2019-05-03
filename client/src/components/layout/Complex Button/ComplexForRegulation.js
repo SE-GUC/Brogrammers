@@ -5,8 +5,7 @@ import ButtonBase from '@material-ui/core/ButtonBase'
 import Typography from '@material-ui/core/Typography'
 
 import lawRegulation from '../../Images/lawRegulation.jpg'
-import { withRouter , Redirect } from 'react-router-dom'
-
+import { withRouter, Redirect } from 'react-router-dom'
 
 const styles = theme => ({
   root: {
@@ -46,8 +45,8 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     color: theme.palette.common.white,
-    padding : "5 px"
-    
+    padding: '5 px'
+
   },
   imageSrc: {
     position: 'absolute',
@@ -57,7 +56,7 @@ const styles = theme => ({
     bottom: 0,
     backgroundSize: 'cover',
     backgroundPosition: 'center 40%',
-    padding : "5px"
+    padding: '5px'
   },
   imageBackdrop: {
     position: 'absolute',
@@ -71,7 +70,7 @@ const styles = theme => ({
   },
   imageTitle: {
     position: 'relative',
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 4}px ${theme.spacing.unit + 6}px`,
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 4}px ${theme.spacing.unit + 6}px`
 
   },
   imageMarked: {
@@ -83,7 +82,7 @@ const styles = theme => ({
     left: 'calc(75% - 9px)',
     transition: theme.transitions.create('opacity')
   }
-  
+
 })
 
 const images = [
@@ -102,10 +101,9 @@ const images = [
     length: '75%',
     Law: 'Law 159',
     path: '/chooseType/law159'
-  },
- 
-]
+  }
 
+]
 
 function ButtonBases (props) {
   const { classes } = props
@@ -120,9 +118,8 @@ function ButtonBases (props) {
           style={{
             width: image.width
           }}
-         
-          onClick={() =>{document.location.href = image.path} }
 
+          onClick={() => { document.location.href = image.path }}
 
         >
           <span

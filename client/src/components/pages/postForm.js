@@ -1,6 +1,7 @@
 import React from "react";
 import { Input } from "@material-ui/core";
 import Form from "react-jsonschema-form";
+import Snackbar from "../layout/snackbar/Snackbar";
 
 class postForm extends React.Component {
   constructor(props) {
@@ -8,13 +9,16 @@ class postForm extends React.Component {
     this.state = {
       jsonFile: null,
       formData: null,
-      uiSchema: {}
+      uiSchema: {},
+      Successful: false
     };
   }
   handleFetch = state => {
     if (!state.jsonFile) {
       fetch(
-        `http://localhost:3000/routes/api/admins/schema/${this.props.type}`,
+        `http://serverbrogrammers.herokuapp.com/routes/api/admins/schema/${
+          this.props.type
+        }`,
         {
           method: "GET",
           headers: {
@@ -37,34 +41,40 @@ class postForm extends React.Component {
       ...this.state.formData,
       legalCompanyForm: this.props.type
     });
-    if(sessionStorage.getItem('type') === 'i')
-    fetch("http://localhost:3000/api/investors/create/company", {
-      method: "POST",
-      body: bod,
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token":  sessionStorage.getItem("jwtToken")
-      }
-    }).then(response => {
-      response.json().then(data => {
-        console.log("Successful" + data);
+    if (sessionStorage.getItem("type") === "i")
+      fetch(
+        "http://serverbrogrammers.herokuapp.com/api/investors/create/company",
+        {
+          method: "POST",
+          body: bod,
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": sessionStorage.getItem("jwtToken")
+          }
+        }
+      ).then(response => {
+        response.json().then(data => {
+          console.log("Successful" + data);
+          this.setState({ Successful: true });
+        });
       });
-    })
-  if (sessionStorage.getItem('type') === 'l')
-    fetch("http://localhost:3000/api/lawyer/create/company", {
-      method: "POST",
-      body: bod,
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": sessionStorage.getItem("jwtToken")
-      }
-    }).then(response => {
-      response.json().then(data => {
-        console.log("Successful" + data);
+    if (sessionStorage.getItem("type") === "l")
+      fetch(
+        "http://serverbrogrammers.herokuapp.com/api/lawyer/create/company",
+        {
+          method: "POST",
+          body: bod,
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": sessionStorage.getItem("jwtToken")
+          }
+        }
+      ).then(response => {
+        response.json().then(data => {
+          console.log("Successful" + data);
+        });
       });
-    })
-
-  }
+  };
   handleInputs = e => {
     let value = e.formData.value;
     let name = e.formData.name;
@@ -88,9 +98,9 @@ class postForm extends React.Component {
     }
 
     if (state.jsonFile) {
-      console.log(state.jsonFile);
-      console.log(JSON.stringify(state.jsonFile));
+     
       return (
+        
         <Form
           onChange={this.handleInputs}
           formData={this.state.formData}
@@ -104,6 +114,10 @@ class postForm extends React.Component {
   };
 
   render() {
+    if (this.state.Successful) {
+
+      return <Snackbar variant="success" message={"Success"} />;
+    }
     return (
       <>
         {this.handleFetch(this.state)}

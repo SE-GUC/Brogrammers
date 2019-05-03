@@ -21,7 +21,7 @@ import InvestorCompanyRegSPC from '../../pages/InvestorCompanyRegSPC'
 import Home from '@material-ui/icons/Home'
 import EditProfile from '@material-ui/icons/BorderColor'
 import ViewList from '@material-ui/icons/ViewList'
-import LinearDeterminate from '../loading/LinearDeterminate';
+import LinearDeterminate from '../loading/CustomizedProgress';
 import Navbar from '../Navbar';
 
 const drawerWidth = 240;

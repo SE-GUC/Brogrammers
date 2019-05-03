@@ -116,7 +116,7 @@ class EditProfileInvestor extends Component {
   handleSubmission(e) {
     let updatedData = this.state.investor;
     this.clean(updatedData);
-    fetch("http://localhost:3000/api/investors/", {
+    fetch("http://serverbrogrammers.herokuapp.com/api/investors/", {
       method: "PUT",
       body: JSON.stringify(updatedData),
       headers: {

@@ -74,7 +74,7 @@ class EditProfileReviewer extends Component {
     let updatedData = this.state.reviewer;
     this.clean(updatedData);
     console.log("is this working " + updatedData);
-    fetch("http://localhost:3000/api/reviewer/", {
+    fetch("http://serverbrogrammers.herokuapp.com/api/reviewer/", {
       method: "PUT",
       body: JSON.stringify(updatedData),
       headers: {

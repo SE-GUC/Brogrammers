@@ -65,21 +65,19 @@ class RegisterLawyer extends React.Component {
     e.preventDefault()
     let userData = this.state.investor
     console.log('abc')
-    fetch('http://localhost:3000/api/lawyer/register', {
+    fetch('http://serverbrogrammers.herokuapp.com/api/lawyer/register', {
       method: 'POST',
       body: JSON.stringify(userData),
       headers: {
         'Content-Type': 'application/json',
-        'x-access-token': sessionStorage.getItem("jwtToken")
+        'x-access-token': sessionStorage.getItem('jwtToken')
       }
     }).then(response => {
       response.json().then(data => {
-        if(data.error){
-          alert(data.error);
-        }
-        else{
-        console.log('Successful' + data)
-
+        if (data.error) {
+          alert(data.error)
+        } else {
+          console.log('Successful' + data)
         }
       })
     })
@@ -120,15 +118,15 @@ class RegisterLawyer extends React.Component {
           <Typography component='h1' variant='h5'>
           Sign up
           </Typography>
-          <Required name='firstName' field={sessionStorage.getItem('lang')==='en'? 'FirstName': 'الاسم الاول '} type='text' callBack={this.handleInput} />
-          <Required name='middleName' field={sessionStorage.getItem('lang')==='en'? 'Middle Name': 'الاسم الثانى '} type='text' callBack={this.handleInput} />
-          <Required name='lastName' field={sessionStorage.getItem('lang')==='en'? 'Last Name': 'الاسم الاخير '} type='text' callBack={this.handleInput} />
-          <Required name='email' field={sessionStorage.getItem('lang')==='en'? 'Email': 'البريد '} type='email' callBack={this.handleInput} />
-          <Required name='password' field={sessionStorage.getItem('lang')==='en'? 'Password': 'الرقم السرى '} type='password' callBack={this.handleInput} />
-          <Required name='salary' field={sessionStorage.getItem('lang')==='en'? 'Salary': 'المرتب '} type='number' callBack={this.handleInput} />
-          <Required name='yearsOfExperience' field={sessionStorage.getItem('lang')==='en'? 'Years of Experience': 'سنين الخبره '} type='number' callBack={this.handleInput} />
-          <Required name='socialSecurityNumber' field={sessionStorage.getItem('lang')==='en'? 'Social security number': 'الرقم القومى '} type='text' callBack={this.handleInput} />
-          <Required name='mobileNumber'field={sessionStorage.getItem('lang')==='en'? 'Phone Number': 'رقم الهاتف '} type='text' callBack={this.handleInput} />
+          <Required name='firstName' field={sessionStorage.getItem('lang') === 'en' ? 'FirstName' : 'الاسم الاول '} type='text' callBack={this.handleInput} />
+          <Required name='middleName' field={sessionStorage.getItem('lang') === 'en' ? 'Middle Name' : 'الاسم الثانى '} type='text' callBack={this.handleInput} />
+          <Required name='lastName' field={sessionStorage.getItem('lang') === 'en' ? 'Last Name' : 'الاسم الاخير '} type='text' callBack={this.handleInput} />
+          <Required name='email' field={sessionStorage.getItem('lang') === 'en' ? 'Email' : 'البريد '} type='email' callBack={this.handleInput} />
+          <Required name='password' field={sessionStorage.getItem('lang') === 'en' ? 'Password' : 'الرقم السرى '} type='password' callBack={this.handleInput} />
+          <Required name='salary' field={sessionStorage.getItem('lang') === 'en' ? 'Salary' : 'المرتب '} type='number' callBack={this.handleInput} />
+          <Required name='yearsOfExperience' field={sessionStorage.getItem('lang') === 'en' ? 'Years of Experience' : 'سنين الخبره '} type='number' callBack={this.handleInput} />
+          <Required name='socialSecurityNumber' field={sessionStorage.getItem('lang') === 'en' ? 'Social security number' : 'الرقم القومى '} type='text' callBack={this.handleInput} />
+          <Required name='mobileNumber'field={sessionStorage.getItem('lang') === 'en' ? 'Phone Number' : 'رقم الهاتف '} type='text' callBack={this.handleInput} />
           <Date name='birthDate' callBack={this.handleDate} />
           <AlertDialogSlide handleRegister={this.handleRegister} />
         </Paper>

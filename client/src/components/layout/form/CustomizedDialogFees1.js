@@ -82,7 +82,7 @@ class CustomizedDialogFees1 extends React.Component {
 
   handleViewFees = () => {
     let x = 0;
-    fetch("http://localhost:3000/api/lawyer/" + this.props.id + "/viewFees", {
+    fetch("http://serverbrogrammers.herokuapp.com/api/lawyer/" + this.props.id + "/viewFees", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -119,7 +119,7 @@ class CustomizedDialogFees1 extends React.Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <TakeMoney companyid={this.props.id} ammount={this.state.fees}/>
+            <TakeMoney companyid={this.props.id}/>
             <Button onClick={this.handleClose} color="primary">
               Close
             </Button>

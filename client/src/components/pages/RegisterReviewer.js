@@ -65,7 +65,7 @@ class RegisterReviewer extends React.Component {
     e.preventDefault()
     let userData = this.state.investor
     console.log('abc')
-    fetch('http://localhost:3000/api/reviewer/register', {
+    fetch('http://serverbrogrammers.herokuapp.com/api/reviewer/register', {
       method: 'POST',
       body: JSON.stringify(userData),
       headers: {
@@ -74,12 +74,10 @@ class RegisterReviewer extends React.Component {
       }
     }).then(response => {
       response.json().then(data => {
-        if(data.error){
-          alert(data.error);
-        }
-        else{
-        console.log('Successful' + data)
-   
+        if (data.error) {
+          alert(data.error)
+        } else {
+          console.log('Successful' + data)
         }
       })
     })
@@ -120,13 +118,13 @@ class RegisterReviewer extends React.Component {
           <Typography component='h1' variant='h5'>
           Sign up
           </Typography>
-          <Required name='name'field={sessionStorage.getItem('lang')==='en'? 'Full Name': 'الاسم كامل '} type='text' callBack={this.handleInput} />
-          <Required name='email' field={sessionStorage.getItem('lang')==='en'? 'Email': 'البريد '} type='email' callBack={this.handleInput} />
-          <Required name='password'field={sessionStorage.getItem('lang')==='en'? 'Password': 'الرقم السرى '}  type='password' callBack={this.handleInput} />
-          <Required name='ssn' field={sessionStorage.getItem('lang')==='en'? 'Social security number': 'الرقم القومى '} type='text' callBack={this.handleInput} />
-          <Required name='yearsOfExperience' field={sessionStorage.getItem('lang')==='en'? 'Years of Experience': 'سنين الخبره '} type='number' callBack={this.handleInput} />
-          <Required name='address' field={sessionStorage.getItem('lang')==='en'? 'Address': 'العنوان '} type='text' callBack={this.handleInput} />
-          <Required name='phone' field={sessionStorage.getItem('lang')==='en'? 'Telephone': 'رقم الهاتف '} type='text' callBack={this.handleInput} />
+          <Required name='name'field={sessionStorage.getItem('lang') === 'en' ? 'Full Name' : 'الاسم كامل '} type='text' callBack={this.handleInput} />
+          <Required name='email' field={sessionStorage.getItem('lang') === 'en' ? 'Email' : 'البريد '} type='email' callBack={this.handleInput} />
+          <Required name='password'field={sessionStorage.getItem('lang') === 'en' ? 'Password' : 'الرقم السرى '} type='password' callBack={this.handleInput} />
+          <Required name='ssn' field={sessionStorage.getItem('lang') === 'en' ? 'Social security number' : 'الرقم القومى '} type='text' callBack={this.handleInput} />
+          <Required name='yearsOfExperience' field={sessionStorage.getItem('lang') === 'en' ? 'Years of Experience' : 'سنين الخبره '} type='number' callBack={this.handleInput} />
+          <Required name='address' field={sessionStorage.getItem('lang') === 'en' ? 'Address' : 'العنوان '} type='text' callBack={this.handleInput} />
+          <Required name='phone' field={sessionStorage.getItem('lang') === 'en' ? 'Telephone' : 'رقم الهاتف '} type='text' callBack={this.handleInput} />
           <Date name='birth' callBack={this.handleDate} />
           <Gender name='gender' callBack={this.handleInput} />
           <AlertDialogSlide handleRegister={this.handleRegister} />

@@ -27,7 +27,7 @@ import Note from '@material-ui/icons/NoteAdd'
 import ViewList from '@material-ui/icons/ViewList'
 import CreateCompany from '@material-ui/icons/CreateNewFolder';
 import Stepper from "../../steppers/stepper";
-import LinearDeterminate from "../loading/LinearDeterminate";
+import LinearDeterminate from "../loading/CustomizedProgress";
 import ChooseCompanyType from "../../pages/ChooseCompanyType";
 import Navbar from '../../../components/layout/Navbar';
 const drawerWidth = 240;

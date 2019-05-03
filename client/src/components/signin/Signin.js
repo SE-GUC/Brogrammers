@@ -12,21 +12,22 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Required from '../layout/inputs/Required'
+import { Grid } from '@material-ui/core'
 
 const styles = theme => ({
   main: {
-    width: 'auto',
-    display: 'block', // Fix IE 11 issue.
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
-    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: 465,
-      marginLeft: 'auto',
-      marginRight: 'auto'
-    }
+      width: 'auto',
+      display: 'block', // Fix IE 11 issue.
+      marginLeft: theme.spacing.unit * 3,
+      marginRight: theme.spacing.unit * 3,
+      [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
+        width: 465,
+        marginLeft: 'auto',
+        marginRight: 'auto'
+      }
   },
   paper: {
-    marginTop: theme.spacing.unit * 8,
+    marginTop: theme.spacing.unit * 16,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -38,7 +39,7 @@ const styles = theme => ({
     backgroundColor: theme.palette.primary.main
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    maxWidth: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing.unit
   },
   submit: {
@@ -47,7 +48,7 @@ const styles = theme => ({
 })
 
 export class SignIn extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       investor: {
@@ -60,10 +61,10 @@ export class SignIn extends Component {
     this.handleRegister = this.handleRegister.bind(this)
   }
 
-  handleRegister(e) {
+  handleRegister (e) {
     e.preventDefault()
     let investorData = this.state.investor
-    fetch('http://localhost:3000/api/investors/login', {
+    fetch('http://serverbrogrammers.herokuapp.com/api/investors/login', {
       method: 'POST',
       body: JSON.stringify(investorData),
       headers: {
@@ -93,7 +94,7 @@ export class SignIn extends Component {
     })
   }
 
-  handleInput(e) {
+  handleInput (e) {
     let value = e.target.value
     let name = e.target.name
     // console.log(this.state.investor)
@@ -110,7 +111,7 @@ export class SignIn extends Component {
     )
   }
 
-  render() {
+  render () {
     const { classes } = this.props
     return (
       <main className={classes.main}>
@@ -119,45 +120,45 @@ export class SignIn extends Component {
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component='h1' variant='h5'>
             Sign in
           </Typography>
-          <Typography component="body1" variant="body1">
+          <Typography component='body1' variant='body1'>
             {this.state.investor.c ? '' : 'Wrong Email or Password'}
           </Typography>
-          <form className={classes.form}>
-            <FormControl margin="normal" required fullWidth>
-              {/* <InputLabel htmlFor="email">Email</InputLabel> */}
-              {/* <Input id="email" name="email" autoComplete="email" field={'Email'} type='email' callBack={this.handleInput} autoFocus /> */}
-              <Required
-                name="email"
-                field={'Email'}
-                type="email"
-                callBack={this.handleInput}
-              />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              {/* <InputLabel htmlFor="password">Password</InputLabel> */}
-              {/* <Input name="password" type="password" id="password" autoComplete="current-password" field={'Password'} callBack={this.handleInput} /> */}
-              <Required
-                name="password"
-                field={'Password'}
-                type="password"
-                callBack={this.handleInput}
-              />
-            </FormControl>
-            <FormControlLabel control={<label />} />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color={this.state.investor.c ? 'primary' : 'secondary'}
-              className={classes.submit}
-              onClick={this.handleRegister}
-            >
+          {/* <form className={classes.form}> */}
+          <FormControl margin='normal' required fullWidth >
+            {/* <InputLabel htmlFor="email">Email</InputLabel> */}
+            {/* <Input id="email" name="email" autoComplete="email" field={'Email'} type='email' callBack={this.handleInput} autoFocus /> */}
+            <Required
+              name='email'
+              field={'Email'}
+              type='email'
+              callBack={this.handleInput}
+            />
+          </FormControl>
+          <FormControl margin='normal' required fullWidth>
+            {/* <InputLabel htmlFor="password">Password</InputLabel> */}
+            {/* <Input name="password" type="password" id="password" autoComplete="current-password" field={'Password'} callBack={this.handleInput} /> */}
+            <Required
+              name='password'
+              field={'Password'}
+              type='password'
+              callBack={this.handleInput}
+            />
+          </FormControl>
+          <FormControlLabel control={<label />} />
+          <Button
+            type='submit'
+            fullWidth
+            variant='contained'
+            color={this.state.investor.c ? 'primary' : 'secondary'}
+            className={classes.submit}
+            onClick={this.handleRegister}
+          >
               Sign In
-            </Button>
-          </form>
+          </Button>
+          {/* </form> */}
         </Paper>
       </main>
     )

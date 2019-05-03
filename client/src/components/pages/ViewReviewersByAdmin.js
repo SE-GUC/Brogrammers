@@ -1,23 +1,20 @@
 
 import React, { Component } from 'react'
-//import SimpleCard from '../cards/SimpleCard3'
- import ViewReviewersByAdminCard from '../cards/ViewReviewersByAdminCard'
+// import SimpleCard from '../cards/SimpleCard3'
+import ViewReviewersByAdminCard from '../cards/ViewReviewersByAdminCard'
 
 class ViewReviewersByAdmin extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-        reviewersOnSystem: []
+      reviewersOnSystem: []
 
     }
   }
 
   componentDidMount () {
-    
     {
-
-      
-      fetch('http://localhost:3000/api/reviewer/', {
+      fetch('http://serverbrogrammers.herokuapp.com/api/reviewer/', {
         headers: new Headers({
           'x-access-token': this.props.token
         })
@@ -33,40 +30,33 @@ class ViewReviewersByAdmin extends React.Component {
   }
 
   render () {
-   
+    const listItems = this.state.reviewersOnSystem.map((item, i) => (
+      <div>
+        <ViewReviewersByAdminCard key={i}
+          token={this.props.token}
+          id={item._id}
+          name={item.name}
+          address={item.address}
+          email={item.email}
+          gender={item.gender}
+          phone={item.phone}
+          birth={item.birth}
+          age={item.age}
+          yearsOfExperience={item.yearsOfExperience}
 
-const listItems=  this.state.reviewersOnSystem.map((item,i) => (
-           <div>   
-    <ViewReviewersByAdminCard key={i} 
-    token={this.props.token}
-    id={item._id}
-    name={item.name}
-address={item.address}
-      email={item.email}
-      gender={item.gender}
-      phone={item.phone}
-      birth={item.birth}
-      age={item.age}
-      yearsOfExperience={item.yearsOfExperience}
-      
-    />
-<br></br>   
-</div>
+        />
+        <br />
+      </div>
 
-  )
-  
-  )
- 
-  
+    )
+
+    )
 
     return (
       <div>
 
-       
         {listItems}
-        <br></br>
-          
-  
+        <br />
 
       </div>
 
