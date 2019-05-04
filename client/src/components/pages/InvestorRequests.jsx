@@ -8,9 +8,8 @@ import Grid from "@material-ui/core/Grid";
 
 const styles = {
     header: {
-        position: "-webkit-sticky",
-        // eslint-disable-next-line no-dupe-keys
         position: "sticky",
+        // eslint-disable-next-line no-dupe-keys
         textAlign: "center",
         paddingTop: 10,
         paddingBottom: 10,
@@ -22,6 +21,7 @@ const styles = {
         backgroundColor: "#034066"
       }
     }
+   
 class investorRequests extends Component {
     constructor(props) {
         super(props);
@@ -123,8 +123,6 @@ class investorRequests extends Component {
 
             return (
                 <>
-                    <LinearDeterminate />
-
                     <Grid item xs={12} lg={12} style={styles.header}>
                         <h2>
                             {sessionStorage.getItem("lang") === "ar"
@@ -132,6 +130,8 @@ class investorRequests extends Component {
                                 : "My Requests"}{" "}
                         </h2>
                     </Grid>
+                    <LinearDeterminate style={{marginTop:5}} />
+
                 </>
             )
         }

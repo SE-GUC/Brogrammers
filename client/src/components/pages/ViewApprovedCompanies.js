@@ -23,9 +23,7 @@ const styles = {
     borderColor: "black"
   },
   header: {
-    position: "-webkit-sticky",
-    // eslint-disable-next-line no-dupe-keys
-    position: "sticky",
+    position:'sticky',
     textAlign: "center",
     paddingTop: 10,
     paddingBottom: 10,
