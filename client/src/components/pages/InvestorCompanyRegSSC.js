@@ -16,6 +16,7 @@ import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import firebase from '../../firebase'
 import img3 from '../../components/Images/capture.png'
+import LinearDeterminate from "../layout/loading/CustomizedProgress"
 window.html2canvas = html2canvas
 
 const storage = firebase.storage()
@@ -116,6 +117,8 @@ class InvestorCompanyReg extends React.Component {
           img = canvas.toDataURL('image3/png')
           doc.addImage(img, 'JPEG', 17, 10)
           var image = doc.output('blob')
+          window.open(URL.createObjectURL(image));
+
           // document.location.href = '/profile';
           const uploadTask = storage.ref(`${id}/pdf`).put(image)
           uploadTask.on('state_changed',
@@ -143,6 +146,7 @@ class InvestorCompanyReg extends React.Component {
                     }
                   }).then(response => {
                   console.log(response)
+                  document.location.href = '/profile';
                 })
               })
             })
@@ -297,9 +301,40 @@ class InvestorCompanyReg extends React.Component {
               <Grid container direction='column' alignItems='flex-end' >
                 <AlertDialogSlide handleRegister={this.handleRegister} />
               </Grid>
+              <Grid container direction='column' alignItems='center' >
+              <h6 style={{ display: this.state.vis }}>The page will automatically Redirect when the company is successfully created.</h6>
+              </Grid>
+       
+              
             </Grid>
+           
           </Paper>
         </Grid>
+        <div style={{ display: this.state.vis }}>
+        <LinearDeterminate />
+        <Paper  elevation={1} />
+        </div>
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
         <div style={{ display: this.state.vis }}>
 
           <div id='com' dir='rtl' lang='ar' align='right'>
