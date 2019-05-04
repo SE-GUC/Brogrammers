@@ -55,6 +55,7 @@ class Manager extends React.Component {
     }
     this.handleInput = this.handleInput.bind(this)
     this.handle = this.handle.bind(this)
+    this.handleDate=this.handleDate.bind(this)
   }
   handleDate (v) {
     this.setState(prevState => ({

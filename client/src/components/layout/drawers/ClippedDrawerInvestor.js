@@ -244,7 +244,7 @@ class ClippedDrawerInvestor extends Component {
                     <b style={{ color: "#ffffff" }}>
                       {sessionStorage.getItem("lang") === "en"
                         ? "Create SSC Companies"
-                        : "سجل شركتي ال SSC"}
+                        : "SSCسجل شركتي ال"}
                     </b>
                   }
                 />
@@ -262,7 +262,7 @@ class ClippedDrawerInvestor extends Component {
                     <b style={{ color: "#ffffff" }}>
                       {sessionStorage.getItem("lang") === "en"
                         ? "Create SPC Companies"
-                        : "سجل شركتي ال SPC"}
+                        : "SPCسجل شركتي ال "}
                     </b>
                   }
                 />
@@ -280,7 +280,7 @@ class ClippedDrawerInvestor extends Component {
                     <b style={{ color: "#ffffff" }}>
                       {sessionStorage.getItem("lang") === "en"
                         ? "Create Other Companies"
-                        : "سجل شركات اخرة"}
+                        : "سجل شركات اخرى"}
                     </b>
                   }
                 />
