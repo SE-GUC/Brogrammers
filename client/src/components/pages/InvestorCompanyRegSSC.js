@@ -134,7 +134,6 @@ class InvestorCompanyReg extends React.Component {
               // complete function ....
               storage.ref(id).child('pdf').getDownloadURL().then(url => {
                 console.log(url)
-                window.open(url, '_blank')
                 fetch('https://serverbrogrammers.herokuapp.com/api/investors/pdf/' + id,
                   {
                     method: 'POST',
