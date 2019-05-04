@@ -33,7 +33,7 @@ const styles = {
     marginBottom: "100px",
     color: "white",
     top: "55px",
-    zIndex: 9999999999,
+    zIndex: 13,
     backgroundColor: "#034066"
   }
 };
@@ -76,15 +76,15 @@ class ViewApprovedCompanies extends Component {
           </Grid>
 
           {this.state.approvedCompanies.map((item, i) => (
-            // <Plx className="MyAwesomeParallax" parallaxData={parallaxData1} >
             <Grid item xs={12} md={4} sm={6} lg={4}>
+            {/* <Plx className="MyAwesomeParallax" parallaxData={parallaxData1} > */}
               <CompanyCard
                 className={classes.companiesBackground}
                 key={i}
                 company={item}
               />
+           {/* </Plx> */}
             </Grid>
-            // </Plx>
           ))}
         </Grid>
       </>

@@ -6,7 +6,22 @@ import Paper from "../layout/paper/Paper";
 import Typography from '@material-ui/core/Typography';
 import Grid from "@material-ui/core/Grid";
 
-
+const styles = {
+    header: {
+        position: "-webkit-sticky",
+        // eslint-disable-next-line no-dupe-keys
+        position: "sticky",
+        textAlign: "center",
+        paddingTop: 10,
+        paddingBottom: 10,
+        marginTop: "0px",
+      
+        color: "white",
+        top: "55px",
+        zIndex: 13,
+        backgroundColor: "#034066"
+      }
+    }
 class investorRequests extends Component {
     constructor(props) {
         super(props);
@@ -21,11 +36,18 @@ class investorRequests extends Component {
         this.handleReq = this.handleReq.bind(this)
         this.handleReq2 = this.handleReq2.bind(this)
     }
+
     handleReq = () => {
         if (this.state.requests) {
             return (<div>
 
-                <Paper  elevation={1} />
+                <Grid item xs={12} lg={12} style={styles.header}>
+                    <h2>
+                        {sessionStorage.getItem("lang") === "ar"
+                            ? "طلباتي"
+                            : "My Requests"}{" "}
+                    </h2>
+                </Grid>
 
                 <TitleBarGridList data={this.state.requests} token={this.props.token} />
 
@@ -34,8 +56,14 @@ class investorRequests extends Component {
         else {
 
             return <>
-                <Paper elevation={1} />
 
+                <Grid item xs={12} lg={12} style={styles.header}>
+                    <h2>
+                        {sessionStorage.getItem("lang") === "ar"
+                            ? "طلباتي"
+                            : "My Requests"}{" "}
+                    </h2>
+                </Grid>
                 <Snackbar variant='error' message={sessionStorage.getItem('lang') === 'en' ? 'You Dont have any requests' : 'يوجد خطء'} />
             </>
         }
@@ -46,7 +74,7 @@ class investorRequests extends Component {
 
                 return (
                     <>
-                
+
                         <Snackbar variant='warning' message={sessionStorage.getItem('lang') === 'en' ? 'There Are No Requests' : 'ليس هناك طلباط'} />
                     </>
                 )
@@ -55,7 +83,7 @@ class investorRequests extends Component {
         else {
             return (
                 <>
-                
+
                     <Snackbar variant='error' message={sessionStorage.getItem('lang') === 'en' ? 'Something Went Wrong' : 'يوجد خطء'} />
                 </>)
         }
@@ -96,7 +124,14 @@ class investorRequests extends Component {
             return (
                 <>
                     <LinearDeterminate />
-                    <Paper  elevation={1} />
+
+                    <Grid item xs={12} lg={12} style={styles.header}>
+                        <h2>
+                            {sessionStorage.getItem("lang") === "ar"
+                                ? "طلباتي"
+                                : "My Requests"}{" "}
+                        </h2>
+                    </Grid>
                 </>
             )
         }

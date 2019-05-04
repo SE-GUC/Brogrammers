@@ -50,7 +50,7 @@ class DeleteLawyerButton extends React.Component {
     return (
       <div>
         <Button variant="contained" color="secondary" onClick={this.handleClickOpen}>
-        {sessionStorage.getItem('lang')==='en'? 'Delete Lawyer': 'الغاء بيانات المحامى '},
+        {sessionStorage.getItem('lang')==='en'? 'Delete Lawyer': 'الغاء بيانات المحامى '}
         </Button>
         <Dialog
           open={this.state.open}
