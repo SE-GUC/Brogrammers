@@ -44,7 +44,7 @@ import { Grid } from "@material-ui/core";
 import Home from "./components/pages/Home";
 import PleaseActivate from "./components/pages/PleaseActivate";
 import Activate from "./components/pages/Activate";
-
+import GetStarted from "./components/pages/GetStarted"
 class App extends Component {
   constructor(props) {
     super(props);
@@ -104,6 +104,15 @@ class App extends Component {
             render={props => (
               <div>
                 <ComplexButton />{" "}
+              </div>
+            )}
+          />
+             <Route
+            exact
+            path="/getStarted"
+            render={props => (
+              <div>
+                <GetStarted />
               </div>
             )}
           />
@@ -378,7 +387,7 @@ class App extends Component {
             <Route
               exact
               path="/Lawyerlogin"
-              render={props => <LawyerSignIn callBack={this.setToken} />}
+              render={() => <LawyerSignIn callBack={this.setToken} />}
             />
             <Route
               exact
