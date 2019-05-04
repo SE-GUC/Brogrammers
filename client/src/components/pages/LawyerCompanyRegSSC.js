@@ -7,8 +7,8 @@ import green from '@material-ui/core/colors/green'
 import { Avatar } from '@material-ui/core'
 import AssignmemtIcon from '@material-ui/icons/Assignment'
 import Grid from '@material-ui/core/Grid'
-import Required from '../layout/inputs/Required'
-import NotRequired from '../layout/inputs/NotRequired'
+import Required from '../layout/inputs/RequiredValidation'
+import NotRequired from '../layout/inputs/NotRequiredValidation'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Gender from '../layout/inputs/Gender'
 import Date from '../layout/inputs/Date'
@@ -53,6 +53,7 @@ class LawyerCompanyReg extends React.Component {
     super(props)
     this.state = {
       company: {
+        regulationLaw: '',
         legalCompanyForm: '',
         nameInArabic: '',
         nameInEnglish: '',
@@ -81,25 +82,26 @@ class LawyerCompanyReg extends React.Component {
       vis: 'none',
       investorBD: '9/8/1995',
 
-      regulationLaw: true,
-      legalCompanyForm: true,
-      nameInArabic: true,
-      nameInEnglish: true,
-      governerateHQ: true,
-      cityHQ: true,
-      addressHQ: true,
-      faxHQ: true,
-      capitalCurrency: true,
-      capital: true,
-      telephoneHQ: true,
-      investorName: true,
-      investorNationality: true,
-      investorIdentificationNumber: true,
-      investorTelephone: true,
-      investorFax: true,
-      investorEmail: true,
-      investorType: true,
-      investorIdentificationType: true,
+      regulationLawValid: true,
+      legalCompanyFormValid: true,
+      nameInArabicValid: true,
+      nameInEnglishValid: true,
+      governerateHQValid: true,
+      cityHQValid: true,
+      addressHQValid: true,
+      faxHQValid: true,
+      capitalCurrencyValid: true,
+      capitalValid: true,
+      telephoneHQValid: true,
+      investorNameValid: true,
+      investorNationalityValid: true,
+      investorIdentificationNumberValid: true,
+      investorTelephoneValid: true,
+      investorAddressValid: true,
+      investorFaxValid: true,
+      investorEmailValid: true,
+      investorTypeValid: true,
+      investorIdentificationTypeValid: true,
       err: false
     }
 
@@ -181,10 +183,32 @@ class LawyerCompanyReg extends React.Component {
     })
   };
 
-  handleRegister(event) {
+  async handleRegister(event) {
     console.log(this.props.token)
     event.preventDefault()
     console.log('The token ' + sessionStorage.getItem('jwtToken'))
+    await this.validate(
+      this.state.company.regulationLaw,
+      this.state.company.legalCompanyForm,
+      this.state.company.nameInArabic,
+      this.state.company.nameInEnglish,
+      this.state.company.governerateHQ,
+      this.state.company.cityHQ,
+      this.state.company.addressHQ,
+      this.state.company.faxHQ,
+      this.state.company.capitalCurrency,
+      this.state.company.capital,
+      this.state.company.telephoneHQ,
+      this.state.company.investorName,
+      this.state.company.investorNationality,
+      this.state.company.investorIdentificationNumber,
+      this.state.company.investorTelephone,
+      this.state.company.investorFax,
+      this.state.company.investorEmail,
+      this.state.company.investorType,
+      this.state.company.investorIdentificationType
+    )
+    if(!this.state.err){
     fetch('https://serverbrogrammers.herokuapp.com/api/lawyer/lawyerinvestor/createssccompany',
       {
         method: 'POST',
@@ -196,25 +220,22 @@ class LawyerCompanyReg extends React.Component {
         }
       }).then(response => {
         response.json().then(data => {
-          if (data.error) {
-            alert(data.error)
-          } else {
-            console.log('Successful' + data)
+          console.log('Successful' + data)
 
-            this.setState({
-              id: data.data._id
-            })
-            if (data.data.capitalCurrency == 'egp') {
-              document.getElementById('negp').style.visibility = 'hidden'
-            } else {
-              document.getElementById('egp').style.visibility = 'hidden'
-            }
-            //  this.state.id=data.data._id
-            console.log(this.state.id + ' the ID')
-            this.createPdf(event)
+          this.setState({
+            id: data.data._id
+          })
+          if (data.data.capitalCurrency == 'egp') {
+            document.getElementById('negp').style.visibility = 'hidden'
+          } else {
+            document.getElementById('egp').style.visibility = 'hidden'
           }
+          //  this.state.id=data.data._id
+          console.log(this.state.id + ' the ID')
+          this.createPdf(event)
         })
       })
+    }  
   }
 
   handleInput(event) {
@@ -267,7 +288,7 @@ class LawyerCompanyReg extends React.Component {
   validate(regulationLaw, legalCompanyForm, nameInArabic,
     nameInEnglish, governerateHQ, cityHQ, addressHQ, faxHQ, capitalCurrency,
     capital, telephoneHQ, investorName, investorNationality
-    , investorIdentificationNumber, investorTelephone, investorFax, investorEmail, investorType, investorIdentificationType) {
+    , investorIdentificationNumber, investorTelephone, investorAddress, investorFax, investorEmail, investorType, investorIdentificationType) {
     var regex = new RegExp(/^[a-zA-Z\s-, ]+$/);
     var number = new RegExp(/^[0-9]+$/)
     var law = new RegExp(/^Law/)
@@ -331,8 +352,26 @@ class LawyerCompanyReg extends React.Component {
           err: true
         })
       }
-
     }
+
+    if (investorAddress) {
+      if (number.test(investorAddress)) {
+        this.setState({ investorAddressValid: true })
+      }
+      else {
+        this.setState({
+          investorAddressValid: false,
+          err: true
+        })
+      }
+    }
+    else {
+      this.setState({
+        investorAddressValid: false,
+        err: true
+      })
+    }
+
     if (investorIdentificationNumber) {
       if (number.test(investorIdentificationNumber)) {
         this.setState({ investorIdentificationNumberValid: true })
@@ -411,14 +450,11 @@ class LawyerCompanyReg extends React.Component {
       })
     }
 
-    if (telephoneHQ) {//console.log("I also entered + "+telephoneHQ)
-      //console.log("what I computed + "+number.test(telephoneHQ))
+    if (telephoneHQ) {
       if (number.test(telephoneHQ)) {
         this.setState({ telephoneHQValid: "true" })
       }
-      else {//console.log("I also entered in the else part+ "+telephoneHQ)
-        //var x = false
-        //var y = true
+      else {
         this.setState({
           telephoneHQValid: false,
           err: true
@@ -604,70 +640,70 @@ class LawyerCompanyReg extends React.Component {
               </Typography>
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Law' : ' ‫القانون‬‫ المنظم'} type={'text'} callBack={this.handleInput} name={'regulationLaw'} />
+              <Required valid={this.state.regulationLawValid} texthelper={!this.state.regulationLawValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Regulation Law' : ' ‫القانون‬‫ المنظم'} type={'text'} callBack={this.handleInput} name={'regulationLaw'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Legal Company Form' : '‫شكل‬ ‫الشركة ‫القانوني‬ '} type={'text'} callBack={this.handleInput} name={'legalCompanyForm'} />
+              <Required valid={this.state.legalCompanyFormValid} texthelper={!this.state.legalCompanyFormValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Legal Company Form' : '‫شكل‬ ‫الشركة ‫القانوني‬ '} type={'text'} callBack={this.handleInput} name={'legalCompanyForm'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Name In Arabic' : ' ‫اسم‬‫ المنشأة‬'} type={'text'} callBack={this.handleInput} name={'nameInArabic'} />
+              <Required valid={this.state.nameInArabicValid} texthelper={!this.state.nameInArabicValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Name In Arabic' : ' ‫اسم‬‫ المنشأة‬'} type={'text'} callBack={this.handleInput} name={'nameInArabic'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <NotRequired field={sessionStorage.getItem('lang') === 'en' ? 'Name In English' : 'اسم‬ ‫المنشأه‬‫بالانجلیزیة‬ (في‬‬ ‫حالة‫ وجوده‬‫)'} type={'text'} callBack={this.handleInput} name={'nameInEnglish'} />
+              <NotRequired valid={this.state.nameInEnglishValid} texthelper={!this.state.nameInEnglishValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Name In English' : 'اسم‬ ‫المنشأه‬‫بالانجلیزیة‬ (في‬‬ ‫حالة‫ وجوده‬‫)'} type={'text'} callBack={this.handleInput} name={'nameInEnglish'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Government HQ' : '‫المركز ‫الرئیسي‬ ‫(المحافظة)‬‬'} type={'text'} callBack={this.handleInput} name={'governerateHQ'} />
+              <Required valid={this.state.governerateHQValid} texthelper={!this.state.governerateHQValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Government HQ' : '‫المركز ‫الرئیسي‬ ‫(المحافظة)‬‬'} type={'text'} callBack={this.handleInput} name={'governerateHQ'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'City HQ' : 'المركز ‫الرئیسي‬ ‫‫(المدینة)'} type={'text'} callBack={this.handleInput} name={'cityHQ'} />
+              <Required valid={this.state.cityHQValid} texthelper={!this.state.cityHQValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'City HQ' : 'المركز ‫الرئیسي‬ ‫‫(المدینة)'} type={'text'} callBack={this.handleInput} name={'cityHQ'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Address HQ' : ' ‫المركز‬ ‫الرئیسي ‫(العنوان)'} type={'text'} callBack={this.handleInput} name={'addressHQ'} />
+              <Required valid={this.state.addressHQValid} texthelper={!this.state.addressHQValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Address HQ' : ' ‫المركز‬ ‫الرئیسي ‫(العنوان)'} type={'text'} callBack={this.handleInput} name={'addressHQ'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Telephone HQ' : '‫التلیفون‬'} type={'text'} callBack={this.handleInput} name={'telephoneHQ'} />
+              <Required valid={this.state.telephoneHQValid} texthelper={!this.state.telephoneHQValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Telephone HQ' : '‫التلیفون‬'} type={'text'} callBack={this.handleInput} name={'telephoneHQ'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Fax HQ' : '‫الفاكس‬'} type={'text'} callBack={this.handleInput} name={'faxHQ'} />
+              <Required valid={this.state.faxHQValid} texthelper={!this.state.faxHQValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Fax HQ' : '‫الفاكس‬'} type={'text'} callBack={this.handleInput} name={'faxHQ'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Capital Currency' : '‫عملة‬ ‫رأس‬ ‫المال‬'} type={'text'} callBack={this.handleInput} name={'capitalCurrency'} />
+              <Required valid={this.state.capitalCurrencyValid} texthelper={!this.state.capitalCurrencyValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Capital Currency' : '‫عملة‬ ‫رأس‬ ‫المال‬'} type={'text'} callBack={this.handleInput} name={'capitalCurrency'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Capital' : 'رأس‬ ‫المال'} type={'number'} callBack={this.handleInput} name={'capital'} />
+              <Required valid={this.state.capitalValid} texthelper={!this.state.capitalValid ? "This field is required and only Numbers are Allowed " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Capital' : 'رأس‬ ‫المال'} type={'number'} callBack={this.handleInput} name={'capital'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Investor Name' : '‫‫الاسم‬ المستثمر‬'} type={'text'} callBack={this.handleInput} name={'investorName'} />
+              <Required valid={this.state.investorNameValid} texthelper={!this.state.investorNameValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Investor Name' : '‫‫الاسم‬ المستثمر‬'} type={'text'} callBack={this.handleInput} name={'investorName'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Investor Type' : '‫نوع‬ المستثمر‬'} type={'text'} callBack={this.handleInput} name={'investorType'} />
+              <Required valid={this.state.investorTypeValid} texthelper={!this.state.investorTypeValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Investor Type' : '‫نوع‬ المستثمر‬'} type={'text'} callBack={this.handleInput} name={'investorType'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
               <Gender field={sessionStorage.getItem('lang') === 'en' ? 'Investor Sex' : '‫‫جنس‬ المستثمر‬'} callBack={this.handleInput} name={'investorSex'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Investor Nationality' : 'جنسیة‬ ‫المستثمر‬'} type={'text'} callBack={this.handleInput} name={'investorNationality'} />
+              <Required valid={this.state.investorNationalityValid} texthelper={!this.state.investorNationalityValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Investor Nationality' : 'جنسیة‬ ‫المستثمر‬'} type={'text'} callBack={this.handleInput} name={'investorNationality'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Investor Identification Type' : '‫‫نوع‬ ‫اثبات‬ شخصیة‬ المستثمر‬‫'} type={'text'} callBack={this.handleInput} name={'investorIdentificationType'} />
+              <Required valid={this.state.investorIdentificationTypeValid} texthelper={!this.state.investorIdentificationTypeValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Investor Identification Type' : '‫‫نوع‬ ‫اثبات‬ شخصیة‬ المستثمر‬‫'} type={'text'} callBack={this.handleInput} name={'investorIdentificationType'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Investor Identification Number' : '‫‫رقم‬ ‫اثبات‬ شخصیة‬ المستثمر‫‬'} type={'number'} callBack={this.handleInput} name={'investorIdentificationNumber'} />
+              <Required valid={this.state.investorIdentificationNumberValid} texthelper={!this.state.investorIdentificationNumberValid ? "This field is required and only Numbers are Allowed " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Investor Identification Number' : '‫‫رقم‬ ‫اثبات‬ شخصیة‬ المستثمر‫‬'} type={'number'} callBack={this.handleInput} name={'investorIdentificationNumber'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
               <Date callBack={this.handleDate} name={'investorBD'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Investor Address' : '‫‫تلیفون‬ المستثمر‬'} type={'text'} callBack={this.handleInput} name={'investorAddress'} />
+              <Required valid={this.state.investorAddressValid} texthelper={!this.state.investorAddressValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Investor Address' : '‫‫تلیفون‬ المستثمر‬'} type={'text'} callBack={this.handleInput} name={'investorAddress'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Investor Telephone' : '‫‫فاكس‬ المستثمر‬'} type={'number'} callBack={this.handleInput} name={'investorTelephone'} />
+              <Required valid={this.state.investorTelephoneValid} texthelper={!this.state.investorTelephoneValid ? "This field is required and only Numbers Are Allowed " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Investor Telephone' : '‫‫فاكس‬ المستثمر‬'} type={'number'} callBack={this.handleInput} name={'investorTelephone'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Investor Fax' : ' ‫برید الكترونى‬ ‬‫المستثمر‬'} type={'number'} callBack={this.handleInput} name={'investorFax'} />
+              <Required valid={this.state.investorFaxValid} texthelper={!this.state.investorFaxValid ? "This field is required and only Numbers Are Allowed " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Investor Fax' : ' ‫برید الكترونى‬ ‬‫المستثمر‬'} type={'number'} callBack={this.handleInput} name={'investorFax'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required field={sessionStorage.getItem('lang') === 'en' ? 'Investor Email' : '‫‫‫عنوان‬ الإقامة‬ المستثمر‬'} type={'text'} callBack={this.handleInput} name={'investorEmail'} />
+              <Required valid={this.state.investorEmailValid} texthelper={!this.state.investorEmailValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Investor Email' : '‫‫‫عنوان‬ الإقامة‬ المستثمر‬'} type={'text'} callBack={this.handleInput} name={'investorEmail'} />
             </Grid>
             <Grid container direction='column' alignItems='center'>
               <ExpansionPanel callBack={this.handleOnClick} />
