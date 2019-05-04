@@ -23,7 +23,7 @@ const parallaxData1 = [
 const parallaxData2 = [
   {
     start: "self",
-    end: 180,
+    duration: 300,
     properties: [
       {
         startValue: 0,
@@ -32,18 +32,7 @@ const parallaxData2 = [
       }
     ]
   },
-  {
-    start: "self",
-    end: 150,
-    properties: [
-      {
-        startValue: 0,
-        endValue: 1,
-        property: "opacity"
-      }
-    ]
-  }
-];
+]
 const styles = {
   paperContainer: {
     backgroundImage: `url(${Image})`,
@@ -98,7 +87,7 @@ class Home extends Component {
                 in={true}
               >
                 <Button variant="outlined" onClick={this.handleChange}>
-                  <p style={{ color: "white" }}>get started here</p>
+                 get started here
                 </Button>
               </Fade>
             </Grid>
