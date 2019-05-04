@@ -4,35 +4,50 @@ import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 
 class Button2 extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
-  claimTask () {
-    fetch(`https://serverbrogrammers.herokuapp.com/api/lawyer/assignFreeTask/${this.props.compid}`, {
-      method: 'PUT',
+  claimTask() {
+    fetch(
+      `https://serverbrogrammers.herokuapp.com/api/lawyer/assignFreeTask/${
+        this.props.compid
+      }`,
+      {
+        method: 'PUT',
 
-      headers: {
-        'Content-Type': 'application/json',
-        'x-access-token': this.props.token
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': this.props.token
+        }
       }
-    }).then(response => {
+    ).then(response => {
       console.log(response)
-      alert(sessionStorage.getItem('lang') === 'en' ? 'Task claimed' : 'استلام المهمه ')
+      alert(
+        sessionStorage.getItem('lang') === 'en'
+          ? 'Task claimed'
+          : 'استلام المهمه '
+      )
       window.location.reload()
     })
   }
 
-  render () {
+  render() {
     // console.log(this.props.compid)
     //  console.log(this.props.token)
 
     return (
       <div>
-        <Button variant='contained' color='primary' size='medium' onClick={this.claimTask.bind(this)}>
-          {sessionStorage.getItem('lang') === 'en' ? 'Claim task' : 'استلام المهمه '},
+        <Button
+          variant="contained"
+          color="primary"
+          size="medium"
+          onClick={this.claimTask.bind(this)}
+        >
+          {sessionStorage.getItem('lang') === 'en'
+            ? 'Claim task'
+            : 'استلام المهمه '}
         </Button>
-
       </div>
     )
   }

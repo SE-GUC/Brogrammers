@@ -7,6 +7,11 @@ import CardContent from '@material-ui/core/CardContent'
 
 import Typography from '@material-ui/core/Typography'
 import Button2 from '../buttons/Button2'
+
+import gender from '../listAvatars/gender.png'
+import location from '../listAvatars/location.png'
+import country from '../listAvatars/country.png'
+import governate from '../listAvatars/governate.png'
 const styles = {
   card: {
     minWidth: 275
@@ -53,7 +58,7 @@ function SimpleCard(props) {
                 : 'رقم حساب الشركه'}
               : {props.compid}
             </li>
-            <li style={{ listStyleImage: `url()` }}>
+            <li style={{ listStyleImage: `url(${location})` }}>
               {sessionStorage.getItem('lang') === 'en'
                 ? 'Address HQ'
                 : 'عنوان الشركه '}
@@ -77,7 +82,7 @@ function SimpleCard(props) {
                 : 'اسم الشركه'}
               : {props.nameInArabic}
             </li>
-            <li style={{ listStyleImage: `url()` }}>
+            <li style={{ listStyleImage: `url(${governate})` }}>
               {sessionStorage.getItem('lang') === 'en'
                 ? 'Governerate HQ'
                 : 'المركز الرئيسى '}
@@ -121,11 +126,11 @@ function SimpleCard(props) {
                 : 'اسم المستثمر'}
               :{props.investorName}{' '}
             </li>
-            <li style={{ listStyleImage: `url()` }}>
+            <li style={{ listStyleImage: `url(${gender})` }}>
               {sessionStorage.getItem('lang') === 'en' ? 'Sex' : 'الجنس '}:
               {props.investorSex}{' '}
             </li>
-            <li style={{ listStyleImage: `url()` }}>
+            <li style={{ listStyleImage: `url(${country})` }}>
               {sessionStorage.getItem('lang') === 'en'
                 ? 'Nationality'
                 : 'الجنسيه '}
@@ -149,7 +154,7 @@ function SimpleCard(props) {
                 : 'تاريخ الميلد'}
               : {props.investorBD}
             </li>
-            <li style={{ listStyleImage: `url()` }}>
+            <li style={{ listStyleImage: `url(${location})` }}>
               {sessionStorage.getItem('lang') === 'en'
                 ? 'Address'
                 : 'عنوان الاقامه'}
