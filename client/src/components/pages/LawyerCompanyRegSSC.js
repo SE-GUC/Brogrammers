@@ -235,7 +235,11 @@ class LawyerCompanyReg extends React.Component {
           this.createPdf(event)
         })
       })
-    }  
+    }else{
+      this.setState({
+        err: false
+      })
+    }
   }
 
   handleInput(event) {
@@ -430,7 +434,6 @@ class LawyerCompanyReg extends React.Component {
       })
     }
     if (regulationLaw) {
-      console.log("I also entered +  " + regulationLaw)
       if (law.test(regulationLaw)) {
         this.setState({ regulationLawValid: true })
       }
@@ -640,7 +643,7 @@ class LawyerCompanyReg extends React.Component {
               </Typography>
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required valid={this.state.regulationLawValid} texthelper={!this.state.regulationLawValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Regulation Law' : ' ‫القانون‬‫ المنظم'} type={'text'} callBack={this.handleInput} name={'regulationLaw'} />
+              <Required valid={this.state.regulationLawValid} texthelper={!this.state.regulationLawValid ? "This field is required and either Law 159 or Law 72" : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Regulation Law' : ' ‫القانون‬‫ المنظم'} type={'text'} callBack={this.handleInput} name={'regulationLaw'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
               <Required valid={this.state.legalCompanyFormValid} texthelper={!this.state.legalCompanyFormValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Legal Company Form' : '‫شكل‬ ‫الشركة ‫القانوني‬ '} type={'text'} callBack={this.handleInput} name={'legalCompanyForm'} />
@@ -707,9 +710,6 @@ class LawyerCompanyReg extends React.Component {
             </Grid>
             <Grid container direction='column' alignItems='center'>
               <ExpansionPanel callBack={this.handleOnClick} />
-            </Grid>
-            <Grid container direction='column' alignItems='center'>
-              <ChipsArray callBack={this.handleManager} />
             </Grid>
             <br />
             <Grid container direction='column' alignItems='flex-end' >
