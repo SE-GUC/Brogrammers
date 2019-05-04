@@ -7,27 +7,7 @@ import Plx from "react-plx/lib/Plx";
 import StickyText from "./StickyText";
 import { StickyContainer, Sticky } from 'react-sticky';
 
-const parallaxData1 = [
-  {
-    start: 'self',
-    startOffset:-200,
-    duration: 300,
-    
-    properties: [
-     
-      {
-        startValue: 0.5,
-        endValue: 1,
-        property: 'scale',
-      },
-    ],
-  },
 
-];
-const parallaxData2 = [
- 
-
-];
 
 const styles = {
   list: {
@@ -76,16 +56,13 @@ class ViewApprovedCompanies extends Component {
            <h2 >{sessionStorage.getItem("lang")==='ar'?'الشركات المقبولة':'Approved Companies'} </h2>
            </Grid>
  
-      <Plx className="MyAwesomeParallax" parallaxData={parallaxData2} >
-      </Plx>
+     
         {this.state.approvedCompanies.map((item, i) => (
-          <Plx className="MyAwesomeParallax" parallaxData={parallaxData1} >
+          // <Plx className="MyAwesomeParallax" parallaxData={parallaxData1} >
           <Grid
               item
-              xs={12}
-              md={12}
-              sm={12}
-            lg={12}
+              xs={12} md={4} sm={6}
+            lg={4}
             
             >
               <CompanyCard
@@ -94,7 +71,7 @@ class ViewApprovedCompanies extends Component {
                 company={item}
               />
             </Grid>
-        </Plx>
+        // </Plx>
         ))}
       </Grid>
       </>
