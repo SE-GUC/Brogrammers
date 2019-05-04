@@ -64,7 +64,7 @@ class investorRequests extends Component {
         console.log(this.props.token)
         this.setState({ isLoading: true })
         sessionStorage.setItem("loading", true)
-        fetch('http://serverbrogrammers.herokuapp.com/api/investors/MyRequests/all', {
+        fetch('https://serverbrogrammers.herokuapp.com/api/investors/MyRequests/all', {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',

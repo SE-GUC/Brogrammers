@@ -535,7 +535,7 @@ router.post('/register', async (req, res) => {
       rejectUnauthorized: false
     }
   });
-var link="http://localhost:3001/activate/"+newInvestor.id
+  var link="http://clientbrogrammer.herokuapp.com/activate/"+newInvestor.id
   // send mail with defined transport object
   let info = {
     from: '"GAFI"', // sender address

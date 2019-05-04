@@ -67,7 +67,7 @@ class EditProfileLawyer extends Component {
   handleSubmission(e) {
     let updatedData = this.state.lawyer;
     this.clean(updatedData);
-    fetch("http://serverbrogrammers.herokuapp.com/api/lawyer/", {
+    fetch("https://serverbrogrammers.herokuapp.com/api/lawyer/", {
       method: "PUT",
       body: JSON.stringify(updatedData),
       headers: {

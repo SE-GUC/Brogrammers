@@ -44,6 +44,26 @@ router.post('/uploadImage', uploadImage.single('image'), (req, res) => {
   });
 
 router.post("/uploadfile", upload.single("myFile"), (req, res, next) => {
+  var stat = 0;
+  var token = req.headers["x-access-token"];
+  if (!token) {
+    return res
+      .status(401)
+      .send({ auth: false, message: "Please login first" });
+  }
+  jwt.verify(token, config.secret, async function(err, decoded) {
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate token." });
+    }
+    stat = decoded.id;
+    const admin = await Admin.findById(stat);
+    if(!admin){
+      return res.status(400).send({ auth: false, message: "You are not an admin." })
+    }
+  });
+ 
   const file = req.file;
   console.log(file);
   const fs = require("fs");
@@ -102,6 +122,26 @@ router.get("/", async (req, res) => {
 //upload json files to be converted to a form
 
 router.post("/submit-form", upload.single("myFile"), async (req, res, next) => {
+  var stat = 0;
+  var token = req.headers["x-access-token"];
+  if (!token) {
+    return res
+      .status(401)
+      .send({ auth: false, message: "Please login first" });
+  }
+  jwt.verify(token, config.secret, async function(err, decoded) {
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate token." });
+    }
+    stat = decoded.id;
+    const admin = await Admin.findById(stat);
+    if(!admin){
+      return res.status(400).send({ auth: false, message: "You are not an admin." })
+    }
+  });
+ 
   const fs = require("fs");
   try {
     let filename = req.file.originalname;
@@ -143,6 +183,26 @@ router.post("/submit-form", upload.single("myFile"), async (req, res, next) => {
   }
 });
 router.delete("/delete-form", async (req, res) => {
+  var stat = 0;
+  var token = req.headers["x-access-token"];
+  if (!token) {
+    return res
+      .status(401)
+      .send({ auth: false, message: "Please login first" });
+  }
+  jwt.verify(token, config.secret, async function(err, decoded) {
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate token." });
+    }
+    stat = decoded.id;
+    const admin = await Admin.findById(stat);
+    if(!admin){
+      return res.status(400).send({ auth: false, message: "You are not an admin." })
+    }
+  });
+ 
   var formName = req.body.formName;
   console.log(req)
   try {

@@ -48,7 +48,7 @@ class ViewLawyerEditableCases extends Component {
         console.log(this.props.token)
         this.setState({ isLoading: true })
 
-        fetch(`http://serverbrogrammers.herokuapp.com/api/lawyer/editForm/${sessionStorage.getItem("ssn")}`, {
+        fetch(`https://serverbrogrammers.herokuapp.com/api/lawyer/editForm/${sessionStorage.getItem("ssn")}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',

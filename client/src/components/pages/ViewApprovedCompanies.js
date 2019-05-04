@@ -48,7 +48,7 @@ class ViewApprovedCompanies extends Component {
   }
 
   componentDidMount() {
-    fetch(`http://serverbrogrammers.herokuapp.com/api/company/approved`, {
+    fetch(`https://serverbrogrammers.herokuapp.com/api/company/approved`, {
       method: "GET"
     })
       .then(res => res.json())

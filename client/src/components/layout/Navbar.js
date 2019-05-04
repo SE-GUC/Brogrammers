@@ -156,6 +156,7 @@ hadnleOpenDrawer=()=>{
     this.state.auth = false;
     this.forceUpdate();
     this.handleMenuClose();
+    document.location.href = "/";
   };
 
   handleProfile = () => {

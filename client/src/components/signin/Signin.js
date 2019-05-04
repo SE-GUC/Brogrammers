@@ -64,7 +64,7 @@ export class SignIn extends Component {
   handleRegister (e) {
     e.preventDefault()
     let investorData = this.state.investor
-    fetch('http://serverbrogrammers.herokuapp.com/api/investors/login', {
+    fetch('https://serverbrogrammers.herokuapp.com/api/investors/login', {
       method: 'POST',
       body: JSON.stringify(investorData),
       headers: {

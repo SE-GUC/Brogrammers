@@ -40,7 +40,7 @@ class CreateCompany extends React.Component {
   handleFetch = state => {
     if (state.companytypes.length === 0) {
       fetch(
-        "http://serverbrogrammers.herokuapp.com/routes/api/admins/company/types",
+        "https://serverbrogrammers.herokuapp.com/routes/api/admins/company/types",
         {
           method: "GET",
           headers: {

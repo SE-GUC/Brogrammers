@@ -59,7 +59,7 @@ export class PleaseActivate extends Component {
     }
   }
   componentDidMount() {
-    fetch(`http://serverbrogrammers.herokuapp.com/api/investors/Activate/`+this.props.match.params.id, {
+    fetch(`https://serverbrogrammers.herokuapp.com/api/investors/Activate/`+this.props.match.params.id, {
       method: "GET",
       headers: {
       }

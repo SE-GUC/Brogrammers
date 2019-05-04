@@ -13,7 +13,7 @@ class LawyerCases extends Component {
 
   componentDidMount () {
     {
-      fetch('http://serverbrogrammers.herokuapp.com/api/lawyer/getAllTasks/view', {
+      fetch('https://serverbrogrammers.herokuapp.com/api/lawyer/getAllTasks/view', {
         headers: new Headers({
           //  'x-access-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjYTllN2VlN2E0MDNjMDc3YzM3ZGNkMSIsImlhdCI6MTU1NDYzODgzMCwiZXhwIjoxNTU0NzI1MjMwfQ.bEFsxvXTTktmM0JxCPxaiqxmPd3WpjIJRrOEFOfVI8M'
           // if login setted token correctly this should work
