@@ -33,7 +33,7 @@ class ReviewerApproveDisapprove extends Component {
     }
     else{
     console.log(this.props.comment)
-    fetch(`http://localhost:3000/api/reviewer/getTasks/disapprove/${this.props.compid}`, {
+    fetch(`https://serverbrogrammers.herokuapp.com/api/reviewer/getTasks/disapprove/${this.props.compid}`, {
       method: 'PUT',
       body: JSON.stringify({comment:this.props.comment}),
       headers: {

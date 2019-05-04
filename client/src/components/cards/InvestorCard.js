@@ -18,10 +18,7 @@ import { ReactComponent as ReviewerRejectedIcon } from "../Icons/reviewerrejecte
 import CustomDialog from "../layout/Dialogs/CustomDialog";
 
 const styles = theme => ({
-  card: {
-    width: 350,
-    margin: 50
-  },
+ 
   media: {
     height: 0,
     paddingTop: "56.25%" // 16:9

@@ -42,7 +42,7 @@ const styles = {
     width: "100%",
     margin: 0,
     padding: 0,
-    marginTop: 50
+   
   }
 };
 
@@ -54,6 +54,7 @@ class Home extends Component {
   handleChange = () => {
     console.log(this.state.checked);
     this.setState(state => ({ checked: !state.checked }));
+    document.location.href = "/getStarted";
   };
   render() {
     const { classes } = this.props;

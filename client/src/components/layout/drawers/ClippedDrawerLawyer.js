@@ -163,7 +163,7 @@ class ClippedDrawerLawyer extends React.Component {
             paper: classes.drawerPaper
           }}
         >
-        <Navbar />
+          <Navbar />
           <div className={classes.toolbar} />
 
           <List>
@@ -193,7 +193,7 @@ class ClippedDrawerLawyer extends React.Component {
                 }
               />
             </ListItem>
-           
+
 
             <ListItem
               button
@@ -214,54 +214,54 @@ class ClippedDrawerLawyer extends React.Component {
           </List>
           <Divider />
           <ListItem
-              button
-              key={"Create SSC Companies"}
-              onClick={this.handleCreatessc}
-            >
-              <ListItemIcon>
-                <Note />
-              </ListItemIcon>
-              <ListItemText
-                primary={
-                  sessionStorage.getItem("lang") === "en"
-                    ? "Create SSC Companies"
-                    : "سجل شركتي ال SSC"
-                }
-              />
-            </ListItem>
-            <ListItem
-              button
-              key={"Create SPC Companies"}
-              onClick={this.handleCreatespc}
-            >
-              <ListItemIcon>
-                <Note />
-              </ListItemIcon>
-              <ListItemText
-                primary={
-                  sessionStorage.getItem("lang") === "en"
-                    ? "Create SPC Companies"
-                    : "سجل شركتي ال SPC"
-                }
-              />
-            </ListItem>
-            <ListItem
-              button
-              key={"Create D Companies"}
-              onClick={this.handleCreated}
-            >
-              <ListItemIcon>
-                <Note />
-              </ListItemIcon>
-              <ListItemText
-                primary={
-                  sessionStorage.getItem("lang") === "en"
-                    ? "Create Dynamic Companies"
-                    : "سجل شركتي ال Dynamic"
-                }
-              />
-            </ListItem>
-            <Divider/>
+            button
+            key={"Create SSC Companies"}
+            onClick={this.handleCreatessc}
+          >
+            <ListItemIcon>
+              <Note />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                sessionStorage.getItem("lang") === "en"
+                  ? "Create SSC Companies"
+                  : "سجل شركتي ال SSC"
+              }
+            />
+          </ListItem>
+          <ListItem
+            button
+            key={"Create SPC Companies"}
+            onClick={this.handleCreatespc}
+          >
+            <ListItemIcon>
+              <Note />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                sessionStorage.getItem("lang") === "en"
+                  ? "Create SPC Companies"
+                  : "سجل شركتي ال SPC"
+              }
+            />
+          </ListItem>
+          <ListItem
+            button
+            key={"Create D Companies"}
+            onClick={this.handleCreated}
+          >
+            <ListItemIcon>
+              <Note />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                sessionStorage.getItem("lang") === "en"
+                  ? "Create Dynamic Companies"
+                  : "سجل شركتي ال Dynamic"
+              }
+            />
+          </ListItem>
+          <Divider />
           <List>
             
             
@@ -293,7 +293,7 @@ class ClippedDrawerLawyer extends React.Component {
                 }
               />
             </ListItem>
-           
+
           </List>
         </Drawer>
         <main className={classes.content} style={{ marginTop: 50 }}>

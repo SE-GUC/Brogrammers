@@ -52,7 +52,7 @@ const styles = theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3
+   
   },
   toolbar: theme.mixins.toolbar
 });
@@ -92,8 +92,7 @@ class ClippedDrawerInvestor extends Component {
         return <Stepper />;
         case "Home":
         return <Home2 />;
-      default:
-        return <Stepper />;
+    default:return  <Home2 />
     }
   };
   handleHome = () => {

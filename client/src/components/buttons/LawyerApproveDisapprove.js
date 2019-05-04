@@ -33,7 +33,7 @@ class LawyerApproveDisapprove extends Component {
      //   return <Snackbar variant='warning' message={sessionStorage.getItem('lang') === 'en' ? 'There are no requests' : 'لا يوجد شركات'} />
     }
     else{
-    fetch(`http://localhost:3000/api/lawyer/getTasks/disapprove/${this.props.compid}`, {
+    fetch(`https://serverbrogrammers.herokuapp.com/api/lawyer/getTasks/disapprove/${this.props.compid}`, {
       method: 'PUT',
       body: JSON.stringify({comment:this.props.comment}),
       headers: {

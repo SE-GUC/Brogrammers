@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { withStyles, List, Paper } from '@material-ui/core'
+import { withStyles, List, Paper, Grid } from '@material-ui/core'
 import InvestorCard from '../cards/InvestorCard'
 import GridList from '@material-ui/core/GridList'
 import Grow from '@material-ui/core/Grow'
@@ -11,14 +11,19 @@ const styles = {
     backgroundColor: 'rgba(200,200,200,0.4)',
     maxWidth: '85%'
   },
-  sep: {
-    marginLeft: 110
-  },
+ 
   header: {
-    textAlign: 'center',
-    fontFamily: 'Trebuchet MS',
-    color: 'white',
-    paddingBottom: 10
+   
+    position: "sticky",
+    textAlign: "center",
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginTop: "0px",
+  
+    color: "white",
+    top: "55px",
+    zIndex: 13,
+    backgroundColor: "#034066"
   }
 }
 
@@ -49,17 +54,24 @@ class ViewCompanies extends Component {
       return (<h10>{sessionStorage.getItem('lang') === 'en' ? 'You have no companies' : 'لا يوجد لديك شركات'}</h10>)
     } else {
       return (
-        <div className={classes.holder}>
-          <h1 className={classes.header}>{sessionStorage.getItem('lang') === 'en' ? 'Your Companies' : ' شركاتك'}</h1>
-          <div className={classes.sep}>
-            <GridList className={classes.list}>
+        <div >
+ <Grid item xs={12} lg={12} style={styles.header}>
+                    <h2>
+                        {sessionStorage.getItem("lang") === "ar"
+                            ? "شركاتي"
+                            : "My Companies"}{" "}
+                    </h2>
+                </Grid>  
+                <Grid container>
               {this.state.investorCompanies.map((item, i) => (
                 <Grow in='true'>
+                            <Grid item xs={12} md={4} sm={6} lg={4} style={{marginBottom:40,padding:20}} >
+
                   <InvestorCard key={i} company={item} />
+                  </Grid>
                 </Grow>
               ))}
-            </GridList>
-          </div>
+              </Grid>
         </div>
       )
     }
