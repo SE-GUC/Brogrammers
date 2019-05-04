@@ -13,8 +13,7 @@ const styles = {
   },
  
   header: {
-    position: "-webkit-sticky",
-    // eslint-disable-next-line no-dupe-keys
+   
     position: "sticky",
     textAlign: "center",
     paddingTop: 10,

@@ -124,6 +124,8 @@ class Register extends React.Component {
       this.setState({passwordValid:false,
         err:true})
     }
+    else
+    this.setState({passwordValid:true})
     if(type)
     {
       if(regex.test(type))
@@ -197,7 +199,8 @@ class Register extends React.Component {
     {
       this.setState({addressValid:false,
         err:true})
-    }
+    }else
+    this.setState({addressValid:true})
    
     if(fax)
     {
@@ -211,8 +214,7 @@ class Register extends React.Component {
       }
         
     }
-   
-   
+  
   
   }
 
@@ -242,7 +244,8 @@ class Register extends React.Component {
         }
       })
     })
-  }
+  }else
+  this.setState({err:false})
   }
   handleDate (v) {
     this.setState(prevState => ({ investor:

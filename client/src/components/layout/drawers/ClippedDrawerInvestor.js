@@ -92,7 +92,7 @@ class ClippedDrawerInvestor extends Component {
         return <Stepper />;
         case "Home":
         return <Home2 />;
-    default:  
+    default:return  <Home2 />
     }
   };
   handleHome = () => {
