@@ -54,6 +54,7 @@ class Home extends Component {
   handleChange = () => {
     console.log(this.state.checked);
     this.setState(state => ({ checked: !state.checked }));
+    document.location.href = "/getStarted";
   };
   render() {
     const { classes } = this.props;
@@ -86,8 +87,8 @@ class Home extends Component {
                 style={{ transitionDelay: "0.6s" }}
                 in={true}
               >
-                <Button variant="outlined" onClick={this.handleChange}>
-                 get started here
+                <Button variant="outlined"  onClick={this.handleChange}>
+                 Get Started Here
                 </Button>
               </Fade>
             </Grid>
