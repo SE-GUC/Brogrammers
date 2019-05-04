@@ -36,7 +36,7 @@ class investorRequests extends Component {
             return <>
                 <Paper elevation={1} />
 
-                <Snackbar variant='error' warning={sessionStorage.getItem('lang') === 'en' ? 'You Dont have any requests' : 'يوجد خطء'} />
+                <Snackbar variant='error' message={sessionStorage.getItem('lang') === 'en' ? 'You Dont have any requests' : 'يوجد خطء'} />
             </>
         }
     }
