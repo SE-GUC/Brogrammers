@@ -32,18 +32,7 @@ const parallaxData2 = [
       }
     ]
   },
-  {
-    start: "self",
-    end: 150,
-    properties: [
-      {
-        startValue: 0,
-        endValue: 1,
-        property: "opacity"
-      }
-    ]
-  }
-];
+]
 const styles = {
   paperContainer: {
     backgroundImage: `url(${Image})`,
