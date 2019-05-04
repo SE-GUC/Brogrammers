@@ -19,8 +19,8 @@ const styles = theme => ({
   },
   gridList: {
     height: 'auto',
-    ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 5,
+  
+    
     paddingBottom: theme.spacing.unit
   }
 })
@@ -34,16 +34,11 @@ class TitlebarGridList extends React.Component {
   render () {
     const { classes } = this.props
     return (
-      <Grid
-        container
-        spacing={40}
-        alignItems='center'
-
-      >
-        <Grid item xs={12} key='Subheader' />
+     <Grid container>
+   
         {this.props.data.map((tile, i) => (
           <Grow in='true'>
-            <Grid item xs={12} md={4} sm={6} style={{ backgroundColor: 'rgba(200,200,200,0.2)' }}>
+            <Grid item xs={12} md={4} sm={6} lg={4} style={{marginBottom:40,padding:20}} >
               {' '}
               <CaseCard
                 title={tile.nameInEnglish}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import RequiredValidation from '../layout/inputs/RequiredValidation'
-
+import NotRequiredValidation from '../layout/inputs/NotRequiredValidation'
 import Country from '../layout/inputs/Country'
 import Gender from '../layout/inputs/Gender'
 import IDType from '../layout/inputs/IDType'
@@ -299,7 +299,7 @@ class Register extends React.Component {
           <RequiredValidation name='idNumber' field={sessionStorage.getItem('lang') === 'en' ? 'Id number' : ' الرقم القومى'} type='text' callBack={this.handleInput} valid = {this.state.idNumberValid} texthelper={!this.state.idNumberValid?"This field required and is only numbers ":""} />
           <RequiredValidation name='address' field={sessionStorage.getItem('lang') === 'en' ? 'Address' : 'العنوان '} type='text' callBack={this.handleInput} valid = {this.state.addressValid} texthelper={!this.state.addressValid?"This field is required ":""}/>
           <RequiredValidation name='telephone' field={sessionStorage.getItem('lang') === 'en' ? 'Telephone' : 'رقم الهاتف '} type='text' callBack={this.handleInput} valid = {this.state.telephoneValid} texthelper={!this.state.telephoneValid?"This field is required and only numbers ":""}/>
-          <RequiredValidation name='fax' field={sessionStorage.getItem('lang') === 'en' ? 'fax' : 'رقم الفاكس '} type='text' callBack={this.handleInput} valid = {this.state.faxValid} texthelper={!this.state.faxValid?"This field is only numbers ":""}/>
+          <NotRequiredValidation name='fax' field={sessionStorage.getItem('lang') === 'en' ? 'fax' : 'رقم الفاكس '} type='text' callBack={this.handleInput} valid = {this.state.faxValid} texthelper={!this.state.faxValid?"This field is only numbers ":""}/>
           <RequiredValidation name='nationality' field={sessionStorage.getItem('lang') === 'en' ? 'Country' : 'المدينه '} type='text' callBack={this.handleInput}valid = {this.state.nationalityValid} texthelper={!this.state.nameValid?"This field is required and only letters ":""}/>
 
           {/* <Country callBack={this.handleCountry}/> */}
