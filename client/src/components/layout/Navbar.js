@@ -210,22 +210,7 @@ hadnleOpenDrawer=()=>{
           open={isMobileMenuOpen}
           onClose={this.handleMenuClose}
         >
-          <MenuItem onClick={this.handleMobileMenuClose}>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <p>Messages</p>
-          </MenuItem>
-          <MenuItem onClick={this.handleMobileMenuClose}>
-            <IconButton color="inherit">
-              <Badge badgeContent={11} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <p>Notifications</p>
-          </MenuItem>
+         
           <MenuItem onClick={this.handleProfileMenuOpen}>
             <IconButton color="inherit">
               <AccountCircle />
@@ -301,16 +286,7 @@ hadnleOpenDrawer=()=>{
             <Tab label="Sign up" onClick={this.handleSignUp} style={hiden} />
             <div className={classes.grow} />
             <div className={classes.sectionDesktop} style={hidei}>
-              <IconButton color="inherit">
-                <Badge badgeContent={69} color="secondary">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
-              <IconButton color="inherit">
-                <Badge badgeContent={19} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
+              
               <IconButton
                 aria-owns={isMenuOpen ? "material-appbar" : undefined}
                 aria-haspopup="true"

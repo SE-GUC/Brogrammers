@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { withStyles, List, Paper } from '@material-ui/core'
+import { withStyles, List, Paper,Grid} from '@material-ui/core'
 import GridList from '@material-ui/core/GridList'
 import CompanyCard from '../cards/CompanyCard'
 import Button from '@material-ui/core/Button'
@@ -104,24 +104,28 @@ class searchCases extends Component {
         <div className={classes.holder}>
 
       
-        <div
-          className={classes.sep}
-          style={{ paddingTop: '5%', paddingRight: '23%' }}
-        >
-          <GridList className={classes.list} style={styles.companiesBackground}>
-            <h1 style={{ paddingLeft: '5%' }}> cases</h1>
-            
+<Grid container spacing={20} alignItems="center" justify='center' style={{backgroundColor:"#034066cc"}}>
+      <Grid item xs={12} lg={12} style={{position: 'sticky',textAlign:'center',paddingTop:10,paddingBottom:10, marginTop:'0px',marginBottom:'100px',color:'white',top: '65px',zIndex:9999999999,backgroundColor:'#034066'}}>
+           <h2 >{sessionStorage.getItem("lang")==='ar'?'نتائج البحث':'Search Results'} </h2>
+           </Grid>
             {this.state.cases.map((item, i) => (
+               <Grid
+               item
+               xs={12} md={4} sm={6}
+             lg={4}
+             
+             >
               <CompanyCard key={i} company={item} />
+              </Grid>
             ))}
             
-          </GridList>
+          </Grid>
           <div align="center">
           <Button onClick={this.handleBack} >{sessionStorage.getItem('lang')==='en'? 'Back': 'الماضى'}</Button>
           <Button onClick={this.handleNext} >{sessionStorage.getItem('lang')==='en'? 'Next': 'التالى'}</Button>
           </div>
         </div>
-      </div>
+
     )
   }
  

@@ -52,7 +52,7 @@ const styles = theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3
+   
   },
   toolbar: theme.mixins.toolbar
 });
@@ -92,8 +92,7 @@ class ClippedDrawerInvestor extends Component {
         return <Stepper />;
         case "Home":
         return <Home2 />;
-      default:
-        return <Stepper />;
+    default:  
     }
   };
   handleHome = () => {
@@ -245,7 +244,7 @@ class ClippedDrawerInvestor extends Component {
                     <b style={{ color: "#ffffff" }}>
                       {sessionStorage.getItem("lang") === "en"
                         ? "Create SSC Companies"
-                        : "سجل شركتي ال SSC"}
+                        : "SSCسجل شركتي ال"}
                     </b>
                   }
                 />
@@ -263,7 +262,7 @@ class ClippedDrawerInvestor extends Component {
                     <b style={{ color: "#ffffff" }}>
                       {sessionStorage.getItem("lang") === "en"
                         ? "Create SPC Companies"
-                        : "سجل شركتي ال SPC"}
+                        : "SPCسجل شركتي ال "}
                     </b>
                   }
                 />
@@ -281,7 +280,7 @@ class ClippedDrawerInvestor extends Component {
                     <b style={{ color: "#ffffff" }}>
                       {sessionStorage.getItem("lang") === "en"
                         ? "Create Other Companies"
-                        : "سجل شركات اخرة"}
+                        : "سجل شركات اخرى"}
                     </b>
                   }
                 />
