@@ -20,6 +20,7 @@ class ReviewerApproveDisapprove extends Component {
       console.log(response)
       alert(sessionStorage.getItem('lang') === 'en' ? 'Task Approved!!... Now the company is established!!' : 'تم قبول الشركه  ... الان تم انشاء الشركه  '
       )
+      window.location.reload()
       this.forceUpdate()
     })
   }
