@@ -7,16 +7,17 @@ import ListSubheader from '@material-ui/core/ListSubheader'
 import CaseCard from '../cards/RequestsCards'
 import Zoom from '@material-ui/core/Zoom'
 import Grow from '@material-ui/core/Grow'
+import { Grid } from '@material-ui/core'
 const styles = theme => ({
   root: {
     display: 'flex',
+    alignItems: 'center',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     overflow: 'hidden',
     backgroundColor: 'rgba(200,200,200,0.4)'
   },
   gridList: {
-    width: '80%',
     height: 'auto',
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 5,
@@ -25,36 +26,41 @@ const styles = theme => ({
 })
 
 class TitlebarGridList extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {}
   }
 
-  render() {
+  render () {
     const { classes } = this.props
     return (
-      <div className={classes.root}>
-        <GridList cellHeight={250} className={classes.gridList}>
-          <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }} />
-          {this.props.data.map((tile, i) => (
-            <Grow in="true">
-              <GridListTile style={{ width: 300 }}>
-                <CaseCard
-                  title={tile.nameInEnglish}
-                  comment={tile.lawyerComment}
-                  lawyer={tile.lawyer}
-                  key={i}
-                  id={tile._id}
-                  token={sessionStorage.getItem("jwtToken")}
-                  subheader={tile.status}
-                  nameAr={tile.nameInArabic}
-                  data={tile}
-                />
-              </GridListTile>
-            </Grow>
-          ))}
-        </GridList>
-      </div>
+      <Grid
+        container
+        spacing={40}
+        alignItems='center'
+
+      >
+        <Grid item xs={12} key='Subheader' />
+        {this.props.data.map((tile, i) => (
+          <Grow in='true'>
+            <Grid item xs={12} md={4} sm={6} style={{ backgroundColor: 'rgba(200,200,200,0.2)' }}>
+              {' '}
+              <CaseCard
+                title={tile.nameInEnglish}
+                comment={tile.lawyerComment}
+                lawyer={tile.lawyer}
+                key={i}
+                id={tile._id}
+                token={sessionStorage.getItem('jwtToken')}
+                subheader={tile.status}
+                nameAr={tile.nameInArabic}
+                data={tile}
+
+              />
+            </Grid>
+          </Grow>
+        ))}
+      </Grid>
     )
   }
 }

@@ -12,14 +12,14 @@ const styles = theme => ({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     overflow: 'hidden',
-    backgroundColor: '#555555',
+    backgroundColor: '#555555'
   },
   gridList: {
     width: '80%',
-    height:'auto',
+    height: 'auto',
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 5,
-    paddingBottom: theme.spacing.unit 
+    paddingBottom: theme.spacing.unit
   }
 })
 
@@ -30,26 +30,25 @@ class TitlebarGridList2 extends React.Component {
       companyId: null
     }
   }
-  
-    render() { 
-      const { classes } = this.props;
-        return (
-            <div className={classes.root}>
-             <GridList cellHeight={250} className={classes.gridList}>
-        <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-                </GridListTile>
-                {this.props.data.map((tile,i) => (
-                  <GridListTile style={{width: 300}}>
-                    {this.state.companyId = tile._id}
-                    {console.log(this.state.companyId)}
-                   <CaseCard title={tile.nameInEnglish} comment={tile.reviewerComment} lawyer={tile.lawyer} key={i} id={tile._id} token= {this.props.token} subheader={tile.status} nameAr={tile.nameInArabic} data={tile} />
-                  </GridListTile>
-                ))}
-              </GridList>
-            </div>
-          );
-        }
-}  
+
+  render () {
+    const { classes } = this.props
+    return (
+      <div className={classes.root}>
+        <GridList cellHeight={250} className={classes.gridList}>
+          <GridListTile key='Subheader' cols={2} style={{ height: 'auto' }} />
+          {this.props.data.map((tile, i) => (
+            <GridListTile style={{ width: 300 }}>
+              {this.state.companyId = tile._id}
+              {console.log(this.state.companyId)}
+              <CaseCard title={tile.nameInEnglish} comment={tile.reviewerComment} lawyer={tile.lawyer} key={i} id={tile._id} token={this.props.token} subheader={tile.status} nameAr={tile.nameInArabic} data={tile} />
+            </GridListTile>
+          ))}
+        </GridList>
+      </div>
+    )
+  }
+}
 
 TitlebarGridList2.propTypes = {
   classes: PropTypes.object.isRequired

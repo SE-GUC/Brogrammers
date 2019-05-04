@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid'
 import Required from '../layout/inputs/Required'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import BlueButton from '../layout/Buttons/BlueButton'
-import Gender from '../layout/inputs/Gender';
+import Gender from '../layout/inputs/Gender'
 import Date from '../layout/inputs/Date'
 
 const styles = theme => ({
@@ -38,7 +38,7 @@ const styles = theme => ({
 })
 
 class Manager extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       manager: {
@@ -56,7 +56,7 @@ class Manager extends React.Component {
     this.handleInput = this.handleInput.bind(this)
     this.handle = this.handle.bind(this)
   }
-  handleDate(v) {
+  handleDate (v) {
     this.setState(prevState => ({
       manager:
       {
@@ -64,7 +64,7 @@ class Manager extends React.Component {
       }
     }))
   }
-  handleInput(event) {
+  handleInput (event) {
     let value = event.target.value
     let name = event.target.name
     this.setState(prevState => {
@@ -76,11 +76,11 @@ class Manager extends React.Component {
     }, () => console.log(this.state.manager)
     )
   }
-  handle() {
+  handle () {
     this.props.callBack(this.state.manager)
   }
 
-  render() {
+  render () {
     const { classes } = this.props
     return (
       <div className={classes.main} >

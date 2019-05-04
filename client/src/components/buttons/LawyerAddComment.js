@@ -20,7 +20,7 @@ addComment()
 {
   let updatedData = this.state.company;
   this.clean(updatedData);
-  fetch(`http://localhost:3000/api/lawyer/addcomment/${this.props.compid}`, {
+  fetch(`https://serverbrogrammers.herokuapp.com/api/lawyer/addcomment/${this.props.compid}`, {
     method: "PUT",
     body: JSON.stringify(updatedData),
     headers: {

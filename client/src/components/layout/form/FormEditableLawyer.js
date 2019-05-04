@@ -77,7 +77,7 @@ class FormDialogue extends React.Component {
     this.clean(userData);
     console.log(userData)
 console.log(this.props.id)
-    fetch("http://localhost:3000/api/investors/MyRequests/" + this.props.id, {
+    fetch("https://serverbrogrammers.herokuapp.com/api/investors/MyRequests/" + this.props.id, {
       method: "PUT",
       body: JSON.stringify(userData),
       headers: {

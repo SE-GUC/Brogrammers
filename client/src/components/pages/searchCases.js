@@ -35,7 +35,7 @@ class searchCases extends Component {
 
   componentDidMount() {
    
-    fetch("http://localhost:3000/api/investors/searchCases", {
+    fetch("https://serverbrogrammers.herokuapp.com/api/investors/searchCases", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json'},
       body: JSON.stringify({tag :this.state.search ,
@@ -58,7 +58,7 @@ class searchCases extends Component {
 
   handleNext=()=>{
     
-    fetch("http://localhost:3000/api/investors/searchCases", {
+    fetch("https://serverbrogrammers.herokuapp.com/api/investors/searchCases", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json'},
       body: JSON.stringify({tag :this.state.search ,
@@ -78,7 +78,7 @@ class searchCases extends Component {
   }
   handleBack=()=>{
 
-    fetch("http://localhost:3000/api/investors/searchCases", {
+    fetch("https://serverbrogrammers.herokuapp.com/api/investors/searchCases", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json'},
       body: JSON.stringify({tag :this.state.search ,

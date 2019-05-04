@@ -44,7 +44,8 @@ const styles = theme => ({
     flexShrink: 0
   },
   drawerPaper: {
-    width: 240
+    width: 240,
+    color: "#ffffff"
   },
   content: {
     flexGrow: 1,
@@ -61,7 +62,7 @@ class ClippedDrawer extends React.Component {
     };
   }
   handleContent = state => {
-    switch (this.state.clicked) {
+    switch (state.clicked) {
       case "profile":
         return (
           <EditProfileAdmin
@@ -216,7 +217,7 @@ class ClippedDrawer extends React.Component {
                 }
               />
             </ListItem>
-            <Divider/>
+            <Divider />
             <ListItem button key={"Create Admin"} onClick={this.handleAdmin}>
               <ListItemIcon>
                 <Add />
@@ -258,7 +259,7 @@ class ClippedDrawer extends React.Component {
                 }
               />
             </ListItem>
-<Divider/>
+            <Divider />
             <ListItem
               button
               key={"View Lawyers"}

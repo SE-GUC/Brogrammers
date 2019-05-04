@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import LinearDeterminate from "../layout/loading/LinearDeterminate"
+import LinearDeterminate from "../layout/loading/CustomizedProgress"
 import Snackbar from "../layout/snackbar/Snackbar"
 import TitleBarGridList from "../layout/List/GridList";
 import Paper from "../layout/paper/Paper";
@@ -24,31 +24,47 @@ class investorRequests extends Component {
     handleReq = () => {
         if (this.state.requests) {
             return (<div>
-                <Paper title={this.state.requests.investorName} elevation={1} />
-                <Grid >
-                    <TitleBarGridList data={this.state.requests} token={this.props.token} />
-                </Grid>
+
+                <Paper  elevation={1} />
+
+                <TitleBarGridList data={this.state.requests} token={this.props.token} />
+
             </div>)
         }
         else {
-            return <Snackbar variant='error' warning={sessionStorage.getItem('lang') === 'en' ? 'You Dont have any requests' : 'يوجد خطء'}/>
+
+            return <>
+                <Paper elevation={1} />
+
+                <Snackbar variant='error' warning={sessionStorage.getItem('lang') === 'en' ? 'You Dont have any requests' : 'يوجد خطء'} />
+            </>
         }
     }
     handleReq2 = () => {
         if (this.state.requests) {
             if (this.state.requests.length === 0) {
-                return <Snackbar variant='warning' message={sessionStorage.getItem('lang') === 'en' ? 'There Are No Requests' : 'ليس هناك طلباط'} />
+
+                return (
+                    <>
+                
+                        <Snackbar variant='warning' message={sessionStorage.getItem('lang') === 'en' ? 'There Are No Requests' : 'ليس هناك طلباط'} />
+                    </>
+                )
             }
         }
         else {
-            return <Snackbar variant='error' message={sessionStorage.getItem('lang') === 'en' ? 'Something Went Wrong' : 'يوجد خطء'}/>
+            return (
+                <>
+                
+                    <Snackbar variant='error' message={sessionStorage.getItem('lang') === 'en' ? 'Something Went Wrong' : 'يوجد خطء'} />
+                </>)
         }
     }
     handleRequests() {
         console.log(this.props.token)
         this.setState({ isLoading: true })
         sessionStorage.setItem("loading", true)
-        fetch('http://localhost:3000/api/investors/MyRequests/all', {
+        fetch('https://serverbrogrammers.herokuapp.com/api/investors/MyRequests/all', {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -76,7 +92,13 @@ class investorRequests extends Component {
 
 
         if (this.state.isLoading) {
-            return <LinearDeterminate />
+
+            return (
+                <>
+                    <LinearDeterminate />
+                    <Paper  elevation={1} />
+                </>
+            )
         }
         if (this.state.error) {
             return <Snackbar variant='error' message={this.state.error} />

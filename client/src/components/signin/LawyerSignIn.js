@@ -46,24 +46,24 @@ const styles = theme => ({
 })
 
 export class LawyerSignIn extends Component {
-    constructor(props){
-        super(props);
-        this.state= {
-           lawyer: {
-            email: '',
-            password: '',
-            c: true
-           },
-        }
-        this.handleInput = this.handleInput.bind(this);
-        this.handleRegister = this.handleRegister.bind(this);
+  constructor (props) {
+    super(props)
+    this.state = {
+      lawyer: {
+        email: '',
+        password: '',
+        c: true
+      }
     }
+    this.handleInput = this.handleInput.bind(this)
+    this.handleRegister = this.handleRegister.bind(this)
+  }
 
   handleRegister (e) {
     e.preventDefault()
     let lawyerData = this.state.lawyer
     console.log(this.state.lawyer.email)
-    fetch('http://localhost:3000/api/lawyer/login', {
+    fetch('https://serverbrogrammers.herokuapp.com/api/lawyer/login', {
       method: 'POST',
       body: JSON.stringify(lawyerData),
       headers: {
@@ -72,20 +72,19 @@ export class LawyerSignIn extends Component {
     }).then(response => {
       response.json().then(data => {
         console.log('Successful' + data + data.auth)
-        sessionStorage.setItem("jwtToken", data.token);
-        sessionStorage.setItem("auth", data.auth);
-        sessionStorage.setItem("id",  data.id);
-        sessionStorage.setItem("ssn", data.ssn);
-        if(data.auth){
-          sessionStorage.setItem("type", 'l');
-          document.location.href = "/profile"
-        }
-        else{
+        sessionStorage.setItem('jwtToken', data.token)
+        sessionStorage.setItem('auth', data.auth)
+        sessionStorage.setItem('id', data.id)
+        sessionStorage.setItem('ssn', data.ssn)
+        if (data.auth) {
+          sessionStorage.setItem('type', 'l')
+          document.location.href = '/profile'
+        } else {
           this.setState({
             lawyer: {
               c: false
             }
-          }, () => console.log(this.state.lawyer.c));
+          }, () => console.log(this.state.lawyer.c))
         }
       })
     })
@@ -118,7 +117,7 @@ export class LawyerSignIn extends Component {
             Sign in
           </Typography>
           <Typography component='body1' variant='body1'>
-          {this.state.lawyer.c? (""):("Wrong Email or Password")}
+            {this.state.lawyer.c ? ('') : ('Wrong Email or Password')}
           </Typography>
           <form className={classes.form}>
             <FormControl margin='normal' required fullWidth>
@@ -138,7 +137,7 @@ export class LawyerSignIn extends Component {
               type='submit'
               fullWidth
               variant='contained'
-              color={this.state.lawyer.c? ("primary"):("secondary")}
+              color={this.state.lawyer.c ? ('primary') : ('secondary')}
               className={classes.submit}
               onClick={this.handleRegister}
             >

@@ -62,7 +62,7 @@ class RegisterAdmin extends React.Component {
     e.preventDefault()
     let userData = this.state.admin
     console.log('abc')
-    fetch('http://localhost:3000/routes/api/admins/register', {
+    fetch('https://serverbrogrammers.herokuapp.com/routes/api/admins/register', {
       method: 'POST',
       body: JSON.stringify(userData),
       headers: {
@@ -71,12 +71,10 @@ class RegisterAdmin extends React.Component {
       }
     }).then(response => {
       response.json().then(data => {
-        if(data.error){
-          alert(data.error);
-        }
-        else{
-        console.log('Successful' + data)
-       
+        if (data.error) {
+          alert(data.error)
+        } else {
+          console.log('Successful' + data)
         }
       })
     })
@@ -117,10 +115,10 @@ class RegisterAdmin extends React.Component {
           <Typography component='h1' variant='h5'>
           Sign up
           </Typography>
-          <Required name='name' field={sessionStorage.getItem('lang')==='en'? 'Full Name': 'الاسم كامل '} type='text' callBack={this.handleInput} />
-          <Required name='email' field={sessionStorage.getItem('lang')==='en'? 'Email': 'البريد '} type='email' callBack={this.handleInput} />
-          <Required name='password' field={sessionStorage.getItem('lang')==='en'? 'Password': 'الرقم السرى '} type='password' callBack={this.handleInput} />
-          <Required name='phone' field={sessionStorage.getItem('lang')==='en'? 'phone': 'رقم الهاتف '} type='text' callBack={this.handleInput} />
+          <Required name='name' field={sessionStorage.getItem('lang') === 'en' ? 'Full Name' : 'الاسم كامل '} type='text' callBack={this.handleInput} />
+          <Required name='email' field={sessionStorage.getItem('lang') === 'en' ? 'Email' : 'البريد '} type='email' callBack={this.handleInput} />
+          <Required name='password' field={sessionStorage.getItem('lang') === 'en' ? 'Password' : 'الرقم السرى '} type='password' callBack={this.handleInput} />
+          <Required name='phone' field={sessionStorage.getItem('lang') === 'en' ? 'phone' : 'رقم الهاتف '} type='text' callBack={this.handleInput} />
           <Date name='birthDate' callBack={this.handleDate} />
           <Gender name='gender' callBack={this.handleInput} />
           <AlertDialogSlide handleRegister={this.handleRegister} />

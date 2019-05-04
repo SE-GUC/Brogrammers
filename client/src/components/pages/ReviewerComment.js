@@ -1,47 +1,47 @@
-import React, { Component } from "react";
-import ReviewerCommentCard from "../cards/ReviewerCommentCard";
-
+import React, { Component } from 'react'
+import ReviewerCommentCard from '../cards/ReviewerCommentCard'
+import LinearDeterminate from "../layout/loading/CustomizedProgress"
 class ReviewerComment extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       // id : this.params.id,
       companies: [],
       isLoadied: false
-    };
+    }
   }
 
-  componentDidMount() {
-    fetch(`http://localhost:3000/api/reviewer/getRejectedTasks/Reviewer`, {
+  componentDidMount () {
+    fetch(`https://serverbrogrammers.herokuapp.com/api/reviewer/getRejectedTasks/Reviewer`, {
       headers: new Headers({
-        "x-access-token": sessionStorage.getItem("jwtToken")
+        'x-access-token': sessionStorage.getItem('jwtToken')
       })
     })
       .then(response => response.json())
       .then(json => {
-        this.setState({ isLoadied: true, companies: json.data });
-      });
+        this.setState({ isLoadied: true, companies: json.data })
+      })
   }
 
-  render() {
-    var { isLoadied, companies } = this.state;
+  render () {
+    var { isLoadied, companies } = this.state
     if (!isLoadied) {
-      return <div> Loading ...</div>;
+      return <LinearDeterminate/>
     } else {
       if (!this.state.companies) {
         return (
           <h1>
-            {sessionStorage.getItem("lang") === "en"
-              ? "You have no companies"
-              : "لا يوجد لديك شركات"}
+            {sessionStorage.getItem('lang') === 'en'
+              ? 'You have no companies'
+              : 'لا يوجد لديك شركات'}
           </h1>
-        );
+        )
       } else {
         const listItems = this.state.companies.map((element, i) => (
           <div>
             <ReviewerCommentCard
               key={i}
-              title={"helo"}
+              title={'helo'}
               info={element.investorName}
               status={element.status}
               compid={element._id}
@@ -74,11 +74,11 @@ class ReviewerComment extends Component {
             />
             <br />
           </div>
-        ));
+        ))
 
-        return <div>{listItems}</div>;
+        return <div>{listItems}</div>
       }
     }
   }
 }
-export default ReviewerComment;
+export default ReviewerComment

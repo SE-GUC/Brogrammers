@@ -20,7 +20,8 @@ import Button from '@material-ui/core/Button'
 
 const styles = theme => ({
   card: {
-    width: 350,
+  
+
     margin: 50
   },
   media: {
@@ -42,7 +43,8 @@ class CompanyCard extends React.Component {
   state = { expanded: false }
 
   checkStatusIcon = props => {
-    console.log(props.company)
+    
+
     switch (props.company.status) {
       case 'PendingLawyer':
         return <PendingIcon />
