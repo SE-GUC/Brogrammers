@@ -4,6 +4,9 @@ import GridList from "@material-ui/core/GridList";
 import CompanyCard from "../cards/CompanyCard";
 import InvestorCard from "../cards/InvestorCard";
 import Plx from "react-plx/lib/Plx";
+import StickyText from "./StickyText";
+import { StickyContainer, Sticky } from 'react-sticky';
+
 const parallaxData1 = [
   {
     start: 'self',
@@ -19,6 +22,10 @@ const parallaxData1 = [
       },
     ],
   },
+
+];
+const parallaxData2 = [
+ 
 
 ];
 
@@ -60,24 +67,14 @@ class ViewApprovedCompanies extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Grid container spacing={20} alignItems="center" justify='center' style={{backgroundColor:"#03406699"}}>
+      <>
+    
      
-      <Grid
-            item
-            xs={12}
-         
-            >
 
-          <div style={{backgroundColor:'#034066',color:'white'}}>
-            <h1 style={{ paddingLeft: "5%" }}>
-              {" "}
-              {sessionStorage.getItem("lang") === "en"
-                ? "Approved Companies"
-                : "الشركات المقبوله"}
-            </h1>
-            </div>
-          </Grid>
-      
+      <Grid container spacing={20} alignItems="center" justify='center' style={{backgroundColor:"#03406699"}}>
+      <h2 style={{position: 'sticky',paddingTop:10,paddingBottom:10, marginTop:'0px',marginBottom:'100px',top: '350px',zIndex:9999999999,backgroundColor:'#034066',width:'100%'}}>{sessionStorage.getItem("lang")==='ar'?'الشركات المقبولة':'Approved Companies'} </h2>
+      <Plx className="MyAwesomeParallax" parallaxData={parallaxData2} >
+      </Plx>
         {this.state.approvedCompanies.map((item, i) => (
           <Plx className="MyAwesomeParallax" parallaxData={parallaxData1} >
           <Grid
@@ -97,6 +94,7 @@ class ViewApprovedCompanies extends Component {
         </Plx>
         ))}
       </Grid>
+      </>
     );
   }
 }

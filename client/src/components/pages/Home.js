@@ -3,6 +3,9 @@ import { Paper, withStyles, Grid, Button, Fade } from "@material-ui/core";
 import ViewApprovedCompanies from "./ViewApprovedCompanies";
 import Image from "../Images/3amood.jpg"; // Import using relative path
 import Plx from "react-plx";
+import StickyText from "./StickyText";
+import { StickyContainer, Sticky } from "react-sticky";
+
 const parallaxData1 = [
   {
     start: "self",
@@ -20,14 +23,24 @@ const parallaxData1 = [
 const parallaxData2 = [
   {
     start: "self",
-    end: 100,
+    end: 180,
     properties: [
       {
-        startValue: 50,
-        endValue: -200,
+        startValue: 0,
+        endValue: -300,
         property: "translateY"
-      },
-     
+      }
+    ]
+  },
+  {
+    start: "self",
+    end: 150,
+    properties: [
+      {
+        startValue: 0,
+        endValue: 1,
+        property: "opacity"
+      }
     ]
   }
 ];
@@ -72,26 +85,30 @@ class Home extends Component {
             <Grid item xs={4}>
               {" "}
               <Fade timeout={{ enter: 1000 }} in={true}>
-                <h1  style={{ color: "white", textAlign: "center" }}> Start your company now</h1>
+                <h1 style={{ color: "white", textAlign: "center" }}>
+                  {" "}
+                  Start your company now
+                </h1>
               </Fade>
             </Grid>
             <Grid item xs={4}>
               <Fade
-                timeout={{ enter: 2000 }}
-                style={{ transitionDelay: "1s" }}
+                timeout={{ enter: 1000 }}
+                style={{ transitionDelay: "0.6s" }}
                 in={true}
               >
                 <Button variant="outlined" onClick={this.handleChange}>
-                  <p style={{color:'white'}}>get started here</p>
+                  <p style={{ color: "white" }}>get started here</p>
                 </Button>
               </Fade>
             </Grid>
           </Grid>
         </Plx>
-     
 
-       
-        <Plx className="MyAwesomeParallax" parallaxData={parallaxData2} >
+        <Plx className="MyAwesomeParallax" parallaxData={parallaxData2}>
+          <ViewApprovedCompanies />
+        </Plx>
+        <Plx className="MyAwesomeParallax" parallaxData={parallaxData2}>
           <ViewApprovedCompanies />
         </Plx>
       </>
