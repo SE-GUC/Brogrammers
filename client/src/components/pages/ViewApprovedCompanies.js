@@ -8,7 +8,6 @@ import StickyText from "./StickyText";
 import { StickyContainer, Sticky } from 'react-sticky';
 
 
-
 const styles = {
   list: {
     maxWidth: "100%",
