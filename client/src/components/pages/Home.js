@@ -87,7 +87,7 @@ class Home extends Component {
                 in={true}
               >
                 <Button variant="outlined" onClick={this.handleChange}>
-                 get started here
+                 Get started here
                 </Button>
               </Fade>
             </Grid>

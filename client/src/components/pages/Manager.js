@@ -38,13 +38,13 @@ const styles = theme => ({
 })
 
 class Manager extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       manager: {
         name: '',
         type: '',
-        sex: '',
+        sex: 'male',
         nationality: '',
         identificationType: '',
         identificationNumber: '',
@@ -55,16 +55,19 @@ class Manager extends React.Component {
     }
     this.handleInput = this.handleInput.bind(this)
     this.handle = this.handle.bind(this)
+    this.handleDate = this.handleDate.bind(this)
   }
-  handleDate (v) {
-    this.setState(prevState => ({
-      manager:
-      {
-        ...prevState.manager, birthDate: v
+  handleDate(v) {
+    this.setState(prevState => {
+      return {
+        manager:
+        {
+          ...prevState.manager, birthDate: v
+        }
       }
-    }))
+    })
   }
-  handleInput (event) {
+  handleInput(event) {
     let value = event.target.value
     let name = event.target.name
     this.setState(prevState => {
@@ -76,11 +79,11 @@ class Manager extends React.Component {
     }, () => console.log(this.state.manager)
     )
   }
-  handle () {
+  handle() {
     this.props.callBack(this.state.manager)
   }
 
-  render () {
+  render() {
     const { classes } = this.props
     return (
       <div className={classes.main} >
@@ -105,7 +108,7 @@ class Manager extends React.Component {
             <Required field={sessionStorage.getItem('lang') === 'en' ? 'Manager Type' : 'نوع المدير'} type={'text'} callBack={this.handleInput} name={'type'} />
           </Grid>
           <Grid container direction='column' alignItems='center' >
-            <Gender callBack={this.handleInput} field={sessionStorage.getItem('lang') === 'en' ? 'Manager Gender' : 'جنس المدير'} />
+            <Gender callBack={this.handleInput} field={sessionStorage.getItem('lang') === 'en' ? 'Manager Gender' : 'جنس المدير'} name={'sex'} />
           </Grid>
           <Grid container direction='column' alignItems='center' >
             <Required field={sessionStorage.getItem('lang') === 'en' ? 'Manager Nationality' : 'جنسیة‬ المدير'} type={'text'} callBack={this.handleInput} name={'nationality'} />
@@ -117,7 +120,7 @@ class Manager extends React.Component {
             <Required field={sessionStorage.getItem('lang') === 'en' ? 'Identification Number' : 'رقم اثبات الشخصية'} type={'text'} callBack={this.handleInput} name={'identificationNumber'} />
           </Grid>
           <Grid container direction='column' alignItems='center' >
-            <Date name='birthDate' callBack={this.handleDate} />
+            <Date name={'birthDate'} callBack={this.handleDate} />
           </Grid>
           <Grid container direction='column' alignItems='center' >
             <Required field={sessionStorage.getItem('lang') === 'en' ? 'Address' : 'عنوان الاقامة'} type={'text'} callBack={this.handleInput} name={'address'} />

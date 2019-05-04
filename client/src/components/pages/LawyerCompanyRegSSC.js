@@ -11,12 +11,13 @@ import Required from '../layout/inputs/Required'
 import NotRequired from '../layout/inputs/NotRequired'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Gender from '../layout/inputs/Gender'
-import Manager from './Manager'
 import Date from '../layout/inputs/Date'
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import firebase from '../../firebase'
 import img3 from '../../components/Images/capture.png'
+import ExpansionPanel from '../layout/expansionPanel/ExpansionPanel'
+import ChipsArray from '../layout/chips/ChipsArray'
 window.html2canvas = html2canvas
 
 const storage = firebase.storage()
@@ -48,7 +49,7 @@ const styles = theme => ({
 })
 
 class LawyerCompanyReg extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       company: {
@@ -63,7 +64,7 @@ class LawyerCompanyReg extends React.Component {
         capitalCurrency: '',
         capital: '',
         investorName: '',
-        investorSex: '',
+        investorSex: 'male',
         investorNationality: '',
         investorIdentificationType: '',
         investorIdentificationNumber: '',
@@ -78,16 +79,39 @@ class LawyerCompanyReg extends React.Component {
       egp: 'none',
       negp: 'block',
       vis: 'none',
-      investorBD: '9/8/1995'
+      investorBD: '9/8/1995',
+
+      regulationLaw: true,
+      legalCompanyForm: true,
+      nameInArabic: true,
+      nameInEnglish: true,
+      governerateHQ: true,
+      cityHQ: true,
+      addressHQ: true,
+      faxHQ: true,
+      capitalCurrency: true,
+      capital: true,
+      telephoneHQ: true,
+      investorName: true,
+      investorNationality: true,
+      investorIdentificationNumber: true,
+      investorTelephone: true,
+      investorFax: true,
+      investorEmail: true,
+      investorType: true,
+      investorIdentificationType: true,
+      err: false
     }
+
     this.handleRegister = this.handleRegister.bind(this)
     this.handleOnClick = this.handleOnClick.bind(this)
     this.handleInput = this.handleInput.bind(this)
     this.handleDate = this.handleDate.bind(this)
     this.createPdf = this.createPdf.bind(this)
+    this.validate = this.validate.bind(this)
   }
 
-  createPdf (e) {
+  createPdf(e) {
     this.setState({
       vis: 'block'
     })
@@ -148,8 +172,8 @@ class LawyerCompanyReg extends React.Component {
                       'x-access-token': sessionStorage.getItem('jwtToken')
                     }
                   }).then(response => {
-                  console.log(response)
-                })
+                    console.log(response)
+                  })
               })
             })
         })
@@ -157,7 +181,7 @@ class LawyerCompanyReg extends React.Component {
     })
   };
 
-  handleRegister (event) {
+  handleRegister(event) {
     console.log(this.props.token)
     event.preventDefault()
     console.log('The token ' + sessionStorage.getItem('jwtToken'))
@@ -171,29 +195,29 @@ class LawyerCompanyReg extends React.Component {
           'x-access-token': sessionStorage.getItem('jwtToken')
         }
       }).then(response => {
-      response.json().then(data => {
-        if (data.error) {
-          alert(data.error)
-        } else {
-          console.log('Successful' + data)
-
-          this.setState({
-            id: data.data._id
-          })
-          if (data.data.capitalCurrency == 'egp') {
-            document.getElementById('negp').style.visibility = 'hidden'
+        response.json().then(data => {
+          if (data.error) {
+            alert(data.error)
           } else {
-            document.getElementById('egp').style.visibility = 'hidden'
+            console.log('Successful' + data)
+
+            this.setState({
+              id: data.data._id
+            })
+            if (data.data.capitalCurrency == 'egp') {
+              document.getElementById('negp').style.visibility = 'hidden'
+            } else {
+              document.getElementById('egp').style.visibility = 'hidden'
+            }
+            //  this.state.id=data.data._id
+            console.log(this.state.id + ' the ID')
+            this.createPdf(event)
           }
-          //  this.state.id=data.data._id
-          console.log(this.state.id + ' the ID')
-          this.createPdf(event)
-        }
+        })
       })
-    })
   }
 
-  handleInput (event) {
+  handleInput(event) {
     let value = event.target.value
     let name = event.target.name
     this.setState(prevState => {
@@ -206,7 +230,7 @@ class LawyerCompanyReg extends React.Component {
     )
   }
 
-  handleOnClick (js) {
+  handleOnClick(js) {
     this.state.company.managers.push(js)
     this.setState(prevState => {
       return {
@@ -218,16 +242,349 @@ class LawyerCompanyReg extends React.Component {
     )
   }
 
-  handleDate (v) {
+
+  handleDate(v) {
     this.setState(prevState => ({
       company:
-          {
-            ...prevState.company, investorBD: v
-          }
+      {
+        ...prevState.company, investorBD: v
+      }
     }))
   }
 
-  render () {
+  handleManager(v) {
+    this.state.company.managers.remove(v)
+    this.setState(prevState => {
+      return {
+        company: {
+          ...prevState.company, managers: this.state.company.managers
+        }
+      }
+    }, () => console.log(this.state.company)
+    )
+  }
+
+  validate(regulationLaw, legalCompanyForm, nameInArabic,
+    nameInEnglish, governerateHQ, cityHQ, addressHQ, faxHQ, capitalCurrency,
+    capital, telephoneHQ, investorName, investorNationality
+    , investorIdentificationNumber, investorTelephone, investorFax, investorEmail, investorType, investorIdentificationType) {
+    var regex = new RegExp(/^[a-zA-Z\s-, ]+$/);
+    var number = new RegExp(/^[0-9]+$/)
+    var law = new RegExp(/^Law/)
+    console.log("I entered")
+    if (investorIdentificationType) {
+      if (regex.test(investorIdentificationType)) {
+        this.setState({ investorIdentificationTypeValid: true })
+      }
+      else {
+        this.setState({
+          investorIdentificationTypeValid: false,
+          err: true
+        })
+      }
+    }
+    if (investorType) {
+      if (regex.test(investorType)) {
+        this.setState({ investorTypeValid: true })
+      }
+      else {
+        this.setState({
+          investorTypeValid: false,
+          err: true
+        })
+      }
+    }
+    if (investorEmail) {
+      if (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(investorEmail)) {
+        this.setState({ investorEmailValid: true })
+      }
+      else {
+        this.setState({
+          investorEmailValid: false,
+          err: true
+        })
+      }
+
+    }
+
+
+    if (investorFax) {
+      if (number.test(investorFax)) {
+        this.setState({ investorFaxValid: true })
+      }
+      else {
+        this.setState({
+          investorFaxValid: false,
+          err: true
+        })
+      }
+
+    }
+
+    if (investorTelephone) {
+      if (number.test(investorTelephone)) {
+        this.setState({ investorTelephoneValid: true })
+      }
+      else {
+        this.setState({
+          investorTelephoneValid: false,
+          err: true
+        })
+      }
+
+    }
+    if (investorIdentificationNumber) {
+      if (number.test(investorIdentificationNumber)) {
+        this.setState({ investorIdentificationNumberValid: true })
+      }
+      else {
+        this.setState({
+          investorIdentificationNumberValid: false,
+          err: true
+        })
+      }
+
+    }
+    else {
+      this.setState({
+        investorIdentificationNumberValid: false,
+        err: true
+      })
+    }
+
+
+    if (investorNationality) {
+      if (regex.test(investorNationality)) {
+        this.setState({ investorNationalityValid: true })
+      }
+      else {
+        this.setState({
+          investorNationalityValid: false,
+          err: true
+        })
+      }
+
+    }
+    else {
+      this.setState({
+        investorNationalityValid: false,
+        err: true
+      })
+    }
+
+    if (investorName) {
+      if (regex.test(investorName)) {
+        this.setState({ investorNameValid: true })
+      }
+      else {
+        this.setState({
+          investorNameValid: false,
+          err: true
+        })
+      }
+
+    }
+    else {
+      this.setState({
+        investorNameValid: false,
+        err: true
+      })
+    }
+    if (regulationLaw) {
+      console.log("I also entered +  " + regulationLaw)
+      if (law.test(regulationLaw)) {
+        this.setState({ regulationLawValid: true })
+      }
+      else {
+        this.setState({
+          regulationLawValid: false,
+          err: true
+        })
+      }
+
+
+    }
+    else {
+      this.setState({
+        regulationLawValid: false,
+        err: true
+      })
+    }
+
+    if (telephoneHQ) {//console.log("I also entered + "+telephoneHQ)
+      //console.log("what I computed + "+number.test(telephoneHQ))
+      if (number.test(telephoneHQ)) {
+        this.setState({ telephoneHQValid: "true" })
+      }
+      else {//console.log("I also entered in the else part+ "+telephoneHQ)
+        //var x = false
+        //var y = true
+        this.setState({
+          telephoneHQValid: false,
+          err: true
+        })
+
+      }
+    }
+
+
+    if (legalCompanyForm) {
+
+      this.setState({ legalCompanyFormValid: true })
+
+    }
+    else {
+      this.setState({
+        legalCompanyFormValid: false,
+        err: true
+      })
+    }
+
+
+    if (nameInArabic) {
+      if (regex.test(nameInArabic)) {
+        this.setState({ nameInArabicValid: true })
+      }
+      else {
+        this.setState({
+          nameInArabicValid: false,
+          err: true
+        })
+
+      }
+    }
+    else {
+      this.setState({
+        nameInArabicValid: false,
+        err: true
+      })
+    }
+
+
+    if (nameInEnglish) {
+      if (regex.test(nameInEnglish)) {
+        this.setState({ nameInEnglishValid: true })
+      }
+      else {
+        this.setState({
+          nameInEnglishValid: false,
+          err: true
+        })
+
+      }
+    }
+
+
+
+    if (governerateHQ) {
+      if (regex.test(governerateHQ)) {
+        this.setState({ governerateHQValid: true })
+      }
+      else {
+        this.setState({
+          governerateHQValid: false,
+          err: true
+        })
+
+      }
+    }
+    else {
+      this.setState({
+        governerateHQValid: false,
+        err: true
+      })
+    }
+
+
+    if (cityHQ) {
+      if (regex.test(cityHQ)) {
+        this.setState({ cityHQValid: true })
+      }
+      else {
+        this.setState({
+          cityHQValid: false,
+          err: true
+        })
+
+      }
+    }
+    else {
+      this.setState({
+        cityHQValid: false,
+        err: true
+      })
+    }
+
+
+    if (addressHQ) {
+
+      this.setState({ addressHQValid: true })
+
+    }
+    else {
+      this.setState({
+        addressHQValid: false,
+        err: true
+      })
+    }
+
+
+    if (faxHQ) {
+      if (number.test(faxHQ)) {
+        this.setState({ faxHQValid: true })
+      }
+      else {
+        this.setState({
+          faxHQValid: false,
+          err: true
+        })
+
+      }
+    }
+
+
+
+    if (capitalCurrency) {
+      if (regex.test(capitalCurrency)) {
+        this.setState({ capitalCurrencyValid: true })
+      }
+      else {
+        this.setState({
+          capitalCurrencyValid: false,
+          err: true
+        })
+
+      }
+    }
+    else {
+      this.setState({
+        capitalCurrencyValid: false,
+        err: true
+      })
+    }
+
+    if (capital) {
+      if (capital > 50000) {
+        this.setState({ capitalValid: true })
+      }
+      else {
+        this.setState({
+          capitalValid: false,
+          err: true
+        })
+
+      }
+    }
+    else {
+      this.setState({
+        capitalValid: false,
+        err: true
+      })
+    }
+    return this.state.err
+  }
+
+  render() {
     const { classes } = this.props
     return (
       <div className={classes.main}>
@@ -312,12 +669,13 @@ class LawyerCompanyReg extends React.Component {
             <Grid container direction='column' alignItems='center' >
               <Required field={sessionStorage.getItem('lang') === 'en' ? 'Investor Email' : '‫‫‫عنوان‬ الإقامة‬ المستثمر‬'} type={'text'} callBack={this.handleInput} name={'investorEmail'} />
             </Grid>
-            <Grid>
-              <Manager callBack={this.handleOnClick} />
+            <Grid container direction='column' alignItems='center'>
+              <ExpansionPanel callBack={this.handleOnClick} />
             </Grid>
-            <Grid>
-              <br />
+            <Grid container direction='column' alignItems='center'>
+              <ChipsArray callBack={this.handleManager} />
             </Grid>
+            <br />
             <Grid container direction='column' alignItems='flex-end' >
               <AlertDialogSlide handleRegister={this.handleRegister} />
             </Grid>
@@ -341,27 +699,27 @@ class LawyerCompanyReg extends React.Component {
             <p>ويقر الموقع على هذا النظام الأساسي بأنه قد توافرت فيه الأهلية اللازمة لتأسيس شركة شخص واحد ، وبأنه لم يسبق صدور أحكام عليه بعقوبة جناية أو جنحة مخلة بالشرف أو الأمانة أو بعقوبة من العقوبات المُشار إليها في المواد (89)، (162)، (163)، (164) من قانون شركات المساهمة وشركات التوصية بالأسهم والشركات ذات المسئولية المحدودة وشركات الشخص الواحد الصادر بالقانون رقم 159 لسنة 1981 ، ويشار إليه فيما بعد باسم "قانون الشركات" ، ما لم يكن قد رُد إليه اعتباره ، وأنه غير محظور عليه تأسيس شركات طبقاً لأحكام القانون .</p>
             <p>كما يقر أنه لم يقدم أو يساهم أو يستخدم في إنشاء أو تأسيس أو إقامة مشروع الاستثمار المتمتع بالحافز أياً من الأصول المادية لشركة أو منشأة قائمة وقت العمل بأحكام هذا القانون أو قام بتصفية تلك الشركة أو المنشأة خلال المدة المبينة بالبند (2) من المادة (12) من اللائحة التنفيذية لقانون الاستثمار بغرض إنشاء مشروع استثماري جديد يتمتع بالحوافز الخاصة المشار إليها ، ويترتب على مخالفة ذلك سقوط التمتع بالحافز المشار إليه والتزام الشركة بسداد جميع المستحقات الضريبية .</p>
             <p>وقد وافق على تأسيس شركة شخص واحد مصرية الجنسية وفقاً لأحكام القوانين النافذة وعلى وجه الخصوص قانون الشركات ولائحته التنفيذية وقانون الاستثمار الصادر بالقانون رقم 72 لسنة 2017 ، ويشار إليه فيما بعد باسم "قانون الاستثمار" ولائحته التنفيذية وأحكام هذا النظام الأساسي.</p>
-            <h4 align='center'style={{ textDecoration: 'underline' }}> الماده ( ١ )</h4>
+            <h4 align='center' style={{ textDecoration: 'underline' }}> الماده ( ١ )</h4>
             <p>اسم الشركة: {this.state.company.nameInEnglish} {this.state.company.nameInArabic} شركة شخص واحد ذات مسئولية محدودة</p>
 
-            <h4 align='center'style={{ textDecoration: 'underline' }}> الماده ( ٢ )</h4>
+            <h4 align='center' style={{ textDecoration: 'underline' }}> الماده ( ٢ )</h4>
             <p>بیانات مؤسس الشركة</p>
             <table align='center' style={{ border: '1px solid black', width: '85%' }}>
               <tr style={{ border: '1px solid black' }}>
                 <th style={{ border: '1px solid black' }}>
-الاسم
+                  الاسم
                 </th>
                 <th style={{ border: '1px solid black' }}>
-الجنسیة
+                  الجنسیة
                 </th>
                 <th style={{ border: '1px solid black' }}>
-تاریخ المیلاد
+                  تاریخ المیلاد
                 </th>
                 <th style={{ border: '1px solid black' }}>
-إثبات الشخصیة
+                  إثبات الشخصیة
                 </th>
                 <th style={{ border: '1px solid black' }}>
-الإقامة
+                  الإقامة
                 </th>
               </tr>
               <tr style={{ border: '1px solid black', width: '70%' }}>
@@ -387,52 +745,52 @@ class LawyerCompanyReg extends React.Component {
           <div id='com2' dir='rtl' lang='ar' align='right'>
             <img src={img3} width={160} height={133} mode='fill' />
 
-            <h4 align='center'style={{ textDecoration: 'underline' }}> الماده ( ٣ )</h4>
+            <h4 align='center' style={{ textDecoration: 'underline' }}> الماده ( ٣ )</h4>
             <p>یكون المركز الرئیسى لإدارة الشركة ومحلھا القانوني في العنوان الآتى  :{this.state.company.addressHQ} </p>
             <p>مع مراعاة القانون رقم ١٤ لسنة ٢٠١٢ بشأن التنمیة المتكاملة في شبھ جزیرة سیناء ، لمدیر الشركة إنشاء فروع أو وكالات لھا داخل
 جمھوریة مصر العربیة أو خارجھا ، وللشركة أن تقرر نقل المركز الرئیسي لھا إلى أي مدینة أخرى داخل جمھوریة مصر العربیة
 بموافقة مؤسس أو مالك الشركة .</p>
 
-            <h4 align='center'style={{ textDecoration: 'underline' }}> الماده ( ٤ )</h4>
+            <h4 align='center' style={{ textDecoration: 'underline' }}> الماده ( ٤ )</h4>
 
             <p>حدد رأسمال الشركة بمبلغ{this.state.company.capital} ){this.state.company.capitalCurrency}( وقد أودع رأسمال الشركة بالكامل في البنك بموجب الشهادة المرفقة.</p>
 
-            <h4 align='center'style={{ textDecoration: 'underline' }}> الماده ( ٥ )</h4>
+            <h4 align='center' style={{ textDecoration: 'underline' }}> الماده ( ٥ )</h4>
 
             <p>يجوز زيادة رأس مال الشركة على دفعة واحدة أو أكثر ، سواء بإصدار حصص جديدة أو بتحويل المال الاحتياطي إلى حصص ، وذلك بقرار من مؤسس أو مالك الشركة وطبقا للأحكام المنصوص عليها في قانون الشركات.</p>
 
-            <h4 align='center'style={{ textDecoration: 'underline' }}> الماده ( ٦ )</h4>
+            <h4 align='center' style={{ textDecoration: 'underline' }}> الماده ( ٦ )</h4>
 
             <p >
-لمؤسس أو مالك الشركة أن يقرر تخفيض رأس مال الشركة لأي سبب ، سواء عن طريق إنقاص عدد الحصص أو تخفيض القيمة الاسمية لكل منها ، وفقاً لأحكام قانون الشركات ولائحته التنفيذية .
+              لمؤسس أو مالك الشركة أن يقرر تخفيض رأس مال الشركة لأي سبب ، سواء عن طريق إنقاص عدد الحصص أو تخفيض القيمة الاسمية لكل منها ، وفقاً لأحكام قانون الشركات ولائحته التنفيذية .
             </p>
             <p id='egp'>
-ولا يجوز تخفيض رأس المال إلى أقل من خمسين ألف جنيه .
+              ولا يجوز تخفيض رأس المال إلى أقل من خمسين ألف جنيه .
             </p>
 
             <p id='negp'>
-ولا يجوز تخفيض رأس المال إلى أقل من ما يعادل خمسين ألف جنيه .    </p>
+              ولا يجوز تخفيض رأس المال إلى أقل من ما يعادل خمسين ألف جنيه .    </p>
 
-            <h4 align='center'style={{ textDecoration: 'underline' }}> الماده ( ٧ )</h4>
+            <h4 align='center' style={{ textDecoration: 'underline' }}> الماده ( ٧ )</h4>
 
             <p>يتولى إدارة الشركة مؤسس الشركة أو مدير أو أكثر يعينهم مؤسس الشركة على النحو التالي</p>
 
             <table align='center' style={{ border: '1px solid black', width: '85%' }}>
               <tr style={{ border: '1px solid black' }}>
                 <th style={{ border: '1px solid black' }}>
-الاسم
+                  الاسم
                 </th>
                 <th style={{ border: '1px solid black' }}>
-الجنسیة
+                  الجنسیة
                 </th>
                 <th style={{ border: '1px solid black' }}>
-تاریخ المیلاد
+                  تاریخ المیلاد
                 </th>
                 <th style={{ border: '1px solid black' }}>
-إثبات الشخصیة
+                  إثبات الشخصیة
                 </th>
                 <th style={{ border: '1px solid black' }}>
-الإقامة
+                  الإقامة
                 </th>
               </tr>
               <tr style={{ border: '1px solid black', width: '70%' }}>
@@ -453,13 +811,13 @@ class LawyerCompanyReg extends React.Component {
               </tr>
             </table>
             <p>
-و يباشر المديرون وظائفهم لمدة غير محددة
+              و يباشر المديرون وظائفهم لمدة غير محددة
             </p>
             <p>
-ويسرى في شأن مدير الشركة حكم المادة (89) من قانون الشركات ، مع مراعاة ألا يكون غير محظور عليه إدارة الشركات طبقاً لأحكام القانون .
+              ويسرى في شأن مدير الشركة حكم المادة (89) من قانون الشركات ، مع مراعاة ألا يكون غير محظور عليه إدارة الشركات طبقاً لأحكام القانون .
             </p>
             <p>
-ولا يجوز للمدير أن يتولى إدارة شركة أخرى أياً كان نوعها إذا كانت تعمل في ذات النشاط الذي تزاوله الشركة أو أحد فروعها ، كما لا يجوز له أن يتعاقد مع الشركة التي يتولى إدارتها لحسابه أو لحساب غيره ، أو يمارس لحساب الغير نشاطاً من نوع النشاط الذى تزاوله الشركة .
+              ولا يجوز للمدير أن يتولى إدارة شركة أخرى أياً كان نوعها إذا كانت تعمل في ذات النشاط الذي تزاوله الشركة أو أحد فروعها ، كما لا يجوز له أن يتعاقد مع الشركة التي يتولى إدارتها لحسابه أو لحساب غيره ، أو يمارس لحساب الغير نشاطاً من نوع النشاط الذى تزاوله الشركة .
             </p>
 
           </div>
@@ -467,13 +825,13 @@ class LawyerCompanyReg extends React.Component {
           <div id='com3' dir='rtl' lang='ar' align='right'>
             <img src={img3} width={160} height={133} mode='fill' />
 
-            <h4 align='center'style={{ textDecoration: 'underline' }}> الماده ( ٨ )</h4>
+            <h4 align='center' style={{ textDecoration: 'underline' }}> الماده ( ٨ )</h4>
             <p>تسري على الشركة أحكام قانون الشركات ولائحته التنفيذية فيما لم يرد بشأنه نص خاص في هذا النظام .</p>
 
-            <h4 align='center'style={{ textDecoration: 'underline' }}> الماده ( ٩ )</h4>
+            <h4 align='center' style={{ textDecoration: 'underline' }}> الماده ( ٩ )</h4>
             <p>ينشر هذا النظام طبقا لأحكام القانون .</p>
 
-            <h4 align='center'style={{ textDecoration: 'underline' }}> الماده ( ١٠ )</h4>
+            <h4 align='center' style={{ textDecoration: 'underline' }}> الماده ( ١٠ )</h4>
             <p>قام مؤسس الشركة بشخصه باتخاذ كافة الإجراءات اللازمة في هذا الشأن .</p>
             <p>وتلتزم الشركة بأداء المصروفات والنفقات والأجور والتكاليف التي تم انفاقها بسبب تأسيس الشركة ، وذلك خصماً من حساب المصروفات العامة.</p>
           </div>
