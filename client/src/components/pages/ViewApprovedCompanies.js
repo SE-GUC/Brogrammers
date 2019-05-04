@@ -5,8 +5,7 @@ import CompanyCard from "../cards/CompanyCard";
 import InvestorCard from "../cards/InvestorCard";
 import Plx from "react-plx/lib/Plx";
 import StickyText from "./StickyText";
-import { StickyContainer, Sticky } from 'react-sticky';
-
+import { StickyContainer, Sticky } from "react-sticky";
 
 const styles = {
   list: {
@@ -22,6 +21,20 @@ const styles = {
     background: "linear-gradient(to top, #000000, #DCDCDC)",
     borderStyle: "solid",
     borderColor: "black"
+  },
+  header: {
+    position: "-webkit-sticky",
+    // eslint-disable-next-line no-dupe-keys
+    position: "sticky",
+    textAlign: "center",
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginTop: "0px",
+    marginBottom: "100px",
+    color: "white",
+    top: "55px",
+    zIndex: 9999999999,
+    backgroundColor: "#034066"
   }
 };
 
@@ -47,32 +60,33 @@ class ViewApprovedCompanies extends Component {
     const { classes } = this.props;
     return (
       <>
-    
-     
+        <Grid
+          container
+          spacing={20}
+          alignItems="center"
+          justify="center"
+          style={{ backgroundColor: "#034066cc" }}
+        >
+          <Grid item xs={12} lg={12} className={classes.header}>
+            <h2>
+              {sessionStorage.getItem("lang") === "ar"
+                ? "الشركات المقبولة"
+                : "Approved Companies"}{" "}
+            </h2>
+          </Grid>
 
-      <Grid container spacing={20} alignItems="center" justify='center' style={{backgroundColor:"#034066cc"}}>
-      <Grid item xs={12} lg={12} style={{position: 'sticky',textAlign:'center',paddingTop:10,paddingBottom:10, marginTop:'0px',marginBottom:'100px',color:'white',top: '350px',zIndex:9999999999,backgroundColor:'#034066'}}>
-           <h2 >{sessionStorage.getItem("lang")==='ar'?'الشركات المقبولة':'Approved Companies'} </h2>
-           </Grid>
- 
-     
-        {this.state.approvedCompanies.map((item, i) => (
-          // <Plx className="MyAwesomeParallax" parallaxData={parallaxData1} >
-          <Grid
-              item
-              xs={12} md={4} sm={6}
-            lg={4}
-            
-            >
+          {this.state.approvedCompanies.map((item, i) => (
+            // <Plx className="MyAwesomeParallax" parallaxData={parallaxData1} >
+            <Grid item xs={12} md={4} sm={6} lg={4}>
               <CompanyCard
                 className={classes.companiesBackground}
                 key={i}
                 company={item}
               />
             </Grid>
-        // </Plx>
-        ))}
-      </Grid>
+            // </Plx>
+          ))}
+        </Grid>
       </>
     );
   }
