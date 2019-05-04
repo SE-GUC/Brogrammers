@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import MyReviewerCasesCard from '../cards/MyReviewerCasesCard'
 import Button from '@material-ui/core/Button'
+import LinearDeterminate from "../layout/loading/CustomizedProgress"
 class ViewReviewerCasesbyID extends Component {
   constructor (props) {
     super(props)
@@ -86,7 +87,7 @@ class ViewReviewerCasesbyID extends Component {
 
   render () {
     var { isLoadied, companies } = this.state
-    if (!isLoadied) { return <div> Loading ...</div> } else {
+    if (!isLoadied) { return <LinearDeterminate /> } else {
       return (
 
         <div>

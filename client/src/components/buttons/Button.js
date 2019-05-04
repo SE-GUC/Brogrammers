@@ -12,17 +12,14 @@ const styles = theme => ({
   }
 })
 
-function ContainedButtons (props) {
+function ContainedButtons(props) {
   const { classes } = props
 
   return (
     <div>
-
-      <Button variant='contained' color='secondary' className={classes.button} >
-        {sessionstorage.getItem('lang') === 'en' ? 'Next' : 'التالى'},
-
+      <Button variant="contained" color="secondary" className={classes.button}>
+        {sessionstorage.getItem('lang') === 'en' ? 'Next' : 'التالى'}
       </Button>
-
     </div>
   )
 }

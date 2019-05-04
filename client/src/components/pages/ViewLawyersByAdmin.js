@@ -2,12 +2,13 @@
 import React, { Component } from 'react'
 // import SimpleCard from '../cards/SimpleCard3'
 import ViewLawyersByAdminCard from '../cards/ViewLawyersByAdminCard'
-
+import LinearDeterminate from "../layout/loading/CustomizedProgress"
 class ViewLawyersByAdmin extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      lawyersOnSystem: []
+      lawyersOnSystem: [],
+      isLoaded:false
 
     }
   }
@@ -23,7 +24,7 @@ class ViewLawyersByAdmin extends React.Component {
 
         .then(res => res.json())
         .then(json => {
-          this.setState({
+          this.setState({ isLoaded:true,
             lawyersOnSystem: json.data
           })
         })
@@ -31,8 +32,8 @@ class ViewLawyersByAdmin extends React.Component {
   }
 
   render () {
-    console.log(this.state.lawyersOnSystem)
 
+if(!this.state.isLoaded){return <LinearDeterminate/>}
     const listItems = this.state.lawyersOnSystem.map((item, i) => (
       <div>
         <ViewLawyersByAdminCard key={i}

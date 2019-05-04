@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ReviewerCommentCard from '../cards/ReviewerCommentCard'
-
+import LinearDeterminate from "../layout/loading/CustomizedProgress"
 class ReviewerComment extends Component {
   constructor (props) {
     super(props)
@@ -26,7 +26,7 @@ class ReviewerComment extends Component {
   render () {
     var { isLoadied, companies } = this.state
     if (!isLoadied) {
-      return <div> Loading ...</div>
+      return <LinearDeterminate/>
     } else {
       if (!this.state.companies) {
         return (

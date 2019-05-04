@@ -18,8 +18,9 @@ class LawyerApproveDisapprove extends Component {
       }
     }).then(response => {
       console.log(response)
-      alert(sessionStorage.getItem('lang') === 'en' ? 'Task Approved!!... Now waiting Reviewe' : 'تم قبول الشركه فى انتظار المراجع'
+      alert(sessionStorage.getItem('lang') === 'en' ? 'Task Approved!!... Now waiting Reviewer' : 'تم قبول الشركه فى انتظار المراجع'
       )
+      window.location.reload()
       this.forceUpdate()
     })
   }

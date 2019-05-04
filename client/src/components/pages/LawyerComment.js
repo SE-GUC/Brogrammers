@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import MyLawyerCasesCard from '../cards/MyLawyerCasesCard'
 import Button from '@material-ui/core/Button'
 import LawyerCommentCard from '../cards/LawyerCommentCard'
-
+import LinearDeterminate from "../layout/loading/CustomizedProgress"
 class LawyerComment extends Component {
   constructor (props) {
     super(props)
@@ -28,7 +28,7 @@ class LawyerComment extends Component {
   render () {
     var { isLoadied, companies } = this.state
     if (!isLoadied) {
-      return <div> Loading ...</div>
+      return <LinearDeterminate/>
     } else {
       console.log(this.state.companies)
       if (!this.state.companies) {

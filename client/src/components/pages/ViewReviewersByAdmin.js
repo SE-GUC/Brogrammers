@@ -2,12 +2,13 @@
 import React, { Component } from 'react'
 // import SimpleCard from '../cards/SimpleCard3'
 import ViewReviewersByAdminCard from '../cards/ViewReviewersByAdminCard'
-
+import LinearDeterminate from "../layout/loading/CustomizedProgress"
 class ViewReviewersByAdmin extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      reviewersOnSystem: []
+      reviewersOnSystem: [],
+      isLoaded:false
 
     }
   }
@@ -22,7 +23,7 @@ class ViewReviewersByAdmin extends React.Component {
 
         .then(res => res.json())
         .then(json => {
-          this.setState({
+          this.setState({ isLoaded:true,
             reviewersOnSystem: json.data
           })
         })
@@ -30,6 +31,7 @@ class ViewReviewersByAdmin extends React.Component {
   }
 
   render () {
+    if(!this.state.isLoaded){return <LinearDeterminate/>}
     const listItems = this.state.reviewersOnSystem.map((item, i) => (
       <div>
         <ViewReviewersByAdminCard key={i}
