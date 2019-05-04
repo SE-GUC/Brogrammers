@@ -108,9 +108,8 @@ class Home extends Component {
         <Plx className="MyAwesomeParallax" parallaxData={parallaxData2}>
           <ViewApprovedCompanies />
         </Plx>
-        <Plx className="MyAwesomeParallax" parallaxData={parallaxData2}>
-          <ViewApprovedCompanies />
-        </Plx>
+       <Plx className ="MyAwesomeParallax" parallaxDara={parallaxData2}>
+       </Plx>
       </>
     );
   }

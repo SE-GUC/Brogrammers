@@ -71,8 +71,11 @@ class ViewApprovedCompanies extends Component {
     
      
 
-      <Grid container spacing={20} alignItems="center" justify='center' style={{backgroundColor:"#03406699"}}>
-      <h2 style={{position: 'sticky',paddingTop:10,paddingBottom:10, marginTop:'0px',marginBottom:'100px',top: '350px',zIndex:9999999999,backgroundColor:'#034066',width:'100%'}}>{sessionStorage.getItem("lang")==='ar'?'الشركات المقبولة':'Approved Companies'} </h2>
+      <Grid container spacing={20} alignItems="center" justify='center' style={{backgroundColor:"#034066"}}>
+      <Grid item xs={12} lg={12} style={{position: 'sticky',textAlign:'center',paddingTop:10,paddingBottom:10, marginTop:'0px',marginBottom:'100px',color:'white',top: '350px',zIndex:9999999999,backgroundColor:'#034066'}}>
+           <h2 >{sessionStorage.getItem("lang")==='ar'?'الشركات المقبولة':'Approved Companies'} </h2>
+           </Grid>
+ 
       <Plx className="MyAwesomeParallax" parallaxData={parallaxData2} >
       </Plx>
         {this.state.approvedCompanies.map((item, i) => (

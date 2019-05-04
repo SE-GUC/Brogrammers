@@ -8,8 +8,8 @@ const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2
-
+    paddingBottom: theme.spacing.unit * 2,
+    position: 'sticky',textAlign:'center',paddingTop:10,paddingBottom:10, marginTop:'0px',marginBottom:'100px',color:'white',top: '50px',zIndex:9999999999,
   },
   title: {
     fontSize: 30, color: '#3f3f3f', fontWeight: 'bold'
@@ -20,8 +20,9 @@ function PaperSheet (props) {
   const { classes } = props
 
   return (
-    <div>
-      <Paper className={classes.root} elevation={1}>
+          <div className={classes.root}>
+
+      <Paper  elevation={1}>
         <Typography className={classes.title}>
 
         Your Requests

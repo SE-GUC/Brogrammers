@@ -34,7 +34,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { DRAWER_TOGGLE } from "../../../constants/actiontypes";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-
+import Home2 from "../../pages/Home"
 const drawerWidth = 240;
 const styles = theme => ({
   root: {
@@ -90,12 +90,15 @@ class ClippedDrawerInvestor extends Component {
         return <InvestorCompanyRegSPC />;
       case "created":
         return <Stepper />;
+        case "Home":
+        return <Home2 />;
       default:
         return <Stepper />;
     }
   };
   handleHome = () => {
-    document.location.href = "/";
+    this.setState({ clicked: "Home" });
+    this.handleDrawerClose();
   };
 
   handleCases2 = () => {
