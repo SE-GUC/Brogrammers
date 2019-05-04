@@ -77,22 +77,22 @@ class SimpleCard extends React.Component {
 
   checkrejectedicon = props => {
     if (props.subheader === "Accepted") return <DoneAll />;
-    if (props.subheader === "PendingReviewer"|| props.subheader==="AcceptedReviewer") return <Done />;
+    if (props.subheader === "PendingReviewer") return <Done />;
     if (
       props.subheader === "RejectedLawyer" ||
       props.subheader === "RejectedReviewer"
     )
       return <Error />;
     if (props.subheader === "PendingLawyer") return <HourGlass />;
+    if (props.subheader==="AcceptedReviewer") return <DoneAll/>
   };
   checkrejs = props => {
     if (props.subheader === "RejectedLawyer") return red[500];
-    if (props.subheader === "Accepted") return green[500];
+    if (props.subheader === "AcceptedReviewer") return green[500];
     if (props.subheader === "RejectedReviewer") return yellow[500];
     if (
       props.subheader === "PendingReviewer" ||
-      props.subheader === "PendingLawyer" ||
-      props.subheader==="AcceptedReviewer"
+      props.subheader === "PendingLawyer"
     )
       return blue[500];
   };
