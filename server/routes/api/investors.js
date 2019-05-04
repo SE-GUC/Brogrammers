@@ -646,7 +646,8 @@ router.get("/View/ViewCompanies", async (req, res) => {
     const investor = await Investor.findById(stat);
     const investorNatID = investor.idNumber;
     const arrayOfCompanies = await Company.find({
-      investorIdentificationNumber: investorNatID
+      investorIdentificationNumber: investorNatID,
+      status:"Accepted"
     });
     res.json({ msg: "Your Companies ", data: arrayOfCompanies });
   } catch (error) {

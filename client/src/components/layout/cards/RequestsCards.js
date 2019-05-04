@@ -77,7 +77,7 @@ class SimpleCard extends React.Component {
 
   checkrejectedicon = props => {
     if (props.subheader === "Accepted") return <DoneAll />;
-    if (props.subheader === "PendingReviewer") return <Done />;
+    if (props.subheader === "PendingReviewer"|| props.subheader==="AcceptedReviewer") return <Done />;
     if (
       props.subheader === "RejectedLawyer" ||
       props.subheader === "RejectedReviewer"
@@ -91,7 +91,8 @@ class SimpleCard extends React.Component {
     if (props.subheader === "RejectedReviewer") return yellow[500];
     if (
       props.subheader === "PendingReviewer" ||
-      props.subheader === "PendingLawyer"
+      props.subheader === "PendingLawyer" ||
+      props.subheader==="AcceptedReviewer"
     )
       return blue[500];
   };
@@ -124,7 +125,7 @@ class SimpleCard extends React.Component {
       case "Accepted":
         return "Your form has been accepted";
       default:
-        return "none";
+        return "Your form has been accepted and pending your Payment";
     }
   };
 
@@ -164,6 +165,7 @@ class SimpleCard extends React.Component {
                 id={this.props.id}
                 token={sessionStorage.getItem("jwtToken")}
                 data={this.props.data}
+                status={this.props.subheader}
               />
             }
             title={this.props.title}
