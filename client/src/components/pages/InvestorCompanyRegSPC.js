@@ -139,7 +139,7 @@ class InvestorCompanyReg extends React.Component {
               storage.ref(id).child('pdf').getDownloadURL().then(url => {
                 console.log(url)
                 window.open(url, '_blank')
-                fetch('http://serverbrogrammers.herokuapp.com/api/investors/pdf/' + id,
+                fetch('https://serverbrogrammers.herokuapp.com/api/investors/pdf/' + id,
                   {
                     method: 'POST',
                     body: JSON.stringify({ pdf: url }),
@@ -160,7 +160,7 @@ class InvestorCompanyReg extends React.Component {
 
   handleRegister (event) {
     event.preventDefault()
-    fetch('http://serverbrogrammers.herokuapp.com/api/investors/createspccompany',
+    fetch('https://serverbrogrammers.herokuapp.com/api/investors/createspccompany',
       {
         method: 'POST',
         body: JSON.stringify(this.state.company),

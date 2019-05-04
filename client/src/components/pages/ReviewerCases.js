@@ -13,7 +13,7 @@ class ReviewerCases extends React.Component {
 
   componentDidMount () {
     {
-      fetch('http://serverbrogrammers.herokuapp.com/api/reviewer/getAllTasks/view', {
+      fetch('https://serverbrogrammers.herokuapp.com/api/reviewer/getAllTasks/view', {
         headers: new Headers({
           'x-access-token': this.props.token
         })

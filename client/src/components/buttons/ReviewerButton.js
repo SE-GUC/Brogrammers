@@ -9,7 +9,7 @@ class ReviewerButton extends Component {
   }
 
   claimTask () {
-    fetch(`http://serverbrogrammers.herokuapp.com/api/reviewer/assignFreeTask/${this.props.compid}`, {
+    fetch(`https://serverbrogrammers.herokuapp.com/api/reviewer/assignFreeTask/${this.props.compid}`, {
       method: 'PUT',
 
       headers: {

@@ -16,7 +16,7 @@ class ViewReviewerCasesbyID extends Component {
   }
 
   componentDidMount () {
-    fetch(`http://serverbrogrammers.herokuapp.com/api/reviewer/getTasks/Reviewer`, {
+    fetch(`https://serverbrogrammers.herokuapp.com/api/reviewer/getTasks/Reviewer`, {
       headers: new Headers({
         'x-access-token': this.props.token
       }) })

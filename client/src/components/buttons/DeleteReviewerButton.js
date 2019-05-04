@@ -31,7 +31,7 @@ class DeleteReviewerButton extends React.Component {
 
   deleteReviewer()
   {
-    fetch(`http://serverbrogrammers.herokuapp.com/api/reviewer/${this.props.id}`, {
+    fetch(`https://serverbrogrammers.herokuapp.com/api/reviewer/${this.props.id}`, {
       method: "DELETE",
      
       headers: {

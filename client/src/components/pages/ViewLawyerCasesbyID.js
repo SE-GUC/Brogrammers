@@ -18,7 +18,7 @@ class ViewLawyerCasesbyID extends Component {
   }
 
   componentDidMount () {
-    fetch(`http://serverbrogrammers.herokuapp.com/api/lawyer/getTasks`, {
+    fetch(`https://serverbrogrammers.herokuapp.com/api/lawyer/getTasks`, {
       headers: new Headers({
         'x-access-token': this.props.token
       }) })

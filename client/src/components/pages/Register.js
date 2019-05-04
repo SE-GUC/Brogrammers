@@ -73,7 +73,7 @@ class Register extends React.Component {
     e.preventDefault()
     let userData = this.state.investor
     console.log('abc')
-    fetch('http://serverbrogrammers.herokuapp.com/api/investors/register', {
+    fetch('https://serverbrogrammers.herokuapp.com/api/investors/register', {
       method: 'POST',
       body: JSON.stringify(userData),
       headers: {
@@ -85,8 +85,7 @@ class Register extends React.Component {
           alert(data.error)
         } else {
           console.log('Successful' + data + data.auth)
-          this.props.callBack(data.token, data.auth, 'i', data.data._id)
-          document.location.href = '/PleaseActivatew'
+          document.location.href = '/PleaseActivate'
         }
       })
     })

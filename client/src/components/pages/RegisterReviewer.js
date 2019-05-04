@@ -65,7 +65,7 @@ class RegisterReviewer extends React.Component {
     e.preventDefault()
     let userData = this.state.investor
     console.log('abc')
-    fetch('http://serverbrogrammers.herokuapp.com/api/reviewer/register', {
+    fetch('https://serverbrogrammers.herokuapp.com/api/reviewer/register', {
       method: 'POST',
       body: JSON.stringify(userData),
       headers: {

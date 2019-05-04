@@ -31,7 +31,7 @@ class ViewCompanies extends Component {
   }
 
   componentDidMount () {
-    fetch(`http://serverbrogrammers.herokuapp.com/api/investors/View/ViewCompanies`, {
+    fetch(`https://serverbrogrammers.herokuapp.com/api/investors/View/ViewCompanies`, {
       method: 'GET',
       headers: {
         'x-access-token': this.props.token

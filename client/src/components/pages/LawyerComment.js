@@ -14,7 +14,7 @@ class LawyerComment extends Component {
   }
 
   componentDidMount () {
-    fetch(`http://serverbrogrammers.herokuapp.com/api/lawyer/getRejectedTasks/Lawyer`, {
+    fetch(`https://serverbrogrammers.herokuapp.com/api/lawyer/getRejectedTasks/Lawyer`, {
       headers: new Headers({
         'x-access-token': sessionStorage.getItem('jwtToken')
       }) })

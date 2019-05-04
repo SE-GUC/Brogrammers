@@ -160,7 +160,7 @@ class FormDialogue2 extends React.Component {
     this.clean(userData);
     console.log(userData)
 console.log(this.props.id)
-    fetch(`http://serverbrogrammers.herokuapp.com/api/lawyer/editForm/${sessionStorage.getItem("ssn")}/${this.props.id}`, {
+    fetch(`https://serverbrogrammers.herokuapp.com/api/lawyer/editForm/${sessionStorage.getItem("ssn")}/${this.props.id}`, {
       method: "PUT",
       body: JSON.stringify(userData),
       headers: {

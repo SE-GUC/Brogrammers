@@ -9,7 +9,7 @@ class LawyerApproveDisapprove extends Component {
   }
 
   approveTask () {
-    fetch(`http://serverbrogrammers.herokuapp.com/api/lawyer/getTasks/approve/${this.props.compid}`, {
+    fetch(`https://serverbrogrammers.herokuapp.com/api/lawyer/getTasks/approve/${this.props.compid}`, {
       method: 'PUT',
 
       headers: {
@@ -25,7 +25,7 @@ class LawyerApproveDisapprove extends Component {
   }
 
   disapproveTask () {
-    fetch(`http://serverbrogrammers.herokuapp.com/api/lawyer/getTasks/disapprove/${this.props.compid}`, {
+    fetch(`https://serverbrogrammers.herokuapp.com/api/lawyer/getTasks/disapprove/${this.props.compid}`, {
       method: 'PUT',
 
       headers: {

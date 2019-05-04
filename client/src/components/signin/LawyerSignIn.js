@@ -63,7 +63,7 @@ export class LawyerSignIn extends Component {
     e.preventDefault()
     let lawyerData = this.state.lawyer
     console.log(this.state.lawyer.email)
-    fetch('http://serverbrogrammers.herokuapp.com/api/lawyer/login', {
+    fetch('https://serverbrogrammers.herokuapp.com/api/lawyer/login', {
       method: 'POST',
       body: JSON.stringify(lawyerData),
       headers: {

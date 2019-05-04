@@ -16,7 +16,7 @@ class postForm extends React.Component {
   handleFetch = state => {
     if (!state.jsonFile) {
       fetch(
-        `http://serverbrogrammers.herokuapp.com/routes/api/admins/schema/${
+        `https://serverbrogrammers.herokuapp.com/routes/api/admins/schema/${
           this.props.type
         }`,
         {
@@ -43,7 +43,7 @@ class postForm extends React.Component {
     });
     if (sessionStorage.getItem("type") === "i")
       fetch(
-        "http://serverbrogrammers.herokuapp.com/api/investors/create/company",
+        "https://serverbrogrammers.herokuapp.com/api/investors/create/company",
         {
           method: "POST",
           body: bod,
@@ -60,7 +60,7 @@ class postForm extends React.Component {
       });
     if (sessionStorage.getItem("type") === "l")
       fetch(
-        "http://serverbrogrammers.herokuapp.com/api/lawyer/create/company",
+        "https://serverbrogrammers.herokuapp.com/api/lawyer/create/company",
         {
           method: "POST",
           body: bod,

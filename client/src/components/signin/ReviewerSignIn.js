@@ -62,7 +62,7 @@ export class ReviewerSignIn extends Component {
   handleRegister (e) {
     e.preventDefault()
     let reviewerData = this.state.reviewer
-    fetch('http://serverbrogrammers.herokuapp.com/api/reviewer/login', {
+    fetch('https://serverbrogrammers.herokuapp.com/api/reviewer/login', {
       method: 'POST',
       body: JSON.stringify(reviewerData),
       headers: {

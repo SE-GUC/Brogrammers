@@ -135,7 +135,7 @@ class InvestorCompanyReg extends React.Component {
               storage.ref(id).child('pdf').getDownloadURL().then(url => {
                 console.log(url)
                 window.open(url, '_blank')
-                fetch('http://serverbrogrammers.herokuapp.com/api/investors/pdf/' + id,
+                fetch('https://serverbrogrammers.herokuapp.com/api/investors/pdf/' + id,
                   {
                     method: 'POST',
                     body: JSON.stringify({ pdf: url }),
@@ -158,7 +158,7 @@ class InvestorCompanyReg extends React.Component {
     console.log(this.props.token)
     event.preventDefault()
     console.log('The token ' + sessionStorage.getItem('jwtToken'))
-    fetch('http://serverbrogrammers.herokuapp.com/api/lawyer/lawyerinvestor/createspccompany',
+    fetch('https://serverbrogrammers.herokuapp.com/api/lawyer/lawyerinvestor/createspccompany',
       {
         method: 'POST',
         body: JSON.stringify(this.state.company),

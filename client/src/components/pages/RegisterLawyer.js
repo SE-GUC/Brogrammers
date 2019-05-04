@@ -65,7 +65,7 @@ class RegisterLawyer extends React.Component {
     e.preventDefault()
     let userData = this.state.investor
     console.log('abc')
-    fetch('http://serverbrogrammers.herokuapp.com/api/lawyer/register', {
+    fetch('https://serverbrogrammers.herokuapp.com/api/lawyer/register', {
       method: 'POST',
       body: JSON.stringify(userData),
       headers: {

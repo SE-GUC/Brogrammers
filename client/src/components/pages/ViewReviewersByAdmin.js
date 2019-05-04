@@ -14,7 +14,7 @@ class ViewReviewersByAdmin extends React.Component {
 
   componentDidMount () {
     {
-      fetch('http://serverbrogrammers.herokuapp.com/api/reviewer/', {
+      fetch('https://serverbrogrammers.herokuapp.com/api/reviewer/', {
         headers: new Headers({
           'x-access-token': this.props.token
         })

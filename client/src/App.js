@@ -129,7 +129,7 @@ class App extends Component {
             }
           />
           <Route exact path="/PleaseActivate" component={()=><PleaseActivate/>}/>
-          <Route exact path="/Activate/:id" component={()=><Activate/>}/>
+          <Route exact path="/activate/:id" component={Activate}/>
           <Route
             exact
             path="/admin/register-reviewer"
@@ -472,6 +472,7 @@ class App extends Component {
                     sessionStorage.getItem("auth") &&
                     sessionStorage.getItem("type") == "i"
                   ) {
+                    console.log("in investor profile")
                     return <InvestorProfile />;
                   } else {
                     if (

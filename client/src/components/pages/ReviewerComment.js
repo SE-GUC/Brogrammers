@@ -12,7 +12,7 @@ class ReviewerComment extends Component {
   }
 
   componentDidMount () {
-    fetch(`http://serverbrogrammers.herokuapp.com/api/reviewer/getRejectedTasks/Reviewer`, {
+    fetch(`https://serverbrogrammers.herokuapp.com/api/reviewer/getRejectedTasks/Reviewer`, {
       headers: new Headers({
         'x-access-token': sessionStorage.getItem('jwtToken')
       })
