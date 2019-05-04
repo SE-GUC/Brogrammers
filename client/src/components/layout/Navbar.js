@@ -186,6 +186,7 @@ class PrimarySearchAppBar extends React.Component {
   enterPressed(event) {
     var code = event.keyCode || event.which
     if (code === 13) {
+      //the value of enterkey is 13
       this.handleSearch()
     }
   }
