@@ -178,7 +178,9 @@ class PrimarySearchAppBar extends React.Component {
     this.setState({ searchText: e.target.value })
   }
   handleSearch = () => {
-    document.location.href = `/searchCases/${this.state.searchText}`
+    if (Boolean(this.state.searchText)) {
+      document.location.href = `/searchCases/${this.state.searchText}`
+    }
   }
 
   enterPressed(event) {
