@@ -61,17 +61,17 @@ class InvestorCompanyReg extends React.Component {
     super(props)
     this.state = {
       company: {
-        regulationLaw: 'Law 159',
-        legalCompanyForm: 'Law 159',
-        nameInArabic: 'الفشاخ',
-        nameInEnglish: 'alsdhl',
-        governerateHQ: 'ajsk',
-        cityHQ: 'aksjdhk',
-        addressHQ: 'aksdgk',
-        telephoneHQ: '2896896',
-        faxHQ: '28709872',
-        capitalCurrency: 'egp',
-        capital: '297972'
+        regulationLaw: '',
+        legalCompanyForm: '',
+        nameInArabic: '',
+        nameInEnglish: '',
+        governerateHQ: '',
+        cityHQ: '',
+        addressHQ: '',
+        telephoneHQ: '',
+        faxHQ: '',
+        capitalCurrency: '',
+        capital: ''
       },
       id: '',
       investorName: '',

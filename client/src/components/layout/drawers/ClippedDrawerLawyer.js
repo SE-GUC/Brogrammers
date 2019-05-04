@@ -87,8 +87,6 @@ class ClippedDrawerLawyer extends React.Component {
       case "edit":
         console.log("hello");
         return <ViewLawyerEditableCases />;
-      case "comment":
-        return <LawyerComment />;
       default:
         return;
     }
@@ -145,9 +143,7 @@ class ClippedDrawerLawyer extends React.Component {
     this.setState({ clicked: "created" });
   };
 
-  handleComment = () => {
-    this.setState({ clicked: "comment" });
-  };
+
 
   handleProfile = () => {
     this.setState({ clicked: "profile" });
@@ -268,22 +264,7 @@ class ClippedDrawerLawyer extends React.Component {
             <Divider/>
           <List>
             
-            <ListItem
-              button
-              key={"Comment on my companies"}
-              onClick={this.handleComment}
-            >
-              <ListItemIcon>
-                <EditProfile />
-              </ListItemIcon>
-              <ListItemText
-                primary={
-                  sessionStorage.getItem("lang") === "en"
-                    ? "Comment on Company"
-                    : " علق علي شركاتي"
-                }
-              />
-            </ListItem>
+            
             <ListItem button key={"Edit Companies"} onClick={this.handleEdit}>
               <ListItemIcon>
                 <EditProfile />

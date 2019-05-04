@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
+import Snackbar from '../layout/snackbar/Snackbar';
 
 class LawyerApproveDisapprove extends Component {
   constructor (props) {
@@ -26,19 +27,26 @@ class LawyerApproveDisapprove extends Component {
   }
 
   disapproveTask () {
-    fetch(`https://serverbrogrammers.herokuapp.com/api/lawyer/getTasks/disapprove/${this.props.compid}`, {
+    if(!this.props.comment){
+      alert("Please Leave a Comment")
+     //   return <Snackbar message="Please leave a comment" variant="warning" />
+     //   return <Snackbar variant='warning' message={sessionStorage.getItem('lang') === 'en' ? 'There are no requests' : 'لا يوجد شركات'} />
+    }
+    else{
+    fetch(`http://localhost:3000/api/lawyer/getTasks/disapprove/${this.props.compid}`, {
       method: 'PUT',
-
+      body: JSON.stringify({comment:this.props.comment}),
       headers: {
         'Content-Type': 'application/json',
         'x-access-token': this.props.token
       }
     }).then(response => {
       console.log(response)
-      alert(sessionStorage.getItem('lang') === 'en' ? 'Task Disapproved!!....Please do not forget to write a comment' : 'تم رفض الشركه ....من فضلك لا تنسى ترك تعليق'
-      )
+    //  alert(sessionStorage.getItem('lang') === 'en' ? 'Task Disapproved!!....Please do not forget to write a comment' : 'تم رفض الشركه ....من فضلك لا تنسى ترك تعليق'
+    //  )
       window.location.reload()
     })
+  }
   }
 
   render () {

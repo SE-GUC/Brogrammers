@@ -273,7 +273,7 @@ hadnleOpenDrawer=()=>{
                 </IconButton>
                 </div>
               <InputBase
-                placeholder="Search…"
+                placeholder={sessionStorage.getItem('lang') === 'en' ?"Search…":"...ابحث"}
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput
@@ -282,8 +282,8 @@ hadnleOpenDrawer=()=>{
                 />
             </div>
 
-            <Tab label="Sign in" onClick={this.handleSignIn} style={hiden} />
-            <Tab label="Sign up" onClick={this.handleSignUp} style={hiden} />
+            <Tab label={sessionStorage.getItem('lang') === 'en' ?"Sign in":"تسجيل الدخول"} onClick={this.handleSignIn} style={hiden} />
+            <Tab label={sessionStorage.getItem('lang') === 'en' ?"Sign up":"تسجيل"} onClick={this.handleSignUp} style={hiden} />
             <div className={classes.grow} />
             <div className={classes.sectionDesktop} style={hidei}>
               

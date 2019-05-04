@@ -26,19 +26,27 @@ class ReviewerApproveDisapprove extends Component {
   }
 
   disapproveTask () {
-    fetch(`https://serverbrogrammers.herokuapp.com/api/reviewer/getTasks/disapprove/${this.props.compid}`, {
+    if(!this.props.comment){
+      alert("Please Leave a Comment")
+     //   return <Snackbar message="Please leave a comment" variant="warning" />
+     //   return <Snackbar variant='warning' message={sessionStorage.getItem('lang') === 'en' ? 'There are no requests' : 'لا يوجد شركات'} />
+    }
+    else{
+    console.log(this.props.comment)
+    fetch(`http://localhost:3000/api/reviewer/getTasks/disapprove/${this.props.compid}`, {
       method: 'PUT',
-
+      body: JSON.stringify({comment:this.props.comment}),
       headers: {
         'Content-Type': 'application/json',
         'x-access-token': this.props.token
       }
     }).then(response => {
       console.log(response)
-      alert(sessionStorage.getItem('lang') === 'en' ? 'Task Approved!!... Dont forget to write a comment!!' : 'تم رفض الشركه  ... لا تنس اضافه التعليق  ')
-      window.location.reload()
+    //  alert(sessionStorage.getItem('lang') === 'en' ? 'Task Approved!!... Dont forget to write a comment!!' : 'تم رفض الشركه  ... لا تنس اضافه التعليق  ')
+   //   window.location.reload()
     })
   }
+}
 
   render () {
     // console.log(this.props.compid)
