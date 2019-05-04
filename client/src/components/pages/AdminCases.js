@@ -1,12 +1,13 @@
 
 import React, { Component } from 'react'
 import SimpleCard from '../cards/SimpleCard3'
-
+import LinearDeterminate from "../layout/loading/CustomizedProgress"
 class AdminCases extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      adminCases: []
+      adminCases: [],
+      isLoaded:false
 
     }
   }
@@ -23,7 +24,7 @@ class AdminCases extends React.Component {
 
         .then(res => res.json())
         .then(json => {
-          this.setState({
+          this.setState({ isLoaded:true,
             adminCases: json.data
           })
         })
@@ -31,8 +32,8 @@ class AdminCases extends React.Component {
   }
 
   render () {
-    console.log(this.state.adminCases)
-
+   
+if(!this.state.isLoaded){return <LinearDeterminate/>}
     const listItems =
     this.state.adminCases.map((item) => (
       <div>

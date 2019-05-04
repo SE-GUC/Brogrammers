@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import MyLawyerCasesCard from '../cards/MyLawyerCasesCard'
 import Button from '@material-ui/core/Button'
+import LinearDeterminate from "../layout/loading/CustomizedProgress"
 
 class ViewLawyerCasesbyID extends Component {
   constructor (props) {
@@ -88,7 +89,7 @@ class ViewLawyerCasesbyID extends Component {
 
   render () {
     var { isLoadied, companies } = this.state
-    if (!isLoadied) { return <div> Loading ...</div> } else {
+    if (!isLoadied) { return <LinearDeterminate/>} else {
       const listItems =
       this.state.companies.map((element, i) => (
         <div>
