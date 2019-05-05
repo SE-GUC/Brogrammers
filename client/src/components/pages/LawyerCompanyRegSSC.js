@@ -19,6 +19,8 @@ import img3 from '../../components/Images/capture.png'
 import ExpansionPanel from '../layout/expansionPanel/ExpansionPanel'
 import Chip from '@material-ui/core/Chip';
 import LinearDeterminate from "../layout/loading/CustomizedProgress"
+import IDType from '../layout/inputs/IDType';
+import Law from '../layout/inputs/Law';
 window.html2canvas = html2canvas
 
 const storage = firebase.storage()
@@ -54,7 +56,7 @@ class LawyerCompanyReg extends React.Component {
     super(props)
     this.state = {
       company: {
-        regulationLaw: '',
+        regulationLaw: 'Law 72',
         legalCompanyForm: '',
         nameInArabic: '',
         nameInEnglish: '',
@@ -68,7 +70,7 @@ class LawyerCompanyReg extends React.Component {
         investorName: '',
         investorSex: 'male',
         investorNationality: '',
-        investorIdentificationType: '',
+        investorIdentificationType: 'National ID',
         investorIdentificationNumber: '',
         investorBD: '',
         investorAddress: '',
@@ -252,6 +254,18 @@ class LawyerCompanyReg extends React.Component {
   handleInput(event) {
     let value = event.target.value
     let name = event.target.name
+    if(name=="idType"){
+      this.setState(prevState => {
+        return {
+          company: {
+            ...prevState.company, ["investorIdentificationType"]: value
+          }
+        }
+      }, () => console.log(this.state.company)
+      )
+    }
+    
+    else{
     this.setState(prevState => {
       return {
         company: {
@@ -261,6 +275,7 @@ class LawyerCompanyReg extends React.Component {
     }, () => console.log(this.state.company)
     )
   }
+}
 
   handleOnClick(js) {
     this.state.company.managers.push(js)
@@ -305,17 +320,7 @@ class LawyerCompanyReg extends React.Component {
     var law = new RegExp(/^Law/)
     var re = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm;
     console.log("I entered")
-    if (investorIdentificationType) {
-      if (regex.test(investorIdentificationType)) {
-        this.setState({ investorIdentificationTypeValid: true })
-      }
-      else {
-        this.setState({
-          investorIdentificationTypeValid: false,
-          err: true
-        })
-      }
-    }
+
     if (investorType) {
       if (regex.test(investorType)) {
         this.setState({ investorTypeValid: true })
@@ -415,25 +420,7 @@ class LawyerCompanyReg extends React.Component {
         err: true
       })
     }
-    if (regulationLaw) {
-      if (law.test(regulationLaw)) {
-        this.setState({ regulationLawValid: true })
-      }
-      else {
-        this.setState({
-          regulationLawValid: false,
-          err: true
-        })
-      }
 
-
-    }
-    else {
-      this.setState({
-        regulationLawValid: false,
-        err: true
-      })
-    }
 
     if (telephoneHQ) {
       if (number.test(telephoneHQ)) {
@@ -606,32 +593,7 @@ class LawyerCompanyReg extends React.Component {
               </Typography>
             </Grid>
             <Grid container direction="column" alignItems="center">
-                <FormControl required variant="outlined" className={classes.formControl} fullWidth>
-                  <InputLabel>{
-                  sessionStorage.getItem("lang") === "en"
-                      ? "Regulation Law"
-                      : " ‫القانون‬‫ المنظم"
-                  }
-                      </InputLabel>
-                  <Select
-                    native
-                    value={this.state.company.regulationLaw}
-                    onChange={this.handleInput}
-                    
-                    input={
-                      <OutlinedInput
-                      name={"legalCompanyForm"}
-                        labelWidth={this.state.labelWidth}
-                        id="outlined-age-native-simple"
-                      />
-                    }
-                  >
-          
-                    <option value={"Law 72"}>Law 72</option>
-                    <option value={"Law 159"}>Law 159</option>
-                  </Select>
-                  <FormHelperText>Required</FormHelperText>
-                </FormControl>
+            <Law callBack={this.handleInput}/>
                 </Grid>
             <Grid container direction='column' alignItems='center' >
               <Required valid={this.state.legalCompanyFormValid} texthelper={!this.state.legalCompanyFormValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Legal Company Form' : '‫شكل‬ ‫الشركة ‫القانوني‬ '} type={'text'} callBack={this.handleInput} name={'legalCompanyForm'} />
@@ -676,7 +638,7 @@ class LawyerCompanyReg extends React.Component {
               <Required valid={this.state.investorNationalityValid} texthelper={!this.state.investorNationalityValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Investor Nationality' : 'جنسیة‬ ‫المستثمر‬'} type={'text'} callBack={this.handleInput} name={'investorNationality'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required valid={this.state.investorIdentificationTypeValid} texthelper={!this.state.investorIdentificationTypeValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Investor Identification Type' : '‫‫نوع‬ ‫اثبات‬ شخصیة‬ المستثمر‬‫'} type={'text'} callBack={this.handleInput} name={'investorIdentificationType'} />
+              <IDType callBack={this.handleInput} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
               <Required valid={this.state.investorIdentificationNumberValid} texthelper={!this.state.investorIdentificationNumberValid ? "This field is required and only Numbers are Allowed " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Investor Identification Number' : '‫‫رقم‬ ‫اثبات‬ شخصیة‬ المستثمر‫‬'} type={'number'} callBack={this.handleInput} name={'investorIdentificationNumber'} />
