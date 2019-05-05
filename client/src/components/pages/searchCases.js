@@ -105,7 +105,7 @@ class searchCases extends Component {
 
       
 <Grid container spacing={20} alignItems="center" justify='center' style={{backgroundColor:"#034066cc"}}>
-      <Grid item xs={12} lg={12} style={{position: 'sticky',textAlign:'center',paddingTop:10,paddingBottom:10, marginTop:'0px',marginBottom:'100px',color:'white',top: '65px',zIndex:9999999999,backgroundColor:'#034066'}}>
+      <Grid item xs={12} lg={12} style={{position: 'sticky',textAlign:'center',paddingTop:10,paddingBottom:10, marginTop:'0px',marginBottom:'100px',color:'white',top: '64px',zIndex:13,backgroundColor:'#034066'}}>
            <h2 >{sessionStorage.getItem("lang")==='ar'?'نتائج البحث':'Search Results'} </h2>
            </Grid>
             {this.state.cases.map((item, i) => (
