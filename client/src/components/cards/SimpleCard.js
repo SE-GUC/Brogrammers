@@ -8,7 +8,6 @@ import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import Button2 from '../buttons/Button2'
 
-
 const styles = {
   card: {
     minWidth: 275
