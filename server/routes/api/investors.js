@@ -542,7 +542,7 @@ router.post('/register', async (req, res) => {
     to: newInvestor.mail, // list of receivers
     subject: "Your account was created succefully ✔", // Subject line
     text: "Thank you for registering in GAFIs online portal", // plain text body
-    html: "<b>Dear "+newInvestor.investName+"</b><br/><b>Thank you for registering in GAFIs online portal, To activate your account please press on the link</b> <br/><a href="+link+">Activate</a>" // html body
+    html: "<b>Dear "+newInvestor.name+"</b><br/><b>Thank you for registering in GAFIs online portal, To activate your account please press on the link</b> <br/><a href="+link+">Activate</a>" // html body
   };
   transporter.sendMail(info, (error, info) => {
     if (error) {

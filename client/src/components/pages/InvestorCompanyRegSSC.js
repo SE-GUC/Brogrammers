@@ -7,16 +7,16 @@ import green from '@material-ui/core/colors/green'
 import { Avatar } from '@material-ui/core'
 import AssignmemtIcon from '@material-ui/icons/Assignment'
 import Grid from '@material-ui/core/Grid'
-import Required from '../layout/inputs/Required'
-import NotRequired from '../layout/inputs/NotRequired'
+import Required from '../layout/inputs/RequiredValidation'
+import NotRequired from '../layout/inputs/NotRequiredValidation'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import BlueButton from '../layout/Buttons/BlueButton'
-import Manager from './Manager'
+import ExpansionPanel from '../layout/expansionPanel/ExpansionPanel'
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import firebase from '../../firebase'
 import img3 from '../../components/Images/capture.png'
 import LinearDeterminate from "../layout/loading/CustomizedProgress"
+import Chip from '@material-ui/core/Chip'
 window.html2canvas = html2canvas
 
 const storage = firebase.storage()
@@ -48,7 +48,7 @@ const styles = theme => ({
 })
 
 class InvestorCompanyReg extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       company: {
@@ -74,15 +74,29 @@ class InvestorCompanyReg extends React.Component {
       investorNationality: '',
       egp: 'none',
       negp: 'block',
-      vis: 'none'
+      vis: 'none',
+
+      regulationLawValid: true,
+      legalCompanyFormValid: true,
+      nameInArabicValid: true,
+      nameInEnglishValid: true,
+      governerateHQValid: true,
+      cityHQValid: true,
+      addressHQValid: true,
+      faxHQValid: true,
+      capitalCurrencyValid: true,
+      capitalValid: true,
+      telephoneHQValid: true,
+      err: false
     }
     this.handleRegister = this.handleRegister.bind(this)
     this.handleInput = this.handleInput.bind(this)
     this.handleOnClick = this.handleOnClick.bind(this)
     this.createPdf = this.createPdf.bind(this)
+    this.validate = this.validate.bind(this)
   }
 
-  createPdf (e) {
+  createPdf(e) {
     this.setState({
       vis: 'block'
     })
@@ -144,9 +158,9 @@ class InvestorCompanyReg extends React.Component {
                       'x-access-token': sessionStorage.getItem('jwtToken')
                     }
                   }).then(response => {
-                  console.log(response)
-                  document.location.href = '/profile';
-                })
+                    console.log(response)
+                    document.location.href = '/profile';
+                  })
               })
             })
         })
@@ -154,7 +168,7 @@ class InvestorCompanyReg extends React.Component {
     })
   };
 
-  createTable (tableData) {
+  createTable(tableData) {
     var table = document.createElement('table')
     var tableBody = document.createElement('tbody')
 
@@ -170,50 +184,65 @@ class InvestorCompanyReg extends React.Component {
     document.body.appendChild(table)
   }
 
-  handleRegister (event) {
+  async handleRegister(event) {
     console.log(this.props.token)
     event.preventDefault()
     console.log('The token ' + sessionStorage.getItem('jwtToken'))
-    fetch('https://serverbrogrammers.herokuapp.com/api/investors/createssccompany',
-      {
-        method: 'POST',
-        body: JSON.stringify(this.state.company),
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': sessionStorage.getItem('jwtToken')
-        }
-      }).then(response => {
-      response.json().then(data => {
-        if (data.error) {
-          alert(data.error)
-        } else {
-          console.log('Successful' + data)
-          console.log('Successful' + data)
-          var lol = new Date(data.data.investorBD)
-
-          this.setState({
-            id: data.data._id,
-            investorName: data.data.investorName,
-            investorAddress: data.data.investorAddress,
-            investorBD: lol.getDay() + '/' + lol.getMonth() + '/' + lol.getFullYear(),
-            investorIdentificationNumber: data.data.investorIdentificationNumber,
-            investorIdentificationType: data.data.investorIdentificationType,
-            investorNationality: data.data.investorNationality
-          })
-          if (data.data.capitalCurrency == 'egp') {
-            document.getElementById('negp').style.visibility = 'hidden'
-          } else {
-            document.getElementById('egp').style.visibility = 'hidden'
+    await this.validate(
+      this.state.company.regulationLaw,
+      this.state.company.legalCompanyForm,
+      this.state.company.nameInArabic,
+      this.state.company.nameInEnglish,
+      this.state.company.governerateHQ,
+      this.state.company.cityHQ,
+      this.state.company.addressHQ,
+      this.state.company.faxHQ,
+      this.state.company.telephoneHQ,
+      this.state.company.capitalCurrency,
+      this.state.company.capital
+    )
+    if (!this.state.err) {
+      fetch('https://serverbrogrammers.herokuapp.com/api/investors/createssccompany',
+        {
+          method: 'POST',
+          body: JSON.stringify(this.state.company),
+          headers: {
+            'Content-Type': 'application/json',
+            'x-access-token': sessionStorage.getItem('jwtToken')
           }
-          //  this.state.id=data.data._id
-          console.log(this.state.id + ' the ID')
-          this.createPdf(event)
-        }
+        }).then(response => {
+          response.json().then(data => {
+            console.log('Successful' + data)
+            console.log('Successful' + data)
+            var lol = new Date(data.data.investorBD)
+
+            this.setState({
+              id: data.data._id,
+              investorName: data.data.investorName,
+              investorAddress: data.data.investorAddress,
+              investorBD: lol.getDay() + '/' + lol.getMonth() + '/' + lol.getFullYear(),
+              investorIdentificationNumber: data.data.investorIdentificationNumber,
+              investorIdentificationType: data.data.investorIdentificationType,
+              investorNationality: data.data.investorNationality
+            })
+            if (data.data.capitalCurrency == 'egp') {
+              document.getElementById('negp').style.visibility = 'hidden'
+            } else {
+              document.getElementById('egp').style.visibility = 'hidden'
+            }
+            //  this.state.id=data.data._id
+            console.log(this.state.id + ' the ID')
+            this.createPdf(event)
+          })
+        })
+    } else {
+      this.setState({
+        err: false
       })
-    })
+    }
   }
 
-  handleOnClick (js) {
+  handleOnClick(js) {
     this.state.company.managers.push(js)
     this.setState(prevState => {
       return {
@@ -225,7 +254,7 @@ class InvestorCompanyReg extends React.Component {
     )
   }
 
-  handleInput (event) {
+  handleInput(event) {
     let value = event.target.value
     let name = event.target.name
     this.setState(prevState => {
@@ -238,7 +267,200 @@ class InvestorCompanyReg extends React.Component {
     )
   }
 
-  render () {
+  validate(regulationLaw, legalCompanyForm, nameInArabic,
+    nameInEnglish, governerateHQ, cityHQ, addressHQ, faxHQ, capitalCurrency,
+    capital, telephoneHQ) {
+    var regex = new RegExp(/^[a-zA-Z\s-, ]+$/);
+    var number = new RegExp(/^[0-9]+$/)
+    var law = new RegExp(/^Law/)
+    console.log("I entered")
+
+    if (regulationLaw) {
+      console.log("I also entered +  " + regulationLaw)
+      if (law.test(regulationLaw)) {
+        this.setState({ regulationLawValid: true })
+      }
+      else {
+        this.setState({
+          regulationLawValid: false,
+          err: true
+        })
+      }
+
+
+    }
+    else {
+      this.setState({
+        regulationLawValid: false,
+        err: true
+      })
+    }
+
+    if (telephoneHQ) {
+      if (number.test(telephoneHQ)) {
+        this.setState({ telephoneHQValid: "true" })
+      }
+      else {
+        this.setState({
+          telephoneHQValid: false,
+          err: true
+        })
+
+      }
+    }
+
+    if (legalCompanyForm) {
+
+      this.setState({ legalCompanyFormValid: true })
+
+    }
+    else {
+      this.setState({
+        legalCompanyFormValid: false,
+        err: true
+      })
+    }
+
+    if (nameInArabic) {
+      if (regex.test(nameInArabic)) {
+        this.setState({ nameInArabicValid: true })
+      }
+      else {
+        this.setState({
+          nameInArabicValid: false,
+          err: true
+        })
+
+      }
+    }
+    else {
+      this.setState({
+        nameInArabicValid: false,
+        err: true
+      })
+    }
+
+
+    if (nameInEnglish) {
+      if (regex.test(nameInEnglish)) {
+        this.setState({ nameInEnglishValid: true })
+      }
+      else {
+        this.setState({
+          nameInEnglishValid: false,
+          err: true
+        })
+
+      }
+    }
+
+    if (governerateHQ) {
+      if (regex.test(governerateHQ)) {
+        this.setState({ governerateHQValid: true })
+      }
+      else {
+        this.setState({
+          governerateHQValid: false,
+          err: true
+        })
+
+      }
+    }
+    else {
+      this.setState({
+        governerateHQValid: false,
+        err: true
+      })
+    }
+
+
+    if (cityHQ) {
+      if (regex.test(cityHQ)) {
+        this.setState({ cityHQValid: true })
+      }
+      else {
+        this.setState({
+          cityHQValid: false,
+          err: true
+        })
+
+      }
+    }
+    else {
+      this.setState({
+        cityHQValid: false,
+        err: true
+      })
+    }
+
+
+    if (addressHQ) {
+
+      this.setState({ addressHQValid: true })
+
+    }
+    else {
+      this.setState({
+        addressHQValid: false,
+        err: true
+      })
+    }
+
+
+    if (faxHQ) {
+      if (number.test(faxHQ)) {
+        this.setState({ faxHQValid: true })
+      }
+      else {
+        this.setState({
+          faxHQValid: false,
+          err: true
+        })
+
+      }
+    }
+
+    if (capitalCurrency) {
+      if (regex.test(capitalCurrency)) {
+        this.setState({ capitalCurrencyValid: true })
+      }
+      else {
+        this.setState({
+          capitalCurrencyValid: false,
+          err: true
+        })
+
+      }
+    }
+    else {
+      this.setState({
+        capitalCurrencyValid: false,
+        err: true
+      })
+    }
+
+    if (capital) {
+      if (capital > 50000) {
+        this.setState({ capitalValid: true })
+      }
+      else {
+        this.setState({
+          capitalValid: false,
+          err: true
+        })
+
+      }
+    }
+    else {
+      this.setState({
+        capitalValid: false,
+        err: true
+      })
+    }
+    return this.state.err
+  }
+
+  render() {
     const { classes } = this.props
     return (
       <div className={classes.main}>
@@ -259,40 +481,58 @@ class InvestorCompanyReg extends React.Component {
                 </Typography>
               </Grid>
               <Grid container direction='column' alignItems='center' >
-                <Required field={sessionStorage.getItem('lang') === 'en' ? 'Law' : ' ‫القانون‬‫ المنظم'} type={'text'} callBack={this.handleInput} name={'regulationLaw'} />
+                <Required valid={this.state.regulationLawValid} texthelper={!this.state.regulationLawValid ? "This field is required and either Law 159 or Law 72" : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Regulation Law' : ' ‫القانون‬‫ المنظم'} type={'text'} callBack={this.handleInput} name={'regulationLaw'} />
               </Grid>
               <Grid container direction='column' alignItems='center' >
-                <Required field={sessionStorage.getItem('lang') === 'en' ? 'Legal Company Form' : '‫شكل‬ ‫الشركة ‫القانوني‬ '} type={'text'} callBack={this.handleInput} name={'legalCompanyForm'} />
+                <Required valid={this.state.legalCompanyFormValid} texthelper={!this.state.legalCompanyFormValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Legal Company Form' : '‫شكل‬ ‫الشركة ‫القانوني‬ '} type={'text'} callBack={this.handleInput} name={'legalCompanyForm'} />
               </Grid>
               <Grid container direction='column' alignItems='center' >
-                <Required field={sessionStorage.getItem('lang') === 'en' ? 'Name In Arabic' : ' ‫اسم‬‫ المنشأة‬'} type={'text'} callBack={this.handleInput} name={'nameInArabic'} />
+                <Required valid={this.state.nameInArabicValid} texthelper={!this.state.nameInArabicValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Name In Arabic' : ' ‫اسم‬‫ المنشأة‬'} type={'text'} callBack={this.handleInput} name={'nameInArabic'} />
               </Grid>
               <Grid container direction='column' alignItems='center' >
-                <NotRequired field={sessionStorage.getItem('lang') === 'en' ? 'Name In English' : 'اسم‬ ‫المنشأه‬‫بالانجلیزیة‬ (في‬‬ ‫حالة‫ وجوده‬‫)'} type={'text'} callBack={this.handleInput} name={'nameInEnglish'} />
+                <NotRequired valid={this.state.nameInEnglishValid} texthelper={!this.state.nameInEnglishValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Name In English' : 'اسم‬ ‫المنشأه‬‫بالانجلیزیة‬ (في‬‬ ‫حالة‫ وجوده‬‫)'} type={'text'} callBack={this.handleInput} name={'nameInEnglish'} />
               </Grid>
               <Grid container direction='column' alignItems='center' >
-                <Required field={sessionStorage.getItem('lang') === 'en' ? 'Government HQ' : '‫المركز ‫الرئیسي‬ ‫(المحافظة)‬‬'} type={'text'} callBack={this.handleInput} name={'governerateHQ'} />
+                <Required valid={this.state.governerateHQValid} texthelper={!this.state.governerateHQValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Government HQ' : '‫المركز ‫الرئیسي‬ ‫(المحافظة)‬‬'} type={'text'} callBack={this.handleInput} name={'governerateHQ'} />
               </Grid>
               <Grid container direction='column' alignItems='center' >
-                <Required field={sessionStorage.getItem('lang') === 'en' ? 'City HQ' : 'المركز ‫الرئیسي‬ ‫‫(المدینة)'} type={'text'} callBack={this.handleInput} name={'cityHQ'} />
+                <Required valid={this.state.cityHQValid} texthelper={!this.state.cityHQValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'City HQ' : 'المركز ‫الرئیسي‬ ‫‫(المدینة)'} type={'text'} callBack={this.handleInput} name={'cityHQ'} />
               </Grid>
               <Grid container direction='column' alignItems='center' >
-                <Required field={sessionStorage.getItem('lang') === 'en' ? 'Address HQ' : ' ‫المركز‬ ‫الرئیسي ‫(العنوان)'} type={'text'} callBack={this.handleInput} name={'addressHQ'} />
+                <Required valid={this.state.addressHQValid} texthelper={!this.state.addressHQValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Address HQ' : ' ‫المركز‬ ‫الرئیسي ‫(العنوان)'} type={'text'} callBack={this.handleInput} name={'addressHQ'} />
               </Grid>
               <Grid container direction='column' alignItems='center' >
-                <Required field={sessionStorage.getItem('lang') === 'en' ? 'Telephone HQ' : '‫التلیفون‬'} type={'text'} callBack={this.handleInput} name={'telephoneHQ'} />
+                <Required valid={this.state.telephoneHQValid} texthelper={!this.state.telephoneHQValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Telephone HQ' : '‫التلیفون‬'} type={'text'} callBack={this.handleInput} name={'telephoneHQ'} />
               </Grid>
               <Grid container direction='column' alignItems='center' >
-                <Required field={sessionStorage.getItem('lang') === 'en' ? 'Fax HQ' : '‫الفاكس‬'} type={'text'} callBack={this.handleInput} name={'faxHQ'} />
+                <Required valid={this.state.faxHQValid} texthelper={!this.state.faxHQValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Fax HQ' : '‫الفاكس‬'} type={'text'} callBack={this.handleInput} name={'faxHQ'} />
               </Grid>
               <Grid container direction='column' alignItems='center' >
-                <Required field={sessionStorage.getItem('lang') === 'en' ? 'Capital Currency' : '‫عملة‬ ‫رأس‬ ‫المال‬'} type={'text'} callBack={this.handleInput} name={'capitalCurrency'} />
+                <Required valid={this.state.capitalCurrencyValid} texthelper={!this.state.capitalCurrencyValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Capital Currency' : '‫عملة‬ ‫رأس‬ ‫المال‬'} type={'text'} callBack={this.handleInput} name={'capitalCurrency'} />
               </Grid>
               <Grid container direction='column' alignItems='center' >
-                <Required field={sessionStorage.getItem('lang') === 'en' ? 'Capital' : 'رأس‬ ‫المال'} type={'number'} callBack={this.handleInput} name={'capital'} />
+                <Required valid={this.state.capitalValid} texthelper={!this.state.capitalValid ? "This field is required and only Numbers are Allowed " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Capital' : 'رأس‬ ‫المال'} type={'number'} callBack={this.handleInput} name={'capital'} />
               </Grid>
-              <Grid >
-                <Manager callBack={this.handleOnClick} />
+              <Grid container direction='column' alignItems='center'>
+                <ExpansionPanel callBack={this.handleOnClick} />
+              </Grid>
+              <Grid container direction='column' alignItems='flex-start'>
+                <Typography variant='h6' component='h3'>
+                  <br />
+                  Your Submitted Managers:
+                <br />
+                  {this.state.company.managers.map(data => {
+                    let icon = null;
+                    return (
+                      <Chip
+                        key={data.key}
+                        icon={icon}
+                        label={data.name}
+                      //className={classes.chip}
+                      />
+                    );
+                  })}
+                </Typography>
               </Grid>
               <Grid>
                 <br />
@@ -301,39 +541,39 @@ class InvestorCompanyReg extends React.Component {
                 <AlertDialogSlide handleRegister={this.handleRegister} />
               </Grid>
               <Grid container direction='column' alignItems='center' >
-              <h6 style={{ display: this.state.vis }}>The page will automatically Redirect when the company is successfully created.</h6>
+                <h6 style={{ display: this.state.vis }}>The page will automatically Redirect when the company is successfully created.</h6>
               </Grid>
-       
-              
+
+
             </Grid>
-           
+
           </Paper>
         </Grid>
         <div style={{ display: this.state.vis }}>
-        <LinearDeterminate />
-        <Paper  elevation={1} />
+          <LinearDeterminate />
+          <Paper elevation={1} />
         </div>
-<br/>
+        <br />
 
-<br/>
+        <br />
 
-<br/>
+        <br />
 
-<br/>
-<br/>
+        <br />
+        <br />
 
-<br/>
+        <br />
 
-<br/>
+        <br />
 
-<br/>
-<br/>
+        <br />
+        <br />
 
-<br/>
+        <br />
 
-<br/>
+        <br />
 
-<br/>
+        <br />
         <div style={{ display: this.state.vis }}>
 
           <div id='com' dir='rtl' lang='ar' align='right'>

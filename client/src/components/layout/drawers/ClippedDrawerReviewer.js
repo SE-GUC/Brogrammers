@@ -73,8 +73,6 @@ class ClippedDrawerReviewer  extends React.Component {
         );
       case "profile":
         return <EditProfileReviewer token={sessionStorage.getItem("jwtToken")} />;
-      case "comment":
-        return <ReviewerComment/>;;
       default:
         return;
     }
@@ -108,9 +106,6 @@ class ClippedDrawerReviewer  extends React.Component {
     this.setState({ clicked: "myCases" });
   };
 
-  handleComment = () => {
-    this.setState({ clicked: "comment" });
-  };
 
   handleProfile = () => {
     this.setState({ clicked: "profile" });
@@ -198,22 +193,7 @@ class ClippedDrawerReviewer  extends React.Component {
                 }
               />
             </ListItem>
-            <ListItem
-              button
-              key={"Comment on my companies"}
-              onClick={this.handleComment}
-            >
-              <ListItemIcon>
-                <EditProfile />
-              </ListItemIcon>
-              <ListItemText
-                primary={
-                  sessionStorage.getItem("lang") === "en"
-                    ? "Comment on Company"
-                    : " علق علي شركاتي"
-                }
-              />
-            </ListItem>
+           
           </List>
         </Drawer>
         <main className={classes.content} style={{ marginTop: 50 }}>

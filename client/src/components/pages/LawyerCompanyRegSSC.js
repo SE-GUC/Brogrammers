@@ -17,7 +17,7 @@ import html2canvas from 'html2canvas'
 import firebase from '../../firebase'
 import img3 from '../../components/Images/capture.png'
 import ExpansionPanel from '../layout/expansionPanel/ExpansionPanel'
-import ChipsArray from '../layout/chips/ChipsArray'
+import Chip from '@material-ui/core/Chip';
 window.html2canvas = html2canvas
 
 const storage = firebase.storage()
@@ -235,7 +235,11 @@ class LawyerCompanyReg extends React.Component {
           this.createPdf(event)
         })
       })
-    }  
+    }else{
+      this.setState({
+        err: false
+      })
+    }
   }
 
   handleInput(event) {
@@ -430,7 +434,6 @@ class LawyerCompanyReg extends React.Component {
       })
     }
     if (regulationLaw) {
-      console.log("I also entered +  " + regulationLaw)
       if (law.test(regulationLaw)) {
         this.setState({ regulationLawValid: true })
       }
@@ -640,7 +643,7 @@ class LawyerCompanyReg extends React.Component {
               </Typography>
             </Grid>
             <Grid container direction='column' alignItems='center' >
-              <Required valid={this.state.regulationLawValid} texthelper={!this.state.regulationLawValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Regulation Law' : ' ‫القانون‬‫ المنظم'} type={'text'} callBack={this.handleInput} name={'regulationLaw'} />
+              <Required valid={this.state.regulationLawValid} texthelper={!this.state.regulationLawValid ? "This field is required and either Law 159 or Law 72" : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Regulation Law' : ' ‫القانون‬‫ المنظم'} type={'text'} callBack={this.handleInput} name={'regulationLaw'} />
             </Grid>
             <Grid container direction='column' alignItems='center' >
               <Required valid={this.state.legalCompanyFormValid} texthelper={!this.state.legalCompanyFormValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Legal Company Form' : '‫شكل‬ ‫الشركة ‫القانوني‬ '} type={'text'} callBack={this.handleInput} name={'legalCompanyForm'} />
@@ -708,8 +711,23 @@ class LawyerCompanyReg extends React.Component {
             <Grid container direction='column' alignItems='center'>
               <ExpansionPanel callBack={this.handleOnClick} />
             </Grid>
-            <Grid container direction='column' alignItems='center'>
-              <ChipsArray callBack={this.handleManager} />
+            <Grid container direction='column' alignItems='flex-start'>
+              <Typography variant='h6' component='h3'>
+                <br/>
+                Your Submitted Managers:
+                <br/>
+                {this.state.company.managers.map(data => {
+                  let icon = null;
+                  return (
+                    <Chip
+                      key={data.key}
+                      icon={icon}
+                      label={data.name}
+                      //className={classes.chip}
+                    />
+                  );
+                })}
+              </Typography>
             </Grid>
             <br />
             <Grid container direction='column' alignItems='flex-end' >

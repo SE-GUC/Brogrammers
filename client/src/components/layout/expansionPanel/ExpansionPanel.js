@@ -30,23 +30,14 @@ const styles = theme => ({
 class SimpleExpansionPanel extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            manager: '',
-            expansiond: false,
-            expansion: ''
-        }
         this.handleOnClick = this.handleOnClick.bind(this)
     }
 
     handleOnClick(js) {
-        this.setState(prevState => {
-            return {
-                ...prevState.manager, manager: js
-            }
-        })
-        this.state.expansion = true
-        this.props.callBack(this.state.manager);
-        console.log(this.props.expansion)
+        console.log("vewbopjnrwienvweio")
+        console.log(js)
+        this.props.callBack(js);
+        console.log('beroknblbnerobmeor')
     }
 
     render() {
@@ -61,7 +52,6 @@ class SimpleExpansionPanel extends React.Component {
                                     <AssignmemtIcon />
                                 </Avatar>
                                 <Typography>
-
                                 </Typography>
                                 <Typography variant='h6' component='h3'>
                                     <p>

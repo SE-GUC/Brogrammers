@@ -75,9 +75,9 @@ class Home extends Component {
             <Grid item xs={4}>
               {" "}
               <Fade timeout={{ enter: 1000 }} in={true}>
-                <h1 style={{ color: "white", textAlign: "center" }}>
+                <h1 style={{ color: "white", textAlign: "center" }} >
                   {" "}
-                  Start your company now
+                  {sessionStorage.getItem('lang') === 'en' ?"Start your company now":"ابدأ شركتك الأن"}
                 </h1>
               </Fade>
             </Grid>
@@ -87,8 +87,8 @@ class Home extends Component {
                 style={{ transitionDelay: "0.6s" }}
                 in={true}
               >
-                <Button variant="outlined"  onClick={this.handleChange}>
-                 Get Started Here
+                <Button variant="outlined" onClick={this.handleChange} text={sessionStorage.getItem('lang') === 'en' ?"get started here":"ابدأ هنا"}>
+                {sessionStorage.getItem('lang') === 'en' ?"get started here":"ابدأ هنا"}
                 </Button>
               </Fade>
             </Grid>

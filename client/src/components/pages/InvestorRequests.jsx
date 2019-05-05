@@ -5,11 +5,9 @@ import TitleBarGridList from "../layout/List/GridList";
 import Paper from "../layout/paper/Paper";
 import Typography from '@material-ui/core/Typography';
 import Grid from "@material-ui/core/Grid";
-
 const styles = {
     header: {
         position: "sticky",
-        // eslint-disable-next-line no-dupe-keys
         textAlign: "center",
         paddingTop: 10,
         paddingBottom: 10,
@@ -21,7 +19,7 @@ const styles = {
         backgroundColor: "#034066"
       }
     }
-   
+  
 class investorRequests extends Component {
     constructor(props) {
         super(props);
