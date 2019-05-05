@@ -7,10 +7,10 @@ import Plx from "react-plx";
 const styles = {
   paperContainer: {
     backgroundImage: `url(${Image})`,
-    height: "auto",
+    height: "120vh",
     backgroundSize: "cover",
     backgroundPosition: "center",
-    margin: 0,
+    marginTop: 0,
     paddingTop: 0
   },
   header: {
@@ -69,7 +69,7 @@ class GetStarted extends Component {
                   style={{
                     color: "white",
                     textAlign: "center",
-                    "font-size": "150%",
+                    "font-size": "125%",
                     "font-weight":"bold",
                     backgroundColor: "#4488aa99"
                   }}
