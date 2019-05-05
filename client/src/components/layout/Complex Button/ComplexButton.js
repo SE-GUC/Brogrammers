@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import ButtonBase from '@material-ui/core/ButtonBase'
@@ -7,14 +7,14 @@ import InvestorImage from '../../Images/investorImage.jpg'
 import LawyerImage from '../../Images/lawyerImage.jpg'
 import ReviewerImage from '../../Images/reviewerImage.jpg'
 import AdminImage from '../../Images/adminImage.jpg'
-import { withRouter , Redirect } from 'react-router-dom'
 
 const styles = theme => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
     minWidth: 300,
-    width: '100%'
+    width: '100%',
+    marginTop:50
   },
   image: {
     position: 'relative',
@@ -114,55 +114,52 @@ function ButtonBases (props) {
   return (
     <div className={classes.root}>
 
-  
       {images.map(image => (
-  
-        <>
-        <br/>
-  <br/>
-  <br/>
-  <br/>
-        <ButtonBase
-          focusRipple
-          key={image.title}
-          className={classes.image}
-          focusVisibleClassName={classes.focusVisible}
-          style={{
-            width: image.width
-          }}
-         
-          onClick={() => { document.location.href = image.path }}
 
-        >
-          <span
-            className={classes.imageSrc}
+        <>
+          <br />
+          <br />
+          <br />
+          <br />
+          <ButtonBase
+            focusRipple
+            key={image.title}
+            className={classes.image}
+            focusVisibleClassName={classes.focusVisible}
             style={{
-              backgroundImage: `url(${image.url})`
+              width: image.width
             }}
-          />
-          <span className={classes.imageBackdrop} />
-          <span className={classes.imageButton}>
-            <Typography
-              component='span'
-              variant='subtitle1'
-              color='inherit'
-              className={classes.imageTitle}
-            >
-              {image.title}
-              <span className={classes.imageMarked} />
-            </Typography>
-          </span>
-        </ButtonBase>
- 
+
+            onClick={() => { document.location.href = image.path }}
+
+          >
+            <span
+              className={classes.imageSrc}
+              style={{
+                backgroundImage: `url(${image.url})`
+              }}
+            />
+            <span className={classes.imageBackdrop} />
+            <span className={classes.imageButton}>
+              <Typography
+                component='span'
+                variant='subtitle1'
+                color='inherit'
+                className={classes.imageTitle}
+              >
+                {image.title}
+                <span className={classes.imageMarked} />
+              </Typography>
+            </span>
+          </ButtonBase>
+
     </>
       )
-      
+
       )
-    
+
       }
-  
-  
-    
+
     </div>
   )
 }

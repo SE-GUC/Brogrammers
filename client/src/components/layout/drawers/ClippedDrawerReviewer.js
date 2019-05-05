@@ -2,47 +2,40 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import ReviewerCases from '../../pages/ReviewerCases'
 import ViewReviewerCasesbyID from '../../pages/ViewReviewerCasesbyID'
 import EditProfileReviewer from '../../pages/EditProfileReviewer'
-import ReviewerComment from '../../pages/ReviewerComment'
-import InvestorCompanyRegSPC from '../../pages/InvestorCompanyRegSPC'
 import Home from '@material-ui/icons/Home'
 import EditProfile from '@material-ui/icons/BorderColor'
 import ViewList from '@material-ui/icons/ViewList'
-import LinearDeterminate from '../loading/LinearDeterminate';
-import Navbar from '../Navbar';
+import LinearDeterminate from '../loading/CustomizedProgress';
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+
+import NavBar from '../Navbar';
 
 const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
-    display: "flex"
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1
+    display: "flex",
+    zIndex: -1,
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0
   },
   drawerPaper: {
-    width: drawerWidth
+    width: drawerWidth,
+    backgroundColor: "#103755"
   },
   content: {
-    flexGrow: 1,
-    padding: theme.spacing.unit * 3
+    flexGrow: 1
   },
   toolbar: theme.mixins.toolbar
 });
@@ -51,7 +44,9 @@ class ClippedDrawerReviewer  extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      clicked: "i"
+      clicked: "i",
+      mobileOpen: false,
+      drawerOpen: false
     };
   }
   handleLoading = () => {
@@ -72,8 +67,6 @@ class ClippedDrawerReviewer  extends React.Component {
         );
       case "profile":
         return <EditProfileReviewer token={sessionStorage.getItem("jwtToken")} />;
-      case "comment":
-        return <ReviewerComment/>;;
       default:
         return;
     }
@@ -99,20 +92,34 @@ class ClippedDrawerReviewer  extends React.Component {
 
   handleHome = () => {
     document.location.href = "/";
+
+    this.handleDrawerClose();
   };
   handleCases = () => {
     this.setState({ clicked: "cases" });
+    this.handleDrawerClose();
   };
   handleCases2 = () => {
     this.setState({ clicked: "myCases" });
+    this.handleDrawerClose();
   };
 
-  handleComment = () => {
-    this.setState({ clicked: "comment" });
-  };
 
   handleProfile = () => {
     this.setState({ clicked: "profile" });
+    this.handleDrawerClose();
+  };
+  handleDrawerToggle = () => {
+    this.setState(prevState => {
+      return { drawerOpen: !prevState.drawerOpen };
+    });
+  };
+  handleDrawerClose = () => {
+    this.setState({ drawerOpen: false });
+  };
+
+  handelOpen = () => {
+    this.setState({ mobileOpen: localStorage.getItem("openDrawer") });
   };
 
   render() {
@@ -121,15 +128,17 @@ class ClippedDrawerReviewer  extends React.Component {
     return (
       <div className={classes.root}>
         <CssBaseline />
+        <NavBar handleDrawerToggle={this.handleDrawerToggle} />
+        <div className={classes.toolbar} />
         <Drawer
           className={classes.drawer}
-          variant="permanent"
+          variant={"temporary"}
+          open={this.state.drawerOpen}
           classes={{
             paper: classes.drawerPaper
           }}
         >
-        <Navbar />
-          <div className={classes.toolbar} />
+          <ClickAwayListener onClickAway={this.handleDrawerClose}>
 
           <List>
             <ListItem button key={"Home"} onClick={this.handleHome}>
@@ -138,8 +147,10 @@ class ClippedDrawerReviewer  extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  sessionStorage.getItem("lang") === "en" ? "Home" : "صفحتي"
+                    <b style={{ color: "#ffffff" }}>
+                 { sessionStorage.getItem("lang") === "en" ? "Home" : "صفحتي"
                 }
+                </b>}
               />
             </ListItem>
             
@@ -154,15 +165,18 @@ class ClippedDrawerReviewer  extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  sessionStorage.getItem("lang") === "en"
+                    <b style={{ color: "#ffffff" }}>
+                {  sessionStorage.getItem("lang") === "en"
                     ? "View All Cases"
                     : "اعرض كل الشركات"
                 }
+                </b>}
               />
+              
             </ListItem>
             <ListItem
               button
-              key={"View My Companies"}
+              key={"View My Cases"}
               onClick={this.handleCases2}
             >
               <ListItemIcon>
@@ -170,10 +184,12 @@ class ClippedDrawerReviewer  extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  sessionStorage.getItem("lang") === "en"
-                    ? "View My Companies"
+                    <b style={{ color: "#ffffff" }}>
+                 { sessionStorage.getItem("lang") === "en"
+                    ? "View My Cases"
                     : "اظهر شركاتي"
                 }
+                </b>}
               />
             </ListItem>
           </List>
@@ -191,29 +207,17 @@ class ClippedDrawerReviewer  extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  sessionStorage.getItem("lang") === "en"
+                    <b style={{ color: "#ffffff" }}>
+                {  sessionStorage.getItem("lang") === "en"
                     ? "Edit Your Profile"
                     : "تغير البيانات"
                 }
+                </b>}
               />
             </ListItem>
-            <ListItem
-              button
-              key={"Comment on my companies"}
-              onClick={this.handleComment}
-            >
-              <ListItemIcon>
-                <EditProfile />
-              </ListItemIcon>
-              <ListItemText
-                primary={
-                  sessionStorage.getItem("lang") === "en"
-                    ? "Comment on Company"
-                    : " علق علي شركاتي"
-                }
-              />
-            </ListItem>
+           
           </List>
+          </ClickAwayListener>
         </Drawer>
         <main className={classes.content} style={{ marginTop: 50 }}>
           {this.handleLoading}

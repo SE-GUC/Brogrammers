@@ -7,20 +7,17 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import ChooseType from "../pages/ChooseType";
-import { Paper } from "@material-ui/core";
+import { Paper, Grid } from "@material-ui/core";
 import PostForm from "../pages/postForm";
 
 const styles = theme => ({
   root: {
-    width: 'auto',
-    display: 'block',
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
-    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: 700,
-      marginLeft: 'auto',
-      marginRight: 'auto'
-    }
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent:'center',
+    marginLeft: theme.spacing.unit * 1,
+    marginRight: theme.spacing.unit * 1,
+   
   },
   paper: {
     marginTop: theme.spacing.unit * 8,
@@ -90,7 +87,8 @@ handleButtons=()=>{
 
     return (
       <div className={classes.root}>
-        <Paper className={classes.paper} elevation={16}>
+      <Grid item xs={12} lg={6}>
+             <Paper className={classes.paper} elevation={16}>
           <Stepper activeStep={activeStep} alternativeLabel>
             {steps.map(label => (
               <Step key={label}>
@@ -130,7 +128,9 @@ handleButtons=()=>{
             )}
           </div>
         </Paper>
+      </Grid>
       </div>
+      
     );
   }
 }

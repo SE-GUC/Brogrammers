@@ -27,7 +27,6 @@ import SignIn from './components/signin/Signin'
 import ComplexButton from './components/layout/Complex Button/ComplexButton'
 import ViewLawyerCasesbyID from './components/pages/ViewLawyerCasesbyID.js'
 import ViewReviewerCasesbyID from './components/pages/ViewReviewerCasesbyID'
-import ViewApprovedCompanies from './components/pages/ViewApprovedCompanies'
 import ViewLawyerEditableCases from './components/pages/ViewLawyerEditableCases'
 import AdminProfile from './components/pages/AdminProfile'
 import LawyerProfile from './components/pages/LawyerProfile'
@@ -36,12 +35,13 @@ import InvestorProfile from './components/pages/InvestorProfile'
 import LawyerCompanyRegSSC from './components/pages/LawyerCompanyRegSSC'
 import LawyerCompanyRegSPC from './components/pages/LawyerCompanyRegSPC'
 import ViewCompanies from './components/pages/ViewCompanies'
-import LinearDeterminate from './components/layout/loading/LinearDeterminate'
-import Slideshow from './components/slideshow/Slideshow'
+import LinearDeterminate from './components/layout/loading/CustomizedProgress'
 import SearchCases from './components/pages/searchCases'
 import PaperFooter from './components/layout/paper/PaperFooter'
-import UploadImage from './components/pages/uploadImage'
-
+import Home from './components/pages/Home'
+import PleaseActivate from './components/pages/PleaseActivate'
+import Activate from './components/pages/Activate'
+import GetStarted from './components/pages/GetStarted'
 class App extends Component {
   constructor(props) {
     super(props)
@@ -56,7 +56,7 @@ class App extends Component {
       token: null,
       auth: false,
       type: '',
-      loading: false,
+      loading: false
     }
   }
 
@@ -82,18 +82,22 @@ class App extends Component {
     }
   }
 
-  handleLang = (a) =>{
+  handleLang = a => {
     sessionStorage.setItem('lang', a)
+    sessionStorage.setItem('block',"in")
   }
 
   render() {
+    if(!sessionStorage.getItem("block")){
+      sessionStorage.setItem('lang','en')
+    }
     console.log(sessionStorage.getItem('lang'))
     console.log(sessionStorage.getItem('auth'))
     // in the Navbar for the logout try to pass the auth and then render
     return (
       <Router>
         <React.Fragment>
-          <Navbar style={{zIndex:500}}/>
+          <Navbar style={{ zIndex: 500 }} />
           {this.handleLoading(this.state)}
           <Route
             exact
@@ -104,18 +108,15 @@ class App extends Component {
               </div>
             )}
           />
-          <div style={this.state.display}>
-            <Route
-              exact
-              path="/"
-              render={props => (
-                <div>
-                  <Slideshow />
-                  <ViewApprovedCompanies />{' '}
-                </div>
-              )}
-            />{' '}
-          </div>
+          <Route
+            exact
+            path="/getStarted"
+            render={props => (
+              <div>
+                <GetStarted />
+              </div>
+            )}
+          />
           <Route exact path="/pay" render={props => <TakeMoney />} />{' '}
           <Route
             exact
@@ -127,29 +128,35 @@ class App extends Component {
             path="/admin/register-lawyer"
             component={() =>
               sessionStorage.getItem('auth') &&
-                sessionStorage.getItem('type') == 'a' ? (
-                  <RegisterLawyer
-                    callBack={this.setToken}
-                    token={sessionStorage.getItem('jwtToken')}
-                  />
-                ) : (
-                  <LawyerSignIn />
-                )
+              sessionStorage.getItem('type') === 'a' ? (
+                <RegisterLawyer
+                  callBack={this.setToken}
+                  token={sessionStorage.getItem('jwtToken')}
+                />
+              ) : (
+                <LawyerSignIn />
+              )
             }
           />
+          <Route
+            exact
+            path="/PleaseActivate"
+            component={() => <PleaseActivate />}
+          />
+          <Route exact path="/activate/:id" component={Activate} />
           <Route
             exact
             path="/admin/register-reviewer"
             component={() =>
               sessionStorage.getItem('auth') &&
-                sessionStorage.getItem('type') == 'a' ? (
-                  <RegisterReviewer
-                    callBack={this.setToken}
-                    token={sessionStorage.getItem('jwtToken')}
-                  />
-                ) : (
-                  <ReviewerSignIn />
-                )
+              sessionStorage.getItem('type') === 'a' ? (
+                <RegisterReviewer
+                  callBack={this.setToken}
+                  token={sessionStorage.getItem('jwtToken')}
+                />
+              ) : (
+                <ReviewerSignIn />
+              )
             }
           />
           <Route
@@ -162,30 +169,29 @@ class App extends Component {
             path="/admin/register-lawyer"
             component={() =>
               sessionStorage.getItem('auth') &&
-                sessionStorage.getItem('type') == 'a' ? (
-                  <RegisterLawyer
-                    callBack={this.setToken}
-                    token={sessionStorage.getItem('jwtToken')}
-                  />
-                ) : (
-                  <AdminSignIn callBack={this.setToken} />
-                )
+              sessionStorage.getItem('type') === 'a' ? (
+                <RegisterLawyer
+                  callBack={this.setToken}
+                  token={sessionStorage.getItem('jwtToken')}
+                />
+              ) : (
+                <AdminSignIn callBack={this.setToken} />
+              )
             }
           />{' '}
-          
           <Route
             exact
             path="/admin/register-reviewer"
             component={() =>
               sessionStorage.getItem('auth') &&
-                sessionStorage.getItem('type') == 'a' ? (
-                  <RegisterReviewer
-                    callBack={this.setToken}
-                    token={sessionStorage.getItem('jwtToken')}
-                  />
-                ) : (
-                  <AdminSignIn callBack={this.setToken} />
-                )
+              sessionStorage.getItem('type') === 'a' ? (
+                <RegisterReviewer
+                  callBack={this.setToken}
+                  token={sessionStorage.getItem('jwtToken')}
+                />
+              ) : (
+                <AdminSignIn callBack={this.setToken} />
+              )
             }
           />{' '}
           <Route
@@ -193,14 +199,14 @@ class App extends Component {
             path="/admin/register-admin"
             component={() =>
               sessionStorage.getItem('auth') &&
-                sessionStorage.getItem('type') == 'a' ? (
-                  <RegisterAdmin
-                    callBack={this.setToken}
-                    token={sessionStorage.getItem('jwtToken')}
-                  />
-                ) : (
-                  <AdminSignIn callBack={this.setToken} />
-                )
+              sessionStorage.getItem('type') === 'a' ? (
+                <RegisterAdmin
+                  callBack={this.setToken}
+                  token={sessionStorage.getItem('jwtToken')}
+                />
+              ) : (
+                <AdminSignIn callBack={this.setToken} />
+              )
             }
           />{' '}
           {/* <Route exact path="/admin/register-admin" render={props => (<RegisterAdmin callBack={this.setToken}/>)} /> */}{' '}
@@ -215,13 +221,13 @@ class App extends Component {
             )}
             component={() =>
               sessionStorage.getItem('auth') &&
-                sessionStorage.getItem('type') == 'i' ? (
-                  <EditProfileInvestor
-                    token={sessionStorage.getItem('jwtToken')}
-                  />
-                ) : (
-                  <SignIn />
-                )
+              sessionStorage.getItem('type') === 'i' ? (
+                <EditProfileInvestor
+                  token={sessionStorage.getItem('jwtToken')}
+                />
+              ) : (
+                <SignIn />
+              )
             }
           />{' '}
           <Route
@@ -229,11 +235,11 @@ class App extends Component {
             path="/editprofile/admin"
             component={() =>
               sessionStorage.getItem('auth') &&
-                sessionStorage.getItem('type') == 'a' ? (
-                  <EditProfileAdmin token={sessionStorage.getItem('jwtToken')} />
-                ) : (
-                  <AdminSignIn />
-                )
+              sessionStorage.getItem('type') === 'a' ? (
+                <EditProfileAdmin token={sessionStorage.getItem('jwtToken')} />
+              ) : (
+                <AdminSignIn />
+              )
             }
           />{' '}
           <Route
@@ -241,11 +247,11 @@ class App extends Component {
             path="/editprofile/lawyer"
             component={() =>
               sessionStorage.getItem('auth') &&
-                sessionStorage.getItem('type') == 'l' ? (
-                  <EditProfileLawyer token={sessionStorage.getItem('jwtToken')} />
-                ) : (
-                  <LawyerSignIn />
-                )
+              sessionStorage.getItem('type') === 'l' ? (
+                <EditProfileLawyer token={sessionStorage.getItem('jwtToken')} />
+              ) : (
+                <LawyerSignIn />
+              )
             }
           />{' '}
           <Route
@@ -253,11 +259,11 @@ class App extends Component {
             path="/addcomment/lawyer"
             component={() =>
               sessionStorage.getItem('auth') &&
-                sessionStorage.getItem('type') == 'l' ? (
-                  <LawyerComment token={sessionStorage.getItem('jwtToken')} />
-                ) : (
-                  <LawyerSignIn />
-                )
+              sessionStorage.getItem('type') === 'l' ? (
+                <LawyerComment token={sessionStorage.getItem('jwtToken')} />
+              ) : (
+                <LawyerSignIn />
+              )
             }
           />{' '}
           <Route
@@ -265,11 +271,11 @@ class App extends Component {
             path="/addcomment/reviewer"
             component={() =>
               sessionStorage.getItem('auth') &&
-                sessionStorage.getItem('type') == 'r' ? (
-                  <ReviewerComment token={sessionStorage.getItem('jwtToken')} />
-                ) : (
-                  <ReviewerSignIn />
-                )
+              sessionStorage.getItem('type') === 'r' ? (
+                <ReviewerComment token={sessionStorage.getItem('jwtToken')} />
+              ) : (
+                <ReviewerSignIn />
+              )
             }
           />{' '}
           <Route
@@ -277,28 +283,16 @@ class App extends Component {
             path="/editprofile/reviewer"
             component={() =>
               sessionStorage.getItem('auth') &&
-                sessionStorage.getItem('type') == 'r' ? (
-                  <EditProfileReviewer
-                    token={sessionStorage.getItem('jwtToken')}
-                  />
-                ) : (
-                  <ReviewerSignIn />
-                )
-            }
-          />{' '}
-            <Route
-            exact
-            path="/uploadImage"
-            component={() =>
-             // sessionStorage.getItem('auth') &&
-             // sessionStorage.getItem('type') == 'a' ? (
-                <UploadImage
+              sessionStorage.getItem('type') === 'r' ? (
+                <EditProfileReviewer
+                  token={sessionStorage.getItem('jwtToken')}
                 />
-             // ) : (
-             //   <AdminSignIn />
-             // )
+              ) : (
+                <ReviewerSignIn />
+              )
             }
           />{' '}
+        
           <Route
             exact
             path="/InvestorSSCForm"
@@ -336,14 +330,14 @@ class App extends Component {
             path="/lawyer/view-lawyer-cases-by-id"
             component={() =>
               sessionStorage.getItem('auth') &&
-                sessionStorage.getItem('type') == 'l' ? (
-                  <ViewLawyerCasesbyID
-                    id={sessionStorage.getItem('id')}
-                    token={sessionStorage.getItem('jwtToken')}
-                  />
-                ) : (
-                  <LawyerSignIn />
-                )
+              sessionStorage.getItem('type') === 'l' ? (
+                <ViewLawyerCasesbyID
+                  id={sessionStorage.getItem('id')}
+                  token={sessionStorage.getItem('jwtToken')}
+                />
+              ) : (
+                <LawyerSignIn />
+              )
             }
           />{' '}
           <Route
@@ -351,14 +345,14 @@ class App extends Component {
             path="/reviewer/view-reviewer-cases-by-id"
             component={() =>
               sessionStorage.getItem('auth') &&
-                sessionStorage.getItem('type') == 'r' ? (
-                  <ViewReviewerCasesbyID
-                    id={sessionStorage.getItem('id')}
-                    token={sessionStorage.getItem('jwtToken')}
-                  />
-                ) : (
-                  <ReviewerSignIn />
-                )
+              sessionStorage.getItem('type') === 'r' ? (
+                <ViewReviewerCasesbyID
+                  id={sessionStorage.getItem('id')}
+                  token={sessionStorage.getItem('jwtToken')}
+                />
+              ) : (
+                <ReviewerSignIn />
+              )
             }
           />{' '}
           <Route
@@ -366,14 +360,14 @@ class App extends Component {
             path="/investors/MyRequests/all"
             component={() =>
               sessionStorage.getItem('auth') &&
-                sessionStorage.getItem('type') == 'i' ? (
-                  <InvestorRequests
-                    id={sessionStorage.getItem('id')}
-                    token={sessionStorage.getItem('jwtToken')}
-                  />
-                ) : (
-                  <SignIn />
-                )
+              sessionStorage.getItem('type') === 'i' ? (
+                <InvestorRequests
+                  id={sessionStorage.getItem('id')}
+                  token={sessionStorage.getItem('jwtToken')}
+                />
+              ) : (
+                <SignIn />
+              )
             }
           />
           <div>
@@ -385,7 +379,7 @@ class App extends Component {
             <Route
               exact
               path="/Lawyerlogin"
-              render={props => <LawyerSignIn callBack={this.setToken} />}
+              render={() => <LawyerSignIn callBack={this.setToken} />}
             />
             <Route
               exact
@@ -402,26 +396,26 @@ class App extends Component {
               path="/LawyerEditableCases"
               component={() =>
                 sessionStorage.getItem('auth') &&
-                  sessionStorage.getItem('type') == 'l' ? (
-                    <ViewLawyerEditableCases
-                      id={sessionStorage.getItem('id')}
-                      ssn={sessionStorage.getItem('ssn')}
-                      token={sessionStorage.getItem('jwtToken')}
-                    />
-                  ) : (
-                    <LawyerSignIn callBack={this.setToken} />
-                  )
+                sessionStorage.getItem('type') === 'l' ? (
+                  <ViewLawyerEditableCases
+                    id={sessionStorage.getItem('id')}
+                    ssn={sessionStorage.getItem('ssn')}
+                    token={sessionStorage.getItem('jwtToken')}
+                  />
+                ) : (
+                  <LawyerSignIn callBack={this.setToken} />
+                )
               }
             />
             <Route
               exact
               path="/LawyerCases"
               render={() =>
-                sessionStorage.getItem('type') == 'l' ? (
+                sessionStorage.getItem('type') === 'l' ? (
                   <LawyerCases token={sessionStorage.getItem('jwtToken')} />
                 ) : (
-                    <SignIn />
-                  )
+                  <SignIn />
+                )
               }
             />
             {/* Waiting for Login token  */}{' '}
@@ -429,22 +423,22 @@ class App extends Component {
               exact
               path="/ReviewerCases"
               render={() =>
-                sessionStorage.getItem('type') == 'r' ? (
+                sessionStorage.getItem('type') === 'r' ? (
                   <ReviewerCases token={sessionStorage.getItem('jwtToken')} />
                 ) : (
-                    <SignIn />
-                  )
+                  <SignIn />
+                )
               }
             />
             <Route
               exact
               path="/AdminCases"
               render={() =>
-                sessionStorage.getItem('type') == 'a' ? (
+                sessionStorage.getItem('type') === 'a' ? (
                   <AdminCases token={sessionStorage.getItem('jwtToken')} />
                 ) : (
-                    <SignIn />
-                  )
+                  <SignIn />
+                )
               }
             />
             <Route
@@ -452,44 +446,45 @@ class App extends Component {
               path="/ViewCompanies"
               component={() =>
                 sessionStorage.getItem('auth') &&
-                  sessionStorage.getItem('type') === 'i' ? (
-                    <ViewCompanies token={sessionStorage.getItem('jwtToken')} />
-                  ) : (
-                    <SignIn />
-                  )
+                sessionStorage.getItem('type') === 'i' ? (
+                  <ViewCompanies token={sessionStorage.getItem('jwtToken')} />
+                ) : (
+                  <SignIn />
+                )
               }
             />
-
             <Route
               exact
               path="/searchCases/:search"
               component={props => <SearchCases {...props} />}
             />
+            <Route exact path="/" render={() => <Home />} />
             <Route
               exact
               path="/profile"
               component={() => {
                 if (
                   sessionStorage.getItem('auth') &&
-                  sessionStorage.getItem('type') == 'a'
+                  sessionStorage.getItem('type') === 'a'
                 ) {
                   return <AdminProfile />
                 } else {
                   if (
                     sessionStorage.getItem('auth') &&
-                    sessionStorage.getItem('type') == 'i'
+                    sessionStorage.getItem('type') === 'i'
                   ) {
+                    console.log('in investor profile')
                     return <InvestorProfile />
                   } else {
                     if (
                       sessionStorage.getItem('auth') &&
-                      sessionStorage.getItem('type') == 'r'
+                      sessionStorage.getItem('type') === 'r'
                     ) {
                       return <ReviewerProfile />
                     } else {
                       if (
                         sessionStorage.getItem('auth') &&
-                        sessionStorage.getItem('type') == 'l'
+                        sessionStorage.getItem('type') === 'l'
                       ) {
                         return <LawyerProfile />
                       } else {
@@ -500,8 +495,11 @@ class App extends Component {
                 }
               }}
             />{' '}
+            <PaperFooter
+              style={{ marginBottom: 0 }}
+              callBack={this.handleLang}
+            />
           </div>{' '}
-          <PaperFooter callBack={this.handleLang}/>
         </React.Fragment>{' '}
       </Router>
     )

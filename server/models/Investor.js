@@ -48,6 +48,10 @@ const InvestorSchema = new Schema({
   password: {
     type: String,
     required: true
+  },
+  acctivated:{
+    type:Boolean,
+    default:false
   }
 
 })

@@ -28,6 +28,13 @@ router.get("/getall/cases", async (req, res) => {
   }
 });
 
+router.get("/activate/:id",async(req,res) => {
+  const id = req.params.id;
+  await Investor.findByIdAndUpdate(id, {acctivated:true});
+  res.json({ msg: "Account activated"});
+})
+
+
 // View All Investors
 router.get("/", async (req, res) => {
   var token = req.headers["x-access-token"];
@@ -511,12 +518,8 @@ router.post('/register', async (req, res) => {
     password: hashedPassword
   });
   const newInvestor = await Investor.create(newInv);
-  token = jwt.sign({ id: newInvestor._id }, config.secret, {
-    expiresIn: 86400 // expires in 24 hours
-  });
   res.status(200).send({
     auth: true,
-    token: token,
     msg: "Investor was created successfully",
     data: newInvestor
   });
@@ -532,14 +535,14 @@ router.post('/register', async (req, res) => {
       rejectUnauthorized: false
     }
   });
-
+  var link="http://clientbrogrammer.herokuapp.com/activate/"+newInvestor.id
   // send mail with defined transport object
   let info = {
     from: '"GAFI"', // sender address
     to: newInvestor.mail, // list of receivers
     subject: "Your account was created succefully ✔", // Subject line
     text: "Thank you for registering in GAFIs online portal", // plain text body
-    html: "<b>Thank you for registering in GAFIs online portal</b>" // html body
+    html: "<b>Dear "+newInvestor.name+"</b><br/><b>Thank you for registering in GAFIs online portal, To activate your account please press on the link</b> <br/><a href="+link+">Activate</a>" // html body
   };
   transporter.sendMail(info, (error, info) => {
     if (error) {
@@ -549,6 +552,8 @@ router.post('/register', async (req, res) => {
   });
   res.json({ msg: "Investor was created successfully", data: newInvestor });
 });
+
+
 
 router.put("/:id", async (req, res) => {
   try {
@@ -641,7 +646,8 @@ router.get("/View/ViewCompanies", async (req, res) => {
     const investor = await Investor.findById(stat);
     const investorNatID = investor.idNumber;
     const arrayOfCompanies = await Company.find({
-      investorIdentificationNumber: investorNatID
+      investorIdentificationNumber: investorNatID,
+      status:"Accepted"
     });
     res.json({ msg: "Your Companies ", data: arrayOfCompanies });
   } catch (error) {
@@ -1303,8 +1309,18 @@ router.post('/login', function (req, res) {
         .status(401)
         .send({ auth: false, message: 'No user found.' })
     }
+    if(user.acctivated==false){
+      return res
+      .status(401)
+      .send({ auth: false, message: 'Please activate your account.'})
+    }
     
     const loginPassword = req.body.password
+    if(!loginPassword){
+      return res
+      .status(401)
+      .send({ auth: false, message: 'Please enter pass.'})
+    }
     const userPassword = user.password
     const match = bcrypt.compareSync(loginPassword, userPassword)
     // var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
@@ -1424,7 +1440,7 @@ var data = []
 for(var i = 0 ; i<collection.length ; i++)
 { console.log("I am in")
   for(var k = 0 ; k<collection[i].location.length ; k++ )
-  { if(counter>=index*4  )
+  { if(counter>=index*6  )
     {
     var company = await Company.findById({_id :collection[i].location[k]})
     data.push(company)
@@ -1433,8 +1449,8 @@ for(var i = 0 ; i<collection.length ; i++)
     console.log(counter)
     counter++
     
-    console.log(index*4+4)
-    if(counter>=(index*4+4))
+    console.log(index*6+6)
+    if(counter>=(index*6+6))
     {
       breakFlag = 1;
       break;
@@ -1483,7 +1499,7 @@ console.log(Company.discriminators)
 router.post('/stripe/:companyid', async function (req, res) {
 
   const token = req.body.stripeToken; // Using Express
-  const id = req.params.companyId
+  const id = req.params.companyid
 stripe.charges.create({
     amount: req.body.amount,
     currency: 'egp',
@@ -1497,62 +1513,18 @@ stripe.charges.create({
         message:err
       })
     } else{
+     
+      
+       await Company.findByIdAndUpdate(id,{status:"Accepted"})
+       const company2=await Company.findById(id)
+       console.log(company2.status+" looooooooooooooooooooool")
+     
       res.send({
         sucess:true,
         message:'nice'
       })
-       const company = await Company.findByIdAndUpdate(id,{status:"Accepted"})
-       
-      var regulationLaw = company.regulationLaw
-      var legalCompanyForm = company.legalCompanyForm
-      var nameInArabic = company.nameInArabic
-      var nameInEnglish = company.nameInEnglish
-      var governerateHQ = company.governerateHQ
-      var cityHQ = company.cityHQ
-      var addressHQ = company.addressHQ
-      var telephoneHQ = company.telephoneHQ
-      var faxHQ = company.faxHQ
-      var capitalCurrency = company.capitalCurrency
-      var capital = company.capital
-      var managers = company.managers
-      var investorName = company.investorName
-      var investorType = company.investorType
-      var investorSex = company.investorSex
-      var investorNationality = company.investorNationality
-      var investorIdentificationType = company.investorIdentificationType
-      var investorIdentificationNumber = company.investorIdentificationNumber
-      var investorBD = company.investorBD
-      var investorAddress = company.investorAddress
-      var investorTelephone = company.investorTelephone
-      var investorFax = company.investorFax
-      var investorEmail = company.investorEmail
 
-       var final = new CompanyFinal( 
-       
-        regulationLaw,
-        legalCompanyForm,
-        nameInArabic,
-        nameInEnglish,
-        governerateHQ,
-        cityHQ,
-        addressHQ,
-        telephoneHQ,
-        faxHQ,
-        capitalCurrency,
-        capital,
-        managers,
-        investorName,
-        investorType,
-        investorSex,
-        investorNationality,
-        investorIdentificationType,
-        investorIdentificationNumber,
-        investorBD,
-        investorAddress,
-        investorTelephone,
-        investorFax,
-        investorEmail)
-        await CompanyFinal.create(final)
+
 
        
 

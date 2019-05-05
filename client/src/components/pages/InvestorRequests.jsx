@@ -1,12 +1,24 @@
 import React, { Component } from "react";
-import LinearDeterminate from "../layout/loading/LinearDeterminate"
+import LinearDeterminate from "../layout/loading/CustomizedProgress"
 import Snackbar from "../layout/snackbar/Snackbar"
 import TitleBarGridList from "../layout/List/GridList";
-import Paper from "../layout/paper/Paper";
-import Typography from '@material-ui/core/Typography';
 import Grid from "@material-ui/core/Grid";
-
-
+const styles = {
+    header: {
+        
+        position: "sticky",
+        textAlign: "center",
+        paddingTop: 10,
+        paddingBottom: 10,
+        marginBottom:5,
+        marginTop: "0px",
+        color: "white",
+        top: "55px",
+        zIndex: 13,
+        backgroundColor: "#034066"
+      }
+    }
+  
 class investorRequests extends Component {
     constructor(props) {
         super(props);
@@ -21,34 +33,63 @@ class investorRequests extends Component {
         this.handleReq = this.handleReq.bind(this)
         this.handleReq2 = this.handleReq2.bind(this)
     }
+
     handleReq = () => {
         if (this.state.requests) {
             return (<div>
-                <Paper title={this.state.requests.investorName} elevation={1} />
-                <Grid >
-                    <TitleBarGridList data={this.state.requests} token={this.props.token} />
+
+                <Grid item xs={12} lg={12} style={styles.header}>
+                    <h2>
+                        {sessionStorage.getItem("lang") === "ar"
+                            ? "طلباتي"
+                            : "My Requests"}{" "}
+                    </h2>
                 </Grid>
+
+                <TitleBarGridList data={this.state.requests} token={this.props.token} />
+
             </div>)
         }
         else {
-            return <Snackbar variant='error' warning={sessionStorage.getItem('lang') === 'en' ? 'You Dont have any requests' : 'يوجد خطء'}/>
+
+            return <>
+
+                <Grid item xs={12} lg={12} style={styles.header}>
+                    <h2>
+                        {sessionStorage.getItem("lang") === "ar"
+                            ? "طلباتي"
+                            : "My Requests"}{" "}
+                    </h2>
+                </Grid>
+                <Snackbar variant='error' message={sessionStorage.getItem('lang') === 'en' ? 'You Dont have any requests' : 'يوجد خطء'} />
+            </>
         }
     }
     handleReq2 = () => {
         if (this.state.requests) {
             if (this.state.requests.length === 0) {
-                return <Snackbar variant='warning' message={sessionStorage.getItem('lang') === 'en' ? 'There Are No Requests' : 'ليس هناك طلباط'} />
+
+                return (
+                    <>
+
+                        <Snackbar variant='warning' message={sessionStorage.getItem('lang') === 'en' ? 'There Are No Requests' : 'ليس هناك طلباط'} />
+                    </>
+                )
             }
         }
         else {
-            return <Snackbar variant='error' message={sessionStorage.getItem('lang') === 'en' ? 'Something Went Wrong' : 'يوجد خطء'}/>
+            return (
+                <>
+
+                    <Snackbar variant='error' message={sessionStorage.getItem('lang') === 'en' ? 'Something Went Wrong' : 'يوجد خطء'} />
+                </>)
         }
     }
     handleRequests() {
         console.log(this.props.token)
         this.setState({ isLoading: true })
         sessionStorage.setItem("loading", true)
-        fetch('http://localhost:3000/api/investors/MyRequests/all', {
+        fetch('https://serverbrogrammers.herokuapp.com/api/investors/MyRequests/all', {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -76,7 +117,20 @@ class investorRequests extends Component {
 
 
         if (this.state.isLoading) {
-            return <LinearDeterminate />
+
+            return (
+                <>
+                    <Grid item xs={12} lg={12} style={styles.header}>
+                        <h2>
+                            {sessionStorage.getItem("lang") === "ar"
+                                ? "طلباتي"
+                                : "My Requests"}{" "}
+                        </h2>
+                    </Grid>
+                    <LinearDeterminate style={{marginTop:5}} />
+
+                </>
+            )
         }
         if (this.state.error) {
             return <Snackbar variant='error' message={this.state.error} />

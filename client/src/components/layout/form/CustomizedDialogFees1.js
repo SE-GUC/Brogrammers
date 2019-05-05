@@ -82,7 +82,7 @@ class CustomizedDialogFees1 extends React.Component {
 
   handleViewFees = () => {
     let x = 0;
-    fetch("http://localhost:3000/api/lawyer/" + this.props.id + "/viewFees", {
+    fetch("https://serverbrogrammers.herokuapp.com/api/lawyer/" + this.props.id + "/viewFees", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

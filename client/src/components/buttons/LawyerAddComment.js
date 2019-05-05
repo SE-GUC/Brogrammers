@@ -1,6 +1,4 @@
 import React,{Component} from 'react'
-import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import NotRequired from '../layout/inputs/NotRequired'
 
@@ -20,7 +18,7 @@ addComment()
 {
   let updatedData = this.state.company;
   this.clean(updatedData);
-  fetch(`http://localhost:3000/api/lawyer/addcomment/${this.props.compid}`, {
+  fetch(`https://serverbrogrammers.herokuapp.com/api/lawyer/addcomment/${this.props.compid}`, {
     method: "PUT",
     body: JSON.stringify(updatedData),
     headers: {

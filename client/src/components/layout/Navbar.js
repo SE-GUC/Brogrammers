@@ -5,7 +5,6 @@ import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import InputBase from '@material-ui/core/InputBase'
-import Badge from '@material-ui/core/Badge'
 import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
 import { fade } from '@material-ui/core/styles/colorManipulator'
@@ -13,14 +12,9 @@ import { withStyles } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu'
 import SearchIcon from '@material-ui/icons/Search'
 import AccountCircle from '@material-ui/icons/AccountCircle'
-import MailIcon from '@material-ui/icons/Mail'
-import NotificationsIcon from '@material-ui/icons/Notifications'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import Tab from '@material-ui/core/Tab'
-import red from '@material-ui/core/colors/red'
-import blue from '@material-ui/core/colors/blue'
 import SvgIcon from '@material-ui/core/SvgIcon'
-import searchCases from '../pages/searchCases';
 
 function HomeIcon(props) {
   return (
@@ -31,6 +25,15 @@ function HomeIcon(props) {
 }
 
 const styles = theme => ({
+  appBar: {
+    height: theme.spacing.unit * 8,
+    '-moz-transition': 'height .4s linear',
+    '-webkit-transition': 'height .4s linear',
+    transition: 'height .4s linear',
+    '&:hover': {
+      height: theme.spacing.unit * 16
+    }
+  },
   root: {
     width: '100%',
     top: 0,
@@ -69,7 +72,7 @@ const styles = theme => ({
     width: theme.spacing.unit * 9,
     height: '100%',
     position: 'absolute',
-    pointerEvents: 'none',
+    // pointerEvents: "none",
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
@@ -110,7 +113,8 @@ class PrimarySearchAppBar extends React.Component {
       anchorEl: null,
       mobileMoreAnchorEl: null,
       auth: false,
-      searchText:""
+      searchText: '',
+      mob: false
     }
   }
   handleProfileMenuOpen = event => {
@@ -130,7 +134,11 @@ class PrimarySearchAppBar extends React.Component {
     //   this.props.callBack(null, false,"", null)
     this.setState({ mobileMoreAnchorEl: null, auth: this.props.auth })
   }
-
+  hadnleOpenDrawer = () => {
+    this.setState({ mob: !this.state.mob })
+    localStorage.setItem('openDrawer', this.state.mob)
+    console.log(localStorage.getItem('openDrawer'))
+  }
   handleSignOut = () => {
     sessionStorage.setItem('auth', false)
     sessionStorage.setItem('jwtToken', null)
@@ -139,7 +147,7 @@ class PrimarySearchAppBar extends React.Component {
     this.state.auth = false
     this.forceUpdate()
     this.handleMenuClose()
-    
+    document.location.href = '/'
   }
 
   handleProfile = () => {
@@ -157,11 +165,21 @@ class PrimarySearchAppBar extends React.Component {
   handleHome = () => {
     document.location.href = '/'
   }
-  handleInput =(e) =>{
-    this.setState({searchText: e.target.value})
+  handleInput = e => {
+    this.setState({ searchText: e.target.value })
   }
   handleSearch = () => {
-    document.location.href = `/searchCases/${this.state.searchText}`
+    if (Boolean(this.state.searchText)) {
+      document.location.href = `/searchCases/${this.state.searchText}`
+    }
+  }
+
+  enterPressed(event) {
+    var code = event.keyCode || event.which
+    if (code === 13) {
+      //the value of enterkey is 13
+      this.handleSearch()
+    }
   }
 
   render() {
@@ -193,22 +211,6 @@ class PrimarySearchAppBar extends React.Component {
           open={isMobileMenuOpen}
           onClose={this.handleMenuClose}
         >
-          <MenuItem onClick={this.handleMobileMenuClose}>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <p>Messages</p>
-          </MenuItem>
-          <MenuItem onClick={this.handleMobileMenuClose}>
-            <IconButton color="inherit">
-              <Badge badgeContent={11} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <p>Notifications</p>
-          </MenuItem>
           <MenuItem onClick={this.handleProfileMenuOpen}>
             <IconButton color="inherit">
               <AccountCircle />
@@ -223,28 +225,29 @@ class PrimarySearchAppBar extends React.Component {
     }
     console.log(sessionStorage.getItem('type') + 'you see')
     const hidei =
-      sessionStorage.getItem('type') == 'i' ||
-      sessionStorage.getItem('type') == 'r' ||
-      sessionStorage.getItem('type') == 'a' ||
-      sessionStorage.getItem('type') == 'l'
+      sessionStorage.getItem('type') === 'i' ||
+      sessionStorage.getItem('type') === 'r' ||
+      sessionStorage.getItem('type') === 'a' ||
+      sessionStorage.getItem('type') === 'l'
         ? {}
         : { display: 'none' }
 
     const hiden =
-      sessionStorage.getItem('type') == 'i' ||
-      sessionStorage.getItem('type') == 'r' ||
-      sessionStorage.getItem('type') == 'a' ||
-      sessionStorage.getItem('type') == 'l'
+      sessionStorage.getItem('type') === 'i' ||
+      sessionStorage.getItem('type') === 'r' ||
+      sessionStorage.getItem('type') === 'a' ||
+      sessionStorage.getItem('type') === 'l'
         ? { display: 'none' }
         : {}
     return (
       <div className={classes.root}>
-        <AppBar position="static" style={{ backgroundColor: '#000000' }} className={classes.root}>
+        <AppBar style={{ backgroundColor: '#034066' }} className={classes.root}>
           <Toolbar>
             <IconButton
               className={classes.menuButton}
               color="inherit"
               aria-label="Open drawer"
+              onClick={this.props.handleDrawerToggle}
             >
               <MenuIcon />
             </IconButton>
@@ -256,40 +259,28 @@ class PrimarySearchAppBar extends React.Component {
             >
               GAFI
             </Typography>
-            
 
-            <Tab label="Search" onClick={this.handleSearch}  />
-            
             <div className={classes.search}>
               <div className={classes.searchIcon}>
-                <SearchIcon />
+                <IconButton color="inherit" onClick={this.handleSearch}>
+                  <SearchIcon />
+                </IconButton>
               </div>
               <InputBase
-                placeholder="Search…"
+                placeholder={sessionStorage.getItem('lang') === 'en' ?"Search…":"...ابحث"}
                 classes={{
                   root: classes.inputRoot,
-                  input: classes.inputInput,
+                  input: classes.inputInput
                 }}
-                onChange = {this.handleInput}
+                onChange={this.handleInput}
+                onKeyPress={this.enterPressed.bind(this)}
               />
             </div>
 
-
-            <Tab label="Sign in" onClick={this.handleSignIn} style={hiden} />
-            <Tab label="Sign up" onClick={this.handleSignUp} style={hiden} />
+            <Tab label={sessionStorage.getItem('lang') === 'en' ?"Sign in":"تسجيل الدخول"} onClick={this.handleSignIn} style={hiden} />
+            <Tab label={sessionStorage.getItem('lang') === 'en' ?"Sign up":"تسجيل"} onClick={this.handleSignUp} style={hiden} />
             <div className={classes.grow} />
             <div className={classes.sectionDesktop} style={hidei}>
-            
-              <IconButton color="inherit">
-                <Badge badgeContent={69} color="secondary">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
-              <IconButton color="inherit">
-                <Badge badgeContent={19} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
               <IconButton
                 aria-owns={isMenuOpen ? 'material-appbar' : undefined}
                 aria-haspopup="true"

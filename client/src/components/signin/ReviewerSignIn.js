@@ -62,7 +62,7 @@ export class ReviewerSignIn extends Component {
   handleRegister (e) {
     e.preventDefault()
     let reviewerData = this.state.reviewer
-    fetch('http://localhost:3000/api/reviewer/login', {
+    fetch('https://serverbrogrammers.herokuapp.com/api/reviewer/login', {
       method: 'POST',
       body: JSON.stringify(reviewerData),
       headers: {
@@ -70,20 +70,19 @@ export class ReviewerSignIn extends Component {
       }
     }).then(response => {
       response.json().then(data => {
-        console.log('Successful' + data + data.auth)
-        sessionStorage.setItem("jwtToken", data.token);
-        sessionStorage.setItem("auth", data.auth);
-        sessionStorage.setItem("id",  data.id);
-        if(data.auth){
-          sessionStorage.setItem("type", 'r');
-          document.location.href = "/profile"
-        }
-        else{
+    
+        sessionStorage.setItem('jwtToken', data.token)
+        sessionStorage.setItem('auth', data.auth)
+        sessionStorage.setItem('id', data.id)
+        if (data.auth) {
+          sessionStorage.setItem('type', 'r')
+          document.location.href = '/profile'
+        } else {
           this.setState({
             reviewer: {
               c: false
             }
-          }, () => console.log(this.state.reviewer.c));
+          }, () => console.log())
         }
       })
     })
@@ -92,19 +91,18 @@ export class ReviewerSignIn extends Component {
   handleInput (e) {
     let value = e.target.value
     let name = e.target.name
-    // console.log(this.state.investor)
+    
     this.setState(prevState => {
       return {
         reviewer: {
           ...prevState.reviewer, [name]: value
         }
       }
-    }, () => console.log(this.state.reviewer)
+    }, () => console.log()
     )
   }
 
   render () {
-    
     const { classes } = this.props
     return (
       <main className={classes.main}>
@@ -117,7 +115,7 @@ export class ReviewerSignIn extends Component {
             Sign in
           </Typography>
           <Typography component='body1' variant='body1'>
-          {this.state.reviewer.c? (""):("Wrong Email or Password")}
+            {this.state.reviewer.c ? ('') : ('Wrong Email or Password')}
           </Typography>
           <form className={classes.form}>
             <FormControl margin='normal' required fullWidth>
@@ -137,7 +135,7 @@ export class ReviewerSignIn extends Component {
               type='submit'
               fullWidth
               variant='contained'
-              color={this.state.reviewer.c? ("primary"):("secondary")}
+              color={this.state.reviewer.c ? ('primary') : ('secondary')}
               className={classes.submit}
               onClick={this.handleRegister}
             >

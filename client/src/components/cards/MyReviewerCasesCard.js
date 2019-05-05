@@ -6,6 +6,7 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import ReviewerApproveDisapprove from '../buttons/ReviewerApproveDisapprove'
+import MultiLine from '../layout/inputs/MultiLine'
 
 const styles = {
   card: {
@@ -24,63 +25,196 @@ const styles = {
   }
 }
 
- 
+class MyReviewerCasesCard extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      comment: null
+    }
+    this.onChange = this.onChange.bind(this)
+  }
 
+  onChange(e) {
+    let value = e.target.value
+    this.setState(
+      {
+        comment: value
+      },
 
-function MyReviewerCasesCard (props) {
-  const { classes } = props
-  const bull = <span className={classes.bullet}>•</span>
-console.log(props.id)
+      () => console.log(value)
+    )
+  }
 
+  render() {
+    const { classes } = this.props
+    const bull = <span className={classes.bullet}>•</span>
+    console.log(this.props.id)
 
-
-  return (
-    <Card className={classes.card}>
-      <CardContent >
-        <Typography className={classes.title} color='textSecondary' gutterBottom>
-        {sessionStorage.getItem('lang')==='en'? 'Status': 'خاله الشركه '}: {props.status}
-        </Typography>
-        <Typography variant='h5' component='h2'>
-          {props.nameInEnglish}
-        </Typography>
-        <Typography className={classes.pos} color='textSecondary'>
-          {props.addressHQ}
-        </Typography>
-        <Typography component='p'>
-          <ul>
-          <li>{sessionStorage.getItem('lang')==='en'? 'Company id': 'رقم حساب الشركه'}: {props.compid}</li>
-            <li>{sessionStorage.getItem('lang')==='en'? 'addressHQ': 'عنوان الشركه '}: {props.addressHQ}</li>
-            <li>{sessionStorage.getItem('lang')==='en'? 'regulationLaw': 'القانون المنظم'}: {props.regulationLaw} </li>
-            <li>{sessionStorage.getItem('lang')==='en'? 'legalCompanyForm': 'شكل الشركه القانونى'}: {props.legalCompanyForm}</li>
-            <li>{sessionStorage.getItem('lang')==='en'? 'nameInArabic': 'اسم الشركه'}: {props.nameInArabic}</li>
-            <li> {sessionStorage.getItem('lang')==='en'? 'governerateHQ': 'المركز الرئيسى '}:{props.governerateHQ}</li>
-            <li>{sessionStorage.getItem('lang')==='en'? 'cityHQ': 'المركز الرئيسى (المدينه)ه '}: {props.cityHQ}</li>
-            <li>{sessionStorage.getItem('lang')==='en'? 'telephoneHQ': 'التليفون '}: {props.telephoneHQ}</li>
-            <li>{sessionStorage.getItem('lang')==='en'? 'faxHQ': 'الفاكس '}: {props.faxHQ}</li>
-            <li>{sessionStorage.getItem('lang')==='en'? 'capitalCurrency': 'عمله راس المال '}: {props.capitalCurrency}</li>
-            <li>{sessionStorage.getItem('lang')==='en'? 'capital': 'راس المال '}: {props.capital}</li>
-            <ul>{sessionStorage.getItem('lang')==='en'? 'investorName': 'اسم المستثمر'}:{props.investorName} </ul>
-            <li>{sessionStorage.getItem('lang')==='en'? 'investorSex': 'الجنس '}:{props.investorSex} </li>
-            <li>{sessionStorage.getItem('lang')==='en'? 'investorNationality': 'الجنسيه '}: {props.investorNationality}</li>
-            <li>{sessionStorage.getItem('lang')==='en'? 'investorIdentificationType': 'نوع اثبات الشخصيه '}: {props.investorIdentificationType}</li>
-            <li>{sessionStorage.getItem('lang')==='en'? 'investorIdentificationNumber': 'رقم اثبات الشخصيه'}: {props.investorIdentificationNumber}</li>
-            <li>{sessionStorage.getItem('lang')==='en'? 'investorBD': 'تاريخ الميلد'}: {props.investorBD}</li>
-            <li>{sessionStorage.getItem('lang')==='en'? 'investorAddress': 'عنوان الاقامه'}: {props.investorAddress}</li>
-            <li>{sessionStorage.getItem('lang')==='en'? 'investorTelephone': 'التليفون '}: {props.investorTelephone}</li>
-            <li>{sessionStorage.getItem('lang')==='en'? 'investorFax': 'الفاكس'}: {props.investorFax}</li>
-            <li>{sessionStorage.getItem('lang')==='en'? 'investorEmail': 'البريد الالكترونى'}:{props.investorEmail}</li>
-</ul>
-          <br />
-
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <ReviewerApproveDisapprove  token={props.token} compid={props.compid} ></ReviewerApproveDisapprove>
-      </CardActions>
-    </Card>
-  )
+    return (
+      <Card className={classes.card}>
+        <CardContent>
+          <Typography
+            className={classes.title}
+            color="textSecondary"
+            gutterBottom
+          >
+            {sessionStorage.getItem('lang') === 'en'
+              ? 'Status'
+              : 'خاله الشركه '}
+            : {this.props.status}
+          </Typography>
+          <Typography variant="h5" component="h2">
+            {this.props.nameInEnglish}
+          </Typography>
+          <Typography className={classes.pos} color="textSecondary">
+            {this.props.addressHQ}
+          </Typography>
+          <Typography component="p">
+            <ul>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar'
+                  ? 'رقم تعريف الشركه'
+                  : 'Company ID'}
+                : {this.props.compid}
+              </li>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar'
+                  ? 'عنوان الشركه '
+                  : 'Address HQ'}
+                : {this.props.addressHQ}
+              </li>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar'
+                  ? 'القانون المنظم'
+                  : 'Regulation Law'}
+                : {this.props.regulationLaw}{' '}
+              </li>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar'
+                  ? 'شكل الشركه القانونى'
+                  : 'Legal Company Form'}
+                : {this.props.legalCompanyForm}
+              </li>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar'
+                  ? 'اسم الشركه'
+                  : 'Name In Arabic'}
+                : {this.props.nameInArabic}
+              </li>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar'
+                  ? 'المركز الرئيسى '
+                  : 'Governerate HQ'}
+                :{this.props.governerateHQ}
+              </li>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar'
+                  ? 'المركز الرئيسى إلى المدينة '
+                  : 'City HQ'}
+                : {this.props.cityHQ}
+              </li>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar'
+                  ? 'التليفون '
+                  : 'Telephone'}
+                : {this.props.telephoneHQ}
+              </li>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar' ? 'الفاكس ' : 'Fax'}:{' '}
+                {this.props.faxHQ}
+              </li>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar'
+                  ? 'عمله راس المال '
+                  : 'Capital Currency'}
+                : {this.props.capitalCurrency}
+              </li>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar'
+                  ? 'راس المال '
+                  : 'Capital'}
+                : {this.props.capital}
+              </li>
+            </ul>
+            <ul>
+              {' '}
+              <h3>
+                {sessionStorage.getItem('lang') === 'ar'
+                  ? 'بيانات المستثمر'
+                  : 'Investor Information'}
+              </h3>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar'
+                  ? 'اسم المستثمر'
+                  : 'Name'}
+                :{this.props.investorName}{' '}
+              </li>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar' ? 'الجنس ' : 'Sex'}:
+                {this.props.investorSex}{' '}
+              </li>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar'
+                  ? 'الجنسيه '
+                  : 'Nationality'}
+                : {this.props.investorNationality}
+              </li>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar'
+                  ? 'نوع اثبات الشخصيه '
+                  : 'Identification Type'}
+                : {this.props.investorIdentificationType}
+              </li>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar'
+                  ? 'رقم اثبات الشخصيه'
+                  : 'Identification Number'}
+                : {this.props.investorIdentificationNumber}
+              </li>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar'
+                  ? 'تاريخ الميلد'
+                  : 'Birth Date'}
+                : {this.props.investorBD}
+              </li>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar'
+                  ? 'عنوان الاقامه'
+                  : 'Address'}
+                : {this.props.investorAddress}
+              </li>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar'
+                  ? 'التليفون '
+                  : 'Telephone'}
+                : {this.props.investorTelephone}
+              </li>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar' ? 'الفاكس' : 'Fax'}:{' '}
+                {this.props.investorFax}
+              </li>
+              <li>
+                {sessionStorage.getItem('lang') === 'ar'
+                  ? 'البريد الالكترونى'
+                  : 'Email'}
+                :{this.props.investorEmail}
+              </li>
+            </ul>
+            <br />
+            <MultiLine callBack={this.onChange} />
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <ReviewerApproveDisapprove
+            token={this.props.token}
+            compid={this.props.compid}
+            comment={this.state.comment}
+          />
+        </CardActions>
+      </Card>
+    )
+  }
 }
-
 MyReviewerCasesCard.propTypes = {
   classes: PropTypes.object.isRequired
 }

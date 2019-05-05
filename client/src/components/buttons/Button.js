@@ -6,28 +6,21 @@ import axios from 'axios'
 const styles = theme => ({
   button: {
     margin: theme.spacing.unit
+     
   },
   input: {
     display: 'none'
   }
 })
 
-
-
-
-
-function ContainedButtons (props) {
+function ContainedButtons(props) {
   const { classes } = props
- 
 
   return (
     <div>
-
-      <Button variant='contained' color='secondary' className={classes.button}  >
-       {sessionstorage.getItem('lang')==='en'? 'Next': 'التالى'},
-
+      <Button variant="contained" color="secondary" className={classes.button}>
+        {sessionstorage.getItem('lang') === 'en' ? 'Next' : 'التالى'}
       </Button>
-
     </div>
   )
 }

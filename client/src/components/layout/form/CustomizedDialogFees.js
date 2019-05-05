@@ -83,7 +83,7 @@ class CustomizedDialogFees extends React.Component {
   
   handleViewFees=()=>{
     let x =0 ;
-    fetch('http://localhost:3000/api/investors/'+this.props.id+'/viewFees',{
+    fetch('https://serverbrogrammers.herokuapp.com/api/investors/'+this.props.id+'/viewFees',{
         method: "GET",
         headers: {
           'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ class CustomizedDialogFees extends React.Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <TakeMoney companyid={this.props.id} />
+            <TakeMoney companyid={this.props.id} amount={this.state.fees} />
             <Button onClick={this.handleClose} color="primary">
             {sessionStorage.getItem('lang') === 'en' ? 'Close' : 'اغلاق'}
             </Button>

@@ -100,10 +100,12 @@ class CustomizedDialogDemo extends React.Component {
           <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
             {this.props.company.nameInEnglish}
           </DialogTitle>
+         
           <DialogContent>
             {this.handleInput(this.props).map((input, i) =>
               (input !== "managers" && input !== '_id') ? (
                 <Grid
+                item xs={4} lg={4}
                   key={i}
                   style={{ marginTop: 12 }}
                   container
@@ -118,6 +120,8 @@ class CustomizedDialogDemo extends React.Component {
               )
             )}
           </DialogContent>
+      
+
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
             {sessionStorage.getItem('lang') === 'en' ? 'Close' : ' اغلاق'}

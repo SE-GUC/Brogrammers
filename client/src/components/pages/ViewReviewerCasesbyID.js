@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import MyReviewerCasesCard from '../cards/MyReviewerCasesCard'
 import Button from '@material-ui/core/Button'
+import LinearDeterminate from "../layout/loading/CustomizedProgress"
 class ViewReviewerCasesbyID extends Component {
   constructor (props) {
     super(props)
@@ -10,14 +11,13 @@ class ViewReviewerCasesbyID extends Component {
           isLoadied: false
 
         }
-        this.sortById=this.sortById.bind(this);
-        this.sortByCreationDate=this.sortByCreationDate.bind(this);
-        this.sortByStatus=this.sortByStatus.bind(this);
-
+    this.sortById = this.sortById.bind(this)
+    this.sortByCreationDate = this.sortByCreationDate.bind(this)
+    this.sortByStatus = this.sortByStatus.bind(this)
   }
 
   componentDidMount () {
-    fetch(`http://localhost:3000/api/reviewer/getTasks/Reviewer`, {
+    fetch(`https://serverbrogrammers.herokuapp.com/api/reviewer/getTasks/Reviewer`, {
       headers: new Headers({
         'x-access-token': this.props.token
       }) })
@@ -28,99 +28,90 @@ class ViewReviewerCasesbyID extends Component {
       })
   }
 
-
-  sortById(e){
-    const myData=this.state.companies.sort(function(a, b){
-      if(a._id < b._id) { return -1; }
-      if(a._id > b._id) { return 1; }
-      return 0;
-  })
+  sortById (e) {
+    const myData = this.state.companies.sort(function (a, b) {
+      if (a._id < b._id) { return -1 }
+      if (a._id > b._id) { return 1 }
+      return 0
+    })
     this.setState(
-      prevState=>{
-        return{
+      prevState => {
+        return {
           myData
 
-          }
-        },
-        ()=>console.log(myData)
-      
-     )
-  this.forceUpdate()
-    
- 
-    
+        }
+      },
+      () => console.log(myData)
+
+    )
+    this.forceUpdate()
   }
 
-  sortByCreationDate(e){
-    const myData=this.state.companies.sort(function(a, b){
-      if(a.creationDate < b.creationDate) { return -1; }
-      if(a.creationDate > b.creationDate) { return 1; }
-      return 0;
-  })
+  sortByCreationDate (e) {
+    const myData = this.state.companies.sort(function (a, b) {
+      if (a.creationDate < b.creationDate) { return -1 }
+      if (a.creationDate > b.creationDate) { return 1 }
+      return 0
+    })
     this.setState(
-      prevState=>{
-        return{
+      prevState => {
+        return {
           myData
 
-          }
-        },
-        ()=>console.log(myData)
-      
-     )
-  this.forceUpdate()
-    
-  
+        }
+      },
+      () => console.log(myData)
+
+    )
+    this.forceUpdate()
   }
 
-
-  sortByStatus(e){
-    const myData=this.state.companies.sort(function(a, b){
-      if(a.status < b.status) { return -1; }
-      if(a.status > b.status) { return 1; }
-      return 0;
-  })
+  sortByStatus (e) {
+    const myData = this.state.companies.sort(function (a, b) {
+      if (a.status < b.status) { return -1 }
+      if (a.status > b.status) { return 1 }
+      return 0
+    })
     this.setState(
-      prevState=>{
-        return{
+      prevState => {
+        return {
           myData
 
-          }
-        },
-        ()=>console.log(myData)
-      
-     )
-  this.forceUpdate()
-    
-  }
+        }
+      },
+      () => console.log(myData)
 
-  
+    )
+    this.forceUpdate()
+  }
 
   render () {
-    var { isLoadied, companies } = this.state
-    if (!isLoadied) { return <div> Loading ...</div> } else {
+    var { isLoadied } = this.state
+    if (!isLoadied) { return <LinearDeterminate /> } else {
       return (
 
         <div>
-          <Button variant="outlined" color="dark" onClick={this.sortById}> {sessionStorage.getItem('lang')==='en'? 'Sort by ID': 'ترتيب برقم الشركه'}</Button> >
-               <Button variant="outlined" color="dark" onClick={this.sortByCreationDate}> {sessionStorage.getItem('lang')==='en'? 'Sort by Creation Date': 'ترتيب بتاريخ انشاء الشركه'}</Button> >
-               <Button variant="outlined" color="dark" onClick={this.sortByStatus}> {sessionStorage.getItem('lang')==='en'? 'Sort by Status': 'ترتيب  بحاله الشركه'}</Button> >
+          <br/>
+          <br/>
           
+          <Button variant='outlined' color='dark' onClick={this.sortById}> {sessionStorage.getItem('lang') === 'en' ? 'Sort by ID' : 'ترتيب برقم الشركه'}</Button> >
+          <Button variant='outlined' color='dark' onClick={this.sortByCreationDate}> {sessionStorage.getItem('lang') === 'en' ? 'Sort by Creation Date' : 'ترتيب بتاريخ انشاء الشركه'}</Button> >
+          <Button variant='outlined' color='dark' onClick={this.sortByStatus}> {sessionStorage.getItem('lang') === 'en' ? 'Sort by Status' : 'ترتيب  بحاله الشركه'}</Button> >
+
           <ul>
             {this.state.companies.map((element, i) => (
-              <MyReviewerCasesCard key={i} title={'helo'} info={element.investorName} 
-              status={element.status}
-              compid={element._id}  
-              nameInEnglish={element.nameInEnglish}
-              token={this.props.token}
-              addressHQ={element.addressHQ}
-                Status={element.status}
+              <MyReviewerCasesCard key={i} title={'helo'} info={element.investorName}
+                status={element.status}
+                compid={element._id}
+                nameInEnglish={element.nameInEnglish}
+                token={this.props.token}
                 addressHQ={element.addressHQ}
                 regulationLaw={element.regulationLaw}
                 legalCompanyForm={element.legalCompanyForm}
                 nameInArabic={element.nameInArabic}
                 governerateHQ={element.governerateHQ}
                 cityHQ={element.cityHQ}
-  
+
                 telephoneHQ={element.telephoneHQ}
                 faxHQ={element.faxHQ}
                 capitalCurrency={element.capitalCurrency}
@@ -135,10 +126,7 @@ class ViewReviewerCasesbyID extends Component {
                 investorTelephone={element.investorTelephone}
                 investorFax={element.investorFax}
                 investorEmail={element.investorEmail}
-              
-              
-              
-              
+
               />
             ))}
 

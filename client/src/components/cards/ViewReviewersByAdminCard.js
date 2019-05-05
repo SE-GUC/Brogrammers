@@ -24,58 +24,50 @@ const styles = {
   }
 }
 
- 
-
-
 function ViewReviewersByAdminCard (props) {
   const { classes } = props
   const bull = <span className={classes.bullet}>•</span>
 
-
-
-
   return (
-      
+
     <Card className={classes.card}>
       <CardContent >
         <Typography className={classes.title} color='textSecondary' gutterBottom>
           {/* status: {props.status} */}
-       {/* Birth Date: {props.birthDate} */}
-       
+          {/* Birth Date: {props.birthDate} */}
+
         </Typography>
         <Typography variant='h5' component='h2'>
           {/* {props.nameInEnglish} */}
           {props.name}
-         
 
         </Typography>
         <Typography className={classes.pos} color='textSecondary'>
           {/* {props.addressHQ} */}
-        
+
          E-mail:{props.email}
-          <br></br>
+          <br />
           Phone Number:{props.phone}
         </Typography>
         <Typography component='p'>
-         {/* insert the data in the list here */}
+          {/* insert the data in the list here */}
           {/* <ul>
             <li>Company id: {props.compid}</li>
-            
+
           </ul>
           <br /> */}
             Gender:{props.gender}
-            <br></br>
+          <br />
             Age: {props.age}
-            <br></br>
+          <br />
           Years of Experience: {props.yearsOfExperience}
-          <br></br>
-         
+          <br />
 
         </Typography>
       </CardContent>
       <CardActions>
-        <DeleteReviewerButton  token={props.token} id={props.id} ></DeleteReviewerButton>
-        <br></br>
+        <DeleteReviewerButton token={props.token} id={props.id} />
+        <br />
       </CardActions>
     </Card>
   )

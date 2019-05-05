@@ -31,7 +31,7 @@ class DeleteLawyerButton extends React.Component {
 
   deleteLawyer()
 {
-  fetch(`http://localhost:3000/api/lawyer/${this.props.id}`, {
+  fetch(`https://serverbrogrammers.herokuapp.com/api/lawyer/${this.props.id}`, {
     method: "DELETE",
    
     headers: {
@@ -50,7 +50,7 @@ class DeleteLawyerButton extends React.Component {
     return (
       <div>
         <Button variant="contained" color="secondary" onClick={this.handleClickOpen}>
-        {sessionStorage.getItem('lang')==='en'? 'Delete Lawyer': 'الغاء بيانات المحامى '},
+        {sessionStorage.getItem('lang')==='en'? 'Delete Lawyer': 'الغاء بيانات المحامى '}
         </Button>
         <Dialog
           open={this.state.open}

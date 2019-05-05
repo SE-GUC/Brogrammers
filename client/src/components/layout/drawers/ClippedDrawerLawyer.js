@@ -2,53 +2,46 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import Home from '@material-ui/icons/Home'
 import EditProfile from '@material-ui/icons/BorderColor'
-import MailIcon from '@material-ui/icons/Mail';
 import EditProfileLawyer from '../../pages/EditProfileLawyer'
 import LawyerCases from '../../pages/LawyerCases';
 import ViewLawyerCasesbyID from '../../pages/ViewLawyerCasesbyID'
 import ViewLawyerEditableCases from '../../pages/ViewLawyerEditableCases'
-import LawyerComment from '../../pages/LawyerComment'
 import LawyerCompanyRegSSC from '../../pages/LawyerCompanyRegSSC'
 import LawyerCompanyRegSPC from '../../pages/LawyerCompanyRegSPC'
 import NavBar from '../../../components/layout/Navbar'
 import Note from '@material-ui/icons/NoteAdd'
 import ViewList from '@material-ui/icons/ViewList'
-import CreateCompany from '@material-ui/icons/CreateNewFolder';
 import Stepper from "../../steppers/stepper";
-import LinearDeterminate from "../loading/LinearDeterminate";
-import ChooseCompanyType from "../../pages/ChooseCompanyType";
+import LinearDeterminate from "../loading/CustomizedProgress";
+
 import Navbar from '../../../components/layout/Navbar';
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+
 const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
-    display: "flex"
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1
+    display: "flex",
+    zIndex: -1,
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0
   },
   drawerPaper: {
-    width: drawerWidth
+    width: drawerWidth,
+    backgroundColor: "#103755"
   },
   content: {
-    flexGrow: 1,
-    padding: theme.spacing.unit * 3
+    flexGrow: 1
   },
   toolbar: theme.mixins.toolbar
 });
@@ -57,7 +50,9 @@ class ClippedDrawerLawyer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      clicked: "i"
+      clicked: "i",
+      mobileOpen: false,
+      drawerOpen: false
     };
   }
   handleLoading = () => {
@@ -87,8 +82,6 @@ class ClippedDrawerLawyer extends React.Component {
       case "edit":
         console.log("hello");
         return <ViewLawyerEditableCases />;
-      case "comment":
-        return <LawyerComment />;
       default:
         return;
     }
@@ -121,36 +114,55 @@ class ClippedDrawerLawyer extends React.Component {
 
   handleHome = () => {
     document.location.href = "/";
+    this.handleDrawerClose();
   };
   handleCases = () => {
     this.setState({ clicked: "cases" });
+    this.handleDrawerClose();
   };
   handleCases2 = () => {
     this.setState({ clicked: "companies" });
+    this.handleDrawerClose();
   };
 
   handleCreatessc = () => {
     this.setState({ clicked: "createssc" });
+    this.handleDrawerClose();
   };
 
   handleCreatespc = () => {
     this.setState({ clicked: "createspc" });
+    this.handleDrawerClose();
   };
 
   handleEdit = () => {
     this.setState({ clicked: "edit" });
+    this.handleDrawerClose();
   };
 
   handleCreated = () => {
     this.setState({ clicked: "created" });
+    this.handleDrawerClose();
   };
 
-  handleComment = () => {
-    this.setState({ clicked: "comment" });
-  };
+
 
   handleProfile = () => {
     this.setState({ clicked: "profile" });
+    this.handleDrawerClose();
+  };
+
+  handleDrawerToggle = () => {
+    this.setState(prevState => {
+      return { drawerOpen: !prevState.drawerOpen };
+    });
+  };
+  handleDrawerClose = () => {
+    this.setState({ drawerOpen: false });
+  };
+
+  handelOpen = () => {
+    this.setState({ mobileOpen: localStorage.getItem("openDrawer") });
   };
 
   render() {
@@ -160,15 +172,17 @@ class ClippedDrawerLawyer extends React.Component {
       <div className={classes.root}>
         <CssBaseline />
 
+        <NavBar handleDrawerToggle={this.handleDrawerToggle} />
+        <div className={classes.toolbar} />
         <Drawer
           className={classes.drawer}
-          variant="permanent"
+          variant={"temporary"}
+          open={this.state.drawerOpen}
           classes={{
             paper: classes.drawerPaper
           }}
         >
-        <Navbar />
-          <div className={classes.toolbar} />
+          <ClickAwayListener onClickAway={this.handleDrawerClose}>
 
           <List>
             <ListItem button key={"Home"} onClick={this.handleHome}>
@@ -177,13 +191,16 @@ class ClippedDrawerLawyer extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en" ? "Home" : "صفحتي"
                 }
+                </b>}
               />
             </ListItem>
             <ListItem
               button
-              key={"View My Companies"}
+              key={"View My Cases"}
               onClick={this.handleCases2}
             >
               <ListItemIcon>
@@ -191,13 +208,16 @@ class ClippedDrawerLawyer extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
-                    ? "View My Companies"
+                    ? "View My Cases"
                     : "اظهر شركاتي"
                 }
+                </b>}
               />
             </ListItem>
-           
+
 
             <ListItem
               button
@@ -209,91 +229,91 @@ class ClippedDrawerLawyer extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "View All Cases"
                     : "اعرض كل الشركات"
                 }
+                </b>}
               />
             </ListItem>
           </List>
           <Divider />
           <ListItem
-              button
-              key={"Create SSC Companies"}
-              onClick={this.handleCreatessc}
-            >
-              <ListItemIcon>
-                <Note />
-              </ListItemIcon>
-              <ListItemText
-                primary={
-                  sessionStorage.getItem("lang") === "en"
-                    ? "Create SSC Companies"
-                    : "سجل شركتي ال SSC"
-                }
-              />
-            </ListItem>
-            <ListItem
-              button
-              key={"Create SPC Companies"}
-              onClick={this.handleCreatespc}
-            >
-              <ListItemIcon>
-                <Note />
-              </ListItemIcon>
-              <ListItemText
-                primary={
-                  sessionStorage.getItem("lang") === "en"
-                    ? "Create SPC Companies"
-                    : "سجل شركتي ال SPC"
-                }
-              />
-            </ListItem>
-            <ListItem
-              button
-              key={"Create D Companies"}
-              onClick={this.handleCreated}
-            >
-              <ListItemIcon>
-                <Note />
-              </ListItemIcon>
-              <ListItemText
-                primary={
-                  sessionStorage.getItem("lang") === "en"
-                    ? "Create Dynamic Companies"
-                    : "سجل شركتي ال Dynamic"
-                }
-              />
-            </ListItem>
-            <Divider/>
+            button
+            key={"Create SSC Companies"}
+            onClick={this.handleCreatessc}
+          >
+            <ListItemIcon>
+              <Note />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
+                sessionStorage.getItem("lang") === "en"
+                  ? "Create SSC Companies"
+                  : "سجل شركتي ال SSC"
+              }
+              </b>}
+            />
+          </ListItem>
+          <ListItem
+            button
+            key={"Create SPC Companies"}
+            onClick={this.handleCreatespc}
+          >
+            <ListItemIcon>
+              <Note />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
+                sessionStorage.getItem("lang") === "en"
+                  ? "Create SPC Companies"
+                  : "سجل شركتي ال SPC"
+              }
+              </b>}
+            />
+          </ListItem>
+          <ListItem
+            button
+            key={"Create D Companies"}
+            onClick={this.handleCreated}
+          >
+            <ListItemIcon>
+              <Note />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
+                sessionStorage.getItem("lang") === "en"
+                  ? "Create Dynamic Companies"
+                  : "سجل شركتي ال Dynamic"
+              }
+              </b>}
+            />
+          </ListItem>
+          <Divider />
           <List>
             
-            <ListItem
-              button
-              key={"Comment on my companies"}
-              onClick={this.handleComment}
-            >
-              <ListItemIcon>
-                <EditProfile />
-              </ListItemIcon>
-              <ListItemText
-                primary={
-                  sessionStorage.getItem("lang") === "en"
-                    ? "Comment on Company"
-                    : " علق علي شركاتي"
-                }
-              />
-            </ListItem>
+            
             <ListItem button key={"Edit Companies"} onClick={this.handleEdit}>
               <ListItemIcon>
                 <EditProfile />
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "Edit Companies "
                     : "تغير الشركات"
                 }
+                </b>}
               />
             </ListItem>
             <ListItem
@@ -306,14 +326,20 @@ class ClippedDrawerLawyer extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "Edit Your Profile"
                     : "تغير البيانات"
+                    
                 }
+                </b>}
+                
               />
             </ListItem>
-           
+
           </List>
+          </ClickAwayListener>
         </Drawer>
         <main className={classes.content} style={{ marginTop: 50 }}>
           {this.handleLoading}

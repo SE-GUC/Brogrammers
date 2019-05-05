@@ -321,6 +321,7 @@ router.put("/getTasks/approve/:id2", async (req, res) => {
 
 // Disapproves the task and updates company status
 router.put("/getTasks/disapprove/:id2", async (req, res) => {
+  console.log("beep")
   try {
     var stat = 0;
     var token = req.headers["x-access-token"];
@@ -342,6 +343,7 @@ router.put("/getTasks/disapprove/:id2", async (req, res) => {
     let currentReviewer = await Reviewer.findById(id);
     let reviwerSSN = await currentReviewer.ssn;
     let companyID = req.params.id2;
+    const comment=req.body.comment
 
     var query = {
       reviewer: reviwerSSN,
@@ -354,16 +356,10 @@ router.put("/getTasks/disapprove/:id2", async (req, res) => {
       return res.status(404).send({ error: "You have no due tasks" });
     } else {
       await Company.findByIdAndUpdate(companyID, {
-        status: "RejectedReviewer"
+        status: "RejectedReviewer",reviewerComment:comment,reviewer:null
       });
-      const isValidated = await companyvalidator.updateValidationSSC({
-        status: "RejectedReviewer"
-      });
-      if (isValidated.error) {
-        return res
-          .status(400)
-          .send({ error: isValidated.error.details[0].message });
-      }
+
+    
 
 
       var deleteIdinArrayinSearch = await SearchTag.findOne({tag:"PendingReviewer"})
@@ -769,6 +765,11 @@ router.post("/login", function(req, res) {
     }
     // const admin = Admin.findOne({ email: req.body.email});
     const loginPassword = req.body.password;
+    if(!loginPassword){
+      return res
+      .status(401)
+      .send({ auth: false, message: 'Please enter pass.'})
+    }
     const userPassword = user.password;
     const match = bcrypt.compareSync(loginPassword, userPassword);
     // var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);

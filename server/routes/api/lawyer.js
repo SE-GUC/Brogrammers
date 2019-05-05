@@ -255,13 +255,14 @@ router.put('/getTasks/disapprove/:id2', async (req, res) => {
     const currentLawyer = await Lawyer.findById(lawyerID)
     const lawyerSSN = await currentLawyer.socialSecurityNumber
     const companyID = req.params.id2
+    const comment=req.body.comment
 
     var query = { lawyer: lawyerSSN, status: 'PendingLawyer', _id: companyID }
     const currentCompany = await Company.find(query)
     if (!currentCompany) {
       return res.status(404).send({ error: 'You have no due tasks' })
     } else {
-      var com = await Company.findByIdAndUpdate(companyID, { status: 'RejectedLawyer' })
+      var com = await Company.findByIdAndUpdate(companyID, { status: 'RejectedLawyer',lawyerComment:comment,lawyer:null })
       const isValidated = await companyvalidator.updateValidationSSC({
         status: 'RejectedLawyer'
       })
@@ -317,10 +318,10 @@ router.put('/getTasks/disapprove/:id2', async (req, res) => {
       // send mail with defined transport object
       let info = {
         from: '"GAFI"', // sender address
-        to: currentCompany.investorEmail, // list of receivers
-        subject: "Company rejection", // Subject line
-        text: "Dear " + currentCompany.investorName + "\n The company you ware creating was rejected by the lawyer please check GAFIs online portal to view the comments left by the lawyer and update the form. \n Thank you", // plain text body
-        html: "<b>Dear " + currentCompany.investorName + "\n The company you ware creating was rejected by the lawyer please check GAFIs online portal to view the comments left by the lawyer and update the form. \n Thank you</b>" // html body
+        to: com.investorEmail, // list of receivers
+        subject: "Company Rejection", // Subject line
+        text: "Dear, " + com.investorName + "\n The company you were creating was rejected by the lawyer please check GAFIs online portal to view the comments left by the lawyer and update the form. \n Thank you", // plain text body
+        html: "<b>Dear, " + com.investorName + "</b><br/><b> The company you were creating was rejected by the lawyer please check GAFIs online portal to view the comments left by the lawyer and update the form. </b> <br/> <b>Thank you</b>" // html body
       };
       transporter.sendMail(info, (error, info) => {
         if (error) {
@@ -462,6 +463,13 @@ router.post('/login', function (req, res) {
     }
     // const admin = Admin.findOne({ email: req.body.email});
     const loginPassword = req.body.password
+
+    if(!loginPassword){
+      return res
+      .status(401)
+      .send({ auth: false, message: 'Please enter pass.'})
+    }
+    
     const userPassword = user.password
     const match = bcrypt.compareSync(loginPassword, userPassword)
     // var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
@@ -1839,7 +1847,7 @@ router.get('/mycases', async (req, res) => {
     let lawyer = await Lawyer.findById(id)
     let ssn = lawyer.socialSecurityNumber
     var query = {
-      $and: [$or[{ status: "PendingLawyer" }, { status: "RejectedLawyer" }], { reviewer: ssn }]
+      $and: [{ status: "PendingLawyer" }, { reviewer: ssn }]
     };
     let company = await Company.find(query) // Because no Accepted companys... used 'PendingLawyer' as a test case
 

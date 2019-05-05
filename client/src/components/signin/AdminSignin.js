@@ -62,7 +62,7 @@ export class AdminSignIn extends Component {
   handleRegister (e) {
     e.preventDefault()
     let Admindata = this.state.admin
-    fetch('http://localhost:3000/routes/api/admins/login', {
+    fetch('https://serverbrogrammers.herokuapp.com/routes/api/admins/login', {
       method: 'POST',
       body: JSON.stringify(Admindata),
       headers: {
@@ -70,37 +70,34 @@ export class AdminSignIn extends Component {
       }
     }).then(response => {
       response.json().then(data => {
-        console.log('Successful' + data + data.auth)
-        sessionStorage.setItem("jwtToken", data.token);
-        sessionStorage.setItem("auth", data.auth);
-        sessionStorage.setItem("id",  data.id);
-        if(data.auth){
-          sessionStorage.setItem("type", 'a');
-          document.location.href = "/profile"
-        }
-        else{
+       
+        sessionStorage.setItem('jwtToken', data.token)
+        sessionStorage.setItem('auth', data.auth)
+        sessionStorage.setItem('id', data.id)
+        if (data.auth) {
+          sessionStorage.setItem('type', 'a')
+          document.location.href = '/profile'
+        } else {
           this.setState({
             admin: {
               c: false
             }
-          }, () => console.log(this.state.admin.c));
+          }, () => console.log())
         }
       })
     })
   }
 
- 
   handleInput (e) {
     let value = e.target.value
     let name = e.target.name
-    // console.log(this.state.investor)
     this.setState(prevState => {
       return {
         admin: {
           ...prevState.admin, [name]: value
         }
       }
-    }, () => console.log(this.state.admin)
+    }, () => console.log()
     )
   }
 
@@ -117,7 +114,7 @@ export class AdminSignIn extends Component {
             Sign in
           </Typography>
           <Typography component='body1' variant='body1'>
-          {this.state.admin.c? (""):("Wrong Email or Password")}
+            {this.state.admin.c ? ('') : ('Wrong Email or Password')}
           </Typography>
           <form className={classes.form}>
             <FormControl margin='normal' required fullWidth>
@@ -131,13 +128,13 @@ export class AdminSignIn extends Component {
               <Required name='password' field={'Password'} type='password' callBack={this.handleInput} />
             </FormControl>
             <FormControlLabel
-              control={<label  />}
+              control={<label />}
             />
             <Button
               type='submit'
               fullWidth
               variant='contained'
-              color={this.state.admin.c? ("primary"):("secondary")}
+              color={this.state.admin.c ? ('primary') : ('secondary')}
               className={classes.submit}
               onClick={this.handleRegister}
             >

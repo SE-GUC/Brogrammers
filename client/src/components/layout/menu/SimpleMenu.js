@@ -30,7 +30,8 @@ class SimpleMenu extends React.Component {
     return <CustomizedDialogDemo data={props.data}/>;
   };
   handledialogFees = props => {
-    
+   
+    if(this.props.status==="AcceptedReviewer")
     return <CustomizedDialogFees data={props.data} id= {props.id} token= {props.token}/>;
   };
 

@@ -31,7 +31,7 @@ class DeleteReviewerButton extends React.Component {
 
   deleteReviewer()
   {
-    fetch(`http://localhost:3000/api/reviewer/${this.props.id}`, {
+    fetch(`https://serverbrogrammers.herokuapp.com/api/reviewer/${this.props.id}`, {
       method: "DELETE",
      
       headers: {
@@ -50,7 +50,7 @@ class DeleteReviewerButton extends React.Component {
     return (
       <div>
         <Button variant="contained" color="secondary" onClick={this.handleClickOpen}>
-       {sessionStorage.getItem('lang')==='en'? 'Delete Reviewer !!!': '  مسح المراجع '}
+       {sessionStorage.getItem('lang')==='en'? 'Delete Reviewer': '  مسح المراجع '}
        </Button>
         <Dialog
           open={this.state.open}
