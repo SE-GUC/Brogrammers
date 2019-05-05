@@ -4,7 +4,7 @@ import StripeCheckout from 'react-stripe-checkout';
 export default class TakeMoney extends React.Component {
   onToken = (token) => {
     console.log(this.props.amount)
-    fetch(`http://localhost:3000/api/investors/stripe/${this.props.companyid}`, {
+    fetch(`https://serverbrogrammers.herokuapp.com/api/investors/stripe/${this.props.companyid}`, {
       method: 'POST',
       body: JSON.stringify({
         stripeToken:token.id ,
