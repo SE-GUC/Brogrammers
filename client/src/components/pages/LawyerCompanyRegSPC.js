@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import green from '@material-ui/core/colors/green'
-import { Avatar } from '@material-ui/core'
+import { Avatar, FormControl, InputLabel, Select, OutlinedInput, FormHelperText } from '@material-ui/core'
 import AssignmemtIcon from '@material-ui/icons/Assignment'
 import Grid from '@material-ui/core/Grid'
 import Required from '../layout/inputs/RequiredValidation'
@@ -584,9 +584,34 @@ class InvestorCompanyReg extends React.Component {
                 </p>
               </Typography>
             </Grid>
-            <Grid container direction='column' alignItems='center' >
-              <Required valid={this.state.regulationLawValid} texthelper={!this.state.regulationLawValid ? "This field is required and either Law 159 or Law 72" : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Regulation Law' : ' ‫القانون‬‫ المنظم'} type={'text'} callBack={this.handleInput} name={'regulationLaw'} />
-            </Grid>
+            <Grid container direction="column" alignItems="center">
+                <FormControl required variant="outlined" className={classes.formControl} fullWidth>
+                  <InputLabel>{
+                  sessionStorage.getItem("lang") === "en"
+                      ? "Regulation Law"
+                      : " ‫القانون‬‫ المنظم"
+                  }
+                      </InputLabel>
+                  <Select
+                    native
+                    value={this.state.company.regulationLaw}
+                    onChange={this.handleInput}
+                    
+                    input={
+                      <OutlinedInput
+                      name={"legalCompanyForm"}
+                        labelWidth={this.state.labelWidth}
+                        id="outlined-age-native-simple"
+                      />
+                    }
+                  >
+          
+                    <option value={"Law 72"}>Law 72</option>
+                    <option value={"Law 159"}>Law 159</option>
+                  </Select>
+                  <FormHelperText>Required</FormHelperText>
+                </FormControl>
+                </Grid>
             <Grid container direction='column' alignItems='center' >
               <Required valid={this.state.legalCompanyFormValid} texthelper={!this.state.legalCompanyFormValid ? "This field is required and only letters " : ""} field={sessionStorage.getItem('lang') === 'en' ? 'Legal Company Form' : '‫شكل‬ ‫الشركة ‫القانوني‬ '} type={'text'} callBack={this.handleInput} name={'legalCompanyForm'} />
             </Grid>

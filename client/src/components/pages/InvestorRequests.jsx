@@ -7,12 +7,13 @@ import Typography from '@material-ui/core/Typography';
 import Grid from "@material-ui/core/Grid";
 const styles = {
     header: {
+        
         position: "sticky",
         textAlign: "center",
         paddingTop: 10,
         paddingBottom: 10,
+        marginBottom:5,
         marginTop: "0px",
-      
         color: "white",
         top: "55px",
         zIndex: 13,
