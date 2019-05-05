@@ -312,26 +312,6 @@ class InvestorCompanyReg extends React.Component {
       })
     }
 
-    if (nameInArabic) {
-      if (regex.test(nameInArabic)) {
-        this.setState({ nameInArabicValid: true })
-      }
-      else {
-        this.setState({
-          nameInArabicValid: false,
-          err: true
-        })
-
-      }
-    }
-    else {
-      this.setState({
-        nameInArabicValid: false,
-        err: true
-      })
-    }
-
-
     if (nameInEnglish) {
       if (regex.test(nameInEnglish)) {
         this.setState({ nameInEnglishValid: true })
