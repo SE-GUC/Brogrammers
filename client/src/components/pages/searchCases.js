@@ -20,6 +20,9 @@ const styles = {
   },
   button: {
     marginBottom: 35
+  },
+  holder:{
+    marginTop:55
   }
 }
 
@@ -118,8 +121,8 @@ class searchCases extends Component {
               marginTop: '0px',
               marginBottom: '100px',
               color: 'white',
-              top: '65px',
-              zIndex: 11,
+              top: '55px',
+              zIndex: 13,
               backgroundColor: '#034066'
             }}
           >

@@ -12,17 +12,12 @@ import PostForm from "../pages/postForm";
 
 const styles = theme => ({
   root: {
-    width: 'auto',
     display: 'flex',
     alignItems: 'center',
     justifyContent:'center',
     marginLeft: theme.spacing.unit * 1,
     marginRight: theme.spacing.unit * 1,
-    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-     
-      marginLeft: 'auto',
-      marginRight: 'auto'
-    }
+   
   },
   paper: {
     marginTop: theme.spacing.unit * 8,
@@ -92,7 +87,7 @@ handleButtons=()=>{
 
     return (
       <div className={classes.root}>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} lg={6}>
              <Paper className={classes.paper} elevation={16}>
           <Stepper activeStep={activeStep} alternativeLabel>
             {steps.map(label => (

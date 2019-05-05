@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -12,55 +12,63 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
+import NavBar from "../Navbar";
+import ViewList from "@material-ui/icons/ViewList";
+import Identity from "@material-ui/icons/Person";
+import Home from "@material-ui/icons/Home";
+import Upload from "@material-ui/icons/CloudUpload";
+import Note from "@material-ui/icons/NoteAdd";
+import Add from "@material-ui/icons/PersonAdd";
+import LinearDeterminate from "../loading/CustomizedProgress";
+import zIndex from "@material-ui/core/styles/zIndex";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { DRAWER_TOGGLE } from "../../../constants/actiontypes";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import CreateCompany from "@material-ui/icons/CreateNewFolder";
 import RegisterAdmin from "../../pages/RegisterAdmin";
 import RegisterReviewer from "../../pages/RegisterReviewer";
 import RegisterLawyer from "../../pages/RegisterLawyer";
 import AdminCases from "../../pages/AdminCases";
 import SimpleReactFileUpload from "../../layout/form/SimpleReactFileUpload";
+import EditProfile from "@material-ui/icons/BorderColor";
 import EditProfileAdmin from "../../pages/EditProfileAdmin";
 import ViewLawyersByAdmin from "../../pages/ViewLawyersByAdmin";
 import ViewReviewersByAdmin from "../../pages/ViewReviewersByAdmin";
-import NavBar from "../../../components/layout/Navbar";
-import ViewList from "@material-ui/icons/ViewList";
-import CreateCompany from "@material-ui/icons/CreateNewFolder";
-import EditProfile from "@material-ui/icons/BorderColor";
-import Identity from "@material-ui/icons/Person";
-import Home from "@material-ui/icons/Home";
-import Upload from "@material-ui/icons/CloudUpload";
-import Add from "@material-ui/icons/PersonAdd";
-
+import Home2 from "../../pages/Home"
 const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
-    display: "flex"
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1
+    display: "flex",
+    zIndex: -1,
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0
   },
   drawerPaper: {
-    width: 240,
-    color: "#ffffff"
+    width: drawerWidth,
+    backgroundColor: "#103755"
   },
   content: {
-    flexGrow: 1,
-    padding: theme.spacing.unit * 3
+    flexGrow: 1
   },
   toolbar: theme.mixins.toolbar
 });
 
-class ClippedDrawer extends React.Component {
+class ClippedDrawer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      clicked: "a"
+      clicked: "a",
+      mobileOpen: false,
+      drawerOpen: false
     };
   }
+  handleLoading = () => {
+    if (sessionStorage.getItem("loading")) return <LinearDeterminate />;
+  };
   handleContent = state => {
     switch (state.clicked) {
       case "profile":
@@ -125,47 +133,69 @@ class ClippedDrawer extends React.Component {
   };
   handleHome = () => {
     document.location.href = "/";
+    this.handleDrawerClose();
   };
 
   handleViewLawyers = () => {
     this.setState({ clicked: "viewLawyers" });
+    this.handleDrawerClose();
   };
   handleViewReviewers = () => {
     this.setState({ clicked: "viewReviewers" });
+    this.handleDrawerClose();
   };
   handleLawyer = () => {
     this.setState({ clicked: "l" });
+    this.handleDrawerClose();
   };
   handleReviewer = () => {
     this.setState({ clicked: "r" });
+    this.handleDrawerClose();
   };
   handleAdmin = () => {
     this.setState({ clicked: "a" });
+    this.handleDrawerClose();
   };
   handleCases = () => {
     this.setState({ clicked: "cases" });
+    this.handleDrawerClose();
   };
   handleUpload = () => {
     this.setState({ clicked: "forms" });
+    this.handleDrawerClose();
   };
   handleProfile = () => {
     this.setState({ clicked: "profile" });
+    this.handleDrawerClose();
+  };
+  handleDrawerToggle = () => {
+    this.setState(prevState => {
+      return { drawerOpen: !prevState.drawerOpen };
+    });
+  };
+  handleDrawerClose = () => {
+    this.setState({ drawerOpen: false });
+  };
+
+  handelOpen = () => {
+    this.setState({ mobileOpen: localStorage.getItem("openDrawer") });
   };
   render() {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
         <CssBaseline />
-
+        <NavBar handleDrawerToggle={this.handleDrawerToggle} />
+        <div className={classes.toolbar} />
         <Drawer
           className={classes.drawer}
-          variant="permanent"
+          variant={"temporary"}
+          open={this.state.drawerOpen}
           classes={{
             paper: classes.drawerPaper
           }}
         >
-          <NavBar />
-          <div className={classes.toolbar} />
+          <ClickAwayListener onClickAway={this.handleDrawerClose}>
           <List>
             <ListItem button key={"Home"} onClick={this.handleHome}>
               <ListItemIcon>
@@ -173,8 +203,12 @@ class ClippedDrawer extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en" ? "Home" : "صفحتي"
                 }
+                  </b>
+                  }
               />
             </ListItem>
             <ListItem
@@ -187,10 +221,14 @@ class ClippedDrawer extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "Edit Your Profile"
                     : "تغير البينات"
                 }
+                  </b>
+                  }
               />
             </ListItem>
             <ListItem button key={"View All Cases"} onClick={this.handleCases}>
@@ -199,10 +237,14 @@ class ClippedDrawer extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "View All Cases"
                     : "اظهار الشركات"
                 }
+                  </b>
+                  }
               />
             </ListItem>
             <ListItem button key={"upload Form"} onClick={this.handleUpload}>
@@ -211,10 +253,14 @@ class ClippedDrawer extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "Upload form"
                     : "نوع شركة جديد"
                 }
+                  </b>
+                  }
               />
             </ListItem>
             <Divider />
@@ -224,10 +270,14 @@ class ClippedDrawer extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "Create new Admin"
                     : "ادمون جديد"
                 }
+                  </b>
+                  }
               />
             </ListItem>
 
@@ -237,10 +287,14 @@ class ClippedDrawer extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "Create new Lawyer"
                     : "محامي جديد"
                 }
+                  </b>
+                  }
               />
             </ListItem>
             <ListItem
@@ -253,10 +307,14 @@ class ClippedDrawer extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "Create new Reviewer"
                     : "مراجع جديد"
                 }
+                  </b>
+                  }
               />
             </ListItem>
             <Divider />
@@ -270,10 +328,14 @@ class ClippedDrawer extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "View Lawyers"
                     : "اظهار المحاميين"
                 }
+                  </b>
+                  }
               />
             </ListItem>
 
@@ -287,13 +349,18 @@ class ClippedDrawer extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "View Reviewer"
                     : "اظهار المراجعين"
                 }
+                  </b>
+                  }
               />
             </ListItem>
           </List>
+          </ClickAwayListener>
         </Drawer>
         <main className={classes.content} style={{ marginTop: 50 }}>
           {this.handleLoading}
@@ -308,4 +375,12 @@ ClippedDrawer.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(ClippedDrawer);
+const mapStateToProps = state => ({
+  drawerOpen: state.drawerState.drawerOpen
+});
+
+const mapDispatchToProps = dispatch => ({});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(ClippedDrawer));

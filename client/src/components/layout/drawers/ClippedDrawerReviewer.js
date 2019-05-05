@@ -22,28 +22,27 @@ import Home from '@material-ui/icons/Home'
 import EditProfile from '@material-ui/icons/BorderColor'
 import ViewList from '@material-ui/icons/ViewList'
 import LinearDeterminate from '../loading/CustomizedProgress';
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
-import Navbar from '../Navbar';
+import NavBar from '../Navbar';
 
 const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
-    display: "flex"
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1
+    display: "flex",
+    zIndex: -1,
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0
   },
   drawerPaper: {
-    width: drawerWidth
+    width: drawerWidth,
+    backgroundColor: "#103755"
   },
   content: {
-    flexGrow: 1,
-    padding: theme.spacing.unit * 3
+    flexGrow: 1
   },
   toolbar: theme.mixins.toolbar
 });
@@ -52,7 +51,9 @@ class ClippedDrawerReviewer  extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      clicked: "i"
+      clicked: "i",
+      mobileOpen: false,
+      drawerOpen: false
     };
   }
   handleLoading = () => {
@@ -98,17 +99,34 @@ class ClippedDrawerReviewer  extends React.Component {
 
   handleHome = () => {
     document.location.href = "/";
+
+    this.handleDrawerClose();
   };
   handleCases = () => {
     this.setState({ clicked: "cases" });
+    this.handleDrawerClose();
   };
   handleCases2 = () => {
     this.setState({ clicked: "myCases" });
+    this.handleDrawerClose();
   };
 
 
   handleProfile = () => {
     this.setState({ clicked: "profile" });
+    this.handleDrawerClose();
+  };
+  handleDrawerToggle = () => {
+    this.setState(prevState => {
+      return { drawerOpen: !prevState.drawerOpen };
+    });
+  };
+  handleDrawerClose = () => {
+    this.setState({ drawerOpen: false });
+  };
+
+  handelOpen = () => {
+    this.setState({ mobileOpen: localStorage.getItem("openDrawer") });
   };
 
   render() {
@@ -117,15 +135,17 @@ class ClippedDrawerReviewer  extends React.Component {
     return (
       <div className={classes.root}>
         <CssBaseline />
+        <NavBar handleDrawerToggle={this.handleDrawerToggle} />
+        <div className={classes.toolbar} />
         <Drawer
           className={classes.drawer}
-          variant="permanent"
+          variant={"temporary"}
+          open={this.state.drawerOpen}
           classes={{
             paper: classes.drawerPaper
           }}
         >
-        <Navbar />
-          <div className={classes.toolbar} />
+          <ClickAwayListener onClickAway={this.handleDrawerClose}>
 
           <List>
             <ListItem button key={"Home"} onClick={this.handleHome}>
@@ -134,8 +154,10 @@ class ClippedDrawerReviewer  extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  sessionStorage.getItem("lang") === "en" ? "Home" : "صفحتي"
+                    <b style={{ color: "#ffffff" }}>
+                 { sessionStorage.getItem("lang") === "en" ? "Home" : "صفحتي"
                 }
+                </b>}
               />
             </ListItem>
             
@@ -150,15 +172,18 @@ class ClippedDrawerReviewer  extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  sessionStorage.getItem("lang") === "en"
+                    <b style={{ color: "#ffffff" }}>
+                {  sessionStorage.getItem("lang") === "en"
                     ? "View All Cases"
                     : "اعرض كل الشركات"
                 }
+                </b>}
               />
+              
             </ListItem>
             <ListItem
               button
-              key={"View My Companies"}
+              key={"View My Cases"}
               onClick={this.handleCases2}
             >
               <ListItemIcon>
@@ -166,10 +191,12 @@ class ClippedDrawerReviewer  extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  sessionStorage.getItem("lang") === "en"
-                    ? "View My Companies"
+                    <b style={{ color: "#ffffff" }}>
+                 { sessionStorage.getItem("lang") === "en"
+                    ? "View My Cases"
                     : "اظهر شركاتي"
                 }
+                </b>}
               />
             </ListItem>
           </List>
@@ -187,14 +214,17 @@ class ClippedDrawerReviewer  extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  sessionStorage.getItem("lang") === "en"
+                    <b style={{ color: "#ffffff" }}>
+                {  sessionStorage.getItem("lang") === "en"
                     ? "Edit Your Profile"
                     : "تغير البيانات"
                 }
+                </b>}
               />
             </ListItem>
            
           </List>
+          </ClickAwayListener>
         </Drawer>
         <main className={classes.content} style={{ marginTop: 50 }}>
           {this.handleLoading}

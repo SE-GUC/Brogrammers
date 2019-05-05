@@ -25,55 +25,54 @@ const styles = {
   }
 }
 
-function ViewLawyersByAdminCard (props) {
+function ViewLawyersByAdminCard(props) {
   const { classes, backgroundColor } = props
   const bull = <span className={classes.bullet}>•</span>
 
   return (
-
-    <Card className={classes.card} style={{ backgroundColor }} >
-      <CardContent >
-        <Typography className={classes.title} color='textSecondary' gutterBottom>
+    <Card className={classes.card} style={{ backgroundColor }}>
+      <CardContent>
+        <Typography
+          className={classes.title}
+          color="textSecondary"
+          gutterBottom
+        >
           {/* status: {props.status} */}
           {/* Birth Date: {props.birthDate} */}
-
         </Typography>
-        <Typography variant='h5' component='h2'>
+        <Typography variant="h5" component="h2">
           {/* {props.nameInEnglish} */}
           {props.firstName}
           <br />
           {props.middleName}
           {props.lastName}
-
         </Typography>
-        <Typography className={classes.pos} color='textSecondary'>
+        <Typography className={classes.pos} color="textSecondary">
           {/* {props.addressHQ} */}
-
-          {sessionStorage.getItem('lang') === 'en' ? 'Email ' : 'البريد'}:{props.email}
+          {sessionStorage.getItem('lang') === 'en' ? 'Email ' : 'البريد'}:
+          {props.email}
           <br />
-          {sessionStorage.getItem('lang') === 'en' ? 'Phone number' : 'رقم الهاتف'}:{props.mobileNumber}
+          {sessionStorage.getItem('lang') === 'en'
+            ? 'Phone Number'
+            : 'رقم الهاتف'}
+          :{props.mobileNumber}
         </Typography>
-        <Typography component='p'>
+        <Typography component="p">
           {/* insert the data in the list here */}
           {/* <ul>
             <li>Company id: {props.compid}</li>
 
           </ul>
           <br /> */}
-
           Years of Experience: {props.yearsOfExperience}
           <br />
           Current Salary: {props.salary}
-
         </Typography>
       </CardContent>
       <CardActions>
         <DeleteLawyerButton token={props.token} id={props.id} />
-
       </CardActions>
-
     </Card>
-
   )
 }
 
