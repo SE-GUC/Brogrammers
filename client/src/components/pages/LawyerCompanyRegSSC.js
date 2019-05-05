@@ -208,34 +208,39 @@ class LawyerCompanyReg extends React.Component {
       this.state.company.investorType,
       this.state.company.investorIdentificationType
     )
-    if(!this.state.err){
-    fetch('https://serverbrogrammers.herokuapp.com/api/lawyer/lawyerinvestor/createssccompany',
-      {
-        method: 'POST',
-        body: JSON.stringify(this.state.company),
-        headers: {
-          'Content-Type': 'application/json',
-          'Origin': 'http://localhost:3000',
-          'x-access-token': sessionStorage.getItem('jwtToken')
-        }
-      }).then(response => {
-        response.json().then(data => {
-          console.log('Successful' + data)
-
-          this.setState({
-            id: data.data._id
-          })
-          if (data.data.capitalCurrency == 'egp') {
-            document.getElementById('negp').style.visibility = 'hidden'
-          } else {
-            document.getElementById('egp').style.visibility = 'hidden'
+    if (!this.state.err) {
+      fetch('https://serverbrogrammers.herokuapp.com/api/lawyer/lawyerinvestor/createssccompany',
+        {
+          method: 'POST',
+          body: JSON.stringify(this.state.company),
+          headers: {
+            'Content-Type': 'application/json',
+            'Origin': 'http://localhost:3000',
+            'x-access-token': sessionStorage.getItem('jwtToken')
           }
-          //  this.state.id=data.data._id
-          console.log(this.state.id + ' the ID')
-          this.createPdf(event)
+        }).then(response => {
+          response.json().then(data => {
+            if (data.error) {
+              alert(data.error)
+            } else {
+              console.log('Successful' + data)
+
+              this.setState({
+                id: data.data._id
+              })
+              if (data.data.capitalCurrency == 'egp') {
+                document.getElementById('negp').style.visibility = 'hidden'
+              } else {
+                document.getElementById('egp').style.visibility = 'hidden'
+              }
+              //  this.state.id=data.data._id
+              console.log(this.state.id + ' the ID')
+              this.createPdf(event)
+            }
+          })
         })
-      })
-    }else{
+      alert("Company Created Successfully")
+    } else {
       this.setState({
         err: false
       })
@@ -294,8 +299,9 @@ class LawyerCompanyReg extends React.Component {
     capital, telephoneHQ, investorName, investorNationality
     , investorIdentificationNumber, investorTelephone, investorAddress, investorFax, investorEmail, investorType, investorIdentificationType) {
     var regex = new RegExp(/^[a-zA-Z\s-, ]+$/);
-    var number = new RegExp(/^[0-9]+$/)
+    var number = /^\d*$/;
     var law = new RegExp(/^Law/)
+    var re = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm;
     console.log("I entered")
     if (investorIdentificationType) {
       if (regex.test(investorIdentificationType)) {
@@ -318,32 +324,6 @@ class LawyerCompanyReg extends React.Component {
           err: true
         })
       }
-    }
-    if (investorEmail) {
-      if (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(investorEmail)) {
-        this.setState({ investorEmailValid: true })
-      }
-      else {
-        this.setState({
-          investorEmailValid: false,
-          err: true
-        })
-      }
-
-    }
-
-
-    if (investorFax) {
-      if (number.test(investorFax)) {
-        this.setState({ investorFaxValid: true })
-      }
-      else {
-        this.setState({
-          investorFaxValid: false,
-          err: true
-        })
-      }
-
     }
 
     if (investorTelephone) {
@@ -481,16 +461,7 @@ class LawyerCompanyReg extends React.Component {
 
 
     if (nameInArabic) {
-      if (regex.test(nameInArabic)) {
-        this.setState({ nameInArabicValid: true })
-      }
-      else {
-        this.setState({
-          nameInArabicValid: false,
-          err: true
-        })
-
-      }
+      this.setState({ nameInArabicValid: true })
     }
     else {
       this.setState({
@@ -512,8 +483,6 @@ class LawyerCompanyReg extends React.Component {
 
       }
     }
-
-
 
     if (governerateHQ) {
       if (regex.test(governerateHQ)) {
@@ -603,7 +572,7 @@ class LawyerCompanyReg extends React.Component {
     }
 
     if (capital) {
-      if (capital > 50000) {
+      if (capital >= 50000) {
         this.setState({ capitalValid: true })
       }
       else {
@@ -713,9 +682,9 @@ class LawyerCompanyReg extends React.Component {
             </Grid>
             <Grid container direction='column' alignItems='flex-start'>
               <Typography variant='h6' component='h3'>
-                <br/>
+                <br />
                 Your Submitted Managers:
-                <br/>
+                <br />
                 {this.state.company.managers.map(data => {
                   let icon = null;
                   return (
@@ -723,7 +692,7 @@ class LawyerCompanyReg extends React.Component {
                       key={data.key}
                       icon={icon}
                       label={data.name}
-                      //className={classes.chip}
+                    //className={classes.chip}
                     />
                   );
                 })}

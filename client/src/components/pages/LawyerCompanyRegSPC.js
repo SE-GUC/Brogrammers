@@ -63,7 +63,7 @@ class InvestorCompanyReg extends React.Component {
         capitalCurrency: '',
         capital: '',
         investorName: '',
-        investorSex: '',
+        investorSex: 'male',
         investorNationality: '',
         investorIdentificationType: '',
         investorIdentificationNumber: '',
@@ -213,20 +213,24 @@ class InvestorCompanyReg extends React.Component {
           }
         }).then(response => {
           response.json().then(data => {
-            console.log('Successful' + data)
-
-            this.setState({
-              id: data.data._id
-
-            })
-            if (data.data.capitalCurrency == 'egp') {
-              document.getElementById('negp').style.visibility = 'hidden'
+            if (data.error) {
+              alert(data.error)
             } else {
-              document.getElementById('egp').style.visibility = 'hidden'
+              console.log('Successful' + data)
+
+              this.setState({
+                id: data.data._id
+
+              })
+              if (data.data.capitalCurrency == 'egp') {
+                document.getElementById('negp').style.visibility = 'hidden'
+              } else {
+                document.getElementById('egp').style.visibility = 'hidden'
+              }
+              //  this.state.id=data.data._id
+              console.log(this.state.id + ' the ID')
+              this.createPdf(event)
             }
-            //  this.state.id=data.data._id
-            console.log(this.state.id + ' the ID')
-            this.createPdf(event)
           })
         })
     } else {
@@ -263,8 +267,9 @@ class InvestorCompanyReg extends React.Component {
     capital, telephoneHQ, investorName, investorNationality
     , investorIdentificationNumber, investorTelephone, investorAddress, investorFax, investorEmail, investorIdentificationType) {
     var regex = new RegExp(/^[a-zA-Z\s-, ]+$/);
-    var number = new RegExp(/^[0-9]+$/)
+    var number = /^\d*$/;
     var law = new RegExp(/^Law/)
+    var re = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm;
     console.log("I entered")
     if (investorIdentificationType) {
       if (regex.test(investorIdentificationType)) {
@@ -276,33 +281,6 @@ class InvestorCompanyReg extends React.Component {
           err: true
         })
       }
-    }
-
-    if (investorEmail) {
-      if (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(investorEmail)) {
-        this.setState({ investorEmailValid: true })
-      }
-      else {
-        this.setState({
-          investorEmailValid: false,
-          err: true
-        })
-      }
-
-    }
-
-
-    if (investorFax) {
-      if (number.test(investorFax)) {
-        this.setState({ investorFaxValid: true })
-      }
-      else {
-        this.setState({
-          investorFaxValid: false,
-          err: true
-        })
-      }
-
     }
 
     if (investorTelephone) {
@@ -424,6 +402,12 @@ class InvestorCompanyReg extends React.Component {
         })
 
       }
+    }
+    else {
+      this.setState({
+        telephoneHQValid: false,
+        err: true
+      })
     }
 
 
