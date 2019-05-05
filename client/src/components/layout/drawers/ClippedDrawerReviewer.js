@@ -39,7 +39,7 @@ const styles = theme => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    color: "#103755"
+    backgroundColor: "#103755"
   },
   content: {
     flexGrow: 1
@@ -154,8 +154,10 @@ class ClippedDrawerReviewer  extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  sessionStorage.getItem("lang") === "en" ? "Home" : "صفحتي"
+                    <b style={{ color: "#ffffff" }}>
+                 { sessionStorage.getItem("lang") === "en" ? "Home" : "صفحتي"
                 }
+                </b>}
               />
             </ListItem>
             
@@ -170,11 +172,14 @@ class ClippedDrawerReviewer  extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  sessionStorage.getItem("lang") === "en"
+                    <b style={{ color: "#ffffff" }}>
+                {  sessionStorage.getItem("lang") === "en"
                     ? "View All Cases"
                     : "اعرض كل الشركات"
                 }
+                </b>}
               />
+              
             </ListItem>
             <ListItem
               button
@@ -186,10 +191,12 @@ class ClippedDrawerReviewer  extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  sessionStorage.getItem("lang") === "en"
+                    <b style={{ color: "#ffffff" }}>
+                 { sessionStorage.getItem("lang") === "en"
                     ? "View My Cases"
                     : "اظهر شركاتي"
                 }
+                </b>}
               />
             </ListItem>
           </List>
@@ -207,10 +214,12 @@ class ClippedDrawerReviewer  extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  sessionStorage.getItem("lang") === "en"
+                    <b style={{ color: "#ffffff" }}>
+                {  sessionStorage.getItem("lang") === "en"
                     ? "Edit Your Profile"
                     : "تغير البيانات"
                 }
+                </b>}
               />
             </ListItem>
            

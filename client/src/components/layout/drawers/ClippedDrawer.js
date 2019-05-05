@@ -49,7 +49,7 @@ const styles = theme => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    color: "#103755"
+    backgroundColor: "#103755"
   },
   content: {
     flexGrow: 1
@@ -203,8 +203,12 @@ class ClippedDrawer extends Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en" ? "Home" : "صفحتي"
                 }
+                  </b>
+                  }
               />
             </ListItem>
             <ListItem
@@ -217,10 +221,14 @@ class ClippedDrawer extends Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "Edit Your Profile"
                     : "تغير البينات"
                 }
+                  </b>
+                  }
               />
             </ListItem>
             <ListItem button key={"View All Cases"} onClick={this.handleCases}>
@@ -229,10 +237,14 @@ class ClippedDrawer extends Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "View All Cases"
                     : "اظهار الشركات"
                 }
+                  </b>
+                  }
               />
             </ListItem>
             <ListItem button key={"upload Form"} onClick={this.handleUpload}>
@@ -241,10 +253,14 @@ class ClippedDrawer extends Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "Upload form"
                     : "نوع شركة جديد"
                 }
+                  </b>
+                  }
               />
             </ListItem>
             <Divider />
@@ -254,10 +270,14 @@ class ClippedDrawer extends Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "Create new Admin"
                     : "ادمون جديد"
                 }
+                  </b>
+                  }
               />
             </ListItem>
 
@@ -267,10 +287,14 @@ class ClippedDrawer extends Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "Create new Lawyer"
                     : "محامي جديد"
                 }
+                  </b>
+                  }
               />
             </ListItem>
             <ListItem
@@ -283,10 +307,14 @@ class ClippedDrawer extends Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "Create new Reviewer"
                     : "مراجع جديد"
                 }
+                  </b>
+                  }
               />
             </ListItem>
             <Divider />
@@ -300,10 +328,14 @@ class ClippedDrawer extends Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "View Lawyers"
                     : "اظهار المحاميين"
                 }
+                  </b>
+                  }
               />
             </ListItem>
 
@@ -317,10 +349,14 @@ class ClippedDrawer extends Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "View Reviewer"
                     : "اظهار المراجعين"
                 }
+                  </b>
+                  }
               />
             </ListItem>
           </List>

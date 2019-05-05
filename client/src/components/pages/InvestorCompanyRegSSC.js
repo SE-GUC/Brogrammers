@@ -212,27 +212,31 @@ class InvestorCompanyReg extends React.Component {
           }
         }).then(response => {
           response.json().then(data => {
-            console.log('Successful' + data)
-            console.log('Successful' + data)
-            var lol = new Date(data.data.investorBD)
-
-            this.setState({
-              id: data.data._id,
-              investorName: data.data.investorName,
-              investorAddress: data.data.investorAddress,
-              investorBD: lol.getDay() + '/' + lol.getMonth() + '/' + lol.getFullYear(),
-              investorIdentificationNumber: data.data.investorIdentificationNumber,
-              investorIdentificationType: data.data.investorIdentificationType,
-              investorNationality: data.data.investorNationality
-            })
-            if (data.data.capitalCurrency == 'egp') {
-              document.getElementById('negp').style.visibility = 'hidden'
+            if (data.error) {
+              alert(data.error)
             } else {
-              document.getElementById('egp').style.visibility = 'hidden'
+              console.log('Successful' + data)
+              console.log('Successful' + data)
+              var lol = new Date(data.data.investorBD)
+
+              this.setState({
+                id: data.data._id,
+                investorName: data.data.investorName,
+                investorAddress: data.data.investorAddress,
+                investorBD: lol.getDay() + '/' + lol.getMonth() + '/' + lol.getFullYear(),
+                investorIdentificationNumber: data.data.investorIdentificationNumber,
+                investorIdentificationType: data.data.investorIdentificationType,
+                investorNationality: data.data.investorNationality
+              })
+              if (data.data.capitalCurrency == 'egp') {
+                document.getElementById('negp').style.visibility = 'hidden'
+              } else {
+                document.getElementById('egp').style.visibility = 'hidden'
+              }
+              //  this.state.id=data.data._id
+              console.log(this.state.id + ' the ID')
+              this.createPdf(event)
             }
-            //  this.state.id=data.data._id
-            console.log(this.state.id + ' the ID')
-            this.createPdf(event)
           })
         })
     } else {
@@ -268,10 +272,10 @@ class InvestorCompanyReg extends React.Component {
   }
 
   validate(regulationLaw, legalCompanyForm, nameInArabic,
-    nameInEnglish, governerateHQ, cityHQ, addressHQ, faxHQ, capitalCurrency,
+    nameInEnglish, governerateHQ, cityHQ, addressHQ, faxHQ,
     capital, telephoneHQ) {
     var regex = new RegExp(/^[a-zA-Z\s-, ]+$/);
-    var number = new RegExp(/^[0-9]+$/)
+    var number = /^\d*$/;
     var law = new RegExp(/^Law/)
     console.log("I entered")
 
@@ -294,19 +298,6 @@ class InvestorCompanyReg extends React.Component {
         regulationLawValid: false,
         err: true
       })
-    }
-
-    if (telephoneHQ) {
-      if (number.test(telephoneHQ)) {
-        this.setState({ telephoneHQValid: "true" })
-      }
-      else {
-        this.setState({
-          telephoneHQValid: false,
-          err: true
-        })
-
-      }
     }
 
     if (legalCompanyForm) {
@@ -419,44 +410,6 @@ class InvestorCompanyReg extends React.Component {
 
       }
     }
-
-    if (capitalCurrency) {
-      if (regex.test(capitalCurrency)) {
-        this.setState({ capitalCurrencyValid: true })
-      }
-      else {
-        this.setState({
-          capitalCurrencyValid: false,
-          err: true
-        })
-
-      }
-    }
-    else {
-      this.setState({
-        capitalCurrencyValid: false,
-        err: true
-      })
-    }
-
-    if (capital) {
-      if (capital > 50000) {
-        this.setState({ capitalValid: true })
-      }
-      else {
-        this.setState({
-          capitalValid: false,
-          err: true
-        })
-
-      }
-    }
-    else {
-      this.setState({
-        capitalValid: false,
-        err: true
-      })
-    }
     return this.state.err
   }
 
@@ -564,6 +517,10 @@ class InvestorCompanyReg extends React.Component {
 
         <br />
 
+        <br />
+        <br />
+        <br />
+        <br />
         <br />
 
         <br />
