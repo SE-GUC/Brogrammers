@@ -2,22 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import ReviewerCases from '../../pages/ReviewerCases'
 import ViewReviewerCasesbyID from '../../pages/ViewReviewerCasesbyID'
 import EditProfileReviewer from '../../pages/EditProfileReviewer'
-import ReviewerComment from '../../pages/ReviewerComment'
-import InvestorCompanyRegSPC from '../../pages/InvestorCompanyRegSPC'
 import Home from '@material-ui/icons/Home'
 import EditProfile from '@material-ui/icons/BorderColor'
 import ViewList from '@material-ui/icons/ViewList'

@@ -3,8 +3,6 @@ import { Paper, withStyles, Grid, Button, Fade } from "@material-ui/core";
 import ViewApprovedCompanies from "./ViewApprovedCompanies";
 import Image from "../Images/egypt.jpg"; // Import using relative path
 import Plx from "react-plx";
-import StickyText from "./StickyText";
-import { StickyContainer, Sticky } from "react-sticky";
 
 const styles = {
   paperContainer: {

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import AlertDialogSlide from "../layout/Dialogs/SlideDialog";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -113,8 +113,6 @@ class InvestorCompanyReg extends React.Component {
     var source = document.getElementById("com");
     var source2 = document.getElementById("com2");
     var source3 = document.getElementById("com3");
-    var doc = "";
-    var blob = "";
     var id = this.state.id;
     html2canvas(source, {
       dpi: 144,
@@ -122,7 +120,6 @@ class InvestorCompanyReg extends React.Component {
     }).then(function(canvas) {
       var img = canvas.toDataURL("image/png");
       var doc = new jsPDF();
-      var myImage = new Image(100, 200);
       doc.addImage(img, "JPEG", 17, 10);
       doc.addPage();
       html2canvas(source2, {
@@ -147,9 +144,7 @@ class InvestorCompanyReg extends React.Component {
             "state_changed",
             snapshot => {
               // progrss function ....
-              const progress = Math.round(
-                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-              );
+
             },
             error => {
               // error function ....
@@ -251,7 +246,7 @@ class InvestorCompanyReg extends React.Component {
               investorIdentificationType: data.data.investorIdentificationType,
               investorNationality: data.data.investorNationality
             });
-            if (data.data.capitalCurrency == "egp") {
+            if (data.data.capitalCurrency === "egp") {
               document.getElementById("negp").style.visibility = "hidden";
             } else {
               document.getElementById("egp").style.visibility = "hidden";

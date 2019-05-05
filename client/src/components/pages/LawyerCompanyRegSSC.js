@@ -231,7 +231,7 @@ class LawyerCompanyReg extends React.Component {
               this.setState({
                 id: data.data._id
               })
-              if (data.data.capitalCurrency == 'egp') {
+              if (data.data.capitalCurrency === 'egp') {
                 document.getElementById('negp').style.visibility = 'hidden'
               } else {
                 document.getElementById('egp').style.visibility = 'hidden'

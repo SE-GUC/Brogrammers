@@ -1,11 +1,6 @@
 import React, { Component } from "react";
-import { withStyles, List, Paper, Grid, Grow } from "@material-ui/core";
-import GridList from "@material-ui/core/GridList";
+import { withStyles, Grid} from "@material-ui/core";
 import CompanyCard from "../cards/CompanyCard";
-import InvestorCard from "../cards/InvestorCard";
-import Plx from "react-plx/lib/Plx";
-import StickyText from "./StickyText";
-import { StickyContainer, Sticky } from "react-sticky";
 
 const styles = {
   list: {

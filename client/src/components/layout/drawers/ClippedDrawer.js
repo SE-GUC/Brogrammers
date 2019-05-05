@@ -2,30 +2,21 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
-import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
 import NavBar from "../Navbar";
 import ViewList from "@material-ui/icons/ViewList";
 import Identity from "@material-ui/icons/Person";
 import Home from "@material-ui/icons/Home";
 import Upload from "@material-ui/icons/CloudUpload";
-import Note from "@material-ui/icons/NoteAdd";
 import Add from "@material-ui/icons/PersonAdd";
 import LinearDeterminate from "../loading/CustomizedProgress";
-import zIndex from "@material-ui/core/styles/zIndex";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { DRAWER_TOGGLE } from "../../../constants/actiontypes";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import CreateCompany from "@material-ui/icons/CreateNewFolder";
 import RegisterAdmin from "../../pages/RegisterAdmin";
 import RegisterReviewer from "../../pages/RegisterReviewer";
 import RegisterLawyer from "../../pages/RegisterLawyer";
@@ -35,7 +26,6 @@ import EditProfile from "@material-ui/icons/BorderColor";
 import EditProfileAdmin from "../../pages/EditProfileAdmin";
 import ViewLawyersByAdmin from "../../pages/ViewLawyersByAdmin";
 import ViewReviewersByAdmin from "../../pages/ViewReviewersByAdmin";
-import Home2 from "../../pages/Home"
 const drawerWidth = 240;
 
 const styles = theme => ({

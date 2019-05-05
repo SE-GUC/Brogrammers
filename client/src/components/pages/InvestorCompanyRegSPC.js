@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import AlertDialogSlide from "../layout/Dialogs/SlideDialog";
 import LinearDeterminate from "../layout/loading/CustomizedProgress";
 import { withStyles } from "@material-ui/core/styles";
@@ -19,7 +19,6 @@ import Required from "../layout/inputs/RequiredValidation";
 import NotRequired from "../layout/inputs/NotRequiredValidation";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import jsPDF from "jspdf";
-import FileUploader from "react-firebase-file-uploader";
 import html2canvas from "html2canvas";
 import img3 from "../../components/Images/capture.png";
 import firebase from "../../firebase";
@@ -120,8 +119,6 @@ class InvestorCompanyReg extends React.Component {
     var source = document.getElementById("com");
     var source2 = document.getElementById("com2");
     var source3 = document.getElementById("com3");
-    var doc = "";
-    var blob = "";
     var id = this.state.id;
     html2canvas(source, {
       dpi: 144,
@@ -129,7 +126,6 @@ class InvestorCompanyReg extends React.Component {
     }).then(function(canvas) {
       var img = canvas.toDataURL("image/png");
       var doc = new jsPDF();
-      var myImage = new Image(100, 200);
       doc.addImage(img, "JPEG", 17, 10);
       doc.addPage();
       html2canvas(source2, {
@@ -153,9 +149,7 @@ class InvestorCompanyReg extends React.Component {
             "state_changed",
             snapshot => {
               // progrss function ....
-              const progress = Math.round(
-                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-              );
+             
             },
             error => {
               // error function ....
@@ -241,7 +235,7 @@ class InvestorCompanyReg extends React.Component {
               investorIdentificationType: data.data.investorIdentificationType,
               investorNationality: data.data.investorNationality
             });
-            if (data.data.capitalCurrency == "egp") {
+            if (data.data.capitalCurrency === "egp") {
               document.getElementById("negp").style.visibility = "hidden";
             } else {
               document.getElementById("egp").style.visibility = "hidden";
