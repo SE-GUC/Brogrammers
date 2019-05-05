@@ -390,6 +390,11 @@ router.post("/login", function(req, res) {
       return res.status(401).send({ auth: false, message: "No user found." });
     }
     const loginPassword = req.body.password;
+    if(!loginPassword){
+      return res
+      .status(401)
+      .send({ auth: false, message: 'Please enter pass.'})
+    }
     const userPassword = user.password;
     const match = bcrypt.compareSync(loginPassword, userPassword);
     if (!match) return res.status(401).send({ auth: false, token: null });

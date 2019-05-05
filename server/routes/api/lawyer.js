@@ -463,6 +463,13 @@ router.post('/login', function (req, res) {
     }
     // const admin = Admin.findOne({ email: req.body.email});
     const loginPassword = req.body.password
+
+    if(!loginPassword){
+      return res
+      .status(401)
+      .send({ auth: false, message: 'Please enter pass.'})
+    }
+    
     const userPassword = user.password
     const match = bcrypt.compareSync(loginPassword, userPassword)
     // var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);

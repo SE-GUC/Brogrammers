@@ -45,7 +45,7 @@ const styles = theme => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    color: "#103755"
+    backgroundColor: "#103755"
   },
   content: {
     flexGrow: 1
@@ -198,8 +198,11 @@ class ClippedDrawerLawyer extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en" ? "Home" : "صفحتي"
                 }
+                </b>}
               />
             </ListItem>
             <ListItem
@@ -212,10 +215,13 @@ class ClippedDrawerLawyer extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "View My Cases"
                     : "اظهر شركاتي"
                 }
+                </b>}
               />
             </ListItem>
 
@@ -230,10 +236,13 @@ class ClippedDrawerLawyer extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "View All Cases"
                     : "اعرض كل الشركات"
                 }
+                </b>}
               />
             </ListItem>
           </List>
@@ -248,10 +257,13 @@ class ClippedDrawerLawyer extends React.Component {
             </ListItemIcon>
             <ListItemText
               primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                 sessionStorage.getItem("lang") === "en"
                   ? "Create SSC Companies"
                   : "سجل شركتي ال SSC"
               }
+              </b>}
             />
           </ListItem>
           <ListItem
@@ -264,10 +276,13 @@ class ClippedDrawerLawyer extends React.Component {
             </ListItemIcon>
             <ListItemText
               primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                 sessionStorage.getItem("lang") === "en"
                   ? "Create SPC Companies"
                   : "سجل شركتي ال SPC"
               }
+              </b>}
             />
           </ListItem>
           <ListItem
@@ -280,10 +295,13 @@ class ClippedDrawerLawyer extends React.Component {
             </ListItemIcon>
             <ListItemText
               primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                 sessionStorage.getItem("lang") === "en"
                   ? "Create Dynamic Companies"
                   : "سجل شركتي ال Dynamic"
               }
+              </b>}
             />
           </ListItem>
           <Divider />
@@ -296,10 +314,13 @@ class ClippedDrawerLawyer extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "Edit Companies "
                     : "تغير الشركات"
                 }
+                </b>}
               />
             </ListItem>
             <ListItem
@@ -312,10 +333,15 @@ class ClippedDrawerLawyer extends React.Component {
               </ListItemIcon>
               <ListItemText
                 primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {
                   sessionStorage.getItem("lang") === "en"
                     ? "Edit Your Profile"
                     : "تغير البيانات"
+                    
                 }
+                </b>}
+                
               />
             </ListItem>
 

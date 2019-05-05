@@ -41,16 +41,18 @@ const styles = theme => ({
     display: "flex",
     zIndex: -1,
   },
+
   drawer: {
     width: drawerWidth,
-    flexShrink: 0
+    flexShrink: 0,
   },
   drawerPaper: {
     width: drawerWidth,
-    color: "#103755"
+    backgroundColor: "#103755",
   },
   content: {
-    flexGrow: 1
+    flexGrow: 1,
+   
   },
   toolbar: theme.mixins.toolbar
 });
@@ -161,13 +163,13 @@ class ClippedDrawerInvestor extends Component {
                   <Home />
                 </ListItemIcon>
                 <ListItemText
-                  primary=
-                  
+                  primary={
+                    <b style={{ color: "#ffffff" }}>
                       {sessionStorage.getItem("lang") === "en"
                         ? "Home"
                         : "صفحتي"}
-                
-                  
+                    </b>
+                  }
                 />
               </ListItem>
               <ListItem
@@ -179,14 +181,13 @@ class ClippedDrawerInvestor extends Component {
                   <EditProfile />
                 </ListItemIcon>
                 <ListItemText
-                  primary=
-                   
+                  primary={
+                    <b style={{ color: "#ffffff" }}>
                       {sessionStorage.getItem("lang") === "en"
                         ? "Edit Your Profile"
                         : "تغير البينات"}
-                   
-                  
-                
+                    </b>
+                  }
                 />
               </ListItem>
             </List>
@@ -201,12 +202,14 @@ class ClippedDrawerInvestor extends Component {
                   <ViewList />
                 </ListItemIcon>
                 <ListItemText
-                  primary=
+                  primary={
+                    <b style={{ color: "#ffffff" }}>
+                      {" "}
                       {sessionStorage.getItem("lang") === "en"
                         ? "View My Companies"
                         : "اظهر شركاتي"}
-                    
-                  
+                    </b>
+                  }
                 />
               </ListItem>
               <ListItem
@@ -218,11 +221,13 @@ class ClippedDrawerInvestor extends Component {
                   <ViewList />
                 </ListItemIcon>
                 <ListItemText
-                  primary=
+                  primary={
+                    <b style={{ color: "#ffffff" }}>
                       {sessionStorage.getItem("lang") === "en"
                         ? "View My Requests"
                         : "اظهر طلباتي"}
-                  
+                    </b>
+                  }
                 />
               </ListItem>
               <Divider />
@@ -235,11 +240,13 @@ class ClippedDrawerInvestor extends Component {
                   <Note />
                 </ListItemIcon>
                 <ListItemText
-                  primary=
+                  primary={
+                    <b style={{ color: "#ffffff" }}>
                       {sessionStorage.getItem("lang") === "en"
                         ? "Create SSC Companies"
                         : "SSCسجل شركتي ال"}
-                    
+                    </b>
+                  }
                 />
               </ListItem>
               <ListItem
@@ -251,11 +258,13 @@ class ClippedDrawerInvestor extends Component {
                   <Note />
                 </ListItemIcon>
                 <ListItemText
-                  primary=
+                  primary={
+                    <b style={{ color: "#ffffff" }}>
                       {sessionStorage.getItem("lang") === "en"
                         ? "Create SPC Companies"
                         : "SPCسجل شركتي ال "}
-                
+                    </b>
+                  }
                 />
               </ListItem>
               <ListItem
@@ -267,11 +276,13 @@ class ClippedDrawerInvestor extends Component {
                   <Note />
                 </ListItemIcon>
                 <ListItemText
-                  primary=
+                  primary={
+                    <b style={{ color: "#ffffff" }}>
                       {sessionStorage.getItem("lang") === "en"
                         ? "Create Other Companies"
                         : "سجل شركات اخرى"}
-             
+                    </b>
+                  }
                 />
               </ListItem>
             </List>
