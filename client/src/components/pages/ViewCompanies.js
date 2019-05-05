@@ -48,7 +48,7 @@ class ViewCompanies extends Component {
   }
 
   render () {
-    const { classes } = this.props
+   
     if (!this.state.investorCompanies) {
       return (<h10>{sessionStorage.getItem('lang') === 'en' ? 'You have no companies' : 'لا يوجد لديك شركات'}</h10>)
     } else {

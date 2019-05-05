@@ -70,7 +70,7 @@ export class AdminSignIn extends Component {
       }
     }).then(response => {
       response.json().then(data => {
-        console.log('Successful' + data + data.auth)
+       
         sessionStorage.setItem('jwtToken', data.token)
         sessionStorage.setItem('auth', data.auth)
         sessionStorage.setItem('id', data.id)
@@ -82,7 +82,7 @@ export class AdminSignIn extends Component {
             admin: {
               c: false
             }
-          }, () => console.log(this.state.admin.c))
+          }, () => console.log())
         }
       })
     })
@@ -91,14 +91,13 @@ export class AdminSignIn extends Component {
   handleInput (e) {
     let value = e.target.value
     let name = e.target.name
-    // console.log(this.state.investor)
     this.setState(prevState => {
       return {
         admin: {
           ...prevState.admin, [name]: value
         }
       }
-    }, () => console.log(this.state.admin)
+    }, () => console.log()
     )
   }
 

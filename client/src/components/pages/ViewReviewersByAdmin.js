@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react'
+import React from 'react'
 // import SimpleCard from '../cards/SimpleCard3'
 import ViewReviewersByAdminCard from '../cards/ViewReviewersByAdminCard'
 import LinearDeterminate from "../layout/loading/CustomizedProgress"
@@ -14,7 +14,7 @@ class ViewReviewersByAdmin extends React.Component {
   }
 
   componentDidMount () {
-    {
+    
       fetch('https://serverbrogrammers.herokuapp.com/api/reviewer/', {
         headers: new Headers({
           'x-access-token': this.props.token
@@ -27,7 +27,7 @@ class ViewReviewersByAdmin extends React.Component {
             reviewersOnSystem: json.data
           })
         })
-    }
+    
   }
 
   render () {

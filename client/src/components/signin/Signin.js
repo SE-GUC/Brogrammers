@@ -72,7 +72,7 @@ export class SignIn extends Component {
       }
     }).then(response => {
       response.json().then(data => {
-        console.log('Successful' + data + data.auth)
+  
 
         sessionStorage.setItem('jwtToken', data.token)
         sessionStorage.setItem('auth', data.auth)
@@ -87,7 +87,7 @@ export class SignIn extends Component {
                 c: false
               }
             },
-            () => console.log(this.state.investor.c)
+            () => console.log()
           )
         }
       })
@@ -97,7 +97,7 @@ export class SignIn extends Component {
   handleInput (e) {
     let value = e.target.value
     let name = e.target.name
-    // console.log(this.state.investor)
+
     this.setState(
       prevState => {
         return {
@@ -107,7 +107,7 @@ export class SignIn extends Component {
           }
         }
       },
-      () => console.log(this.state.investor)
+      () => console.log()
     )
   }
 

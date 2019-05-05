@@ -3,7 +3,6 @@ import LinearDeterminate from "../layout/loading/CustomizedProgress"
 import Snackbar from "../layout/snackbar/Snackbar"
 import TitleBarGridList from "../layout/List/GridListEditableLawyer";
 import Paper from "../layout/paper/Paper";
-import Typography from '@material-ui/core/Typography';
 import Grid from "@material-ui/core/Grid";
 
 

@@ -5,14 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import green from "@material-ui/core/colors/green";
-import {
-  Avatar,
-  FormControl,
-  InputLabel,
-  Select,
-  FormHelperText,
-  OutlinedInput
-} from "@material-ui/core";
+import { Avatar } from "@material-ui/core";
 import AssignmemtIcon from "@material-ui/icons/Assignment";
 import Grid from "@material-ui/core/Grid";
 import Required from "../layout/inputs/RequiredValidation";
@@ -150,7 +143,6 @@ class InvestorCompanyReg extends React.Component {
             "state_changed",
             snapshot => {
               // progrss function ....
-             
             },
             error => {
               // error function ....
@@ -285,10 +277,7 @@ class InvestorCompanyReg extends React.Component {
   ) {
     var regex = new RegExp(/^[a-zA-Z\s-, ]+$/);
     var number = /^\d*$/;
-    var law = new RegExp(/^Law/);
     console.log("I entered");
-
-  
 
     if (telephoneHQ) {
       if (number.test(telephoneHQ)) {
@@ -400,12 +389,11 @@ class InvestorCompanyReg extends React.Component {
                   </p>
                 </Typography>
               </Grid>
-              
-              <Grid container direction="column" alignItems="center">
-               <Law callBack={this.handleInput}/>
-                </Grid>
-                <Grid container direction="column" alignItems="center">
 
+              <Grid container direction="column" alignItems="center">
+                <Law callBack={this.handleInput} />
+              </Grid>
+              <Grid container direction="column" alignItems="center">
                 <Required
                   valid={this.state.legalCompanyFormValid}
                   texthelper={

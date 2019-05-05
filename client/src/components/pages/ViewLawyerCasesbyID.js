@@ -88,7 +88,7 @@ class ViewLawyerCasesbyID extends Component {
   }
 
   render () {
-    var { isLoadied, companies } = this.state
+    var { isLoadied } = this.state
     if (!isLoadied) { return <LinearDeterminate/>} else {
       const listItems =
       this.state.companies.map((element, i) => (
@@ -98,8 +98,6 @@ class ViewLawyerCasesbyID extends Component {
             compid={element._id}
             nameInEnglish={element.nameInEnglish}
             token={this.props.token}
-            addressHQ={element.addressHQ}
-            Status={element.status}
             addressHQ={element.addressHQ}
             regulationLaw={element.regulationLaw}
             legalCompanyForm={element.legalCompanyForm}

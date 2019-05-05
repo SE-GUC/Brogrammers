@@ -15,7 +15,7 @@ class ViewLawyersByAdmin extends React.Component {
 
   componentDidMount () {
     // insert the method by replacing the below one
-    {
+    
       fetch('https://serverbrogrammers.herokuapp.com/api/lawyer/', {
         headers: new Headers({
           'x-access-token': this.props.token
@@ -28,7 +28,7 @@ class ViewLawyersByAdmin extends React.Component {
             lawyersOnSystem: json.data
           })
         })
-    }
+    
   }
 
   render () {

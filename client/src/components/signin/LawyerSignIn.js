@@ -62,7 +62,7 @@ export class LawyerSignIn extends Component {
   handleRegister (e) {
     e.preventDefault()
     let lawyerData = this.state.lawyer
-    console.log(this.state.lawyer.email)
+   
     fetch('https://serverbrogrammers.herokuapp.com/api/lawyer/login', {
       method: 'POST',
       body: JSON.stringify(lawyerData),
@@ -71,7 +71,7 @@ export class LawyerSignIn extends Component {
       }
     }).then(response => {
       response.json().then(data => {
-        console.log('Successful' + data + data.auth)
+    
         sessionStorage.setItem('jwtToken', data.token)
         sessionStorage.setItem('auth', data.auth)
         sessionStorage.setItem('id', data.id)
@@ -84,7 +84,7 @@ export class LawyerSignIn extends Component {
             lawyer: {
               c: false
             }
-          }, () => console.log(this.state.lawyer.c))
+          }, () => console.log())
         }
       })
     })
@@ -93,14 +93,14 @@ export class LawyerSignIn extends Component {
   handleInput (e) {
     let value = e.target.value
     let name = e.target.name
-    // console.log(this.state.investor)
+    
     this.setState(prevState => {
       return {
         lawyer: {
           ...prevState.lawyer, [name]: value
         }
       }
-    }, () => console.log(this.state.lawyer)
+    }, () => console.log()
     )
   }
 

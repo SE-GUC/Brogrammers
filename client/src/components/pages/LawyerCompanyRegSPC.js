@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React from 'react'
 import AlertDialogSlide from '../layout/Dialogs/SlideDialog'
 import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import green from '@material-ui/core/colors/green'
-import { Avatar, FormControl, InputLabel, Select, OutlinedInput, FormHelperText } from '@material-ui/core'
+import { Avatar } from '@material-ui/core'
 import AssignmemtIcon from '@material-ui/icons/Assignment'
 import Grid from '@material-ui/core/Grid'
 import Required from '../layout/inputs/RequiredValidation'
@@ -16,7 +16,6 @@ import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import firebase from '../../firebase'
 import img3 from '../../components/Images/capture.png'
-import LinearDeterminate from "../layout/loading/CustomizedProgress"
 import IDType from '../layout/inputs/IDType';
 import Law from '../layout/inputs/Law';
 window.html2canvas = html2canvas
@@ -147,7 +146,7 @@ class InvestorCompanyReg extends React.Component {
           uploadTask.on('state_changed',
             (snapshot) => {
               // progrss function ....
-              const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
+             
             },
             (error) => {
               // error function ....
@@ -243,7 +242,7 @@ class InvestorCompanyReg extends React.Component {
   handleInput(event) {
     let value = event.target.value
     let name = event.target.name
-    if(name=="idType"){
+    if(name==="idType"){
       this.setState(prevState => {
         return {
           company: {
@@ -281,7 +280,6 @@ class InvestorCompanyReg extends React.Component {
     , investorIdentificationNumber, investorTelephone, investorAddress, investorFax, investorEmail, investorIdentificationType) {
     var regex = new RegExp(/^[a-zA-Z\s-, ]+$/);
     var number = /^\d*$/;
-    var law = new RegExp(/^Law/)
     console.log("I entered")
 
 

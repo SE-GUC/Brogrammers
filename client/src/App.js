@@ -38,7 +38,6 @@ import ViewCompanies from './components/pages/ViewCompanies'
 import LinearDeterminate from './components/layout/loading/CustomizedProgress'
 import SearchCases from './components/pages/searchCases'
 import PaperFooter from './components/layout/paper/PaperFooter'
-import UploadImage from './components/pages/uploadImage'
 import Home from './components/pages/Home'
 import PleaseActivate from './components/pages/PleaseActivate'
 import Activate from './components/pages/Activate'
@@ -289,20 +288,7 @@ class App extends Component {
               )
             }
           />{' '}
-          <Route
-            exact
-            path="/uploadImage"
-            component={
-              () => (
-                // sessionStorage.getItem('auth') &&
-                // sessionStorage.getItem('type') === 'a' ? (
-                <UploadImage />
-              )
-              // ) : (
-              //   <AdminSignIn />
-              // )
-            }
-          />{' '}
+        
           <Route
             exact
             path="/InvestorSSCForm"
