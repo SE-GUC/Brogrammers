@@ -22,7 +22,7 @@ const styles = {
     marginBottom: 35
   },
   holder:{
-    marginTop:60
+    marginTop:55
   }
 }
 

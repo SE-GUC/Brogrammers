@@ -9,19 +9,20 @@ import { StickyContainer, Sticky } from "react-sticky";
 const styles = {
   paperContainer: {
     backgroundImage: `url(${Image})`,
-    height: "120vh",
+    height: "auto",
     backgroundSize: "cover",
     backgroundPosition: "center",
     margin: 0,
-    paddingTop: 0,
-  },  header: {
-   
+    paddingTop: 0
+  },
+  header: {
     position: "sticky",
     textAlign: "center",
     paddingTop: 10,
     paddingBottom: 10,
+    marginBottom:50,
     marginTop: "0px",
-  
+
     color: "white",
     top: "55px",
     zIndex: 13,
@@ -52,7 +53,6 @@ class GetStarted extends Component {
             alignItems="center"
             className={classes.paperContainer}
           >
-         
             <Grid item xs={12} lg={12} className={classes.header}>
               <Fade timeout={{ enter: 1000 }} in={true}>
                 <h1 style={{ color: "white", textAlign: "center" }}>
@@ -72,8 +72,8 @@ class GetStarted extends Component {
                     color: "white",
                     textAlign: "center",
                     "font-size": "150%",
-                    "font-weight": "bold",
-                    backgroundColor:'#4488aa99'
+                    "font-weight":"bold",
+                    backgroundColor: "#4488aa99"
                   }}
                 >
                   Egypt’s fast-growing, young population of 90 million, diverse
@@ -89,36 +89,49 @@ class GetStarted extends Component {
                 </p>
               </Fade>
             </Grid>
-            <Grid item xs={2}>
-              <Fade
-                timeout={{ enter: 1200 }}
-                style={{ transitionDelay: "2.0s" }}
-                in={true}
-              >
-                <Button
-                  variant="contained"
-                  style={{ fontSize: "20px" }}
-                  color="secondary"
-                  className={classes.button}
-                  onClick={this.handleChange}
+            <Grid
+              container
+              xs={12}
+              lg={4}
+              direction="row"
+              justify="center"
+              alignItems="center"
+              spacing={36}
+            >
+              <Grid item xs={4} lg={12} style={{margin:'20px'}}>
+                <Fade
+                  timeout={{ enter: 1200 }}
+                  style={{ transitionDelay: "1.0s" }}
+                  in={true}
                 >
-                  Register
-                </Button>
-              </Fade>
-              <Fade
-                timeout={{ enter: 1200 }}
-                style={{ transitionDelay: "2.0s" }}
-                in={true}
-              >
-                <Button
-                  variant="contained"
-                  style={{ fontSize: "20px", margin: "20px" }}
-                  className={classes.button}
-                  onClick={this.handleChange2}
+                  <Button
+                    variant="contained"
+                    style={{ fontSize: "20px" }}
+                    color="secondary"
+                    className={classes.button}
+                    onClick={this.handleChange}
+                  >
+                    Register
+                  </Button>
+                </Fade>
+              </Grid>
+
+              <Grid item xs={4} lg={12} style={{margin:'20px'}}>
+                <Fade
+                  timeout={{ enter: 1200 }}
+                  style={{ transitionDelay: "1.0s" }}
+                  in={true}
                 >
-                  LogIn
-                </Button>
-              </Fade>
+                  <Button
+                    variant="contained"
+                    style={{ fontSize: "20px" }}
+                    className={classes.button}
+                    onClick={this.handleChange2}
+                  >
+                    LogIn
+                  </Button>
+                </Fade>
+              </Grid>
             </Grid>
           </Grid>
         </Plx>
