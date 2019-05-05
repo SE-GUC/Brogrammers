@@ -16,6 +16,7 @@ import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import firebase from '../../firebase'
 import img3 from '../../components/Images/capture.png'
+import LinearDeterminate from "../layout/loading/CustomizedProgress"
 window.html2canvas = html2canvas
 
 const storage = firebase.storage()
@@ -143,6 +144,7 @@ class InvestorCompanyReg extends React.Component {
           doc.addImage(img, 'JPEG', 17, 10)
           var image = doc.output('blob')
           // document.location.href = '/profile';
+          window.open(URL.createObjectURL(image));
           const uploadTask = storage.ref(`${id}/pdf`).put(image)
           uploadTask.on('state_changed',
             (snapshot) => {
@@ -157,7 +159,6 @@ class InvestorCompanyReg extends React.Component {
               // complete function ....
               storage.ref(id).child('pdf').getDownloadURL().then(url => {
                 console.log(url)
-                window.open(url, '_blank')
                 fetch('https://serverbrogrammers.herokuapp.com/api/investors/pdf/' + id,
                   {
                     method: 'POST',
@@ -169,6 +170,7 @@ class InvestorCompanyReg extends React.Component {
                     }
                   }).then(response => {
                     console.log(response)
+                    document.location.href = '/profile';
                   })
               })
             })
@@ -424,25 +426,6 @@ class InvestorCompanyReg extends React.Component {
     }
 
 
-    if (nameInArabic) {
-      if (regex.test(nameInArabic)) {
-        this.setState({ nameInArabicValid: true })
-      }
-      else {
-        this.setState({
-          nameInArabicValid: false,
-          err: true
-        })
-
-      }
-    }
-    else {
-      this.setState({
-        nameInArabicValid: false,
-        err: true
-      })
-    }
-
 
     if (nameInEnglish) {
       if (regex.test(nameInEnglish)) {
@@ -653,8 +636,40 @@ class InvestorCompanyReg extends React.Component {
             <Grid container direction='column' alignItems='flex-end' >
               <AlertDialogSlide handleRegister={this.handleRegister} />
             </Grid>
-          </Grid>
-        </Paper>
+            <Grid container direction='column' alignItems='center' >
+                <h6 style={{ display: this.state.vis }}>The page will automatically Redirect when the company is successfully created.</h6>
+              </Grid>
+
+
+            </Grid>
+
+          </Paper>
+       
+        <div style={{ display: this.state.vis }}>
+          <LinearDeterminate />
+          <Paper elevation={1} />
+        </div>
+        <br />
+
+        <br />
+
+        <br />
+
+        <br />
+        <br />
+
+        <br />
+
+        <br />
+
+        <br />
+        <br />
+
+        <br />
+
+        <br />
+
+        <br />
 
         <div style={{ display: this.state.vis }}>
 

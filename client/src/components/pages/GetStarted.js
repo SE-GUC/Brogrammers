@@ -107,7 +107,7 @@ class GetStarted extends Component {
                   <Button
                     variant="contained"
                     style={{ fontSize: "20px" }}
-                    color="secondary"
+                  
                     className={classes.button}
                     onClick={this.handleChange}
                   >
