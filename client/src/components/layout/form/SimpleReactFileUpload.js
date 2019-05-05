@@ -10,22 +10,17 @@ import Icon from '@material-ui/core/Icon';
 
 import axios from "axios";
 
-import { Input, Paper, MenuItem, Divider } from "@material-ui/core";
+import { Input, Paper, MenuItem, Divider, Grid } from "@material-ui/core";
 
 const styles = theme => ({
   root: {
-    width: "auto",
-    display: "block",
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
-    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: "70%",
-      marginLeft: "auto",
-      marginRight: "auto"
-    }
+ 
+   
+    
   },
   paper: {
     marginTop: theme.spacing.unit * 8,
+  
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -174,9 +169,12 @@ class SimpleReactFileUpload extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.root}>
+      <Grid container={12}   direction="row"
+      justify="center"
+      alignItems="center" className={classes.root}>
+      <Grid item xs={12} lg={7}>
         <Paper className={classes.paper} elevation={16}>
-          <div>
+          
             <h1 style={{ marginBottom: 50 }}>{sessionStorage.getItem("lang") === "en"
                     ? "New Company Type"
                     : "نوع شركة جديد"}</h1>
@@ -200,9 +198,11 @@ class SimpleReactFileUpload extends React.Component {
             </Button>
             {this.handleDisplay(this.state)}
             {this.handleFile(this.state)}
-          </div>
+        
         </Paper>
+        </Grid>
         <Divider />
+        <Grid item xs={12} lg={7}>
 
         <Paper className={classes.paper} elevation={16}>
           <h1 style={{ marginBottom: 50 }}>{sessionStorage.getItem("lang") === "en"
@@ -217,7 +217,8 @@ class SimpleReactFileUpload extends React.Component {
             </Button>
           </div>
         </Paper>
-      </div>
+        </Grid>
+      </Grid>
     );
   }
 }
