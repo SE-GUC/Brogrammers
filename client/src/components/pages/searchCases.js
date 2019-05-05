@@ -20,6 +20,9 @@ const styles = {
   },
   button: {
     marginBottom: 35
+  },
+  holder:{
+    marginTop:60
   }
 }
 
