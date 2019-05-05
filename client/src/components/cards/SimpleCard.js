@@ -41,139 +41,145 @@ function SimpleCard(props) {
           color="textSecondary"
           gutterBottom
         >
-          {sessionStorage.getItem('lang') === 'en' ? 'Learn More' : ' المزيد'}:{' '}
+          {sessionStorage.getItem('lang') === 'ar' ? 'المزيد ' : 'Learn More'}:{' '}
           {props.status}
         </Typography>
         <Typography variant="h5" component="h2">
-          {props.nameInEnglish}
+          {sessionStorage.getItem('lang') === 'ar'
+            ? `${props.nameInArabic}`
+            : `${props.nameInEnglish}`}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
           {props.addressHQ}
         </Typography>
         <Typography component="p">
           <ul>
-            <li style={{ listStyleImage: `url()` }}>
-              {sessionStorage.getItem('lang') === 'en'
-                ? 'Company ID'
-                : 'رقم حساب الشركه'}
+            <li>
+              {sessionStorage.getItem('lang') === 'ar'
+                ? 'رقم تعريف الشركه'
+                : 'Company ID'}
               : {props.compid}
             </li>
-            <li style={{ listStyleImage: `url(${location})` }}>
-              {sessionStorage.getItem('lang') === 'en'
-                ? 'Address HQ'
-                : 'عنوان الشركه '}
+            <li>
+              {sessionStorage.getItem('lang') === 'ar'
+                ? 'عنوان الشركه '
+                : 'Address HQ'}
               : {props.addressHQ}
             </li>
-            <li style={{ listStyleImage: `url()` }}>
-              {sessionStorage.getItem('lang') === 'en'
-                ? 'Regulation Law'
-                : 'القانون المنظم'}
+            <li>
+              {sessionStorage.getItem('lang') === 'ar'
+                ? 'القانون المنظم'
+                : 'Regulation Law'}
               : {props.regulationLaw}{' '}
             </li>
-            <li style={{ listStyleImage: `url()` }}>
-              {sessionStorage.getItem('lang') === 'en'
-                ? 'Legal Company Form'
-                : 'شكل الشركه القانونى'}
+            <li>
+              {sessionStorage.getItem('lang') === 'ar'
+                ? 'شكل الشركه القانونى'
+                : 'Legal Company Form'}
               : {props.legalCompanyForm}
             </li>
-            <li style={{ listStyleImage: `url()` }}>
-              {sessionStorage.getItem('lang') === 'en'
-                ? 'Name In Arabic'
-                : 'اسم الشركه'}
+            <li>
+              {sessionStorage.getItem('lang') === 'ar'
+                ? 'اسم الشركه'
+                : 'Name In Arabic'}
               : {props.nameInArabic}
             </li>
-            <li style={{ listStyleImage: `url(${governate})` }}>
-              {sessionStorage.getItem('lang') === 'en'
-                ? 'Governerate HQ'
-                : 'المركز الرئيسى '}
+            <li>
+              {sessionStorage.getItem('lang') === 'ar'
+                ? 'المركز الرئيسى '
+                : 'Governerate HQ'}
               :{props.governerateHQ}
             </li>
-            <li style={{ listStyleImage: `url()` }}>
-              {sessionStorage.getItem('lang') === 'en'
-                ? 'City HQ'
-                : 'المركز الرئيسى (المدينه)ه '}
+            <li>
+              {sessionStorage.getItem('lang') === 'ar'
+                ? 'المركز الرئيسى إلى المدينة '
+                : 'City HQ'}
               : {props.cityHQ}
             </li>
-            <li style={{ listStyleImage: `url()` }}>
-              {sessionStorage.getItem('lang') === 'en'
-                ? 'Telephone'
-                : 'التليفون '}
+            <li>
+              {sessionStorage.getItem('lang') === 'ar'
+                ? 'التليفون '
+                : 'Telephone'}
               : {props.telephoneHQ}
             </li>
-            <li style={{ listStyleImage: `url()` }}>
-              {sessionStorage.getItem('lang') === 'en' ? 'Fax' : 'الفاكس '}:{' '}
+            <li>
+              {sessionStorage.getItem('lang') === 'ar' ? 'الفاكس ' : 'Fax'}:{' '}
               {props.faxHQ}
             </li>
-            <li style={{ listStyleImage: `url()` }}>
-              {sessionStorage.getItem('lang') === 'en'
-                ? 'Capital Currency'
-                : 'عمله راس المال '}
+            <li>
+              {sessionStorage.getItem('lang') === 'ar'
+                ? 'عمله راس المال '
+                : 'Capital Currency'}
               : {props.capitalCurrency}
             </li>
-            <li style={{ listStyleImage: `url()` }}>
-              {sessionStorage.getItem('lang') === 'en'
-                ? 'Capital'
-                : 'راس المال '}
+            <li>
+              {sessionStorage.getItem('lang') === 'ar'
+                ? 'راس المال '
+                : 'Capital'}
               : {props.capital}
             </li>
           </ul>
           <ul>
             {' '}
-            <h3>Investor Info</h3>
-            <li style={{ listStyleImage: `url()` }}>
-              {sessionStorage.getItem('lang') === 'en'
-                ? 'Name'
-                : 'اسم المستثمر'}
+            <h3>
+              {sessionStorage.getItem('lang') === 'ar'
+                ? 'بيانات المستثمر'
+                : 'Investor Information'}
+            </h3>
+            <li>
+              {sessionStorage.getItem('lang') === 'ar'
+                ? 'اسم المستثمر'
+                : 'Name'}
               :{props.investorName}{' '}
             </li>
-            <li style={{ listStyleImage: `url(${gender})` }}>
-              {sessionStorage.getItem('lang') === 'en' ? 'Sex' : 'الجنس '}:
+            <li>
+              {sessionStorage.getItem('lang') === 'ar' ? 'الجنس ' : 'Sex'}:
               {props.investorSex}{' '}
             </li>
-            <li style={{ listStyleImage: `url(${country})` }}>
-              {sessionStorage.getItem('lang') === 'en'
-                ? 'Nationality'
-                : 'الجنسيه '}
+            <li>
+              {sessionStorage.getItem('lang') === 'ar'
+                ? 'الجنسيه '
+                : 'Nationality'}
               : {props.investorNationality}
             </li>
-            <li style={{ listStyleImage: `url()` }}>
-              {sessionStorage.getItem('lang') === 'en'
-                ? 'Identification Type'
-                : 'نوع اثبات الشخصيه '}
+            <li>
+              {sessionStorage.getItem('lang') === 'ar'
+                ? 'نوع اثبات الشخصيه '
+                : 'Identification Type'}
               : {props.investorIdentificationType}
             </li>
-            <li style={{ listStyleImage: `url()` }}>
-              {sessionStorage.getItem('lang') === 'en'
-                ? 'Identification Number'
-                : 'رقم اثبات الشخصيه'}
+            <li>
+              {sessionStorage.getItem('lang') === 'ar'
+                ? 'رقم اثبات الشخصيه'
+                : 'Identification Number'}
               : {props.investorIdentificationNumber}
             </li>
-            <li style={{ listStyleImage: `url()` }}>
-              {sessionStorage.getItem('lang') === 'en'
-                ? 'Birth Date'
-                : 'تاريخ الميلد'}
+            <li>
+              {sessionStorage.getItem('lang') === 'ar'
+                ? 'تاريخ الميلد'
+                : 'Birth Date'}
               : {props.investorBD}
             </li>
-            <li style={{ listStyleImage: `url(${location})` }}>
-              {sessionStorage.getItem('lang') === 'en'
-                ? 'Address'
-                : 'عنوان الاقامه'}
+            <li>
+              {sessionStorage.getItem('lang') === 'ar'
+                ? 'عنوان الاقامه'
+                : 'Address'}
               : {props.investorAddress}
             </li>
-            <li style={{ listStyleImage: `url()` }}>
-              {sessionStorage.getItem('lang') === 'en'
-                ? 'Telephone'
-                : 'التليفون '}
+            <li>
+              {sessionStorage.getItem('lang') === 'ar'
+                ? 'التليفون '
+                : 'Telephone'}
               : {props.investorTelephone}
             </li>
-            <li style={{ listStyleImage: `url()` }}>
-              {sessionStorage.getItem('lang') === 'en' ? 'Fax' : 'الفاكس'}:{' '}
+            <li>
+              {sessionStorage.getItem('lang') === 'ar' ? 'الفاكس' : 'Fax'}:{' '}
               {props.investorFax}
             </li>
-            <li style={{ listStyleImage: `url()` }}>
-              {sessionStorage.getItem('lang') === 'en'
-                ? 'Email'
-                : 'البريد الالكترونى'}
+            <li>
+              {sessionStorage.getItem('lang') === 'ar'
+                ? 'البريد الالكترونى'
+                : 'Email'}
               :{props.investorEmail}
             </li>
           </ul>
