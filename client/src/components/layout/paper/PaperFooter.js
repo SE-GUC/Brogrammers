@@ -50,11 +50,11 @@ function PaperSheet (props) {
               href=''
               onClick={() => {
                 props.callBack(
-                  sessionStorage.getItem('lang') == 'ar' ? 'en' : 'ar'
+                  sessionStorage.getItem('lang') === 'ar' ? 'en' : 'ar'
                 )
               }}
             >
-              {sessionStorage.getItem('lang') == 'ar' ? 'English' : 'العربية'}
+              {sessionStorage.getItem('lang') === 'ar' ? 'English' : 'العربية'}
             </a>
           </p>
           <p>

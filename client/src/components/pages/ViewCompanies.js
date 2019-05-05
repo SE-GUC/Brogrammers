@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { withStyles, List, Paper, Grid } from '@material-ui/core'
+import { withStyles,  Grid } from '@material-ui/core'
 import InvestorCard from '../cards/InvestorCard'
-import GridList from '@material-ui/core/GridList'
 import Grow from '@material-ui/core/Grow'
 
 const styles = {

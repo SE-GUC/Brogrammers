@@ -119,8 +119,6 @@ class InvestorCompanyReg extends React.Component {
     var source = document.getElementById('com')
     var source2 = document.getElementById('com2')
     var source3 = document.getElementById('com3')
-    var doc = ''
-    var blob = ''
     var id = this.state.id
     html2canvas(source, {
       dpi: 144,
@@ -128,7 +126,6 @@ class InvestorCompanyReg extends React.Component {
     }).then(function (canvas) {
       var img = canvas.toDataURL('image/png')
       var doc = new jsPDF()
-      var myImage = new Image(100, 200)
       doc.addImage(img, 'JPEG', 17, 10)
       doc.addPage()
       html2canvas(source2, {
@@ -146,7 +143,6 @@ class InvestorCompanyReg extends React.Component {
           doc.addImage(img, 'JPEG', 17, 10)
           var image = doc.output('blob')
           // document.location.href = '/profile';
-          window.open(URL.createObjectURL(image));
           const uploadTask = storage.ref(`${id}/pdf`).put(image)
           uploadTask.on('state_changed',
             (snapshot) => {
@@ -161,6 +157,7 @@ class InvestorCompanyReg extends React.Component {
               // complete function ....
               storage.ref(id).child('pdf').getDownloadURL().then(url => {
                 console.log(url)
+                window.open(url, '_blank')
                 fetch('https://serverbrogrammers.herokuapp.com/api/investors/pdf/' + id,
                   {
                     method: 'POST',
@@ -172,7 +169,6 @@ class InvestorCompanyReg extends React.Component {
                     }
                   }).then(response => {
                     console.log(response)
-                    document.location.href = '/profile';
                   })
               })
             })
@@ -226,7 +222,7 @@ class InvestorCompanyReg extends React.Component {
                 id: data.data._id
 
               })
-              if (data.data.capitalCurrency == 'egp') {
+              if (data.data.capitalCurrency === 'egp') {
                 document.getElementById('negp').style.visibility = 'hidden'
               } else {
                 document.getElementById('egp').style.visibility = 'hidden'
@@ -286,7 +282,6 @@ class InvestorCompanyReg extends React.Component {
     var regex = new RegExp(/^[a-zA-Z\s-, ]+$/);
     var number = /^\d*$/;
     var law = new RegExp(/^Law/)
-    var re = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm;
     console.log("I entered")
 
 
@@ -411,6 +406,25 @@ class InvestorCompanyReg extends React.Component {
       })
     }
 
+
+    if (nameInArabic) {
+      if (regex.test(nameInArabic)) {
+        this.setState({ nameInArabicValid: true })
+      }
+      else {
+        this.setState({
+          nameInArabicValid: false,
+          err: true
+        })
+
+      }
+    }
+    else {
+      this.setState({
+        nameInArabicValid: false,
+        err: true
+      })
+    }
 
 
     if (nameInEnglish) {
@@ -622,40 +636,8 @@ class InvestorCompanyReg extends React.Component {
             <Grid container direction='column' alignItems='flex-end' >
               <AlertDialogSlide handleRegister={this.handleRegister} />
             </Grid>
-            <Grid container direction='column' alignItems='center' >
-                <h6 style={{ display: this.state.vis }}>The page will automatically Redirect when the company is successfully created.</h6>
-              </Grid>
-
-
-            </Grid>
-
-          </Paper>
-       
-        <div style={{ display: this.state.vis }}>
-          <LinearDeterminate />
-          <Paper elevation={1} />
-        </div>
-        <br />
-
-        <br />
-
-        <br />
-
-        <br />
-        <br />
-
-        <br />
-
-        <br />
-
-        <br />
-        <br />
-
-        <br />
-
-        <br />
-
-        <br />
+          </Grid>
+        </Paper>
 
         <div style={{ display: this.state.vis }}>
 

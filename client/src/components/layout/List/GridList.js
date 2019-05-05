@@ -1,11 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
-import GridList from '@material-ui/core/GridList'
-import GridListTile from '@material-ui/core/GridListTile'
-import ListSubheader from '@material-ui/core/ListSubheader'
 import CaseCard from '../cards/RequestsCards'
-import Zoom from '@material-ui/core/Zoom'
 import Grow from '@material-ui/core/Grow'
 import { Grid } from '@material-ui/core'
 const styles = theme => ({

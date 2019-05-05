@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import LinearDeterminate from "../layout/loading/CustomizedProgress"
 import Snackbar from "../layout/snackbar/Snackbar"
 import TitleBarGridList from "../layout/List/GridList";
-import Paper from "../layout/paper/Paper";
-import Typography from '@material-ui/core/Typography';
 import Grid from "@material-ui/core/Grid";
 const styles = {
     header: {

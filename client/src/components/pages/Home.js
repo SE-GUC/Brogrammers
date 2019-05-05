@@ -1,11 +1,8 @@
 import React, { Component } from "react";
-import { Paper, withStyles, Grid, Button, Fade } from "@material-ui/core";
+import { withStyles, Grid, Button, Fade } from "@material-ui/core";
 import ViewApprovedCompanies from "./ViewApprovedCompanies";
 import Image from "../Images/3amood.jpg"; // Import using relative path
 import Plx from "react-plx";
-import StickyText from "./StickyText";
-import { StickyContainer, Sticky } from "react-sticky";
-import GetStarted from "./GetStarted";
 
 const parallaxData1 = [
   {
@@ -81,7 +78,7 @@ class Home extends Component {
                 </h1>
               </Fade>
             </Grid>
-            {/* <Grid item xs={4}>
+            <Grid item xs={4}>
               <Fade
                 timeout={{ enter: 1000 }}
                 style={{ transitionDelay: "0.6s" }}
@@ -91,14 +88,14 @@ class Home extends Component {
                 {sessionStorage.getItem('lang') === 'en' ?"get started here":"ابدأ هنا"}
                 </Button>
               </Fade>
-            </Grid> */}
+            </Grid>
           </Grid>
         </Plx>
 
         {/* <Plx className="MyAwesomeParallax" parallaxData={parallaxData2}> */}
         {/* <Plx className="MyAwesomeParallax" parallaxData={parallaxData1}> */}
 
-          <GetStarted/>
+       
           {/* </Plx> */}
           <ViewApprovedCompanies />
         {/* </Plx> */}

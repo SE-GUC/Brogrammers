@@ -10,7 +10,7 @@ import Icon from '@material-ui/core/Icon';
 
 import axios from "axios";
 
-import { Input, Paper, MenuItem, Divider, Grid } from "@material-ui/core";
+import { Input, Paper, Divider, Grid } from "@material-ui/core";
 
 const styles = theme => ({
   root: {

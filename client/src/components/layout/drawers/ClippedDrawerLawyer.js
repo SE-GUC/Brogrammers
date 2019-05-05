@@ -2,33 +2,26 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import Home from '@material-ui/icons/Home'
 import EditProfile from '@material-ui/icons/BorderColor'
-import MailIcon from '@material-ui/icons/Mail';
 import EditProfileLawyer from '../../pages/EditProfileLawyer'
 import LawyerCases from '../../pages/LawyerCases';
 import ViewLawyerCasesbyID from '../../pages/ViewLawyerCasesbyID'
 import ViewLawyerEditableCases from '../../pages/ViewLawyerEditableCases'
-import LawyerComment from '../../pages/LawyerComment'
 import LawyerCompanyRegSSC from '../../pages/LawyerCompanyRegSSC'
 import LawyerCompanyRegSPC from '../../pages/LawyerCompanyRegSPC'
 import NavBar from '../../../components/layout/Navbar'
 import Note from '@material-ui/icons/NoteAdd'
 import ViewList from '@material-ui/icons/ViewList'
-import CreateCompany from '@material-ui/icons/CreateNewFolder';
 import Stepper from "../../steppers/stepper";
 import LinearDeterminate from "../loading/CustomizedProgress";
-import ChooseCompanyType from "../../pages/ChooseCompanyType";
+
 import Navbar from '../../../components/layout/Navbar';
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 

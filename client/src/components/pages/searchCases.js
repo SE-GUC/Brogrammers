@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { withStyles, List, Paper, Grid } from '@material-ui/core'
-import GridList from '@material-ui/core/GridList'
+import { withStyles,Grid } from '@material-ui/core'
 import CompanyCard from '../cards/CompanyCard'
 import Button from '@material-ui/core/Button'
 

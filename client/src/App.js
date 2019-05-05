@@ -27,7 +27,6 @@ import SignIn from './components/signin/Signin'
 import ComplexButton from './components/layout/Complex Button/ComplexButton'
 import ViewLawyerCasesbyID from './components/pages/ViewLawyerCasesbyID.js'
 import ViewReviewerCasesbyID from './components/pages/ViewReviewerCasesbyID'
-import ViewApprovedCompanies from './components/pages/ViewApprovedCompanies'
 import ViewLawyerEditableCases from './components/pages/ViewLawyerEditableCases'
 import AdminProfile from './components/pages/AdminProfile'
 import LawyerProfile from './components/pages/LawyerProfile'
@@ -40,7 +39,6 @@ import LinearDeterminate from './components/layout/loading/CustomizedProgress'
 import SearchCases from './components/pages/searchCases'
 import PaperFooter from './components/layout/paper/PaperFooter'
 import UploadImage from './components/pages/uploadImage'
-import { Grid } from '@material-ui/core'
 import Home from './components/pages/Home'
 import PleaseActivate from './components/pages/PleaseActivate'
 import Activate from './components/pages/Activate'
@@ -131,7 +129,7 @@ class App extends Component {
             path="/admin/register-lawyer"
             component={() =>
               sessionStorage.getItem('auth') &&
-              sessionStorage.getItem('type') == 'a' ? (
+              sessionStorage.getItem('type') === 'a' ? (
                 <RegisterLawyer
                   callBack={this.setToken}
                   token={sessionStorage.getItem('jwtToken')}
@@ -152,7 +150,7 @@ class App extends Component {
             path="/admin/register-reviewer"
             component={() =>
               sessionStorage.getItem('auth') &&
-              sessionStorage.getItem('type') == 'a' ? (
+              sessionStorage.getItem('type') === 'a' ? (
                 <RegisterReviewer
                   callBack={this.setToken}
                   token={sessionStorage.getItem('jwtToken')}
@@ -172,7 +170,7 @@ class App extends Component {
             path="/admin/register-lawyer"
             component={() =>
               sessionStorage.getItem('auth') &&
-              sessionStorage.getItem('type') == 'a' ? (
+              sessionStorage.getItem('type') === 'a' ? (
                 <RegisterLawyer
                   callBack={this.setToken}
                   token={sessionStorage.getItem('jwtToken')}
@@ -187,7 +185,7 @@ class App extends Component {
             path="/admin/register-reviewer"
             component={() =>
               sessionStorage.getItem('auth') &&
-              sessionStorage.getItem('type') == 'a' ? (
+              sessionStorage.getItem('type') === 'a' ? (
                 <RegisterReviewer
                   callBack={this.setToken}
                   token={sessionStorage.getItem('jwtToken')}
@@ -202,7 +200,7 @@ class App extends Component {
             path="/admin/register-admin"
             component={() =>
               sessionStorage.getItem('auth') &&
-              sessionStorage.getItem('type') == 'a' ? (
+              sessionStorage.getItem('type') === 'a' ? (
                 <RegisterAdmin
                   callBack={this.setToken}
                   token={sessionStorage.getItem('jwtToken')}
@@ -224,7 +222,7 @@ class App extends Component {
             )}
             component={() =>
               sessionStorage.getItem('auth') &&
-              sessionStorage.getItem('type') == 'i' ? (
+              sessionStorage.getItem('type') === 'i' ? (
                 <EditProfileInvestor
                   token={sessionStorage.getItem('jwtToken')}
                 />
@@ -238,7 +236,7 @@ class App extends Component {
             path="/editprofile/admin"
             component={() =>
               sessionStorage.getItem('auth') &&
-              sessionStorage.getItem('type') == 'a' ? (
+              sessionStorage.getItem('type') === 'a' ? (
                 <EditProfileAdmin token={sessionStorage.getItem('jwtToken')} />
               ) : (
                 <AdminSignIn />
@@ -250,7 +248,7 @@ class App extends Component {
             path="/editprofile/lawyer"
             component={() =>
               sessionStorage.getItem('auth') &&
-              sessionStorage.getItem('type') == 'l' ? (
+              sessionStorage.getItem('type') === 'l' ? (
                 <EditProfileLawyer token={sessionStorage.getItem('jwtToken')} />
               ) : (
                 <LawyerSignIn />
@@ -262,7 +260,7 @@ class App extends Component {
             path="/addcomment/lawyer"
             component={() =>
               sessionStorage.getItem('auth') &&
-              sessionStorage.getItem('type') == 'l' ? (
+              sessionStorage.getItem('type') === 'l' ? (
                 <LawyerComment token={sessionStorage.getItem('jwtToken')} />
               ) : (
                 <LawyerSignIn />
@@ -274,7 +272,7 @@ class App extends Component {
             path="/addcomment/reviewer"
             component={() =>
               sessionStorage.getItem('auth') &&
-              sessionStorage.getItem('type') == 'r' ? (
+              sessionStorage.getItem('type') === 'r' ? (
                 <ReviewerComment token={sessionStorage.getItem('jwtToken')} />
               ) : (
                 <ReviewerSignIn />
@@ -286,7 +284,7 @@ class App extends Component {
             path="/editprofile/reviewer"
             component={() =>
               sessionStorage.getItem('auth') &&
-              sessionStorage.getItem('type') == 'r' ? (
+              sessionStorage.getItem('type') === 'r' ? (
                 <EditProfileReviewer
                   token={sessionStorage.getItem('jwtToken')}
                 />
@@ -301,7 +299,7 @@ class App extends Component {
             component={
               () => (
                 // sessionStorage.getItem('auth') &&
-                // sessionStorage.getItem('type') == 'a' ? (
+                // sessionStorage.getItem('type') === 'a' ? (
                 <UploadImage />
               )
               // ) : (
@@ -346,7 +344,7 @@ class App extends Component {
             path="/lawyer/view-lawyer-cases-by-id"
             component={() =>
               sessionStorage.getItem('auth') &&
-              sessionStorage.getItem('type') == 'l' ? (
+              sessionStorage.getItem('type') === 'l' ? (
                 <ViewLawyerCasesbyID
                   id={sessionStorage.getItem('id')}
                   token={sessionStorage.getItem('jwtToken')}
@@ -361,7 +359,7 @@ class App extends Component {
             path="/reviewer/view-reviewer-cases-by-id"
             component={() =>
               sessionStorage.getItem('auth') &&
-              sessionStorage.getItem('type') == 'r' ? (
+              sessionStorage.getItem('type') === 'r' ? (
                 <ViewReviewerCasesbyID
                   id={sessionStorage.getItem('id')}
                   token={sessionStorage.getItem('jwtToken')}
@@ -376,7 +374,7 @@ class App extends Component {
             path="/investors/MyRequests/all"
             component={() =>
               sessionStorage.getItem('auth') &&
-              sessionStorage.getItem('type') == 'i' ? (
+              sessionStorage.getItem('type') === 'i' ? (
                 <InvestorRequests
                   id={sessionStorage.getItem('id')}
                   token={sessionStorage.getItem('jwtToken')}
@@ -412,7 +410,7 @@ class App extends Component {
               path="/LawyerEditableCases"
               component={() =>
                 sessionStorage.getItem('auth') &&
-                sessionStorage.getItem('type') == 'l' ? (
+                sessionStorage.getItem('type') === 'l' ? (
                   <ViewLawyerEditableCases
                     id={sessionStorage.getItem('id')}
                     ssn={sessionStorage.getItem('ssn')}
@@ -427,7 +425,7 @@ class App extends Component {
               exact
               path="/LawyerCases"
               render={() =>
-                sessionStorage.getItem('type') == 'l' ? (
+                sessionStorage.getItem('type') === 'l' ? (
                   <LawyerCases token={sessionStorage.getItem('jwtToken')} />
                 ) : (
                   <SignIn />
@@ -439,7 +437,7 @@ class App extends Component {
               exact
               path="/ReviewerCases"
               render={() =>
-                sessionStorage.getItem('type') == 'r' ? (
+                sessionStorage.getItem('type') === 'r' ? (
                   <ReviewerCases token={sessionStorage.getItem('jwtToken')} />
                 ) : (
                   <SignIn />
@@ -450,7 +448,7 @@ class App extends Component {
               exact
               path="/AdminCases"
               render={() =>
-                sessionStorage.getItem('type') == 'a' ? (
+                sessionStorage.getItem('type') === 'a' ? (
                   <AdminCases token={sessionStorage.getItem('jwtToken')} />
                 ) : (
                   <SignIn />
@@ -481,26 +479,26 @@ class App extends Component {
               component={() => {
                 if (
                   sessionStorage.getItem('auth') &&
-                  sessionStorage.getItem('type') == 'a'
+                  sessionStorage.getItem('type') === 'a'
                 ) {
                   return <AdminProfile />
                 } else {
                   if (
                     sessionStorage.getItem('auth') &&
-                    sessionStorage.getItem('type') == 'i'
+                    sessionStorage.getItem('type') === 'i'
                   ) {
                     console.log('in investor profile')
                     return <InvestorProfile />
                   } else {
                     if (
                       sessionStorage.getItem('auth') &&
-                      sessionStorage.getItem('type') == 'r'
+                      sessionStorage.getItem('type') === 'r'
                     ) {
                       return <ReviewerProfile />
                     } else {
                       if (
                         sessionStorage.getItem('auth') &&
-                        sessionStorage.getItem('type') == 'l'
+                        sessionStorage.getItem('type') === 'l'
                       ) {
                         return <LawyerProfile />
                       } else {
