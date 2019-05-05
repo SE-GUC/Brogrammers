@@ -81,6 +81,7 @@ class Manager extends React.Component {
   }
   handle() {
     this.props.callBack(this.state.manager)
+    console.log(this.state.manager)
   }
 
   render() {
