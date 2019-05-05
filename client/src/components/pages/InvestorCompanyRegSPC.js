@@ -23,6 +23,7 @@ import FileUploader from "react-firebase-file-uploader";
 import html2canvas from "html2canvas";
 import img3 from "../../components/Images/capture.png";
 import firebase from "../../firebase";
+import Law from "../layout/inputs/Law";
 window.html2canvas = html2canvas;
 // import * as rasterizeHTML from 'rasterizehtml';
 
@@ -69,7 +70,7 @@ class InvestorCompanyReg extends React.Component {
     super(props);
     this.state = {
       company: {
-        regulationLaw: "",
+        regulationLaw: "Law 72",
         legalCompanyForm: "",
         nameInArabic: "",
         nameInEnglish: "",
@@ -293,22 +294,7 @@ class InvestorCompanyReg extends React.Component {
     var law = new RegExp(/^Law/);
     console.log("I entered");
 
-    if (regulationLaw) {
-      console.log("I also entered +  " + regulationLaw);
-      if (law.test(regulationLaw)) {
-        this.setState({ regulationLawValid: true });
-      } else {
-        this.setState({
-          regulationLawValid: false,
-          err: true
-        });
-      }
-    } else {
-      this.setState({
-        regulationLawValid: false,
-        err: true
-      });
-    }
+  
 
     if (telephoneHQ) {
       if (number.test(telephoneHQ)) {
@@ -422,32 +408,7 @@ class InvestorCompanyReg extends React.Component {
               </Grid>
               
               <Grid container direction="column" alignItems="center">
-                <FormControl required variant="outlined" className={classes.formControl} fullWidth>
-                  <InputLabel>{
-                  sessionStorage.getItem("lang") === "en"
-                      ? "Regulation Law"
-                      : " ‫القانون‬‫ المنظم"
-                  }
-                      </InputLabel>
-                  <Select
-                    native
-                    value={this.state.company.regulationLaw}
-                    onChange={this.handleInput}
-                    
-                    input={
-                      <OutlinedInput
-                      name={"legalCompanyForm"}
-                        labelWidth={this.state.labelWidth}
-                        id="outlined-age-native-simple"
-                      />
-                    }
-                  >
-          
-                    <option value={"Law 72"}>Law 72</option>
-                    <option value={"Law 159"}>Law 159</option>
-                  </Select>
-                  <FormHelperText>Required</FormHelperText>
-                </FormControl>
+               <Law callBack={this.handleInput}/>
                 </Grid>
                 <Grid container direction="column" alignItems="center">
 
