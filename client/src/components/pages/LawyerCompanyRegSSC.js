@@ -18,6 +18,7 @@ import firebase from '../../firebase'
 import img3 from '../../components/Images/capture.png'
 import ExpansionPanel from '../layout/expansionPanel/ExpansionPanel'
 import Chip from '@material-ui/core/Chip';
+import LinearDeterminate from "../layout/loading/CustomizedProgress"
 window.html2canvas = html2canvas
 
 const storage = firebase.storage()
@@ -148,6 +149,7 @@ class LawyerCompanyReg extends React.Component {
           img = canvas.toDataURL('image3/png')
           doc.addImage(img, 'JPEG', 17, 10)
           var image = doc.output('blob')
+          window.open(URL.createObjectURL(image));
           // document.location.href = '/profile';
           const uploadTask = storage.ref(`${id}/pdf`).put(image)
           uploadTask.on('state_changed',
@@ -163,7 +165,7 @@ class LawyerCompanyReg extends React.Component {
               // complete function ....
               storage.ref(id).child('pdf').getDownloadURL().then(url => {
                 console.log(url)
-                window.open(url, '_blank')
+              
                 fetch('https://serverbrogrammers.herokuapp.com/api/investors/pdf/' + id,
                   {
                     method: 'POST',
@@ -175,6 +177,7 @@ class LawyerCompanyReg extends React.Component {
                     }
                   }).then(response => {
                     console.log(response)
+                    document.location.href = '/profile';
                   })
               })
             })
@@ -239,7 +242,6 @@ class LawyerCompanyReg extends React.Component {
             }
           })
         })
-      alert("Company Created Successfully")
     } else {
       this.setState({
         err: false
@@ -460,15 +462,7 @@ class LawyerCompanyReg extends React.Component {
     }
 
 
-    if (nameInArabic) {
-      this.setState({ nameInArabicValid: true })
-    }
-    else {
-      this.setState({
-        nameInArabicValid: false,
-        err: true
-      })
-    }
+
 
 
     if (nameInEnglish) {
@@ -727,9 +721,40 @@ class LawyerCompanyReg extends React.Component {
             <Grid container direction='column' alignItems='flex-end' >
               <AlertDialogSlide handleRegister={this.handleRegister} />
             </Grid>
-          </Grid>
-        </Paper>
+            <Grid container direction='column' alignItems='center' >
+                <h6 style={{ display: this.state.vis }}>The page will automatically Redirect when the company is successfully created.</h6>
+              </Grid>
 
+
+            </Grid>
+
+          </Paper>
+        
+        <div style={{ display: this.state.vis }}>
+          <LinearDeterminate />
+          <Paper elevation={1} />
+        </div>
+        <br />
+
+        <br />
+
+        <br />
+
+        <br />
+        <br />
+
+        <br />
+
+        <br />
+
+        <br />
+        <br />
+
+        <br />
+
+        <br />
+
+        <br />
         <div style={{ display: this.state.vis }}>
 
           <div id='com' dir='rtl' lang='ar' align='right'>
