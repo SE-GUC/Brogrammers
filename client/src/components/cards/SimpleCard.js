@@ -8,10 +8,6 @@ import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import Button2 from '../buttons/Button2'
 
-import gender from '../listAvatars/gender.png'
-import location from '../listAvatars/location.png'
-import country from '../listAvatars/country.png'
-import governate from '../listAvatars/governate.png'
 const styles = {
   card: {
     minWidth: 275
