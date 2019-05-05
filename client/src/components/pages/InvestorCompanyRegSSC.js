@@ -16,6 +16,7 @@ import html2canvas from 'html2canvas'
 import firebase from '../../firebase'
 import img3 from '../../components/Images/capture.png'
 import LinearDeterminate from "../layout/loading/CustomizedProgress"
+import Chip from '@material-ui/core/Chip'
 window.html2canvas = html2canvas
 
 const storage = firebase.storage()
@@ -514,6 +515,24 @@ class InvestorCompanyReg extends React.Component {
               </Grid>
               <Grid container direction='column' alignItems='center'>
                 <ExpansionPanel callBack={this.handleOnClick} />
+              </Grid>
+              <Grid container direction='column' alignItems='flex-start'>
+                <Typography variant='h6' component='h3'>
+                  <br />
+                  Your Submitted Managers:
+                <br />
+                  {this.state.company.managers.map(data => {
+                    let icon = null;
+                    return (
+                      <Chip
+                        key={data.key}
+                        icon={icon}
+                        label={data.name}
+                      //className={classes.chip}
+                      />
+                    );
+                  })}
+                </Typography>
               </Grid>
               <Grid>
                 <br />

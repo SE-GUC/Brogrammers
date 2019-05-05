@@ -17,7 +17,7 @@ import html2canvas from 'html2canvas'
 import firebase from '../../firebase'
 import img3 from '../../components/Images/capture.png'
 import ExpansionPanel from '../layout/expansionPanel/ExpansionPanel'
-import ChipsArray from '../layout/chips/ChipsArray'
+import Chip from '@material-ui/core/Chip';
 window.html2canvas = html2canvas
 
 const storage = firebase.storage()
@@ -710,6 +710,24 @@ class LawyerCompanyReg extends React.Component {
             </Grid>
             <Grid container direction='column' alignItems='center'>
               <ExpansionPanel callBack={this.handleOnClick} />
+            </Grid>
+            <Grid container direction='column' alignItems='flex-start'>
+              <Typography variant='h6' component='h3'>
+                <br/>
+                Your Submitted Managers:
+                <br/>
+                {this.state.company.managers.map(data => {
+                  let icon = null;
+                  return (
+                    <Chip
+                      key={data.key}
+                      icon={icon}
+                      label={data.name}
+                      //className={classes.chip}
+                    />
+                  );
+                })}
+              </Typography>
             </Grid>
             <br />
             <Grid container direction='column' alignItems='flex-end' >
