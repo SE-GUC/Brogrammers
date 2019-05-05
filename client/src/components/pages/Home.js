@@ -29,8 +29,8 @@ const parallaxData2 = [
         property: "translateY"
       }
     ]
-  },
-]
+  }
+];
 const styles = {
   paperContainer: {
     backgroundImage: `url(${Image})`,
@@ -39,8 +39,7 @@ const styles = {
     backgroundPosition: "center",
     width: "100%",
     margin: 0,
-    padding: 0,
-   
+    padding: 0
   }
 };
 
@@ -72,9 +71,11 @@ class Home extends Component {
             <Grid item xs={4}>
               {" "}
               <Fade timeout={{ enter: 1000 }} in={true}>
-                <h1 style={{ color: "white", textAlign: "center" }} >
+                <h1 style={{ color: "white", textAlign: "center" }}>
                   {" "}
-                  {sessionStorage.getItem('lang') === 'en' ?"Start your company now":"ابدأ شركتك الأن"}
+                  {sessionStorage.getItem("lang") === "en"
+                    ? "Start your company now"
+                    : "ابدأ شركتك الأن"}
                 </h1>
               </Fade>
             </Grid>
@@ -84,8 +85,20 @@ class Home extends Component {
                 style={{ transitionDelay: "0.6s" }}
                 in={true}
               >
-                <Button variant="outlined" onClick={this.handleChange} text={sessionStorage.getItem('lang') === 'en' ?"get started here":"ابدأ هنا"}>
-                {sessionStorage.getItem('lang') === 'en' ?"get started here":"ابدأ هنا"}
+                <Button
+                  variant="outlined"
+                  onClick={this.handleChange}
+                  text={
+                    sessionStorage.getItem("lang") === "en"
+                      ? "get started here"
+                      : "ابدأ هنا"
+                  }
+                >
+                  <b style={{ color: "white" }}>
+                    {sessionStorage.getItem("lang") === "en"
+                      ? "get started here"
+                      : "ابدأ هنا"}
+                  </b>
                 </Button>
               </Fade>
             </Grid>
@@ -95,11 +108,9 @@ class Home extends Component {
         {/* <Plx className="MyAwesomeParallax" parallaxData={parallaxData2}> */}
         {/* <Plx className="MyAwesomeParallax" parallaxData={parallaxData1}> */}
 
-       
-          {/* </Plx> */}
-          <ViewApprovedCompanies />
         {/* </Plx> */}
-     
+        <ViewApprovedCompanies />
+        {/* </Plx> */}
       </>
     );
   }
