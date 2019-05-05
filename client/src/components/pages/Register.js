@@ -197,6 +197,8 @@ class Register extends React.Component {
     {
       this.setState({addressValid:false,
         err:true})
+    }else{
+      this.setState({addressValid:true})
     }
    
     if(fax)
@@ -242,8 +244,11 @@ class Register extends React.Component {
         }
       })
     })
+  }else{
+    this.setState({
+      err:false})
   }
-  }z
+  }
   handleDate (v) {
     this.setState(prevState => ({ investor:
          { ...prevState.investor, dob: v
