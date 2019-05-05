@@ -87,9 +87,13 @@ class App extends Component {
 
   handleLang = a => {
     sessionStorage.setItem('lang', a)
+    sessionStorage.setItem('block',"in")
   }
 
   render() {
+    if(!sessionStorage.getItem("block")){
+      sessionStorage.setItem('lang','en')
+    }
     console.log(sessionStorage.getItem('lang'))
     console.log(sessionStorage.getItem('auth'))
     // in the Navbar for the logout try to pass the auth and then render
