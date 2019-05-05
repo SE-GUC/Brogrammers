@@ -30,25 +30,25 @@ import Stepper from "../../steppers/stepper";
 import LinearDeterminate from "../loading/CustomizedProgress";
 import ChooseCompanyType from "../../pages/ChooseCompanyType";
 import Navbar from '../../../components/layout/Navbar';
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+
 const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
-    display: "flex"
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1
+    display: "flex",
+    zIndex: -1,
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0
   },
   drawerPaper: {
-    width: drawerWidth
+    width: drawerWidth,
+    color: "#103755"
   },
   content: {
-    flexGrow: 1,
-    padding: theme.spacing.unit * 3
+    flexGrow: 1
   },
   toolbar: theme.mixins.toolbar
 });
@@ -57,7 +57,9 @@ class ClippedDrawerLawyer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      clicked: "i"
+      clicked: "i",
+      mobileOpen: false,
+      drawerOpen: false
     };
   }
   handleLoading = () => {
@@ -119,34 +121,55 @@ class ClippedDrawerLawyer extends React.Component {
 
   handleHome = () => {
     document.location.href = "/";
+    this.handleDrawerClose();
   };
   handleCases = () => {
     this.setState({ clicked: "cases" });
+    this.handleDrawerClose();
   };
   handleCases2 = () => {
     this.setState({ clicked: "companies" });
+    this.handleDrawerClose();
   };
 
   handleCreatessc = () => {
     this.setState({ clicked: "createssc" });
+    this.handleDrawerClose();
   };
 
   handleCreatespc = () => {
     this.setState({ clicked: "createspc" });
+    this.handleDrawerClose();
   };
 
   handleEdit = () => {
     this.setState({ clicked: "edit" });
+    this.handleDrawerClose();
   };
 
   handleCreated = () => {
     this.setState({ clicked: "created" });
+    this.handleDrawerClose();
   };
 
 
 
   handleProfile = () => {
     this.setState({ clicked: "profile" });
+    this.handleDrawerClose();
+  };
+
+  handleDrawerToggle = () => {
+    this.setState(prevState => {
+      return { drawerOpen: !prevState.drawerOpen };
+    });
+  };
+  handleDrawerClose = () => {
+    this.setState({ drawerOpen: false });
+  };
+
+  handelOpen = () => {
+    this.setState({ mobileOpen: localStorage.getItem("openDrawer") });
   };
 
   render() {
@@ -156,15 +179,17 @@ class ClippedDrawerLawyer extends React.Component {
       <div className={classes.root}>
         <CssBaseline />
 
+        <NavBar handleDrawerToggle={this.handleDrawerToggle} />
+        <div className={classes.toolbar} />
         <Drawer
           className={classes.drawer}
-          variant="permanent"
+          variant={"temporary"}
+          open={this.state.drawerOpen}
           classes={{
             paper: classes.drawerPaper
           }}
         >
-          <Navbar />
-          <div className={classes.toolbar} />
+          <ClickAwayListener onClickAway={this.handleDrawerClose}>
 
           <List>
             <ListItem button key={"Home"} onClick={this.handleHome}>
@@ -179,7 +204,7 @@ class ClippedDrawerLawyer extends React.Component {
             </ListItem>
             <ListItem
               button
-              key={"View My Companies"}
+              key={"View My Cases"}
               onClick={this.handleCases2}
             >
               <ListItemIcon>
@@ -188,7 +213,7 @@ class ClippedDrawerLawyer extends React.Component {
               <ListItemText
                 primary={
                   sessionStorage.getItem("lang") === "en"
-                    ? "View My Companies"
+                    ? "View My Cases"
                     : "اظهر شركاتي"
                 }
               />
@@ -295,6 +320,7 @@ class ClippedDrawerLawyer extends React.Component {
             </ListItem>
 
           </List>
+          </ClickAwayListener>
         </Drawer>
         <main className={classes.content} style={{ marginTop: 50 }}>
           {this.handleLoading}
